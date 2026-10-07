@@ -37,22 +37,22 @@ export function SiteFooter() {
             <ul className="space-y-1.5 font-mono text-xs text-muted-foreground">
               <li>
                 <Link href="/" className="hover:text-foreground hover:underline">
-                  Home
+                  Ditherweb Home
                 </Link>
               </li>
               <li>
                 <Link href="/components" className="hover:text-foreground hover:underline">
-                  Component Catalog
+                  Ditherweb Components
                 </Link>
               </li>
               <li>
                 <Link href="/docs" className="hover:text-foreground hover:underline">
-                  Documentation
+                  Ditherweb Documentation
                 </Link>
               </li>
               <li>
                 <Link href="/playground" className="hover:text-foreground hover:underline">
-                  Interactive Sandbox
+                  Interactive Playground
                 </Link>
               </li>
             </ul>

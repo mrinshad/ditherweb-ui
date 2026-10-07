@@ -397,15 +397,95 @@ button.bevel-raised:active {
 /* Retro Select */
 .retro-select {
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M2 4h8L6 9z'/%3E%3C/svg%3E");
+  -webkit-appearance: none;
   background-repeat: no-repeat;
-  background-position: right 0.6rem center;
-  padding-right: 2rem;
+  background-position: right 2px center;
+  background-size: 22px calc(100% - 4px);
+  padding-right: 28px;
+}
+
+:not(.dark) .retro-select,
+.light .retro-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='28' viewBox='0 0 22 28'%3E%3Crect width='22' height='28' fill='%23d4d4d4'/%3E%3Cpath d='M0 0h22v2H2v24H0V0z' fill='%23ffffff'/%3E%3Cpath d='M20 2h2v26H0v-2h20V2z' fill='%23404040'/%3E%3Cpath d='M18 4h2v22H2v-2h16V4z' fill='%238a8a8a'/%3E%3Cpath fill='%23171717' d='M6 11h10l-5 6z'/%3E%3C/svg%3E");
 }
 
 :is(.dark) .retro-select,
 .dark .retro-select {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23aaa' d='M2 4h8L6 9z'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='28' viewBox='0 0 22 28'%3E%3Crect width='22' height='28' fill='%23262626'/%3E%3Cpath d='M0 0h22v2H2v24H0V0z' fill='%23555555'/%3E%3Cpath d='M20 2h2v26H0v-2h20V2z' fill='%23000000'/%3E%3Cpath d='M18 4h2v22H2v-2h16V4z' fill='%231a1a1a'/%3E%3Cpath fill='%23f5f5f5' d='M6 11h10l-5 6z'/%3E%3C/svg%3E");
+}
+
+:not(.dark) .retro-select:active:not(:disabled),
+.light .retro-select:active:not(:disabled) {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='28' viewBox='0 0 22 28'%3E%3Crect width='22' height='28' fill='%23bcbcbc'/%3E%3Cpath d='M0 0h22v2H2v24H0V0z' fill='%23404040'/%3E%3Cpath d='M2 2h20v2H4v22H2V2z' fill='%238a8a8a'/%3E%3Cpath d='M20 2h2v26H0v-2h20V2z' fill='%23ffffff'/%3E%3Cpath fill='%23171717' d='M7 12h10l-5 6z'/%3E%3C/svg%3E");
+}
+
+:is(.dark) .retro-select:active:not(:disabled),
+.dark .retro-select:active:not(:disabled) {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='28' viewBox='0 0 22 28'%3E%3Crect width='22' height='28' fill='%231f1f1f'/%3E%3Cpath d='M0 0h22v2H2v24H0V0z' fill='%23000000'/%3E%3Cpath d='M2 2h20v2H4v22H2V2z' fill='%23111111'/%3E%3Cpath d='M20 2h2v26H0v-2h20V2z' fill='%23555555'/%3E%3Cpath fill='%23f5f5f5' d='M7 12h10l-5 6z'/%3E%3C/svg%3E");
+}
+
+.retro-select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Retro Number Input & Stepper */
+.retro-number-input::-webkit-inner-spin-button,
+.retro-number-input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.retro-number-input {
+  -moz-appearance: textfield;
+  padding-right: 1.75rem !important;
+}
+
+.retro-number-stepper {
+  position: absolute;
+  right: 2px;
+  top: 2px;
+  bottom: 2px;
+  width: 18px;
+  display: flex;
+  flex-direction: column;
+  z-index: 5;
+  user-select: none;
+}
+
+.retro-stepper-btn {
+  background-color: var(--secondary);
+  color: var(--foreground);
+  border-width: 1px;
+  border-style: solid;
+  border-top-color: var(--bevel-light);
+  border-left-color: var(--bevel-light);
+  border-bottom-color: var(--bevel-dark);
+  border-right-color: var(--bevel-dark);
+  border-radius: 0;
+  padding: 0;
+  margin: 0;
+  line-height: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1 1 50%;
+  height: 50%;
+  box-sizing: border-box;
+}
+
+.retro-stepper-btn:active:not(:disabled) {
+  border-top-color: var(--bevel-dark);
+  border-left-color: var(--bevel-dark);
+  border-bottom-color: var(--bevel-light);
+  border-right-color: var(--bevel-light);
+  background-color: var(--muted);
+}
+
+.retro-stepper-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 /* --------------------------------------------------------------------------
