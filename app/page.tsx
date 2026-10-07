@@ -1,493 +1,452 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Radio } from "@/components/ui/radio";
-import { Switch } from "@/components/ui/switch";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
-} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
-import { Separator } from "@/components/ui/separator";
+import { HeroDemo } from "@/components/site/hero-demo";
 
-function toggleTheme() {
-  const isDark = document.documentElement.classList.toggle("dark");
-  try {
-    localStorage.setItem("ditherweb-theme", isDark ? "dark" : "light");
-  } catch {
-    // localStorage unavailable
-  }
-}
+export default function HomePage() {
+  const [activeDither, setActiveDither] = useState<"fine" | "medium" | "coarse" | "diagonal">("fine");
+  const [copyStatus, setCopyStatus] = useState<string | null>(null);
 
-export default function Home() {
-  const [selectedRadio, setSelectedRadio] = useState("retro");
-  const [switchChecked, setSwitchChecked] = useState(true);
-  const [checkboxChecked, setCheckboxChecked] = useState(true);
+  const sampleSnippet = `import { Button } from "@/components/ui/button";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+
+export default function RetroPanel() {
+  return (
+    <Card className="max-w-md">
+      <CardHeader>
+        <div className="flex justify-between items-center">
+          <CardTitle>Telemetry Node</CardTitle>
+          <Badge variant="success">ONLINE</Badge>
+        </div>
+      </CardHeader>
+      <CardContent>
+        <Button variant="primary">Transmit Packet</Button>
+      </CardContent>
+    </Card>
+  );
+}`;
+
+  const copyCode = (code: string, id: string) => {
+    if (typeof navigator !== "undefined" && navigator.clipboard) {
+      navigator.clipboard.writeText(code);
+      setCopyStatus(id);
+      setTimeout(() => setCopyStatus(null), 2000);
+    }
+  };
 
   return (
-    <div className="flex flex-1 flex-col items-center justify-center px-4 py-12 sm:py-20">
-      <main className="w-full max-w-4xl space-y-16">
-        {/* Header */}
-        <header className="space-y-4">
-          <div className="flex flex-wrap items-center justify-between gap-4">
-            <div>
-              <h1 className="text-display font-bold tracking-tight text-foreground">
-                Ditherweb
+    <div className="flex flex-col gap-16 py-8 sm:py-16">
+      {/* 1. Hero Section */}
+      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full">
+        <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12">
+          {/* Left Column: Headlines & CTAs */}
+          <div className="space-y-6 lg:col-span-7">
+            <div className="flex flex-wrap items-center gap-2">
+              <Badge variant="primary">
+                Next-Gen Retro UI
+              </Badge>
+              <Badge variant="outline">
+                React 19 • TypeScript • Tailwind
+              </Badge>
+            </div>
+
+            <div className="space-y-3">
+              <h1 className="font-mono text-3xl font-extrabold uppercase tracking-tight sm:text-5xl lg:text-6xl text-foreground">
+                Retro Appearance. <br />
+                <span className="text-primary underline decoration-4 underline-offset-8">
+                  Modern Engineering.
+                </span>
               </h1>
-              <p className="text-small font-mono text-muted-foreground mt-1">
-                Retro appearance. Modern engineering.
+              <p className="font-mono text-sm sm:text-base text-muted-foreground leading-relaxed max-w-2xl">
+                A component system inspired by the visual language of the early Internet,
+                classic desktop user interfaces, ordered dithering, and 90s digital culture—built
+                with clean React primitives, zero runtime bloat, and full accessibility.
               </p>
             </div>
 
-            {/* Theme Toggle Button */}
-            <button
-              onClick={toggleTheme}
-              className="
-                bevel-raised active:bevel-pressed
-                px-4 py-2 font-mono text-small font-medium text-foreground
-                transition-transform select-none cursor-pointer
-                focus-visible:outline-2 focus-visible:outline-ring
-              "
-              aria-label="Toggle color theme"
+            {/* CTAs */}
+            <div className="flex flex-wrap items-center gap-3 pt-2">
+              <Link href="/components">
+                <Button variant="primary" size="lg">
+                  Explore Components →
+                </Button>
+              </Link>
+              <Link href="/playground">
+                <Button variant="default" size="lg">
+                  Interactive Playground
+                </Button>
+              </Link>
+              <Link href="/docs">
+                <Button variant="outline" size="lg">
+                  Documentation
+                </Button>
+              </Link>
+            </div>
+
+            {/* Micro stats banner */}
+            <div className="grid grid-cols-3 gap-3 pt-4 border-t border-border font-mono text-xs">
+              <div className="bevel-inset p-2 bg-muted/30">
+                <div className="text-muted-foreground text-[10px]">COMPONENTS</div>
+                <div className="font-bold text-foreground text-sm">10 Foundational</div>
+              </div>
+              <div className="bevel-inset p-2 bg-muted/30">
+                <div className="text-muted-foreground text-[10px]">ACCESSIBILITY</div>
+                <div className="font-bold text-foreground text-sm">W3C / ARIA Compliant</div>
+              </div>
+              <div className="bevel-inset p-2 bg-muted/30">
+                <div className="text-muted-foreground text-[10px]">EXT DEPENDENCIES</div>
+                <div className="font-bold text-foreground text-sm">0 Runtime Bloat</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Column: Hero Live Demo */}
+          <div className="flex justify-center lg:col-span-5">
+            <HeroDemo />
+          </div>
+        </div>
+      </section>
+
+      {/* 2. Philosophy & Value Pillars */}
+      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full">
+        <div className="mb-8 space-y-2 text-center sm:text-left">
+          <Badge variant="secondary">
+            Core Philosophy
+          </Badge>
+          <h2 className="font-mono text-2xl font-bold uppercase tracking-tight text-foreground sm:text-3xl">
+            Why Ditherweb?
+          </h2>
+          <p className="font-mono text-xs text-muted-foreground sm:text-sm max-w-2xl">
+            Most retro styling online is either an unmaintained parody or a fragile CSS hack.
+            Ditherweb treats nostalgic computing aesthetics as a first-class, production-grade design system.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <Card className="hover:border-primary transition-colors">
+            <CardHeader className="pb-2">
+              <span className="bevel-raised inline-flex h-8 w-8 items-center justify-center bg-primary text-xs font-mono font-bold text-primary-foreground mb-2">
+                01
+              </span>
+              <CardTitle className="text-sm font-mono uppercase">
+                Authentic Retro Primitives
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="font-mono text-xs text-muted-foreground leading-relaxed">
+              Ordered 4x4 Bayer dithering matrices, hard 2px beveled edges, and calibrated Web-safe palettes—without blurry skeuomorphic shortcuts.
+            </CardContent>
+          </Card>
+
+          <Card className="hover:border-primary transition-colors">
+            <CardHeader className="pb-2">
+              <span className="bevel-raised inline-flex h-8 w-8 items-center justify-center bg-secondary text-xs font-mono font-bold text-secondary-foreground mb-2">
+                02
+              </span>
+              <CardTitle className="text-sm font-mono uppercase">
+                Strict Engineering
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="font-mono text-xs text-muted-foreground leading-relaxed">
+              Written in modern TypeScript and React 19. Type-safe variants, forwardRef on every interactive element, and full keyboard navigation.
+            </CardContent>
+          </Card>
+
+          <Card className="hover:border-primary transition-colors">
+            <CardHeader className="pb-2">
+              <span className="bevel-raised inline-flex h-8 w-8 items-center justify-center bg-muted text-xs font-mono font-bold text-foreground mb-2">
+                03
+              </span>
+              <CardTitle className="text-sm font-mono uppercase">
+                Broad Web Vocabulary
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="font-mono text-xs text-muted-foreground leading-relaxed">
+              Not merely a Windows 95 clone. Draws deeply from GeoCities homepages, early portals, Web rings, 88x31 badges, and CRT terminals.
+            </CardContent>
+          </Card>
+
+          <Card className="hover:border-primary transition-colors">
+            <CardHeader className="pb-2">
+              <span className="bevel-raised inline-flex h-8 w-8 items-center justify-center bg-muted text-xs font-mono font-bold text-foreground mb-2">
+                04
+              </span>
+              <CardTitle className="text-sm font-mono uppercase">
+                Zero Runtime Bloat
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="font-mono text-xs text-muted-foreground leading-relaxed">
+              Procedural SVG data-URI patterns, CSS bevel classes, and pure HTML/React elements without heavy runtime animation dependencies.
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+
+      {/* 3. Visual Language Lab */}
+      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full">
+        <div className="bevel-raised bg-surface p-6 sm:p-8 space-y-8">
+          <div className="space-y-2">
+            <div className="flex items-center gap-2">
+              <Badge variant="primary">
+                Design System
+              </Badge>
+              <span className="font-mono text-xs text-muted-foreground">
+                Phase 1 Primitives
+              </span>
+            </div>
+            <h2 className="font-mono text-xl sm:text-2xl font-bold uppercase tracking-tight text-foreground">
+              The Ditherweb Visual Language Lab
+            </h2>
+            <p className="font-mono text-xs text-muted-foreground max-w-3xl">
+              Inspect the foundational token architecture: procedural ordered dithering, tactile bevel shadows, and system color mapping.
+            </p>
+          </div>
+
+          {/* Dithering Showcase */}
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <h3 className="font-mono text-xs font-bold uppercase tracking-wider text-foreground">
+                1. Procedural Bayer Dither Matrices
+              </h3>
+              <div className="flex items-center gap-1 font-mono text-xs">
+                {(["fine", "medium", "coarse", "diagonal"] as const).map((density) => (
+                  <button
+                    key={density}
+                    type="button"
+                    onClick={() => setActiveDither(density)}
+                    className={`px-2 py-0.5 uppercase ${
+                      activeDither === density
+                        ? "bevel-inset font-bold text-primary bg-muted"
+                        : "bevel-raised text-muted-foreground"
+                    }`}
+                  >
+                    {density}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div
+              className={`bevel-inset h-32 w-full flex items-center justify-center transition-all ${
+                activeDither === "fine"
+                  ? "bg-dither-fine"
+                  : activeDither === "medium"
+                  ? "bg-dither-medium"
+                  : activeDither === "coarse"
+                  ? "bg-dither-coarse"
+                  : "bg-dither-diagonal"
+              }`}
             >
-              <span className="inline dark:hidden" aria-hidden="true">☀ </span>
-              <span className="hidden dark:inline" aria-hidden="true">☾ </span>
-              <span className="inline dark:hidden">Switch to Dark</span>
-              <span className="hidden dark:inline">Switch to Light</span>
+              <div className="bevel-raised bg-surface/90 px-4 py-2 font-mono text-xs text-foreground font-bold shadow-md">
+                Pattern: .bg-dither-{activeDither}
+              </div>
+            </div>
+          </div>
+
+          {/* Bevel Primitives Showcase */}
+          <div className="space-y-3">
+            <h3 className="font-mono text-xs font-bold uppercase tracking-wider text-foreground">
+              2. Tactile Bevel Primitives
+            </h3>
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6 font-mono text-xs text-center">
+              <div className="bevel-raised p-4 bg-surface flex flex-col justify-center items-center gap-1 select-none">
+                <span className="font-bold">Raised</span>
+                <span className="text-[10px] text-muted-foreground">bevel-raised</span>
+              </div>
+              <div className="bevel-inset p-4 bg-surface flex flex-col justify-center items-center gap-1 select-none">
+                <span className="font-bold">Inset</span>
+                <span className="text-[10px] text-muted-foreground">bevel-inset</span>
+              </div>
+              <div className="bevel-ridge p-4 bg-surface flex flex-col justify-center items-center gap-1 select-none">
+                <span className="font-bold">Ridge</span>
+                <span className="text-[10px] text-muted-foreground">bevel-ridge</span>
+              </div>
+              <div className="bevel-groove p-4 bg-surface flex flex-col justify-center items-center gap-1 select-none">
+                <span className="font-bold">Groove</span>
+                <span className="text-[10px] text-muted-foreground">bevel-groove</span>
+              </div>
+              <div className="bevel-pressed p-4 bg-surface flex flex-col justify-center items-center gap-1 select-none">
+                <span className="font-bold">Pressed</span>
+                <span className="text-[10px] text-muted-foreground">bevel-pressed</span>
+              </div>
+              <div className="bevel-flat p-4 bg-surface flex flex-col justify-center items-center gap-1 select-none">
+                <span className="font-bold">Flat</span>
+                <span className="text-[10px] text-muted-foreground">bevel-flat</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Web-Safe Palette */}
+          <div className="space-y-3">
+            <h3 className="font-mono text-xs font-bold uppercase tracking-wider text-foreground">
+              3. Calibrated System Colors
+            </h3>
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6 font-mono text-xs">
+              <div className="bevel-inset p-2 bg-primary text-primary-foreground flex flex-col justify-between h-16">
+                <span className="font-bold">Primary</span>
+                <span className="text-[10px] opacity-80">--primary</span>
+              </div>
+              <div className="bevel-inset p-2 bg-secondary text-secondary-foreground flex flex-col justify-between h-16">
+                <span className="font-bold">Secondary</span>
+                <span className="text-[10px] opacity-80">--secondary</span>
+              </div>
+              <div className="bevel-inset p-2 bg-accent text-accent-foreground flex flex-col justify-between h-16">
+                <span className="font-bold">Accent</span>
+                <span className="text-[10px] opacity-80">--accent</span>
+              </div>
+              <div className="bevel-inset p-2 bg-muted text-muted-foreground flex flex-col justify-between h-16">
+                <span className="font-bold">Muted</span>
+                <span className="text-[10px] opacity-80">--muted</span>
+              </div>
+              <div className="bevel-inset p-2 bg-destructive text-destructive-foreground flex flex-col justify-between h-16">
+                <span className="font-bold">Destructive</span>
+                <span className="text-[10px] opacity-80">--destructive</span>
+              </div>
+              <div className="bevel-inset p-2 bg-surface text-foreground flex flex-col justify-between h-16">
+                <span className="font-bold">Surface</span>
+                <span className="text-[10px] text-muted-foreground">--surface</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 4. Curated Component Highlights */}
+      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full space-y-8">
+        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+          <div className="space-y-2">
+            <Badge variant="default">
+              Phase 2 Suite
+            </Badge>
+            <h2 className="font-mono text-2xl font-bold uppercase tracking-tight text-foreground">
+              Component Highlights
+            </h2>
+            <p className="font-mono text-xs text-muted-foreground max-w-xl">
+              Preview the first 10 foundational components in action. Built for seamless composition.
+            </p>
+          </div>
+          <Link href="/components">
+            <Button variant="outline" size="sm">
+              View All 10 in Catalog →
+            </Button>
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+          {/* Highlight 1: Button Matrix */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-sm font-mono uppercase">
+                Buttons & Actions
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div className="flex flex-wrap gap-2">
+                <Button variant="primary" size="sm">
+                  Primary
+                </Button>
+                <Button variant="default" size="sm">
+                  Default
+                </Button>
+                <Button variant="secondary" size="sm">
+                  Secondary
+                </Button>
+                <Button variant="outline" size="sm">
+                  Outline
+                </Button>
+                <Button variant="destructive" size="sm">
+                  Destructive
+                </Button>
+              </div>
+              <p className="font-mono text-[11px] text-muted-foreground">
+                Tactile 2px borders with realistic active pressed transformation.
+              </p>
+            </CardContent>
+          </Card>
+
+          {/* Highlight 2: Badges & Tags */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-sm font-mono uppercase">
+                Badges & Status
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div className="flex flex-wrap gap-1.5">
+                <Badge variant="success">OK (200)</Badge>
+                <Badge variant="warning">SLOW (4800)</Badge>
+                <Badge variant="destructive">ERROR (500)</Badge>
+                <Badge variant="info">INFO</Badge>
+                <Badge variant="primary">FEATURE</Badge>
+              </div>
+              <p className="font-mono text-[11px] text-muted-foreground">
+                High-contrast retro pixel labels with raised bevel framing.
+              </p>
+            </CardContent>
+          </Card>
+
+          {/* Highlight 3: Alerts & Messaging */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-sm font-mono uppercase">
+                Alerts & Feedback
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              <Alert variant="warning" className="py-2">
+                <AlertTitle className="text-xs font-mono">MODEM DISCONNECT</AlertTitle>
+                <AlertDescription className="text-xs font-mono">
+                  Carrier wave lost at line 14.
+                </AlertDescription>
+              </Alert>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+
+      {/* 5. Developer Experience & Quick Start */}
+      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full">
+        <div className="bevel-inset bg-surface-sunken p-6 sm:p-8 space-y-6">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div className="space-y-1">
+              <Badge variant="outline">
+                Developer Workflow
+              </Badge>
+              <h2 className="font-mono text-xl sm:text-2xl font-bold uppercase tracking-tight text-foreground">
+                Quick Integration
+              </h2>
+              <p className="font-mono text-xs text-muted-foreground">
+                Copy-paste or import directly into your Next.js project. No opaque bundlers required.
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => copyCode(sampleSnippet, "sample-code")}
+              className="bevel-raised active:bevel-pressed px-3 py-1 font-mono text-xs font-bold self-start sm:self-auto select-none"
+            >
+              {copyStatus === "sample-code" ? "✓ Copied!" : "Copy Code"}
             </button>
           </div>
 
-          <div className="bevel-inset p-4 relative overflow-hidden bg-surface">
-            <div className="dither-checker dither-overlay opacity-30" />
-            <p className="text-body text-foreground relative z-10 leading-relaxed font-mono">
-              Phase 2: First Core Components. Validating the 10 foundational UI
-              primitives built on Phase 1 tokens, sharp geometries, and accessible
-              native semantics.
-            </p>
-          </div>
-        </header>
-
-        {/* 1. Buttons Showcase */}
-        <section className="space-y-4">
-          <div className="border-b border-border pb-2">
-            <h2 className="text-heading font-semibold text-foreground">
-              1. Button Component
-            </h2>
-            <p className="text-caption">
-              Semantic buttons with tactile bevels, directional hard shadows, and responsive states.
-            </p>
+          <div className="bevel-inset bg-background p-4 overflow-x-auto">
+            <pre className="font-mono text-xs text-foreground leading-relaxed">
+              <code>{sampleSnippet}</code>
+            </pre>
           </div>
 
-          <div className="space-y-4 border border-border bg-card p-6">
-            <div>
-              <h3 className="text-caption uppercase tracking-wider font-mono mb-3">Variants</h3>
-              <div className="flex flex-wrap gap-3 items-center">
-                <Button variant="default">Default Bevel</Button>
-                <Button variant="primary">Primary Action</Button>
-                <Button variant="secondary">Secondary</Button>
-                <Button variant="destructive">Destructive</Button>
-                <Button variant="outline">Outline</Button>
-                <Button variant="ghost">Ghost</Button>
-              </div>
-            </div>
-
-            <Separator />
-
-            <div>
-              <h3 className="text-caption uppercase tracking-wider font-mono mb-3">Sizes</h3>
-              <div className="flex flex-wrap gap-3 items-center">
-                <Button size="sm">Small (sm)</Button>
-                <Button size="md">Medium (md)</Button>
-                <Button size="lg">Large (lg)</Button>
-              </div>
-            </div>
-
-            <Separator />
-
-            <div>
-              <h3 className="text-caption uppercase tracking-wider font-mono mb-3">States</h3>
-              <div className="flex flex-wrap gap-3 items-center">
-                <Button disabled variant="default">Disabled Default</Button>
-                <Button disabled variant="primary">Disabled Primary</Button>
-                <Button loading variant="default">Saving</Button>
-                <Button loading variant="primary">Processing</Button>
-              </div>
-            </div>
+          <div className="flex flex-wrap items-center justify-between gap-4 pt-2 font-mono text-xs text-muted-foreground">
+            <span>Requires React 19 + Tailwind CSS + clsx/tailwind-merge.</span>
+            <Link href="/docs" className="text-primary hover:underline font-bold">
+              Read Complete Documentation Guide →
+            </Link>
           </div>
-        </section>
-
-        {/* 2. Inputs Showcase */}
-        <section className="space-y-4">
-          <div className="border-b border-border pb-2">
-            <h2 className="text-heading font-semibold text-foreground">
-              2. Input Component
-            </h2>
-            <p className="text-caption">
-              Recessed bevel-inset text fields with sharp edges, native props, and validation styling.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 border border-border bg-card p-6">
-            <div className="space-y-2">
-              <Label htmlFor="input-default">Normal Input</Label>
-              <Input id="input-default" placeholder="Enter file name..." />
-              <p className="text-caption">Default state with placeholder.</p>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="input-value">Populated Input</Label>
-              <Input id="input-value" defaultValue="ditherweb_config.sys" />
-              <p className="text-caption">Populated with default text.</p>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="input-invalid">Invalid State</Label>
-              <Input
-                id="input-invalid"
-                defaultValue="invalid_entry.exe"
-                invalid
-              />
-              <p className="text-caption text-destructive">Error: file extension forbidden.</p>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="input-disabled">Disabled State</Label>
-              <Input
-                id="input-disabled"
-                defaultValue="locked_system_data"
-                disabled
-              />
-              <p className="text-caption">Read-only / disabled control.</p>
-            </div>
-          </div>
-        </section>
-
-        {/* 3. Form Controls: Checkbox, Radio, Switch, Label */}
-        <section className="space-y-4">
-          <div className="border-b border-border pb-2">
-            <h2 className="text-heading font-semibold text-foreground">
-              3. Form Controls (Checkbox, Radio, Switch, Label)
-            </h2>
-            <p className="text-caption">
-              100% native HTML input-backed controls paired with retro tactile indicators.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-3 border border-border bg-card p-6">
-            {/* Checkbox Group */}
-            <div className="space-y-3">
-              <h3 className="text-caption uppercase tracking-wider font-mono">Checkboxes</h3>
-              <div className="space-y-2">
-                <Checkbox
-                  id="check-1"
-                  checked={checkboxChecked}
-                  onChange={(e) => setCheckboxChecked(e.target.checked)}
-                >
-                  Enable Dithering
-                </Checkbox>
-
-                <Checkbox id="check-2">
-                  High Contrast
-                </Checkbox>
-
-                <Checkbox id="check-3" indeterminate>
-                  Indeterminate
-                </Checkbox>
-
-                <Checkbox id="check-4" disabled defaultChecked>
-                  Disabled Checked
-                </Checkbox>
-
-                <Checkbox id="check-5" disabled>
-                  Disabled Unchecked
-                </Checkbox>
-              </div>
-            </div>
-
-            {/* Radio Group */}
-            <div className="space-y-3">
-              <h3 className="text-caption uppercase tracking-wider font-mono">Radio Buttons</h3>
-              <div className="space-y-2">
-                <Radio
-                  id="radio-1"
-                  name="rendering-mode"
-                  value="retro"
-                  checked={selectedRadio === "retro"}
-                  onChange={() => setSelectedRadio("retro")}
-                >
-                  Bayer Matrix
-                </Radio>
-
-                <Radio
-                  id="radio-2"
-                  name="rendering-mode"
-                  value="floyd"
-                  checked={selectedRadio === "floyd"}
-                  onChange={() => setSelectedRadio("floyd")}
-                >
-                  Floyd-Steinberg
-                </Radio>
-
-                <Radio
-                  id="radio-3"
-                  name="rendering-mode"
-                  value="halftone"
-                  checked={selectedRadio === "halftone"}
-                  onChange={() => setSelectedRadio("halftone")}
-                >
-                  Screen Halftone
-                </Radio>
-
-                <Radio
-                  id="radio-4"
-                  name="rendering-mode"
-                  disabled
-                >
-                  Disabled Radio
-                </Radio>
-              </div>
-            </div>
-
-            {/* Switch Group */}
-            <div className="space-y-3">
-              <h3 className="text-caption uppercase tracking-wider font-mono">Switches</h3>
-              <div className="space-y-3">
-                <Switch
-                  id="switch-1"
-                  checked={switchChecked}
-                  onChange={(e) => setSwitchChecked(e.target.checked)}
-                >
-                  CRT Scanlines
-                </Switch>
-
-                <Switch id="switch-2">
-                  Sound Effects
-                </Switch>
-
-                <Switch id="switch-3" disabled defaultChecked>
-                  Auto-Save (Locked)
-                </Switch>
-
-                <Switch id="switch-4" disabled>
-                  Turbo Mode (Off)
-                </Switch>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* 4. Card System Showcase */}
-        <section className="space-y-4">
-          <div className="border-b border-border pb-2">
-            <h2 className="text-heading font-semibold text-foreground">
-              4. Card System
-            </h2>
-            <p className="text-caption">
-              Composable surface containers with modular Header, Title, Description, Content, and Footer.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-            {/* Default Hard-Shadow Card */}
-            <Card variant="default">
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <CardTitle>System Settings</CardTitle>
-                  <Badge variant="primary">v1.0</Badge>
-                </div>
-                <CardDescription>
-                  Configure display adapter and memory allocation.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <div className="space-y-1">
-                  <Label htmlFor="card-input">Display Device</Label>
-                  <Input id="card-input" defaultValue="VGA 640x480 (16 colors)" />
-                </div>
-                <div className="flex items-center justify-between pt-2">
-                  <Label htmlFor="card-switch">Pixel Smoothing</Label>
-                  <Switch id="card-switch" />
-                </div>
-              </CardContent>
-              <CardFooter className="justify-between">
-                <Button variant="ghost" size="sm">Defaults</Button>
-                <Button variant="primary" size="sm">Apply Changes</Button>
-              </CardFooter>
-            </Card>
-
-            {/* Raised Bevel Card */}
-            <Card variant="raised">
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <CardTitle>Hardware Diagnostics</CardTitle>
-                  <Badge variant="success">Online</Badge>
-                </div>
-                <CardDescription>
-                  Physical bus memory and interface diagnostics.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-2 text-small">
-                <div className="flex justify-between border-b border-border py-1">
-                  <span className="text-muted-foreground">RAM Base:</span>
-                  <span>640 KB OK</span>
-                </div>
-                <div className="flex justify-between border-b border-border py-1">
-                  <span className="text-muted-foreground">Extended:</span>
-                  <span>15,360 KB OK</span>
-                </div>
-                <div className="flex justify-between py-1">
-                  <span className="text-muted-foreground">Co-processor:</span>
-                  <span>80387 Detected</span>
-                </div>
-              </CardContent>
-              <CardFooter className="justify-end gap-2">
-                <Button variant="default" size="sm">Run Test</Button>
-              </CardFooter>
-            </Card>
-          </div>
-
-          {/* Inset & Flat Variations */}
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <Card variant="inset" className="p-4 space-y-2">
-              <span className="text-small font-semibold">variant=&quot;inset&quot;</span>
-              <p className="text-caption text-muted-foreground">
-                Sunken channel surface for log monitors, data viewports, and terminal wells.
-              </p>
-            </Card>
-
-            <Card variant="flat" className="p-4 space-y-2">
-              <span className="text-small font-semibold">variant=&quot;flat&quot;</span>
-              <p className="text-caption text-muted-foreground">
-                Neutral face background with clean 2px solid border for auxiliary toolbars.
-              </p>
-            </Card>
-          </div>
-        </section>
-
-        {/* 5. Badge Showcase */}
-        <section className="space-y-4">
-          <div className="border-b border-border pb-2">
-            <h2 className="text-heading font-semibold text-foreground">
-              5. Badge Component
-            </h2>
-            <p className="text-caption">
-              Sharp rectangular status chips with high-contrast typography and semantic roles.
-            </p>
-          </div>
-
-          <div className="border border-border bg-card p-6 flex flex-wrap gap-3 items-center">
-            <Badge variant="default">Default</Badge>
-            <Badge variant="primary">Primary</Badge>
-            <Badge variant="secondary">Secondary</Badge>
-            <Badge variant="success">Success</Badge>
-            <Badge variant="warning">Warning</Badge>
-            <Badge variant="destructive">Destructive</Badge>
-            <Badge variant="info">Info</Badge>
-            <Badge variant="outline">Outline</Badge>
-          </div>
-        </section>
-
-        {/* 6. Alert Showcase */}
-        <section className="space-y-4">
-          <div className="border-b border-border pb-2">
-            <h2 className="text-heading font-semibold text-foreground">
-              6. Alert Component
-            </h2>
-            <p className="text-caption">
-              System notice banners with distinct border accents and accessible roles.
-            </p>
-          </div>
-
-          <div className="space-y-3">
-            <Alert variant="default">
-              <AlertTitle>Default System Notification</AlertTitle>
-              <AlertDescription>
-                Routine background task finished execution in 142ms.
-              </AlertDescription>
-            </Alert>
-
-            <Alert variant="info">
-              <AlertTitle>Network Connection Established</AlertTitle>
-              <AlertDescription>
-                Connected to host via 10Base-T Ethernet at 10 Mbps.
-              </AlertDescription>
-            </Alert>
-
-            <Alert variant="success">
-              <AlertTitle>Compilation Successful</AlertTitle>
-              <AlertDescription>
-                All 10 foundational components compiled with zero errors.
-              </AlertDescription>
-            </Alert>
-
-            <Alert variant="warning">
-              <AlertTitle>Low Available Disk Storage</AlertTitle>
-              <AlertDescription>
-                Drive C: has less than 15 MB of remaining cluster space.
-              </AlertDescription>
-            </Alert>
-
-            <Alert variant="destructive">
-              <AlertTitle>General Protection Fault</AlertTitle>
-              <AlertDescription>
-                A fatal interrupt occurred at memory segment 0028:C0014020.
-              </AlertDescription>
-            </Alert>
-          </div>
-        </section>
-
-        {/* 7. Separator Showcase */}
-        <section className="space-y-4">
-          <div className="border-b border-border pb-2">
-            <h2 className="text-heading font-semibold text-foreground">
-              7. Separator Component
-            </h2>
-            <p className="text-caption">
-              Chiseled retro 3D groove lines with full horizontal and vertical orientation support.
-            </p>
-          </div>
-
-          <div className="border border-border bg-card p-6 space-y-6">
-            <div>
-              <p className="text-small font-semibold mb-2">Horizontal Separator</p>
-              <Separator />
-            </div>
-
-            <div>
-              <p className="text-small font-semibold mb-3">Vertical Separator in Layout Bar</p>
-              <div className="flex h-8 items-center space-x-4 text-small font-mono">
-                <span>File</span>
-                <Separator orientation="vertical" />
-                <span>Edit</span>
-                <Separator orientation="vertical" />
-                <span>View</span>
-                <Separator orientation="vertical" />
-                <span>Help</span>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Footer */}
-        <footer className="border-t border-border pt-8 pb-4">
-          <div className="flex flex-wrap items-center justify-between gap-4 font-mono text-caption text-muted-foreground">
-            <p>
-              Ditherweb • Phase 2: Core Components •{" "}
-              <span className="text-foreground font-semibold">Validated ✅</span>
-            </p>
-            <p>10 Foundational Components Implemented</p>
-          </div>
-        </footer>
-      </main>
+        </div>
+      </section>
     </div>
   );
 }
