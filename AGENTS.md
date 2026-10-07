@@ -39,7 +39,8 @@ terminal/cyber aesthetics, classic desktop UI, and more.
 | 2     | First 10 core components                   | ✅ Complete |
 | 2.5   | Product website & showcase architecture    | ✅ Complete |
 | 2.75  | Architecture separation & Component QA     | ✅ Complete |
-| 3     | Expanded component library                 | Pending     |
+| 3A    | Typography & layout primitives (16 comps)  | ✅ Complete |
+| 3B    | Expanded components (navigation, overlays) | Pending     |
 | 4     | Retro Web components                       | Pending     |
 | 5     | Desktop / pixel components                 | Pending     |
 | 6     | Advanced effects & dithering engine        | Pending     |
@@ -53,7 +54,7 @@ ditherweb/
 ├── packages/
 │   └── ui/                     # Reusable Ditherweb UI component library (@ditherweb/ui)
 │       ├── src/
-│       │   ├── components/     # 10 foundational primitives (Button, Input, Card, etc.)
+│       │   ├── components/     # 26 primitives (10 Core, 8 Typography, 8 Layout)
 │       │   ├── styles/         # tokens.css, primitives.css, index.css
 │       │   ├── lib/utils.ts    # Reusable utility helpers (cn)
 │       │   └── index.ts        # Public UI library exports

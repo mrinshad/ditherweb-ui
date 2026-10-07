@@ -34,7 +34,7 @@ Ditherweb is structured as an npm workspace monorepo with strict architectural s
 ditherweb/
 ├── packages/
 │   └── ui/                  → Reusable Ditherweb UI library (@ditherweb/ui)
-│       ├── src/components/  → 10 foundational primitives (Button, Input, Card...)
+│       ├── src/components/  → 26 primitives (10 Core, 8 Typography, 8 Layout)
 │       ├── src/styles/      → Design tokens, bevels, procedural dither patterns
 │       ├── src/lib/utils.ts → Utility helpers (cn)
 │       └── src/index.ts     → Public library entrypoint
@@ -172,6 +172,38 @@ Phase 2.75 isolated the reusable library into its own package and instituted aut
 
 ---
 
+## Phase 3A: Typography & Foundational Layout Components
+
+Phase 3A implemented 16 new zero-dependency composable primitives in `@ditherweb/ui` and resolved core tactile and chromatic feedback behaviors:
+
+### 1. Typography Primitives (8)
+1. **Heading** (`packages/ui/src/components/heading.tsx`) — Semantic `<h1>`–`<h6>` with decoupled visual scale (`xs` to `display`/`5xl`).
+2. **Text** (`packages/ui/src/components/text.tsx`) — Typographic primitive (`p`, `span`, `div`) with tokenized sizes, tones, and weights.
+3. **Link** (`packages/ui/src/components/link.tsx`) — Framework-agnostic anchor primitive with retro hover underlines and keyboard focus rings.
+4. **Code** (`packages/ui/src/components/code.tsx`) — Inline code primitive with sunken substrate.
+5. **Kbd** (`packages/ui/src/components/kbd.tsx`) — Tactile keycap primitive with raised bevel and hard shadow.
+6. **Blockquote** (`packages/ui/src/components/blockquote.tsx`) — Semantic quote primitive with retro accent border and italic styling.
+7. **List** (`packages/ui/src/components/list.tsx`) — Semantic list container (`ul`, `ol`) with pixel bullet (`■`) or decimal numbering.
+8. **ListItem** (`packages/ui/src/components/list.tsx`) — Semantic list item aligned with `List`.
+
+### 2. Layout Primitives (8)
+9. **Container** (`packages/ui/src/components/container.tsx`) — Responsive content width container (`sm` to `full`) with centered layout.
+10. **Box** (`packages/ui/src/components/box.tsx`) — Composable neutral layout primitive (`div`, `section`, `article`, etc.).
+11. **Stack** (`packages/ui/src/components/stack.tsx`) — Directional flex stack with tokenized gaps.
+12. **Flex** (`packages/ui/src/components/flex.tsx`) — Flexible layout utility with wrap, align, and justify props.
+13. **Grid** (`packages/ui/src/components/grid.tsx`) — CSS grid primitive with 1–12 columns and tokenized gap mapping.
+14. **Spacer** (`packages/ui/src/components/spacer.tsx`) — Layout pusher primitive (`flex-1`).
+15. **AspectRatio** (`packages/ui/src/components/aspect-ratio.tsx`) — Responsive pure-CSS aspect ratio container.
+16. **ScrollArea** (`packages/ui/src/components/scroll-area.tsx`) — Native scroll container with keyboard accessibility (`tabIndex={0}`) and retro styled scrollbars.
+
+### 3. Core System Refinements & Fixes
+- **Button**: Restored tactile click depression with active bevel border inversion and 1px shift.
+- **Switch**: Resolved sibling positioning for smooth 20px thumb transition and high-contrast active track.
+- **Alert**: Wrapped base border resets in `@layer base` and added distinct chromatic borders (`border-l-4`) and background tints.
+- **Theme Text Visibility**: Resolved unlayered CSS cascade overrides in `primitives.css`, ensuring logo and system colors retain full WCAG contrast.
+
+---
+
 ## Status
 
 - **Phase 0** — Architecture & Environment Setup (Complete & Validated ✅)
@@ -179,7 +211,8 @@ Phase 2.75 isolated the reusable library into its own package and instituted aut
 - **Phase 2** — Core Component Primitives (Complete & Validated ✅)
 - **Phase 2.5** — Product Website & Showcase Architecture (Complete & Validated ✅)
 - **Phase 2.75** — Architecture Separation & Component Visual QA (Complete & Validated ✅)
-- **Phase 3** — Interactive Overlays & Navigation (Pending)
+- **Phase 3A** — Typography & Foundational Layout Primitives (Complete & Validated ✅)
+- **Phase 3B** — Expanded Components (Navigation, Overlays, Forms) (Pending)
 - **Phase 4** — Retro Web Components (Pending)
 - **Phase 5** — Desktop / Pixel Components (Pending)
 - **Phase 6** — Advanced Effects & Packaging (Pending)
