@@ -49,32 +49,39 @@ All three must pass with zero errors.
 
 ### For Every Change
 
-- [ ] `npx tsc --noEmit` passes.
-- [ ] `npm run lint` passes.
+- [ ] `npm run typecheck` passes across all workspaces (`packages/ui`, `apps/website`).
+- [ ] `npm run lint` passes across all workspaces.
 - [ ] `npm run build` passes.
 - [ ] No console errors in the browser.
 - [ ] No hydration warnings/errors.
 
-### For Component Changes
+### Mandatory Component QA Workflow (See docs/component-qa.md)
 
-- [ ] Component renders correctly in light mode.
-- [ ] Component renders correctly in dark mode.
-- [ ] Component is responsive (check at 320px, 768px, 1024px, 1440px widths).
-- [ ] Interactive states work: hover, active, focus, disabled.
-- [ ] Keyboard navigation works for interactive components.
+Every new or updated component in `@ditherweb/ui` MUST undergo:
 
-### For Token/Style Changes
-
-- [ ] Existing components still render correctly.
-- [ ] Light mode palette is coherent.
-- [ ] Dark mode palette is coherent.
-- [ ] Contrast ratios are sufficient.
-
-### For Architecture Changes
-
-- [ ] Existing imports still resolve.
-- [ ] No circular dependencies introduced.
-- [ ] Build output size is reasonable.
+1. **Pre-Implementation Check:**
+   - Architecture boundary: component is inside `packages/ui/src/components/`.
+   - Dependency check: zero extraneous dependencies, only `clsx` and `tailwind-merge` via `cn()`.
+   - Native HTML element chosen over emulation whenever possible.
+2. **Implementation & Accessibility Check:**
+   - `forwardRef` and explicit `displayName`.
+   - Explicit TypeScript `interface <Name>Props`.
+   - Full keyboard navigation (`Enter`, `Space`, Arrows, `Escape`, `Tab`).
+   - Explicit ARIA attributes (`role`, `aria-checked`, `aria-invalid`, `aria-disabled`).
+   - High-contrast `:focus-visible` focus ring in both light and dark modes.
+   - `"use client";` included if client React hooks are utilized.
+3. **Visual QA Matrix:**
+   - Light mode appearance verified on desktop (≥1280px) and mobile (320px–640px).
+   - Dark mode appearance verified on desktop and mobile.
+   - Bevels inspected: `.bevel-raised` (top/left highlight, bottom/right shadow), `.bevel-inset` (reversed).
+   - Interactive depression on active/press verified.
+   - Dither patterns crisp with `shape-rendering="crispEdges"`.
+   - Contrast ratios ≥ 4.5:1 for body/labels, ≥ 3:1 for large/prominent text.
+   - Interactive states verified: default, hover, active/pressed, focus-visible, disabled.
+4. **Final Validation:**
+   - Exported from `packages/ui/src/index.ts`.
+   - Integrated into `apps/website/app/components/page.tsx` and interactive playground.
+   - Visual baseline screenshot captured and checked via headless Chrome.
 
 ## Reporting
 
