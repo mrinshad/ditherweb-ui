@@ -36,7 +36,8 @@ terminal/cyber aesthetics, classic desktop UI, and more.
 | ----- | ------------------------------------------ | ----------- |
 | 0     | Foundation, tokens, conventions            | ✅ Complete |
 | 1     | Visual foundation (borders, bevels, dither)| ✅ Complete |
-| 2     | First core components                      | Pending     |
+| 2     | First 10 core components                   | ✅ Complete |
+| 2.5   | Product website & showcase architecture    | ✅ Complete |
 | 3     | Expanded component library                 | Pending     |
 | 4     | Retro Web components                       | Pending     |
 | 5     | Desktop / pixel components                 | Pending     |

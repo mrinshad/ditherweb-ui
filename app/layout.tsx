@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { SiteHeader } from "@/components/site/site-header";
+import { SiteFooter } from "@/components/site/site-footer";
 
 export const metadata: Metadata = {
-  title: "Ditherweb",
+  title: "Ditherweb — Retro Appearance. Modern Engineering.",
   description:
     "A modern React UI framework inspired by the visual language of the early Internet and classic computer interfaces.",
 };
@@ -22,13 +24,21 @@ const darkModeScript = `
   })();
 `;
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: darkModeScript }} />
       </head>
-      <body className="min-h-dvh flex flex-col antialiased">{children}</body>
+      <body className="min-h-dvh flex flex-col antialiased bg-background text-foreground">
+        <SiteHeader />
+        <main className="flex-1 w-full">{children}</main>
+        <SiteFooter />
+      </body>
     </html>
   );
 }
