@@ -116,5 +116,48 @@ export {
   type ScrollAreaOrientation,
 } from "./components/scroll-area";
 
+// --- Phase 3B: Forms & Selection Primitives ---
+export { Textarea, type TextareaProps } from "./components/textarea";
+export {
+  PasswordInput,
+  type PasswordInputProps,
+} from "./components/password-input";
+export {
+  SearchInput,
+  type SearchInputProps,
+} from "./components/search-input";
+export {
+  NumberInput,
+  type NumberInputProps,
+} from "./components/number-input";
+export { Select, type SelectProps } from "./components/select";
+export { Slider, type SliderProps } from "./components/slider";
+export { Toggle, type ToggleProps } from "./components/toggle";
+export {
+  ToggleGroup,
+  ToggleGroupItem,
+  type ToggleGroupProps,
+  type ToggleGroupItemProps,
+  type ToggleGroupSingleProps,
+  type ToggleGroupMultipleProps,
+} from "./components/toggle-group";
+export {
+  Combobox,
+  type ComboboxProps,
+  type ComboboxOption,
+} from "./components/combobox";
+export {
+  Field,
+  FieldLabel,
+  FieldDescription,
+  FieldError,
+  useFieldContext,
+  type FieldProps,
+  type FieldLabelProps,
+  type FieldDescriptionProps,
+  type FieldErrorProps,
+} from "./components/field";
+
 // --- Shared Utilities ---
 export { cn } from "./lib/utils";
+

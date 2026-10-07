@@ -34,7 +34,7 @@ Ditherweb is structured as an npm workspace monorepo with strict architectural s
 ditherweb/
 ├── packages/
 │   └── ui/                  → Reusable Ditherweb UI library (@ditherweb/ui)
-│       ├── src/components/  → 26 primitives (10 Core, 8 Typography, 8 Layout)
+│       ├── src/components/  → 36 primitives (10 Core, 8 Typography, 8 Layout, 10 Forms/Selection)
 │       ├── src/styles/      → Design tokens, bevels, procedural dither patterns
 │       ├── src/lib/utils.ts → Utility helpers (cn)
 │       └── src/index.ts     → Public library entrypoint
@@ -204,6 +204,28 @@ Phase 3A implemented 16 new zero-dependency composable primitives in `@ditherweb
 
 ---
 
+## Phase 3B: Forms & Selection Components
+
+Phase 3B implemented 10 zero-dependency form and selection controls in `@ditherweb/ui` adhering to native HTML accessibility, retro sunken/raised bevel geometry, and WAI-ARIA standards:
+
+### 1. Form / Input Primitives (4)
+1. **Textarea** (`packages/ui/src/components/textarea.tsx`) — Native multiline input with sunken inset styling, invalid states, and zero-radius geometry.
+2. **PasswordInput** (`packages/ui/src/components/password-input.tsx`) — Masked credential field with non-submitting retro show/hide toggle (`SHOW`/`HIDE`) and focus preservation.
+3. **SearchInput** (`packages/ui/src/components/search-input.tsx`) — Native `type="search"` field with accessible clear button (`✕`) and non-submitting behavior.
+4. **NumberInput** (`packages/ui/src/components/number-input.tsx`) — Native numeric input with `min`, `max`, `step` boundaries and retro inset styling.
+
+### 2. Selection Primitives (5)
+5. **Select** (`packages/ui/src/components/select.tsx`) — Native HTML select dropdown styled with custom pixel caret and sunken well.
+6. **Combobox** (`packages/ui/src/components/combobox.tsx`) — Accessible WAI-ARIA searchable listbox with keyboard navigation (ArrowUp/Down, Enter, Escape), active-descendant, and empty state.
+7. **Slider** (`packages/ui/src/components/slider.tsx`) — Native range input with grooved retro channel and tactile raised square thumb.
+8. **Toggle** (`packages/ui/src/components/toggle.tsx`) — Button-style pressed/unpressed state with `aria-pressed` and bevel inversion.
+9. **ToggleGroup** (`packages/ui/src/components/toggle-group.tsx`) — Accessible grouped toggles supporting single and multiple selection modes (`ToggleGroup`, `ToggleGroupItem`).
+
+### 3. Composition Primitive (1)
+10. **Field** (`packages/ui/src/components/field.tsx`) — Accessible form-field composition primitive wiring label, description, error, and aria attributes (`Field`, `FieldLabel`, `FieldDescription`, `FieldError`).
+
+---
+
 ## Status
 
 - **Phase 0** — Architecture & Environment Setup (Complete & Validated ✅)
@@ -212,7 +234,8 @@ Phase 3A implemented 16 new zero-dependency composable primitives in `@ditherweb
 - **Phase 2.5** — Product Website & Showcase Architecture (Complete & Validated ✅)
 - **Phase 2.75** — Architecture Separation & Component Visual QA (Complete & Validated ✅)
 - **Phase 3A** — Typography & Foundational Layout Primitives (Complete & Validated ✅)
-- **Phase 3B** — Expanded Components (Navigation, Overlays, Forms) (Pending)
+- **Phase 3B** — Forms & Selection Primitives (Complete & Validated ✅)
+- **Phase 3C** — Overlays & Navigation (Pending)
 - **Phase 4** — Retro Web Components (Pending)
 - **Phase 5** — Desktop / Pixel Components (Pending)
 - **Phase 6** — Advanced Effects & Packaging (Pending)

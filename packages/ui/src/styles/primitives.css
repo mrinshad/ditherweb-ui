@@ -304,3 +304,107 @@ button.bevel-raised:active {
   inset: 0;
   pointer-events: none;
 }
+
+/* --------------------------------------------------------------------------
+   Retro Form Controls (Slider Track/Thumb & Select Dropdown)
+   -------------------------------------------------------------------------- */
+.retro-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  width: 100%;
+  cursor: pointer;
+  height: 24px;
+}
+
+.retro-slider:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.retro-slider:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* WebKit Track & Thumb */
+.retro-slider::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 6px;
+  background-color: var(--background);
+  border: 2px solid;
+  border-top-color: var(--bevel-dark);
+  border-left-color: var(--bevel-dark);
+  border-bottom-color: var(--bevel-light);
+  border-right-color: var(--bevel-light);
+}
+
+.retro-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 22px;
+  margin-top: -10px;
+  background-color: var(--bevel-face);
+  border: 2px solid;
+  border-top-color: var(--bevel-light);
+  border-left-color: var(--bevel-light);
+  border-bottom-color: var(--bevel-dark);
+  border-right-color: var(--bevel-dark);
+  box-shadow: 1px 1px 0 var(--shadow-hard-color);
+}
+
+.retro-slider:active::-webkit-slider-thumb {
+  border-top-color: var(--bevel-dark);
+  border-left-color: var(--bevel-dark);
+  border-bottom-color: var(--bevel-light);
+  border-right-color: var(--bevel-light);
+}
+
+/* Mozilla Track & Thumb */
+.retro-slider::-moz-range-track {
+  width: 100%;
+  height: 6px;
+  background-color: var(--background);
+  border: 2px solid;
+  border-top-color: var(--bevel-dark);
+  border-left-color: var(--bevel-dark);
+  border-bottom-color: var(--bevel-light);
+  border-right-color: var(--bevel-light);
+}
+
+.retro-slider::-moz-range-thumb {
+  width: 14px;
+  height: 22px;
+  background-color: var(--bevel-face);
+  border: 2px solid;
+  border-top-color: var(--bevel-light);
+  border-left-color: var(--bevel-light);
+  border-bottom-color: var(--bevel-dark);
+  border-right-color: var(--bevel-dark);
+  border-radius: 0;
+  box-shadow: 1px 1px 0 var(--shadow-hard-color);
+  cursor: pointer;
+}
+
+.retro-slider:active::-moz-range-thumb {
+  border-top-color: var(--bevel-dark);
+  border-left-color: var(--bevel-dark);
+  border-bottom-color: var(--bevel-light);
+  border-right-color: var(--bevel-light);
+}
+
+/* Retro Select */
+.retro-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M2 4h8L6 9z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.6rem center;
+  padding-right: 2rem;
+}
+
+:is(.dark) .retro-select,
+.dark .retro-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23aaa' d='M2 4h8L6 9z'/%3E%3C/svg%3E");
+}
+

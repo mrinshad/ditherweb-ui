@@ -36,9 +36,23 @@ import {
   Spacer,
   AspectRatio,
   ScrollArea,
+  Textarea,
+  PasswordInput,
+  SearchInput,
+  NumberInput,
+  Select,
+  Slider,
+  Toggle,
+  ToggleGroup,
+  ToggleGroupItem,
+  Combobox,
+  Field,
+  FieldLabel,
+  FieldDescription,
+  FieldError,
 } from "@ditherweb/ui";
 
-type Category = "all" | "typography" | "layout" | "input" | "feedback";
+type Category = "all" | "forms" | "typography" | "layout" | "input" | "feedback";
 
 export default function ComponentsPage() {
   const [category, setCategory] = useState<Category>("all");
@@ -54,14 +68,26 @@ export default function ComponentsPage() {
   const [inputText, setInputText] = useState("");
   const [linkClicks, setLinkClicks] = useState(0);
 
+  // Phase 3B states
+  const [textareaVal, setTextareaVal] = useState("Initial buffer allocation.\nSector 0x7C00 loaded.");
+  const [pwdVal, setPwdVal] = useState("SecretPass99");
+  const [searchVal, setSearchVal] = useState("kernel");
+  const [numberVal, setNumberVal] = useState(42);
+  const [selectVal, setSelectVal] = useState("vga");
+  const [comboboxVal, setComboboxVal] = useState("vga");
+  const [sliderVal, setSliderVal] = useState(65);
+  const [togglePressed, setTogglePressed] = useState(false);
+  const [toggleGroupVal, setToggleGroupVal] = useState("center");
+  const [fieldInputVal, setFieldInputVal] = useState("");
+
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 space-y-12">
       {/* Page Header */}
       <div className="space-y-4">
         <div className="flex items-center gap-2">
-          <Badge variant="primary">Phase 3A Suite</Badge>
+          <Badge variant="primary">Phase 3B Suite</Badge>
           <span className="font-mono text-xs text-muted-foreground">
-            26 Production Primitives
+            36 Production Primitives
           </span>
         </div>
         <h1 className="font-mono text-3xl font-bold uppercase tracking-tight text-foreground sm:text-4xl">
@@ -70,7 +96,7 @@ export default function ComponentsPage() {
         <p className="font-mono text-sm text-muted-foreground max-w-2xl leading-relaxed">
           Every Ditherweb component is built with native accessibility semantics,
           typed props, and calibrated retro CSS tokens. Inspect interactive states,
-          typography hierarchy, layout primitives, and implementation details.
+          typography hierarchy, layout primitives, forms, and implementation details.
         </p>
 
         {/* Filter Tabs */}
@@ -82,7 +108,16 @@ export default function ComponentsPage() {
               category === "all" ? "bevel-inset bg-muted text-primary" : "bevel-raised"
             }`}
           >
-            All Primitives (26)
+            All Primitives (36)
+          </button>
+          <button
+            type="button"
+            onClick={() => setCategory("forms")}
+            className={`px-3 py-1 font-bold ${
+              category === "forms" ? "bevel-inset bg-muted text-primary" : "bevel-raised"
+            }`}
+          >
+            Forms & Selection (10)
           </button>
           <button
             type="button"
@@ -592,6 +627,606 @@ export default function ComponentsPage() {
 
                 <div className="bevel-inset bg-background p-3 font-mono text-xs overflow-x-auto">
                   <code>{`<AspectRatio ratio={16/9}>...</AspectRatio> | <ScrollArea className="h-48">...</ScrollArea>`}</code>
+                </div>
+              </CardContent>
+            </Card>
+          </section>
+        )}
+
+        {/* ==================================================================
+            FORMS & SELECTION (Phase 3B Suite)
+            ================================================================== */}
+
+        {/* 1. TEXTAREA */}
+        {(category === "all" || category === "forms") && (
+          <section id="textarea" className="space-y-4 scroll-mt-20">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="font-mono text-xl font-bold uppercase text-foreground">
+                  Textarea
+                </h2>
+                <p className="font-mono text-xs text-muted-foreground">
+                  Native multiline input with sunken inset styling, invalid states, and zero-radius geometry.
+                </p>
+              </div>
+              <Badge variant="outline">@ditherweb/ui</Badge>
+            </div>
+
+            <Card>
+              <CardContent className="p-6 space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="ta-interactive">Interactive Buffer (Rows: 4)</Label>
+                    <Textarea
+                      id="ta-interactive"
+                      value={textareaVal}
+                      onChange={(e) => setTextareaVal(e.target.value)}
+                      placeholder="Enter system console output..."
+                    />
+                    <span className="font-mono text-xs text-muted-foreground">
+                      Characters: {textareaVal.length}
+                    </span>
+                  </div>
+
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="ta-disabled">Disabled State</Label>
+                      <Textarea
+                        id="ta-disabled"
+                        disabled
+                        defaultValue="Read-only EEPROM manifest buffer."
+                        rows={2}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="ta-invalid">Invalid State</Label>
+                      <Textarea
+                        id="ta-invalid"
+                        invalid
+                        defaultValue="SYNTAX ERROR: Unexpected token at offset 0x4A"
+                        rows={2}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bevel-inset bg-background p-3 font-mono text-xs overflow-x-auto">
+                  <code>{`<Textarea rows={4} placeholder="..." invalid={hasError} />`}</code>
+                </div>
+              </CardContent>
+            </Card>
+          </section>
+        )}
+
+        {/* 2. PASSWORD INPUT */}
+        {(category === "all" || category === "forms") && (
+          <section id="password-input" className="space-y-4 scroll-mt-20">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="font-mono text-xl font-bold uppercase text-foreground">
+                  PasswordInput
+                </h2>
+                <p className="font-mono text-xs text-muted-foreground">
+                  Masked credential field with non-submitting retro show/hide toggle and focus preservation.
+                </p>
+              </div>
+              <Badge variant="outline">@ditherweb/ui</Badge>
+            </div>
+
+            <Card>
+              <CardContent className="p-6 space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="pwd-interactive">Interactive Password</Label>
+                    <PasswordInput
+                      id="pwd-interactive"
+                      value={pwdVal}
+                      onChange={(e) => setPwdVal(e.target.value)}
+                      placeholder="Enter password..."
+                    />
+                    <span className="font-mono text-xs text-muted-foreground">
+                      Current Value: <code className="bg-surface-sunken px-1">{pwdVal}</code>
+                    </span>
+                  </div>
+
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="pwd-disabled">Disabled State</Label>
+                      <PasswordInput
+                        id="pwd-disabled"
+                        disabled
+                        defaultValue="LockedSystem123"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="pwd-invalid">Invalid State</Label>
+                      <PasswordInput
+                        id="pwd-invalid"
+                        invalid
+                        defaultValue="WeakPass"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bevel-inset bg-background p-3 font-mono text-xs overflow-x-auto">
+                  <code>{`<PasswordInput value={pwd} onChange={...} showToggle />`}</code>
+                </div>
+              </CardContent>
+            </Card>
+          </section>
+        )}
+
+        {/* 3. SEARCH INPUT */}
+        {(category === "all" || category === "forms") && (
+          <section id="search-input" className="space-y-4 scroll-mt-20">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="font-mono text-xl font-bold uppercase text-foreground">
+                  SearchInput
+                </h2>
+                <p className="font-mono text-xs text-muted-foreground">
+                  Native type=&quot;search&quot; field with accessible clear button and zero form disruption.
+                </p>
+              </div>
+              <Badge variant="outline">@ditherweb/ui</Badge>
+            </div>
+
+            <Card>
+              <CardContent className="p-6 space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="search-interactive">Interactive Query</Label>
+                    <SearchInput
+                      id="search-interactive"
+                      value={searchVal}
+                      onChange={(e) => setSearchVal(e.target.value)}
+                      onClear={() => setSearchVal("")}
+                      placeholder="Filter register addresses..."
+                    />
+                    <span className="font-mono text-xs text-muted-foreground">
+                      Query Length: {searchVal.length}
+                    </span>
+                  </div>
+
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="search-empty">Empty State</Label>
+                      <SearchInput
+                        id="search-empty"
+                        placeholder="Search system documentation..."
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="search-disabled">Disabled State</Label>
+                      <SearchInput
+                        id="search-disabled"
+                        disabled
+                        defaultValue="Immutable registry index"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bevel-inset bg-background p-3 font-mono text-xs overflow-x-auto">
+                  <code>{`<SearchInput value={query} onClear={() => setQuery("")} placeholder="Search..." />`}</code>
+                </div>
+              </CardContent>
+            </Card>
+          </section>
+        )}
+
+        {/* 4. NUMBER INPUT */}
+        {(category === "all" || category === "forms") && (
+          <section id="number-input" className="space-y-4 scroll-mt-20">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="font-mono text-xl font-bold uppercase text-foreground">
+                  NumberInput
+                </h2>
+                <p className="font-mono text-xs text-muted-foreground">
+                  Native numeric input with min, max, step boundaries and sunken retro bevel.
+                </p>
+              </div>
+              <Badge variant="outline">@ditherweb/ui</Badge>
+            </div>
+
+            <Card>
+              <CardContent className="p-6 space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="num-interactive">Baud Rate Multiplier (0–100, step 2)</Label>
+                    <NumberInput
+                      id="num-interactive"
+                      min={0}
+                      max={100}
+                      step={2}
+                      value={numberVal}
+                      onChange={(e) => setNumberVal(Number(e.target.value))}
+                    />
+                    <span className="font-mono text-xs text-muted-foreground">
+                      Value: {numberVal}
+                    </span>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="num-disabled">Disabled State</Label>
+                    <NumberInput
+                      id="num-disabled"
+                      disabled
+                      defaultValue={9600}
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="num-invalid">Invalid State (Out of range)</Label>
+                    <NumberInput
+                      id="num-invalid"
+                      invalid
+                      defaultValue={999}
+                    />
+                  </div>
+                </div>
+
+                <div className="bevel-inset bg-background p-3 font-mono text-xs overflow-x-auto">
+                  <code>{`<NumberInput min={0} max={100} step={2} value={val} onChange={...} />`}</code>
+                </div>
+              </CardContent>
+            </Card>
+          </section>
+        )}
+
+        {/* 5. SELECT */}
+        {(category === "all" || category === "forms") && (
+          <section id="select" className="space-y-4 scroll-mt-20">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="font-mono text-xl font-bold uppercase text-foreground">
+                  Select
+                </h2>
+                <p className="font-mono text-xs text-muted-foreground">
+                  Native HTML select dropdown styled with custom pixel caret and sunken well.
+                </p>
+              </div>
+              <Badge variant="outline">@ditherweb/ui</Badge>
+            </div>
+
+            <Card>
+              <CardContent className="p-6 space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="select-interactive">Display Controller</Label>
+                    <Select
+                      id="select-interactive"
+                      value={selectVal}
+                      onChange={(e) => setSelectVal(e.target.value)}
+                    >
+                      <option value="cga">CGA 4-Color (320x200)</option>
+                      <option value="ega">EGA 16-Color (640x350)</option>
+                      <option value="vga">VGA 256-Color (640x480)</option>
+                      <option value="svga">SVGA High-Color (800x600)</option>
+                      <option value="xga">XGA True-Color (1024x768)</option>
+                    </Select>
+                    <span className="font-mono text-xs text-muted-foreground">
+                      Selected: <span className="font-bold uppercase text-primary">{selectVal}</span>
+                    </span>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="select-disabled">Disabled Dropdown</Label>
+                    <Select id="select-disabled" disabled defaultValue="locked">
+                      <option value="locked">Bus Controller Locked</option>
+                    </Select>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="select-invalid">Invalid State</Label>
+                    <Select id="select-invalid" invalid defaultValue="err">
+                      <option value="err">ERR: Parity Mismatch</option>
+                    </Select>
+                  </div>
+                </div>
+
+                <div className="bevel-inset bg-background p-3 font-mono text-xs overflow-x-auto">
+                  <code>{`<Select value={mode} onChange={...}><option value="...">...</option></Select>`}</code>
+                </div>
+              </CardContent>
+            </Card>
+          </section>
+        )}
+
+        {/* 6. COMBOBOX */}
+        {(category === "all" || category === "forms") && (
+          <section id="combobox" className="space-y-4 scroll-mt-20">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="font-mono text-xl font-bold uppercase text-foreground">
+                  Combobox
+                </h2>
+                <p className="font-mono text-xs text-muted-foreground">
+                  Accessible WAI-ARIA searchable listbox with keyboard navigation, active-descendant, and empty state.
+                </p>
+              </div>
+              <Badge variant="outline">@ditherweb/ui</Badge>
+            </div>
+
+            <Card>
+              <CardContent className="p-6 space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="combobox-interactive">Video Adapter (Type to filter)</Label>
+                    <Combobox
+                      id="combobox-interactive"
+                      options={[
+                        { value: "mda", label: "MDA Monochrome (720x350)" },
+                        { value: "cga", label: "CGA 4-Color (320x200)" },
+                        { value: "ega", label: "EGA 16-Color (640x350)" },
+                        { value: "vga", label: "VGA 256-Color (640x480)" },
+                        { value: "svga", label: "SVGA High-Color (800x600)" },
+                        { value: "xga", label: "XGA True-Color (1024x768)" },
+                        { value: "sxga", label: "SXGA 1280x1024 (Disabled)", disabled: true },
+                      ]}
+                      value={comboboxVal}
+                      onValueChange={setComboboxVal}
+                      placeholder="Search graphic adapter..."
+                    />
+                    <span className="font-mono text-xs text-muted-foreground">
+                      Selected Value: <span className="font-bold text-primary">{comboboxVal}</span>
+                    </span>
+                  </div>
+
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="combobox-disabled">Disabled State</Label>
+                      <Combobox
+                        id="combobox-disabled"
+                        disabled
+                        options={[{ value: "vga", label: "VGA Adapter" }]}
+                        defaultValue="vga"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="combobox-empty">Empty State Trigger (Search &quot;xyz&quot;)</Label>
+                      <Combobox
+                        id="combobox-empty"
+                        options={[{ value: "alpha", label: "Alpha Module" }]}
+                        placeholder="Search for unknown modules..."
+                        emptyMessage="No hardware devices detected."
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bevel-inset bg-background p-3 font-mono text-xs overflow-x-auto">
+                  <code>{`<Combobox options={[{ value, label }]} value={val} onValueChange={...} />`}</code>
+                </div>
+              </CardContent>
+            </Card>
+          </section>
+        )}
+
+        {/* 7. SLIDER */}
+        {(category === "all" || category === "forms") && (
+          <section id="slider" className="space-y-4 scroll-mt-20">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="font-mono text-xl font-bold uppercase text-foreground">
+                  Slider
+                </h2>
+                <p className="font-mono text-xs text-muted-foreground">
+                  Native range input with grooved retro channel and tactile raised square thumb.
+                </p>
+              </div>
+              <Badge variant="outline">@ditherweb/ui</Badge>
+            </div>
+
+            <Card>
+              <CardContent className="p-6 space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-center font-mono text-xs">
+                      <Label htmlFor="slider-interactive">DSP Master Output Level</Label>
+                      <span className="font-bold text-primary">{sliderVal}%</span>
+                    </div>
+                    <Slider
+                      id="slider-interactive"
+                      min={0}
+                      max={100}
+                      step={1}
+                      value={sliderVal}
+                      onChange={(e) => setSliderVal(Number(e.target.value))}
+                    />
+                  </div>
+
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-center font-mono text-xs">
+                      <Label htmlFor="slider-disabled">Hardware Attenuator (Disabled)</Label>
+                      <span className="text-muted-foreground">25%</span>
+                    </div>
+                    <Slider
+                      id="slider-disabled"
+                      disabled
+                      min={0}
+                      max={100}
+                      defaultValue={25}
+                    />
+                  </div>
+                </div>
+
+                <div className="bevel-inset bg-background p-3 font-mono text-xs overflow-x-auto">
+                  <code>{`<Slider min={0} max={100} value={val} onChange={...} />`}</code>
+                </div>
+              </CardContent>
+            </Card>
+          </section>
+        )}
+
+        {/* 8. TOGGLE */}
+        {(category === "all" || category === "forms") && (
+          <section id="toggle" className="space-y-4 scroll-mt-20">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="font-mono text-xl font-bold uppercase text-foreground">
+                  Toggle
+                </h2>
+                <p className="font-mono text-xs text-muted-foreground">
+                  Button-style pressed/unpressed state with aria-pressed and bevel inversion.
+                </p>
+              </div>
+              <Badge variant="outline">@ditherweb/ui</Badge>
+            </div>
+
+            <Card>
+              <CardContent className="p-6 space-y-6">
+                <div className="flex flex-wrap items-center gap-6">
+                  <div className="space-y-2">
+                    <span className="block font-mono text-xs text-muted-foreground">Interactive Toggle</span>
+                    <Toggle
+                      id="toggle-interactive"
+                      pressed={togglePressed}
+                      onPressedChange={setTogglePressed}
+                    >
+                      BOLD [B]
+                    </Toggle>
+                  </div>
+
+                  <div className="space-y-2">
+                    <span className="block font-mono text-xs text-muted-foreground">Sizes</span>
+                    <div className="flex items-center gap-2">
+                      <Toggle size="sm">SM</Toggle>
+                      <Toggle size="md" defaultPressed>MD (ON)</Toggle>
+                      <Toggle size="lg">LG</Toggle>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <span className="block font-mono text-xs text-muted-foreground">Disabled</span>
+                    <Toggle disabled>LOCKED</Toggle>
+                  </div>
+                </div>
+
+                <span className="block font-mono text-xs text-muted-foreground">
+                  Status: <span className="font-bold text-primary">{togglePressed ? "ACTIVE (PRESSED)" : "INACTIVE (RAISED)"}</span>
+                </span>
+
+                <div className="bevel-inset bg-background p-3 font-mono text-xs overflow-x-auto">
+                  <code>{`<Toggle pressed={active} onPressedChange={setActive}>BOLD</Toggle>`}</code>
+                </div>
+              </CardContent>
+            </Card>
+          </section>
+        )}
+
+        {/* 9. TOGGLE GROUP */}
+        {(category === "all" || category === "forms") && (
+          <section id="toggle-group" className="space-y-4 scroll-mt-20">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="font-mono text-xl font-bold uppercase text-foreground">
+                  ToggleGroup
+                </h2>
+                <p className="font-mono text-xs text-muted-foreground">
+                  Accessible grouped toggles with single or multiple selection modes.
+                </p>
+              </div>
+              <Badge variant="outline">@ditherweb/ui</Badge>
+            </div>
+
+            <Card>
+              <CardContent className="p-6 space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <Label>Single Selection Mode (Alignment)</Label>
+                    <ToggleGroup
+                      id="togglegroup-single"
+                      type="single"
+                      value={toggleGroupVal}
+                      onValueChange={setToggleGroupVal}
+                    >
+                      <ToggleGroupItem value="left">LEFT</ToggleGroupItem>
+                      <ToggleGroupItem value="center">CENTER</ToggleGroupItem>
+                      <ToggleGroupItem value="right">RIGHT</ToggleGroupItem>
+                      <ToggleGroupItem value="justify" disabled>JUSTIFY</ToggleGroupItem>
+                    </ToggleGroup>
+                    <span className="block font-mono text-xs text-muted-foreground">
+                      Selected: <span className="font-bold uppercase text-primary">{toggleGroupVal || "NONE"}</span>
+                    </span>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label>Multiple Selection Mode (Text Formatting)</Label>
+                    <ToggleGroup
+                      id="togglegroup-multi"
+                      type="multiple"
+                      defaultValue={["bold"]}
+                    >
+                      <ToggleGroupItem value="bold">B</ToggleGroupItem>
+                      <ToggleGroupItem value="italic">I</ToggleGroupItem>
+                      <ToggleGroupItem value="underline">U</ToggleGroupItem>
+                      <ToggleGroupItem value="strike">S</ToggleGroupItem>
+                    </ToggleGroup>
+                    <span className="block font-mono text-xs text-muted-foreground">
+                      Independent multi-toggle flags.
+                    </span>
+                  </div>
+                </div>
+
+                <div className="bevel-inset bg-background p-3 font-mono text-xs overflow-x-auto">
+                  <code>{`<ToggleGroup type="single" value={val} onValueChange={...}><ToggleGroupItem value="...">...</ToggleGroupItem></ToggleGroup>`}</code>
+                </div>
+              </CardContent>
+            </Card>
+          </section>
+        )}
+
+        {/* 10. FIELD */}
+        {(category === "all" || category === "forms") && (
+          <section id="field" className="space-y-4 scroll-mt-20">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="font-mono text-xl font-bold uppercase text-foreground">
+                  Field
+                </h2>
+                <p className="font-mono text-xs text-muted-foreground">
+                  Accessible form-field composition primitive wiring label, description, error, and aria attributes.
+                </p>
+              </div>
+              <Badge variant="outline">@ditherweb/ui</Badge>
+            </div>
+
+            <Card>
+              <CardContent className="p-6 space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Normal Field with Description */}
+                  <Field id="field-input-normal" required>
+                    <FieldLabel>Subscriber Call Sign</FieldLabel>
+                    <Input
+                      id="field-input-normal"
+                      placeholder="e.g. N0CALL / BBS-NODE"
+                      value={fieldInputVal}
+                      onChange={(e) => setFieldInputVal(e.target.value)}
+                    />
+                    <FieldDescription>
+                      Assigned AX.25 packet radio call sign. Must be uppercase.
+                    </FieldDescription>
+                  </Field>
+
+                  {/* Field with Error state using compound FieldError */}
+                  <Field id="field-input-error" required invalid>
+                    <FieldLabel>Data Carrier Protocol</FieldLabel>
+                    <Input
+                      id="field-input-error"
+                      defaultValue="UNKNOWN-MODEM"
+                      invalid
+                    />
+                    <FieldError>
+                      Baud rate parity mismatch: 8N1 required
+                    </FieldError>
+                  </Field>
+                </div>
+
+                <div className="bevel-inset bg-background p-3 font-mono text-xs overflow-x-auto">
+                  <code>{`<Field required error="..."><FieldLabel>...</FieldLabel><Input ... /><FieldDescription>...</FieldDescription></Field>`}</code>
                 </div>
               </CardContent>
             </Card>
