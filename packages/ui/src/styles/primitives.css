@@ -742,5 +742,19 @@ button.bevel-raised:active {
   transform: translate(1px, 1px);
 }
 
+.retro-tooltip {
+  background-color: #ffffe1;
+  color: #000000;
+  border: 1px solid #000000;
+  box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.4);
+}
+
+.dark .retro-tooltip {
+  background-color: #1c1917;
+  color: #fef08a;
+  border: 1px solid #78716c;
+  box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.7);
+}
+
 
 

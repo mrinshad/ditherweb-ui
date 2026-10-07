@@ -295,7 +295,7 @@ export const TooltipContent = React.forwardRef<HTMLDivElement, TooltipContentPro
         role="tooltip"
         className={cn(
           "absolute z-[var(--z-topmost)] px-2 py-1 text-xs font-mono select-none pointer-events-none",
-          "bevel-raised bg-[var(--surface-elevated)] text-[var(--foreground)] shadow-hard-sm border border-[var(--border-strong)]",
+          "retro-tooltip",
           className
         )}
         style={{

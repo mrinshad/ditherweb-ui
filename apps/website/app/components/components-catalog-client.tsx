@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import NextLink from "next/link";
 import {
   Button,
@@ -169,6 +169,17 @@ export default function ComponentsPage() {
   const [customOverlayOpen, setCustomOverlayOpen] = useState(false);
   const [backdropPreviewVariant, setBackdropPreviewVariant] = useState<"dimmed" | "dither" | null>(null);
   const [portalDemoOpen, setPortalDemoOpen] = useState(false);
+
+  useEffect(() => {
+    if (!backdropPreviewVariant) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setBackdropPreviewVariant(null);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [backdropPreviewVariant]);
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 space-y-12">
@@ -2588,44 +2599,44 @@ export default function ComponentsPage() {
                     <Tooltip side="top">
                       <TooltipTrigger asChild>
                         <Button id="demo-tooltip-top" size="sm">
-                          Top Hint
+                          Quick Save
                         </Button>
                       </TooltipTrigger>
                       <TooltipContent id="demo-tooltip-top-content">
-                        Tooltip on top [Alt+T]
+                        Save buffer to disk [Ctrl+S]
                       </TooltipContent>
                     </Tooltip>
 
                     <Tooltip side="bottom">
                       <TooltipTrigger asChild>
                         <Button id="demo-tooltip-bottom" size="sm" variant="outline">
-                          Bottom Hint
+                          Format Disk
                         </Button>
                       </TooltipTrigger>
                       <TooltipContent id="demo-tooltip-bottom-content">
-                        Write buffer to disk [Ctrl+S]
+                        Initialize floppy FAT filesystem
                       </TooltipContent>
                     </Tooltip>
 
                     <Tooltip side="left">
                       <TooltipTrigger asChild>
                         <Button id="demo-tooltip-left" size="sm" variant="secondary">
-                          Left Hint
+                          Execute Binary
                         </Button>
                       </TooltipTrigger>
                       <TooltipContent id="demo-tooltip-left-content">
-                        Execute 16-bit binary
+                        Run 16-bit executable in protected mode
                       </TooltipContent>
                     </Tooltip>
 
                     <Tooltip side="right">
                       <TooltipTrigger asChild>
                         <Button id="demo-tooltip-right" size="sm">
-                          Right Hint
+                          Verify Parity
                         </Button>
                       </TooltipTrigger>
                       <TooltipContent id="demo-tooltip-right-content">
-                        Sector verification passed
+                        CRC-32 parity check passed
                       </TooltipContent>
                     </Tooltip>
                   </div>
@@ -2903,7 +2914,7 @@ export default function ComponentsPage() {
                     </Button>
                   </div>
                   {backdropPreviewVariant && (
-                    <>
+                    <Portal>
                       <Backdrop
                         id="demo-backdrop-bench"
                         variant={backdropPreviewVariant}
@@ -2911,14 +2922,25 @@ export default function ComponentsPage() {
                         className="cursor-pointer"
                       />
                       <div className="fixed inset-0 z-[51] flex items-center justify-center p-4 pointer-events-none">
-                        <div className="pointer-events-auto p-6 bevel-raised bg-surface border-2 border-border max-w-sm w-full space-y-3 shadow-hard-lg">
+                        <div
+                          className="pointer-events-auto p-6 bevel-raised bg-surface border-2 border-border max-w-sm w-full space-y-3 shadow-hard-lg"
+                          onClick={(e) => e.stopPropagation()}
+                        >
                           <div className="flex items-center justify-between border-b border-border pb-2">
                             <h4 className="font-mono text-sm font-bold uppercase">
                               Backdrop: {backdropPreviewVariant}
                             </h4>
-                            <span className="font-mono text-[10px] text-muted-foreground uppercase">
-                              Texture Active
-                            </span>
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setBackdropPreviewVariant(null);
+                              }}
+                              className="retro-close-button text-xs"
+                              aria-label="Close backdrop demo"
+                            >
+                              ✕
+                            </button>
                           </div>
                           <p className="font-mono text-xs text-muted-foreground leading-relaxed">
                             {backdropPreviewVariant === "dither"
@@ -2926,13 +2948,20 @@ export default function ComponentsPage() {
                               : "Semi-opaque dimmed retro screen overlay active."}
                           </p>
                           <div className="pt-2 flex justify-end">
-                            <Button size="sm" onClick={() => setBackdropPreviewVariant(null)}>
+                            <Button
+                              size="sm"
+                              id="demo-backdrop-dismiss-btn"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setBackdropPreviewVariant(null);
+                              }}
+                            >
                               Dismiss Backdrop
                             </Button>
                           </div>
                         </div>
                       </div>
-                    </>
+                    </Portal>
                   )}
                 </div>
 
