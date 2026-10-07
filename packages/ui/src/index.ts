@@ -158,6 +158,58 @@ export {
   type FieldErrorProps,
 } from "./components/field";
 
+// --- Phase 3C: Surfaces & Feedback Primitives ---
+export {
+  Panel,
+  PanelHeader,
+  PanelTitle,
+  PanelDescription,
+  PanelContent,
+  PanelFooter,
+  type PanelProps,
+  type PanelHeaderProps,
+  type PanelTitleProps,
+  type PanelDescriptionProps,
+  type PanelContentProps,
+  type PanelFooterProps,
+} from "./components/panel";
+export {
+  GroupBox,
+  GroupBoxLegend,
+  type GroupBoxProps,
+  type GroupBoxLegendProps,
+} from "./components/group-box";
+export { Well, type WellProps } from "./components/well";
+export { Inset, type InsetProps } from "./components/inset";
+export { Progress, type ProgressProps } from "./components/progress";
+export { Spinner, type SpinnerProps } from "./components/spinner";
+export { Skeleton, type SkeletonProps } from "./components/skeleton";
+export {
+  EmptyState,
+  EmptyStateIcon,
+  EmptyStateTitle,
+  EmptyStateDescription,
+  EmptyStateAction,
+  type EmptyStateProps,
+  type EmptyStateIconProps,
+  type EmptyStateTitleProps,
+  type EmptyStateDescriptionProps,
+  type EmptyStateActionProps,
+} from "./components/empty-state";
+export {
+  Result,
+  ResultTitle,
+  ResultDescription,
+  ResultAction,
+  type ResultProps,
+  type ResultVariant,
+  type ResultTitleProps,
+  type ResultDescriptionProps,
+  type ResultActionProps,
+} from "./components/result";
+export { Loading, type LoadingProps } from "./components/loading";
+
 // --- Shared Utilities ---
 export { cn } from "./lib/utils";
+
 

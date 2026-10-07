@@ -408,3 +408,174 @@ button.bevel-raised:active {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23aaa' d='M2 4h8L6 9z'/%3E%3C/svg%3E");
 }
 
+/* --------------------------------------------------------------------------
+   Phase 3C Feedback Primitives (Progress, Spinner, Skeleton)
+   -------------------------------------------------------------------------- */
+
+/* Retro Progress */
+.retro-progress {
+  -webkit-appearance: none;
+  appearance: none;
+  border-width: 2px;
+  border-style: solid;
+  border-top-color: var(--bevel-dark);
+  border-left-color: var(--bevel-dark);
+  border-bottom-color: var(--bevel-light);
+  border-right-color: var(--bevel-light);
+  background-color: var(--background);
+  height: 20px;
+  width: 100%;
+  border-radius: 0;
+  overflow: hidden;
+  display: block;
+}
+
+.retro-progress::-webkit-progress-bar {
+  background-color: var(--background);
+  border-radius: 0;
+}
+
+.retro-progress::-webkit-progress-value {
+  background-color: var(--primary);
+  border-radius: 0;
+  transition: width 150ms steps(10);
+}
+
+.retro-progress::-moz-progress-bar {
+  background-color: var(--primary);
+  border-radius: 0;
+  transition: width 150ms steps(10);
+}
+
+/* Stepped Segmented Progress Fill */
+.retro-progress-stepped::-webkit-progress-value {
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--primary) 0,
+    var(--primary) 8px,
+    var(--background) 8px,
+    var(--background) 10px
+  );
+}
+
+.retro-progress-stepped::-moz-progress-bar {
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--primary) 0,
+    var(--primary) 8px,
+    var(--background) 8px,
+    var(--background) 10px
+  );
+}
+
+/* Semantic Status Variants */
+.retro-progress-success::-webkit-progress-value {
+  background-color: var(--success);
+}
+.retro-progress-success::-moz-progress-bar {
+  background-color: var(--success);
+}
+
+.retro-progress-warning::-webkit-progress-value {
+  background-color: var(--warning);
+}
+.retro-progress-warning::-moz-progress-bar {
+  background-color: var(--warning);
+}
+
+.retro-progress-destructive::-webkit-progress-value {
+  background-color: var(--destructive);
+}
+.retro-progress-destructive::-moz-progress-bar {
+  background-color: var(--destructive);
+}
+
+/* Indeterminate Progress (Animated Retro Strip) */
+.retro-progress:not([value]),
+.retro-progress[data-indeterminate="true"] {
+  background-image: repeating-linear-gradient(
+    45deg,
+    var(--primary) 0,
+    var(--primary) 10px,
+    var(--muted) 10px,
+    var(--muted) 20px
+  );
+  background-size: 28px 28px;
+  animation: retro-progress-strip 1.2s steps(8) infinite;
+}
+
+@keyframes retro-progress-strip {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 28px 0;
+  }
+}
+
+/* Retro Spinner (Stepped 8-way Pixel Clock/Wheel) */
+.retro-spinner {
+  display: inline-block;
+  vertical-align: middle;
+  border-radius: 0;
+  border-style: solid;
+  border-color: var(--muted-foreground);
+  border-top-color: var(--primary);
+  border-right-color: var(--primary);
+  animation: retro-spin 0.8s steps(8) infinite;
+}
+
+.retro-spinner-sm {
+  width: 16px;
+  height: 16px;
+  border-width: 2px;
+}
+
+.retro-spinner-md {
+  width: 24px;
+  height: 24px;
+  border-width: 3px;
+}
+
+.retro-spinner-lg {
+  width: 32px;
+  height: 32px;
+  border-width: 4px;
+}
+
+@keyframes retro-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Retro Skeleton (Dither Placeholder with Stepped Pulse) */
+.retro-skeleton {
+  border-radius: 0;
+  background-color: var(--muted);
+  box-shadow: inset 0 0 0 1px var(--border);
+  animation: retro-pulse 1.8s steps(4) infinite;
+}
+
+@keyframes retro-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .retro-progress:not([value]),
+  .retro-progress[data-indeterminate="true"],
+  .retro-spinner,
+  .retro-skeleton {
+    animation: none !important;
+  }
+}
+
+
