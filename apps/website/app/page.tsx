@@ -13,6 +13,7 @@ export const metadata: Metadata = {
     description:
       "Ditherweb is a retro-inspired React UI framework and component library combining classic Web and computer UI aesthetics with modern engineering.",
     url: "https://ditherweb.mrinshad.site",
+    images: ["/og-image.png"],
   },
 };
 

@@ -13,6 +13,7 @@ export const metadata: Metadata = {
     description:
       "Explore Ditherweb's full catalog of retro React components: buttons, inputs, dialogs, cards, forms, and surfaces with authentic classic desktop bevels and Bayer dithering.",
     url: "https://ditherweb.mrinshad.site/components",
+    images: ["/og-image.png"],
   },
 };
 

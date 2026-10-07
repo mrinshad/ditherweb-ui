@@ -222,7 +222,7 @@ export default function ComponentsPage() {
                     Semantic Level Hierarchy (h1–h6)
                   </h3>
                   <div className="space-y-3">
-                    <Heading level={1}>Heading 1 — System Core Architecture</Heading>
+                    <Heading level={1} as="div">Heading 1 — System Core Architecture</Heading>
                     <Heading level={2}>Heading 2 — Subsystem Module Protocol</Heading>
                     <Heading level={3}>Heading 3 — Peripheral Controller Interface</Heading>
                     <Heading level={4}>Heading 4 — Register Buffer Mapping</Heading>
@@ -239,7 +239,7 @@ export default function ComponentsPage() {
                     <Heading level={2} size="display">
                       Semantic h2 with Display Size (5XL)
                     </Heading>
-                    <Heading level={1} size="sm">
+                    <Heading level={1} size="sm" as="div">
                       Semantic h1 with Compact Size (Small)
                     </Heading>
                   </div>

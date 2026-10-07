@@ -14,6 +14,7 @@ export const metadata: Metadata = {
     description:
       "Technical guides and documentation for Ditherweb: design tokens, 4x4 Bayer dither matrices, beveled surfaces, accessibility standards, and React 19 component integration.",
     url: "https://ditherweb.mrinshad.site/docs",
+    images: ["/og-image.png"],
   },
 };
 
