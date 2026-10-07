@@ -1,26 +1,567 @@
 @import "tailwindcss";
 
+/* ==========================================================================
+   DITHERWEB — Design Tokens & Base Styles
+   ==========================================================================
+
+   Architecture:
+   - CSS custom properties define raw values (:root / .dark)
+   - @theme inline exposes them to Tailwind's utility system
+   - Class-based dark mode (.dark on <html>)
+   - Visual primitives (bevels, borders, shadows, typography, dithers)
+
+   Phase 1: Visual Foundation
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Light Mode Tokens
+   --------------------------------------------------------------------------
+   Warm, off-white palette inspired by old CRT paper-white and classic UI.
+   Not pure sterile white — retro screens had subtle warmth and tone.
+   -------------------------------------------------------------------------- */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* --- Core --- */
+  --background: oklch(0.97 0.005 90);
+  --foreground: oklch(0.15 0.01 90);
+
+  /* --- Surfaces --- */
+  --surface: oklch(0.95 0.005 90);
+  --surface-foreground: oklch(0.15 0.01 90);
+  --surface-elevated: oklch(0.98 0.003 90);
+  --surface-elevated-foreground: oklch(0.15 0.01 90);
+
+  /* --- Muted --- */
+  --muted: oklch(0.92 0.005 90);
+  --muted-foreground: oklch(0.45 0.01 90);
+
+  /* --- Card / Popover (semantic surfaces) --- */
+  --card: oklch(0.95 0.005 90);
+  --card-foreground: oklch(0.15 0.01 90);
+  --popover: oklch(0.97 0.005 90);
+  --popover-foreground: oklch(0.15 0.01 90);
+
+  /* --- Primary --- */
+  --primary: oklch(0.25 0.01 90);
+  --primary-foreground: oklch(0.95 0.005 90);
+
+  /* --- Secondary --- */
+  --secondary: oklch(0.88 0.005 90);
+  --secondary-foreground: oklch(0.20 0.01 90);
+
+  /* --- Accent --- */
+  --accent: oklch(0.50 0.18 250);
+  --accent-foreground: oklch(0.97 0.005 90);
+
+  /* --- Semantic Status --- */
+  --destructive: oklch(0.55 0.22 25);
+  --destructive-foreground: oklch(0.97 0.005 90);
+  --success: oklch(0.52 0.17 145);
+  --success-foreground: oklch(0.97 0.005 90);
+  --warning: oklch(0.75 0.15 75);
+  --warning-foreground: oklch(0.18 0.01 90);
+  --info: oklch(0.55 0.15 240);
+  --info-foreground: oklch(0.97 0.005 90);
+
+  /* --- Borders --- */
+  --border: oklch(0.80 0.005 90);
+  --border-strong: oklch(0.55 0.01 90);
+  --input: oklch(0.80 0.005 90);
+  --ring: oklch(0.25 0.01 90);
+
+  /* --- Bevel System --- */
+  --bevel-light: oklch(1.00 0 0);
+  --bevel-dark: oklch(0.45 0.005 90);
+  --bevel-face: oklch(0.88 0.005 90);
+
+  /* --- Shadows --- */
+  --shadow-color: oklch(0.15 0.01 90 / 0.25);
+  --shadow-hard-color: oklch(0.15 0.01 90 / 0.6);
+
+  /* --- Radius (Default sharp) --- */
+  --radius: 0px;
 }
 
+/* --------------------------------------------------------------------------
+   Dark Mode Tokens
+   --------------------------------------------------------------------------
+   Deep, warm dark inspired by dimmed CRT phosphors and early terminal screens.
+   -------------------------------------------------------------------------- */
+.dark {
+  /* --- Core --- */
+  --background: oklch(0.12 0.005 90);
+  --foreground: oklch(0.90 0.005 90);
+
+  /* --- Surfaces --- */
+  --surface: oklch(0.16 0.005 90);
+  --surface-foreground: oklch(0.90 0.005 90);
+  --surface-elevated: oklch(0.20 0.005 90);
+  --surface-elevated-foreground: oklch(0.90 0.005 90);
+
+  /* --- Muted --- */
+  --muted: oklch(0.20 0.005 90);
+  --muted-foreground: oklch(0.55 0.005 90);
+
+  /* --- Card / Popover --- */
+  --card: oklch(0.16 0.005 90);
+  --card-foreground: oklch(0.90 0.005 90);
+  --popover: oklch(0.16 0.005 90);
+  --popover-foreground: oklch(0.90 0.005 90);
+
+  /* --- Primary --- */
+  --primary: oklch(0.90 0.005 90);
+  --primary-foreground: oklch(0.12 0.005 90);
+
+  /* --- Secondary --- */
+  --secondary: oklch(0.22 0.005 90);
+  --secondary-foreground: oklch(0.90 0.005 90);
+
+  /* --- Accent --- */
+  --accent: oklch(0.62 0.18 250);
+  --accent-foreground: oklch(0.97 0.005 90);
+
+  /* --- Semantic Status --- */
+  --destructive: oklch(0.60 0.22 25);
+  --destructive-foreground: oklch(0.97 0.005 90);
+  --success: oklch(0.60 0.17 145);
+  --success-foreground: oklch(0.97 0.005 90);
+  --warning: oklch(0.78 0.15 75);
+  --warning-foreground: oklch(0.18 0.01 90);
+  --info: oklch(0.62 0.15 240);
+  --info-foreground: oklch(0.97 0.005 90);
+
+  /* --- Borders --- */
+  --border: oklch(0.28 0.005 90);
+  --border-strong: oklch(0.50 0.005 90);
+  --input: oklch(0.28 0.005 90);
+  --ring: oklch(0.80 0.005 90);
+
+  /* --- Bevel System --- */
+  --bevel-light: oklch(0.40 0.005 90);
+  --bevel-dark: oklch(0.08 0.005 90);
+  --bevel-face: oklch(0.22 0.005 90);
+
+  /* --- Shadows --- */
+  --shadow-color: oklch(0.00 0 0 / 0.45);
+  --shadow-hard-color: oklch(0.00 0 0 / 0.85);
+}
+
+/* --------------------------------------------------------------------------
+   Tailwind Theme Registration
+   --------------------------------------------------------------------------
+   Expose CSS custom properties to Tailwind v4 utility system.
+   -------------------------------------------------------------------------- */
 @theme inline {
+  /* Colors */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+
+  --color-surface: var(--surface);
+  --color-surface-foreground: var(--surface-foreground);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-surface-elevated-foreground: var(--surface-elevated-foreground);
+
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-bevel-light: var(--bevel-light);
+  --color-bevel-dark: var(--bevel-dark);
+  --color-bevel-face: var(--bevel-face);
+
+  /* Radius — sharp by default, minimal scale */
+  --radius-sm: calc(var(--radius) + 2px);
+  --radius-md: calc(var(--radius) + 4px);
+  --radius-lg: calc(var(--radius) + 8px);
+  --radius-xl: calc(var(--radius) + 12px);
+
+  /* Shadows — hard, pixel-like offsets */
+  --shadow-flat: none;
+  --shadow-hard-sm: 1px 1px 0 var(--shadow-hard-color);
+  --shadow-hard: 2px 2px 0 var(--shadow-hard-color);
+  --shadow-hard-md: 3px 3px 0 var(--shadow-hard-color);
+  --shadow-hard-lg: 4px 4px 0 var(--shadow-hard-color);
+  --shadow-hard-xl: 6px 6px 0 var(--shadow-hard-color);
+  --shadow-inset: inset 2px 2px 0 var(--shadow-hard-color);
+  --shadow-raised: 2px 2px 0 var(--shadow-hard-color);
+  --shadow-soft-sm: 0 1px 2px var(--shadow-color);
+  --shadow-soft: 0 2px 4px var(--shadow-color);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* --------------------------------------------------------------------------
+   Dark Mode Variant
+   -------------------------------------------------------------------------- */
+@custom-variant dark (&:is(.dark *));
+
+/* ==========================================================================
+   BASE STYLES
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  border-color: var(--border);
 }
 
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family:
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
+}
+
+/* --------------------------------------------------------------------------
+   Focus Styles
+   -------------------------------------------------------------------------- */
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   Reduced Motion
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Selection
+   -------------------------------------------------------------------------- */
+::selection {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+}
+
+/* ==========================================================================
+   BORDER SYSTEM
+   ==========================================================================
+
+   Visual rules for borders:
+   - .border-default  — standard subtle border using --border
+   - .border-strong   — high-contrast border using --border-strong
+   - .border-raised   — 2px raised 3D border
+   - .border-inset    — 2px sunken 3D border
+   - .pixel-border    — 1px crisp non-subpixel border via inner shadow
+   - .pixel-border-strong — 1px crisp strong border
+   ========================================================================== */
+
+.border-default {
+  border-color: var(--border);
+}
+
+.border-strong {
+  border-color: var(--border-strong);
+}
+
+.border-raised {
+  border-width: 2px;
+  border-style: solid;
+  border-top-color: var(--bevel-light);
+  border-left-color: var(--bevel-light);
+  border-bottom-color: var(--bevel-dark);
+  border-right-color: var(--bevel-dark);
+}
+
+.border-inset {
+  border-width: 2px;
+  border-style: solid;
+  border-top-color: var(--bevel-dark);
+  border-left-color: var(--bevel-dark);
+  border-bottom-color: var(--bevel-light);
+  border-right-color: var(--bevel-light);
+}
+
+.pixel-border {
+  box-shadow: inset 0 0 0 1px var(--border);
+}
+
+.pixel-border-strong {
+  box-shadow: inset 0 0 0 1px var(--border-strong);
+}
+
+/* ==========================================================================
+   BEVEL SYSTEM
+   ==========================================================================
+
+   Classic raised/inset/pressed surfaces using edge lighting contrast.
+   Reusable primitives for future components (Button, Panel, Window, Well).
+
+   Usage:
+     .bevel-raised   — raised button / panel (light top-left, dark bottom-right)
+     .bevel-inset    — sunken field / well (dark top-left, light bottom-right)
+     .bevel-pressed  — pressed button state (inset with face background)
+     .bevel-flat     — flat surface with face background, no bevel
+   ========================================================================== */
+
+.bevel-raised {
+  border-width: 2px;
+  border-style: solid;
+  border-top-color: var(--bevel-light);
+  border-left-color: var(--bevel-light);
+  border-bottom-color: var(--bevel-dark);
+  border-right-color: var(--bevel-dark);
+  background-color: var(--bevel-face);
+}
+
+.bevel-inset {
+  border-width: 2px;
+  border-style: solid;
+  border-top-color: var(--bevel-dark);
+  border-left-color: var(--bevel-dark);
+  border-bottom-color: var(--bevel-light);
+  border-right-color: var(--bevel-light);
+  background-color: var(--background);
+}
+
+.bevel-pressed {
+  border-width: 2px;
+  border-style: solid;
+  border-top-color: var(--bevel-dark);
+  border-left-color: var(--bevel-dark);
+  border-bottom-color: var(--bevel-light);
+  border-right-color: var(--bevel-light);
+  background-color: var(--bevel-face);
+}
+
+.bevel-flat {
+  border-width: 2px;
+  border-style: solid;
+  border-color: var(--border);
+  background-color: var(--bevel-face);
+}
+
+/* ==========================================================================
+   SHADOW SYSTEM
+   ==========================================================================
+
+   Hard, pixel-like offsets and inset shadows favoring crisp separation.
+   Avoids modern large blurred shadows.
+   ========================================================================== */
+
+.shadow-flat {
+  box-shadow: none;
+}
+
+.shadow-hard-sm {
+  box-shadow: 1px 1px 0 var(--shadow-hard-color);
+}
+
+.shadow-hard {
+  box-shadow: 2px 2px 0 var(--shadow-hard-color);
+}
+
+.shadow-hard-md {
+  box-shadow: 3px 3px 0 var(--shadow-hard-color);
+}
+
+.shadow-hard-lg {
+  box-shadow: 4px 4px 0 var(--shadow-hard-color);
+}
+
+.shadow-hard-xl {
+  box-shadow: 6px 6px 0 var(--shadow-hard-color);
+}
+
+.shadow-inset {
+  box-shadow: inset 2px 2px 0 var(--shadow-hard-color);
+}
+
+.shadow-raised {
+  box-shadow: 2px 2px 0 var(--shadow-hard-color);
+}
+
+/* ==========================================================================
+   TYPOGRAPHY SYSTEM
+   ==========================================================================
+
+   Semantic typography hierarchy using readable system font stacks:
+   - .text-display  — 36px/48px hero display text
+   - .text-heading  — 24px section header
+   - .text-body     — 16px default body
+   - .text-small    — 14px secondary / compact
+   - .text-caption  — 12px caption / helper text
+   - .text-code     — monospace code font stack
+   ========================================================================== */
+
+.text-display {
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+@media (min-width: 640px) {
+  .text-display {
+    font-size: 3rem;
+    line-height: 1.1;
+  }
+}
+
+.text-heading {
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+
+.text-body {
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-weight: 400;
+}
+
+.text-small {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 400;
+}
+
+.text-caption {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 400;
+  color: var(--muted-foreground);
+}
+
+.text-code,
+.font-code,
+.text-monospace,
+.font-monospace {
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    "SF Mono",
+    Menlo,
+    Consolas,
+    "Liberation Mono",
+    monospace;
+}
+
+/* ==========================================================================
+   DITHER PATTERNS
+   ==========================================================================
+
+   CSS-based dither patterns using repeating SVG data URIs.
+   - Zero JavaScript
+   - image-rendering: pixelated for crisp rendering on retina displays
+   - Theme-aware via dark selectors
+   - Semi-transparent foregrounds for overlay blending
+
+   Primitives:
+     .dither-check / .dither-checker — 2×2 checkerboard (50% density)
+     .dither-bayer                   — 4×4 Bayer ordered dither (~25% density)
+     .dither-fine                    — 2×2 fine dot pattern (~25% density)
+     .dither-dense                   — 2×2 dense dot pattern (~75% density)
+     .dither-noise                   — 4×4 dispersed pseudo-random noise (~25%)
+   ========================================================================== */
+
+/* --- Checkerboard: 2×2 alternating pixels --- */
+.dither-check,
+.dither-checker {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='2' height='2'%3E%3Crect x='0' y='0' width='1' height='1' fill='%23000' opacity='0.12'/%3E%3Crect x='1' y='1' width='1' height='1' fill='%23000' opacity='0.12'/%3E%3C/svg%3E");
+  background-size: 2px 2px;
+  image-rendering: pixelated;
+}
+
+:is(.dark) .dither-check,
+:is(.dark) .dither-checker,
+.dark .dither-check,
+.dark .dither-checker {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='2' height='2'%3E%3Crect x='0' y='0' width='1' height='1' fill='%23fff' opacity='0.10'/%3E%3Crect x='1' y='1' width='1' height='1' fill='%23fff' opacity='0.10'/%3E%3C/svg%3E");
+}
+
+/* --- Bayer 4×4: ordered dither matrix --- */
+.dither-bayer {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Crect x='0' y='0' width='1' height='1' fill='%23000' opacity='0.15'/%3E%3Crect x='2' y='2' width='1' height='1' fill='%23000' opacity='0.10'/%3E%3Crect x='2' y='0' width='1' height='1' fill='%23000' opacity='0.08'/%3E%3Crect x='0' y='2' width='1' height='1' fill='%23000' opacity='0.12'/%3E%3C/svg%3E");
+  background-size: 4px 4px;
+  image-rendering: pixelated;
+}
+
+:is(.dark) .dither-bayer,
+.dark .dither-bayer {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Crect x='0' y='0' width='1' height='1' fill='%23fff' opacity='0.12'/%3E%3Crect x='2' y='2' width='1' height='1' fill='%23fff' opacity='0.08'/%3E%3Crect x='2' y='0' width='1' height='1' fill='%23fff' opacity='0.06'/%3E%3Crect x='0' y='2' width='1' height='1' fill='%23fff' opacity='0.10'/%3E%3C/svg%3E");
+}
+
+/* --- Fine: 2×2 single pixel dot --- */
+.dither-fine {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='2' height='2'%3E%3Crect x='0' y='0' width='1' height='1' fill='%23000' opacity='0.08'/%3E%3C/svg%3E");
+  background-size: 2px 2px;
+  image-rendering: pixelated;
+}
+
+:is(.dark) .dither-fine,
+.dark .dither-fine {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='2' height='2'%3E%3Crect x='0' y='0' width='1' height='1' fill='%23fff' opacity='0.06'/%3E%3C/svg%3E");
+}
+
+/* --- Dense: 2×2 three pixel dots --- */
+.dither-dense {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='2' height='2'%3E%3Crect x='0' y='0' width='1' height='1' fill='%23000' opacity='0.12'/%3E%3Crect x='1' y='0' width='1' height='1' fill='%23000' opacity='0.12'/%3E%3Crect x='0' y='1' width='1' height='1' fill='%23000' opacity='0.12'/%3E%3C/svg%3E");
+  background-size: 2px 2px;
+  image-rendering: pixelated;
+}
+
+:is(.dark) .dither-dense,
+.dark .dither-dense {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='2' height='2'%3E%3Crect x='0' y='0' width='1' height='1' fill='%23fff' opacity='0.10'/%3E%3Crect x='1' y='0' width='1' height='1' fill='%23fff' opacity='0.10'/%3E%3Crect x='0' y='1' width='1' height='1' fill='%23fff' opacity='0.10'/%3E%3C/svg%3E");
+}
+
+/* --- Noise: 4×4 dispersed pixel pattern --- */
+.dither-noise {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Crect x='0' y='1' width='1' height='1' fill='%23000' opacity='0.12'/%3E%3Crect x='1' y='3' width='1' height='1' fill='%23000' opacity='0.12'/%3E%3Crect x='2' y='0' width='1' height='1' fill='%23000' opacity='0.12'/%3E%3Crect x='3' y='2' width='1' height='1' fill='%23000' opacity='0.12'/%3E%3C/svg%3E");
+  background-size: 4px 4px;
+  image-rendering: pixelated;
+}
+
+:is(.dark) .dither-noise,
+.dark .dither-noise {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Crect x='0' y='1' width='1' height='1' fill='%23fff' opacity='0.10'/%3E%3Crect x='1' y='3' width='1' height='1' fill='%23fff' opacity='0.10'/%3E%3Crect x='2' y='0' width='1' height='1' fill='%23fff' opacity='0.10'/%3E%3Crect x='3' y='2' width='1' height='1' fill='%23fff' opacity='0.10'/%3E%3C/svg%3E");
+}
+
+/* --- Overlay helper --- */
+.dither-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
 }
