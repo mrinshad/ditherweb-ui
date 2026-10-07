@@ -34,7 +34,7 @@ Ditherweb is structured as an npm workspace monorepo with strict architectural s
 ditherweb/
 ├── packages/
 │   └── ui/                  → Reusable Ditherweb UI library (@ditherweb/ui)
-│       ├── src/components/  → 36 primitives (10 Core, 8 Typography, 8 Layout, 10 Forms/Selection)
+│       ├── src/components/  → 46 primitives (10 Core, 8 Typography, 8 Layout, 10 Forms/Selection, 10 Surfaces/Feedback)
 │       ├── src/styles/      → Design tokens, bevels, procedural dither patterns
 │       ├── src/lib/utils.ts → Utility helpers (cn)
 │       └── src/index.ts     → Public library entrypoint
@@ -226,6 +226,28 @@ Phase 3B implemented 10 zero-dependency form and selection controls in `@ditherw
 
 ---
 
+## Phase 3C: Surfaces & Feedback Components
+
+Phase 3C added 10 production surfaces and feedback primitives to `@ditherweb/ui` with zero external dependencies, native HTML semantics, and retro classic-computer visual depth:
+
+### 1. Surfaces Primitives (4)
+1. **Panel** (`packages/ui/src/components/panel.tsx`) — Generic application surface with compound header, title, description, content, and footer layout (`default`, `raised`, `inset`, `flat`).
+2. **GroupBox** (`packages/ui/src/components/group-box.tsx`) — Classic desktop grouping powered by native semantic `<fieldset>` and `<legend>` with automatic disabled cascade.
+3. **Well** (`packages/ui/src/components/well.tsx`) — Recessed content region with sunken background canvas for logs, status blocks, or terminal output.
+4. **Inset** (`packages/ui/src/components/inset.tsx`) — Low-level sunken cavity container with optional deep shadow depth.
+
+### 2. Feedback Primitives (5)
+5. **Progress** (`packages/ui/src/components/progress.tsx`) — Native semantic `<progress>` with retro track, stepped segmented fill, and pure CSS animated indeterminate stripe.
+6. **Spinner** (`packages/ui/src/components/spinner.tsx`) — Pure CSS stepped pixel clock rotation (`steps(8)`), sizes `sm`/`md`/`lg`, accessible screen-reader announcement, and reduced-motion support.
+7. **Skeleton** (`packages/ui/src/components/skeleton.tsx`) — Content placeholder using procedural dither patterns (`bg-dither-medium`) and stepped pulse animation.
+8. **EmptyState** (`packages/ui/src/components/empty-state.tsx`) — Semantic empty presentation with title, description, and interactive action button.
+9. **Result** (`packages/ui/src/components/result.tsx`) — Operation outcome presentation (`success`, `error`, `warning`, `info`) with dynamic ARIA status/alert roles.
+
+### 3. Loading Primitive (1)
+10. **Loading** (`packages/ui/src/components/loading.tsx`) — Accessible composition wrapper around `Spinner` + status text in stacked and inline layouts.
+
+---
+
 ## Status
 
 - **Phase 0** — Architecture & Environment Setup (Complete & Validated ✅)
@@ -235,7 +257,8 @@ Phase 3B implemented 10 zero-dependency form and selection controls in `@ditherw
 - **Phase 2.75** — Architecture Separation & Component Visual QA (Complete & Validated ✅)
 - **Phase 3A** — Typography & Foundational Layout Primitives (Complete & Validated ✅)
 - **Phase 3B** — Forms & Selection Primitives (Complete & Validated ✅)
-- **Phase 3C** — Overlays & Navigation (Pending)
+- **Phase 3C** — Surfaces & Feedback Primitives (Complete & Validated ✅)
+- **Phase 3D** — Overlays & Navigation (Pending)
 - **Phase 4** — Retro Web Components (Pending)
 - **Phase 5** — Desktop / Pixel Components (Pending)
 - **Phase 6** — Advanced Effects & Packaging (Pending)
@@ -243,3 +266,4 @@ Phase 3B implemented 10 zero-dependency form and selection controls in `@ditherw
 ## License
 
 MIT
+
