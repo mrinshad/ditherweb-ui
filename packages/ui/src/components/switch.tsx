@@ -33,7 +33,7 @@ const Switch = forwardRef<HTMLInputElement, SwitchProps>(
               "bevel-inset relative inline-flex h-6 w-11 shrink-0 items-center bg-muted transition-colors",
               "peer-focus-visible:outline-2 peer-focus-visible:outline-ring peer-focus-visible:outline-offset-2",
               "peer-disabled:cursor-not-allowed",
-              "peer-checked:bg-secondary",
+              "peer-checked:bg-primary/20",
             )}
             aria-hidden="true"
           >
@@ -42,16 +42,17 @@ const Switch = forwardRef<HTMLInputElement, SwitchProps>(
               <span>0</span>
               <span>1</span>
             </span>
-
-            {/* Retro Tactile Thumb */}
-            <span
-              className={cn(
-                "bevel-raised absolute left-0.5 top-0.5 h-4.5 w-4.5 bg-bevel-face",
-                "transition-transform duration-100",
-                "peer-checked:translate-x-5",
-              )}
-            />
           </span>
+
+          {/* Retro Tactile Thumb */}
+          <span
+            className={cn(
+              "bevel-raised pointer-events-none absolute left-0.5 top-0.5 h-4.5 w-4.5 bg-bevel-face",
+              "transition-transform duration-100",
+              "peer-checked:translate-x-5",
+            )}
+            aria-hidden="true"
+          />
         </span>
         {children && <span>{children}</span>}
       </label>

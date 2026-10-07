@@ -16,7 +16,7 @@ export interface ButtonProps
 
 const variantStyles: Record<NonNullable<ButtonProps["variant"]>, string> = {
   default:
-    "bevel-raised active:bevel-pressed bg-bevel-face text-foreground select-none",
+    "bevel-raised bg-bevel-face text-foreground select-none",
   primary:
     "bg-primary text-primary-foreground border border-border-strong shadow-hard active:translate-y-px active:shadow-none",
   secondary:
