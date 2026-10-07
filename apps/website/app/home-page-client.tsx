@@ -49,7 +49,7 @@ export default function RetroPanel() {
     <div className="flex flex-col gap-16 py-8 sm:py-16">
       {/* 1. Hero Section */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full">
-        <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12">
+        <div className="grid grid-cols-1 items-center gap-10 lg:gap-14 xl:gap-16 lg:grid-cols-12">
           {/* Left Column: Headlines & CTAs */}
           <div className="space-y-6 lg:col-span-7">
             <div className="flex flex-wrap items-center gap-2">
@@ -62,7 +62,7 @@ export default function RetroPanel() {
             </div>
 
             <div className="space-y-3">
-              <h1 className="font-mono text-3xl font-extrabold uppercase tracking-tight sm:text-5xl lg:text-6xl text-foreground">
+              <h1 className="font-mono text-3xl font-extrabold uppercase tracking-tight sm:text-5xl lg:text-5xl xl:text-6xl text-foreground leading-[1.08]">
                 Ditherweb — Retro Appearance. <br />
                 <span className="text-primary underline decoration-4 underline-offset-8">
                   Modern Engineering.
@@ -109,17 +109,17 @@ export default function RetroPanel() {
             </div>
           </div>
 
-          {/* Right Column: Editorial Hero Artwork */}
-          <div className="flex justify-center items-center lg:col-span-5">
-            <figure className="relative w-full max-w-lg lg:max-w-none border border-border/80 dark:border-border/40 bg-surface">
+          {/* Right Column: Atmospheric Ditherweb Artwork */}
+          <div className="flex items-center justify-center lg:justify-end lg:col-span-5 w-full">
+            <figure className="w-full">
               <Image
                 src="/images/hero-artwork.jpg"
                 alt="Retro desktop workstation at night with a dithered CRT monitor displaying Ditherweb, mechanical keyboard, programming books, and a moonlit city skyline outside the window"
                 width={1024}
                 height={576}
                 priority
-                sizes="(min-width: 1024px) 40vw, (min-width: 640px) 80vw, 100vw"
-                className="w-full h-auto aspect-video object-cover block"
+                sizes="(min-width: 1024px) 45vw, 100vw"
+                className="w-full h-auto aspect-video object-contain block select-none"
               />
             </figure>
           </div>

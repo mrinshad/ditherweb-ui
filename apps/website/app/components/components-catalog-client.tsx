@@ -167,6 +167,7 @@ export default function ComponentsPage() {
   const [drawerSide, setDrawerSide] = useState<"bottom" | "right" | "left" | "top">("bottom");
   const [sheetOpen, setSheetOpen] = useState(false);
   const [customOverlayOpen, setCustomOverlayOpen] = useState(false);
+  const [backdropPreviewVariant, setBackdropPreviewVariant] = useState<"dimmed" | "dither" | null>(null);
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 space-y-12">
@@ -2848,11 +2849,32 @@ export default function ComponentsPage() {
                   <p className="font-mono text-xs text-muted-foreground">
                     Features <code>dimmed</code>, <code>dither</code>, and <code>transparent</code> modes for authentic retro screen dimming.
                   </p>
-                  <div className="pt-2 flex gap-1">
-                    <Badge variant="outline">Dimmed</Badge>
-                    <Badge variant="outline">Dither</Badge>
-                    <Backdrop invisible id="demo-backdrop-bench" />
+                  <div className="pt-2 flex flex-wrap items-center gap-2">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      id="demo-backdrop-dimmed-btn"
+                      onClick={() => setBackdropPreviewVariant("dimmed")}
+                    >
+                      Preview Dimmed
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      id="demo-backdrop-dither-btn"
+                      onClick={() => setBackdropPreviewVariant("dither")}
+                    >
+                      Preview Dither
+                    </Button>
                   </div>
+                  {backdropPreviewVariant && (
+                    <Backdrop
+                      id="demo-backdrop-bench"
+                      variant={backdropPreviewVariant}
+                      onClick={() => setBackdropPreviewVariant(null)}
+                      className="cursor-pointer"
+                    />
+                  )}
                 </div>
 
                 <div className="p-4 bevel-raised bg-surface space-y-2">
