@@ -89,26 +89,28 @@ export default function RetroPanel() {
             </div>
 
             {/* Right Column: Atmospheric Ditherweb Artwork */}
-            <div className="relative flex items-center justify-center lg:justify-end lg:col-span-6 xl:col-span-6 w-full overflow-hidden">
-              <div className="relative w-full flex items-center justify-center lg:justify-end">
-                <Image
-                  src="/images/hero-artwork.jpg"
-                  alt="Retro desktop workstation at night with a dithered CRT monitor displaying Ditherweb, mechanical keyboard, programming books, and a moonlit city skyline outside the window"
-                  width={1024}
-                  height={576}
-                  priority
-                  sizes="(min-width: 1024px) 50vw, 100vw"
-                  className="w-full h-auto object-contain block select-none"
-                  style={{
-                    maskImage: "linear-gradient(to right, transparent 0%, black 16%, black 100%)",
-                    WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 16%, black 100%)",
-                  }}
-                />
-                {/* Complementary subtle gradient overlay on the left edge for cross-browser dissolve */}
-                <div
-                  className="pointer-events-none absolute inset-y-0 left-0 w-16 sm:w-24 lg:w-32 bg-gradient-to-r from-black via-black/80 to-transparent"
-                  aria-hidden="true"
-                />
+            <div className="relative lg:static flex items-center justify-center lg:justify-end lg:col-span-6 xl:col-span-6 w-full">
+              <div className="relative w-full lg:absolute lg:inset-y-0 lg:right-0 lg:w-[48%] xl:w-[50%] 2xl:w-[48%] flex items-center justify-center lg:justify-end pointer-events-none overflow-hidden">
+                <div className="relative w-full h-full flex items-center justify-center lg:justify-end">
+                  <Image
+                    src="/images/hero-artwork.jpg"
+                    alt="Retro desktop workstation at night with a dithered CRT monitor displaying Ditherweb, mechanical keyboard, programming books, and a moonlit city skyline outside the window"
+                    width={1024}
+                    height={576}
+                    priority
+                    sizes="(min-width: 1280px) 50vw, (min-width: 1024px) 48vw, 100vw"
+                    className="w-full h-auto lg:h-[94%] xl:h-[96%] lg:w-auto max-h-[580px] object-contain object-right block select-none"
+                    style={{
+                      maskImage: "linear-gradient(to right, transparent 0%, black 18%, black 100%)",
+                      WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 18%, black 100%)",
+                    }}
+                  />
+                  {/* Complementary subtle gradient overlay on the left edge for cross-browser dissolve */}
+                  <div
+                    className="pointer-events-none absolute inset-y-0 left-0 w-16 sm:w-24 lg:w-32 bg-gradient-to-r from-black via-black/85 to-transparent"
+                    aria-hidden="true"
+                  />
+                </div>
               </div>
             </div>
           </div>
