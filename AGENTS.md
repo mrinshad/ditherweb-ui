@@ -64,7 +64,8 @@ ditherweb/
 │       ├── visual-designer/    # Retro visual identity
 │       ├── accessibility-reviewer/ # A11y review
 │       ├── qa-engineer/        # Testing & validation
-│       └── documentation-engineer/ # Docs & examples
+│       ├── documentation-engineer/ # Docs & examples
+│       └── git-release-engineer/   # Autonomous Git/GitHub lifecycle
 ├── AGENTS.md                   # This file — project rules + Orchestrator
 └── README.md                   # Public project overview
 ```
@@ -86,6 +87,7 @@ You are the **Orchestrator** — the primary agent the user communicates with.
 7. Prevent conflicting architectural decisions.
 8. Ensure consistency across components and conventions.
 9. Validate work before considering it complete.
+10. Hand off validated changes to `git-release-engineer` for autonomous Git/GitHub lifecycle completion.
 
 ### Decision Rules
 
@@ -93,14 +95,33 @@ You are the **Orchestrator** — the primary agent the user communicates with.
   directly. Do not activate specialist skills.
 - **Component creation**: Activate `architect` → `visual-designer` →
   `ui-engineer` → `accessibility-reviewer` → `qa-engineer` →
-  `documentation-engineer` (in that order, skipping any that aren't relevant).
+  `documentation-engineer` → `git-release-engineer` (in that order, skipping any that aren't relevant).
 - **Architecture decisions**: Activate `architect`.
 - **Visual/aesthetic changes**: Activate `visual-designer` + `ui-engineer`.
 - **Accessibility concerns**: Activate `accessibility-reviewer`.
 - **Bug fixes**: Investigate first. Activate the relevant specialist(s) based on
   where the bug lives.
 - **Documentation**: Activate `documentation-engineer`.
-- **Validation/release**: Activate `qa-engineer`.
+- **Validation**: Activate `qa-engineer`.
+- **Git/GitHub lifecycle**: Activate `git-release-engineer`. The Git agent autonomously handles the complete normal development lifecycle (branches, milestone commits, push, PR creation, review, merge, branch cleanup, tags, releases).
+
+### Autonomous Development Pipeline
+
+The Orchestrator treats `git-release-engineer` as the final stage of normal development. The user acts as the product and architecture decision maker, not the routine Git operator.
+
+```
+Implementation
+    ↓
+Specialist Review (Accessibility / Visual / Architecture)
+    ↓
+QA Engineer (Validation)
+    ↓
+Git & Release Engineer (Autonomous Lifecycle)
+    ↓
+Branch → Milestone Commits → Push → PR → Review → Merge → Cleanup → Handoff
+```
+
+Do not ask the user for routine Git confirmations ("should I commit?", "should I push?"). Stop and ask the user only for genuinely high-risk or destructive exceptions (force pushes, history rewrite, unmerged branch deletion, first-time npm release).
 
 ### Specialist Activation
 
@@ -220,17 +241,19 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 ```
 
-### Git Commits
+### Git Commits & Branch Policy
+
+- Follow **Conventional Commits**: `type(scope): description`.
+- Commit at **logical milestones**; do not bundle an entire phase into one monolithic commit, and avoid micro-commits.
+- Branch conventions: `feature/<name>`, `fix/<name>`, `refactor/<name>`, `docs/<name>`, `chore/<name>`.
 
 ```
-feat: add button component
-style: refine dark theme tokens
-fix: correct dialog focus handling
-docs: document button variants
-refactor: simplify theme tokens
+feat(tokens): establish semantic surface and status tokens
+feat(bevel): implement raised and inset bevel CSS primitives
+feat(dither): add SVG dither background patterns
+docs(readme): update visual foundation documentation
+fix(theme): eliminate hydration mismatch in theme toggle
 ```
-
-Small, focused commits. No unrelated changes bundled together.
 
 ### Prohibited
 
