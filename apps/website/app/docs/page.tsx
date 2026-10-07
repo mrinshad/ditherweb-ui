@@ -1,7 +1,5 @@
 import Link from "next/link";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
+import { Badge, Card, CardHeader, CardTitle, CardContent, Separator } from "@ditherweb/ui";
 
 export default function DocsPage() {
   return (
@@ -82,21 +80,17 @@ export default function DocsPage() {
         <Card>
           <CardHeader>
             <CardTitle className="text-sm font-mono uppercase">
-              Utility Helper (lib/utils.ts)
+              UI Package Architecture (@ditherweb/ui)
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-3 font-mono text-xs">
             <p className="text-muted-foreground">
-              All components use the standard <code className="text-foreground">cn(...)</code> utility for conditional class merging:
+              All 10 core primitives and the <code className="text-foreground">cn(...)</code> utility are exported directly from the package <code className="text-foreground">@ditherweb/ui</code>:
             </p>
             <div className="bevel-inset bg-background p-3">
               <pre className="text-foreground overflow-x-auto">
-                <code>{`import { clsx, type ClassValue } from "clsx";
-import { twMerge } from "tailwind-merge";
-
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}`}</code>
+                <code>{`import { Button, Input, Card, Badge, cn } from "@ditherweb/ui";
+import "@ditherweb/ui/styles";`}</code>
               </pre>
             </div>
           </CardContent>
@@ -252,9 +246,13 @@ export function cn(...inputs: ClassValue[]) {
             <span className="font-bold">Phase 2: First 10 Core Components</span>
             <Badge variant="success">COMPLETE</Badge>
           </div>
+          <div className="bevel-raised p-3 bg-surface flex items-center justify-between">
+            <span className="font-bold">Phase 2.5: Product Website & Showcase Architecture</span>
+            <Badge variant="success">COMPLETE</Badge>
+          </div>
           <div className="bevel-raised p-3 bg-surface flex items-center justify-between border-2 border-primary">
-            <span className="font-bold text-primary">Phase 2.5: Product Website & Showcase Architecture</span>
-            <Badge variant="primary">IN PROGRESS</Badge>
+            <span className="font-bold text-primary">Phase 2.75: Architecture Separation & Visual QA</span>
+            <Badge variant="primary">COMPLETE</Badge>
           </div>
           <div className="bevel-raised p-3 bg-surface flex items-center justify-between opacity-70">
             <span>Phase 3: Interactive Overlays & Navigation (Dialog, Tabs, Select, Tooltip...)</span>

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { cn } from "@/lib/utils";
+import { cn } from "@ditherweb/ui";
 import { ThemeToggle } from "./theme-toggle";
 
 const NAV_ITEMS = [

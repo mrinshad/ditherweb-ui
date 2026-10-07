@@ -2,15 +2,22 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
+import {
+  Button,
+  Badge,
+  Input,
+  Label,
+  Switch,
+  Checkbox,
+  Alert,
+  AlertTitle,
+  AlertDescription,
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  Separator,
+} from "@ditherweb/ui";
 
 type PlaygroundTarget = "button" | "badge" | "alert" | "input" | "switch" | "checkbox";
 

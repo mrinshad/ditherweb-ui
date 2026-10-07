@@ -2,23 +2,25 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Radio } from "@/components/ui/radio";
-import { Switch } from "@/components/ui/switch";
 import {
+  Button,
+  Input,
+  Label,
+  Checkbox,
+  Radio,
+  Switch,
   Card,
   CardHeader,
   CardTitle,
   CardDescription,
   CardContent,
   CardFooter,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
-import { Separator } from "@/components/ui/separator";
+  Badge,
+  Alert,
+  AlertTitle,
+  AlertDescription,
+  Separator,
+} from "@ditherweb/ui";
 
 type Category = "all" | "input" | "layout" | "feedback";
 
@@ -103,7 +105,7 @@ export default function ComponentsPage() {
                   Tactile action trigger with raised bevels and active pressed depression.
                 </p>
               </div>
-              <Badge variant="outline">components/ui/button.tsx</Badge>
+              <Badge variant="outline">@ditherweb/ui</Badge>
             </div>
 
             <Card>
@@ -154,7 +156,7 @@ export default function ComponentsPage() {
                   Text entry field with inset bevel relief, focus rings, and validation styling.
                 </p>
               </div>
-              <Badge variant="outline">components/ui/input.tsx</Badge>
+              <Badge variant="outline">@ditherweb/ui</Badge>
             </div>
 
             <Card>
@@ -194,7 +196,7 @@ export default function ComponentsPage() {
                   Accessible form control label supporting standard htmlFor associations.
                 </p>
               </div>
-              <Badge variant="outline">components/ui/label.tsx</Badge>
+              <Badge variant="outline">@ditherweb/ui</Badge>
             </div>
 
             <Card>
@@ -228,7 +230,7 @@ export default function ComponentsPage() {
                   Binary toggle control with classic square sunken bevel and checkmark glyph.
                 </p>
               </div>
-              <Badge variant="outline">components/ui/checkbox.tsx</Badge>
+              <Badge variant="outline">@ditherweb/ui</Badge>
             </div>
 
             <Card>
@@ -266,7 +268,7 @@ export default function ComponentsPage() {
                   Mutual exclusion selection control with circular bevels and keyboard navigation.
                 </p>
               </div>
-              <Badge variant="outline">components/ui/radio.tsx</Badge>
+              <Badge variant="outline">@ditherweb/ui</Badge>
             </div>
 
             <Card>
@@ -321,7 +323,7 @@ export default function ComponentsPage() {
                   Tactile slider switch with bevel thumb and track depression.
                 </p>
               </div>
-              <Badge variant="outline">components/ui/switch.tsx</Badge>
+              <Badge variant="outline">@ditherweb/ui</Badge>
             </div>
 
             <Card>
@@ -359,7 +361,7 @@ export default function ComponentsPage() {
                   Compound surface container with raised bevel framing and sub-components.
                 </p>
               </div>
-              <Badge variant="outline">components/ui/card.tsx</Badge>
+              <Badge variant="outline">@ditherweb/ui</Badge>
             </div>
 
             <Card>
@@ -414,7 +416,7 @@ export default function ComponentsPage() {
                   Grooved divider line providing authentic optical depth between layout sections.
                 </p>
               </div>
-              <Badge variant="outline">components/ui/separator.tsx</Badge>
+              <Badge variant="outline">@ditherweb/ui</Badge>
             </div>
 
             <Card>
@@ -463,7 +465,7 @@ export default function ComponentsPage() {
                   Pixel-framed status tag for metadata, state indicators, and tags.
                 </p>
               </div>
-              <Badge variant="outline">components/ui/badge.tsx</Badge>
+              <Badge variant="outline">@ditherweb/ui</Badge>
             </div>
 
             <Card>
@@ -499,7 +501,7 @@ export default function ComponentsPage() {
                   System message notification with role=&quot;alert&quot; and distinct chromatic borders.
                 </p>
               </div>
-              <Badge variant="outline">components/ui/alert.tsx</Badge>
+              <Badge variant="outline">@ditherweb/ui</Badge>
             </div>
 
             <Card>

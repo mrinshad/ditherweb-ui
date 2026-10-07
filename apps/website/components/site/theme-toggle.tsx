@@ -1,7 +1,7 @@
 "use client";
 
 import { forwardRef } from "react";
-import { cn } from "@/lib/utils";
+import { cn } from "@ditherweb/ui";
 
 function toggleTheme() {
   const isDark = document.documentElement.classList.toggle("dark");

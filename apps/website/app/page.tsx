@@ -2,19 +2,24 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+import {
+  Button,
+  Badge,
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  Alert,
+  AlertTitle,
+  AlertDescription,
+} from "@ditherweb/ui";
 import { HeroDemo } from "@/components/site/hero-demo";
 
 export default function HomePage() {
   const [activeDither, setActiveDither] = useState<"fine" | "medium" | "coarse" | "diagonal">("fine");
   const [copyStatus, setCopyStatus] = useState<string | null>(null);
 
-  const sampleSnippet = `import { Button } from "@/components/ui/button";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+  const sampleSnippet = `import { Button, Card, CardHeader, CardTitle, CardContent, Badge } from "@ditherweb/ui";
 
 export default function RetroPanel() {
   return (
