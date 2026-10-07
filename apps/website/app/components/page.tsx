@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
+import NextLink from "next/link";
 import {
   Button,
   Input,
@@ -20,9 +20,25 @@ import {
   AlertTitle,
   AlertDescription,
   Separator,
+  Heading,
+  Text,
+  Link as UiLink,
+  Code,
+  Kbd,
+  Blockquote,
+  List,
+  ListItem,
+  Container,
+  Box,
+  Stack,
+  Flex,
+  Grid,
+  Spacer,
+  AspectRatio,
+  ScrollArea,
 } from "@ditherweb/ui";
 
-type Category = "all" | "input" | "layout" | "feedback";
+type Category = "all" | "typography" | "layout" | "input" | "feedback";
 
 export default function ComponentsPage() {
   const [category, setCategory] = useState<Category>("all");
@@ -36,17 +52,16 @@ export default function ComponentsPage() {
   const [disabledSwitchClicks, setDisabledSwitchClicks] = useState(0);
   const [radioVal, setRadioVal] = useState("vga");
   const [inputText, setInputText] = useState("");
+  const [linkClicks, setLinkClicks] = useState(0);
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 space-y-12">
       {/* Page Header */}
       <div className="space-y-4">
         <div className="flex items-center gap-2">
-          <Badge variant="primary">
-            Phase 2 Library
-          </Badge>
+          <Badge variant="primary">Phase 3A Suite</Badge>
           <span className="font-mono text-xs text-muted-foreground">
-            10 Production Primitives
+            26 Production Primitives
           </span>
         </div>
         <h1 className="font-mono text-3xl font-bold uppercase tracking-tight text-foreground sm:text-4xl">
@@ -54,7 +69,8 @@ export default function ComponentsPage() {
         </h1>
         <p className="font-mono text-sm text-muted-foreground max-w-2xl leading-relaxed">
           Every Ditherweb component is built with native accessibility semantics,
-          typed props, and calibrated retro CSS tokens. Inspect interactive states and implementation details.
+          typed props, and calibrated retro CSS tokens. Inspect interactive states,
+          typography hierarchy, layout primitives, and implementation details.
         </p>
 
         {/* Filter Tabs */}
@@ -66,7 +82,25 @@ export default function ComponentsPage() {
               category === "all" ? "bevel-inset bg-muted text-primary" : "bevel-raised"
             }`}
           >
-            All Primitives (10)
+            All Primitives (26)
+          </button>
+          <button
+            type="button"
+            onClick={() => setCategory("typography")}
+            className={`px-3 py-1 font-bold ${
+              category === "typography" ? "bevel-inset bg-muted text-primary" : "bevel-raised"
+            }`}
+          >
+            Typography (8)
+          </button>
+          <button
+            type="button"
+            onClick={() => setCategory("layout")}
+            className={`px-3 py-1 font-bold ${
+              category === "layout" ? "bevel-inset bg-muted text-primary" : "bevel-raised"
+            }`}
+          >
+            Layout & Structure (10)
           </button>
           <button
             type="button"
@@ -76,15 +110,6 @@ export default function ComponentsPage() {
             }`}
           >
             Actions & Inputs (6)
-          </button>
-          <button
-            type="button"
-            onClick={() => setCategory("layout")}
-            className={`px-3 py-1 font-bold ${
-              category === "layout" ? "bevel-inset bg-muted text-primary" : "bevel-raised"
-            }`}
-          >
-            Layout & Structure (2)
           </button>
           <button
             type="button"
@@ -100,6 +125,483 @@ export default function ComponentsPage() {
 
       {/* Grid of Components */}
       <div className="space-y-16">
+        {/* ==================================================================
+            TYPOGRAPHY PRIMITIVES (Phase 3A)
+            ================================================================== */}
+
+        {/* TYPOGRAPHY 1: HEADING */}
+        {(category === "all" || category === "typography") && (
+          <section id="heading" className="space-y-4 scroll-mt-20">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="font-mono text-xl font-bold uppercase text-foreground">
+                  Heading
+                </h2>
+                <p className="font-mono text-xs text-muted-foreground">
+                  Semantic heading (h1-h6) with decoupled visual size scaling.
+                </p>
+              </div>
+              <Badge variant="outline">@ditherweb/ui</Badge>
+            </div>
+
+            <Card>
+              <CardContent className="p-6 space-y-6">
+                <div>
+                  <h3 className="font-mono text-xs font-bold uppercase text-muted-foreground mb-3">
+                    Semantic Level Hierarchy (h1–h6)
+                  </h3>
+                  <div className="space-y-3">
+                    <Heading level={1}>Heading 1 — System Core Architecture</Heading>
+                    <Heading level={2}>Heading 2 — Subsystem Module Protocol</Heading>
+                    <Heading level={3}>Heading 3 — Peripheral Controller Interface</Heading>
+                    <Heading level={4}>Heading 4 — Register Buffer Mapping</Heading>
+                    <Heading level={5}>Heading 5 — Interrupt Vector Table</Heading>
+                    <Heading level={6}>Heading 6 — Bitwise Flag Mask</Heading>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="font-mono text-xs font-bold uppercase text-muted-foreground mb-3">
+                    Decoupled Semantic Level vs. Visual Size
+                  </h3>
+                  <div className="space-y-3">
+                    <Heading level={2} size="display">
+                      Semantic h2 with Display Size (5XL)
+                    </Heading>
+                    <Heading level={1} size="sm">
+                      Semantic h1 with Compact Size (Small)
+                    </Heading>
+                  </div>
+                </div>
+
+                <div className="bevel-inset bg-background p-3 font-mono text-xs overflow-x-auto">
+                  <code>{`<Heading level={2} size="xl">System Core</Heading>`}</code>
+                </div>
+              </CardContent>
+            </Card>
+          </section>
+        )}
+
+        {/* TYPOGRAPHY 2: TEXT */}
+        {(category === "all" || category === "typography") && (
+          <section id="text" className="space-y-4 scroll-mt-20">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="font-mono text-xl font-bold uppercase text-foreground">
+                  Text
+                </h2>
+                <p className="font-mono text-xs text-muted-foreground">
+                  General-purpose typographic primitive supporting tags, scales, weights, and tones.
+                </p>
+              </div>
+              <Badge variant="outline">@ditherweb/ui</Badge>
+            </div>
+
+            <Card>
+              <CardContent className="p-6 space-y-6">
+                <div>
+                  <h3 className="font-mono text-xs font-bold uppercase text-muted-foreground mb-3">
+                    Type Scales (xs, sm, base, lg, xl)
+                  </h3>
+                  <div className="space-y-2">
+                    <Text size="xl">Text XL — Vintage mainframe terminal display banner</Text>
+                    <Text size="lg">Text LG — Primary interface lead paragraph and summary</Text>
+                    <Text size="base">Text Base — Standard system typography for body text and documentation</Text>
+                    <Text size="sm">Text SM — Secondary technical parameters and metadata captions</Text>
+                    <Text size="xs">Text XS — Microscopic hardware register notation and memory addresses</Text>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="font-mono text-xs font-bold uppercase text-muted-foreground mb-3">
+                    Color Tones & Weights
+                  </h3>
+                  <div className="space-y-2">
+                    <Text variant="default" weight="bold">Default Variant (Bold)</Text>
+                    <Text variant="muted" weight="medium">Muted Variant (Medium)</Text>
+                    <Text variant="accent" weight="semibold">Accent Variant (Semibold)</Text>
+                    <Text mono size="sm" variant="muted">Monospace Font Stack Flag Enabled (mono)</Text>
+                  </div>
+                </div>
+
+                <div className="bevel-inset bg-background p-3 font-mono text-xs overflow-x-auto">
+                  <code>{`<Text as="p" size="base" variant="muted" weight="medium">Ditherweb</Text>`}</code>
+                </div>
+              </CardContent>
+            </Card>
+          </section>
+        )}
+
+        {/* TYPOGRAPHY 3: LINK */}
+        {(category === "all" || category === "typography") && (
+          <section id="link" className="space-y-4 scroll-mt-20">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="font-mono text-xl font-bold uppercase text-foreground">
+                  Link
+                </h2>
+                <p className="font-mono text-xs text-muted-foreground">
+                  Framework-agnostic anchor primitive with calibrated retro hover and keyboard states.
+                </p>
+              </div>
+              <Badge variant="outline">@ditherweb/ui</Badge>
+            </div>
+
+            <Card>
+              <CardContent className="p-6 space-y-6">
+                <div>
+                  <h3 className="font-mono text-xs font-bold uppercase text-muted-foreground mb-3">
+                    Link Variants
+                  </h3>
+                  <div className="flex flex-wrap items-center gap-6">
+                    <UiLink
+                      id="test-link-interactive"
+                      href="#link"
+                      variant="default"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setLinkClicks((c) => c + 1);
+                      }}
+                    >
+                      Default Link (Clicks: {linkClicks})
+                    </UiLink>
+
+                    <UiLink
+                      id="test-link-subtle"
+                      href="#link"
+                      variant="subtle"
+                    >
+                      Subtle Link
+                    </UiLink>
+
+                    <UiLink
+                      id="test-link-underline"
+                      href="#link"
+                      variant="underline"
+                    >
+                      Underline Link
+                    </UiLink>
+
+                    <UiLink
+                      id="test-link-external"
+                      href="https://github.com"
+                      target="_blank"
+                    >
+                      External Target (_blank)
+                    </UiLink>
+                  </div>
+                </div>
+
+                <div className="bevel-inset bg-background p-3 font-mono text-xs overflow-x-auto">
+                  <code>{`<Link href="/docs" variant="default">Documentation →</Link>`}</code>
+                </div>
+              </CardContent>
+            </Card>
+          </section>
+        )}
+
+        {/* TYPOGRAPHY 4: CODE & KBD */}
+        {(category === "all" || category === "typography") && (
+          <section id="code-kbd" className="space-y-4 scroll-mt-20">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="font-mono text-xl font-bold uppercase text-foreground">
+                  Code & Kbd
+                </h2>
+                <p className="font-mono text-xs text-muted-foreground">
+                  Sunken inline code substrate and tactile raised keycap shortcut primitives.
+                </p>
+              </div>
+              <Badge variant="outline">@ditherweb/ui</Badge>
+            </div>
+
+            <Card>
+              <CardContent className="p-6 space-y-6">
+                <div>
+                  <h3 className="font-mono text-xs font-bold uppercase text-muted-foreground mb-3">
+                    Inline Code Primitive (&lt;code&gt;)
+                  </h3>
+                  <p className="font-mono text-sm leading-relaxed">
+                    To import components, execute <Code>npm install @ditherweb/ui</Code> and configure your bundler with <Code>tokens.css</Code>.
+                  </p>
+                </div>
+
+                <div>
+                  <h3 className="font-mono text-xs font-bold uppercase text-muted-foreground mb-3">
+                    Tactile Keyboard Shortcut Keycaps (&lt;kbd&gt;)
+                  </h3>
+                  <div className="flex flex-wrap items-center gap-4 text-xs font-mono">
+                    <span className="flex items-center gap-1.5">
+                      <Kbd>Ctrl</Kbd> + <Kbd>C</Kbd> Copy
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                      <Kbd>Ctrl</Kbd> + <Kbd>V</Kbd> Paste
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                      <Kbd>Alt</Kbd> + <Kbd>F4</Kbd> Terminate
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                      <Kbd>Enter</Kbd> Execute
+                    </span>
+                  </div>
+                </div>
+
+                <div className="bevel-inset bg-background p-3 font-mono text-xs overflow-x-auto">
+                  <code>{`<Code>npm i @ditherweb/ui</Code> | <Kbd>Ctrl</Kbd> + <Kbd>K</Kbd>`}</code>
+                </div>
+              </CardContent>
+            </Card>
+          </section>
+        )}
+
+        {/* TYPOGRAPHY 5: BLOCKQUOTE & LIST */}
+        {(category === "all" || category === "typography") && (
+          <section id="blockquote-list" className="space-y-4 scroll-mt-20">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="font-mono text-xl font-bold uppercase text-foreground">
+                  Blockquote & List
+                </h2>
+                <p className="font-mono text-xs text-muted-foreground">
+                  Vintage quote indentation and semantic ordered/unordered list primitives with pixel bullets.
+                </p>
+              </div>
+              <Badge variant="outline">@ditherweb/ui</Badge>
+            </div>
+
+            <Card>
+              <CardContent className="p-6 space-y-6">
+                <div>
+                  <h3 className="font-mono text-xs font-bold uppercase text-muted-foreground mb-3">
+                    Semantic Blockquote (&lt;blockquote&gt;)
+                  </h3>
+                  <Blockquote cite="https://ditherweb.org">
+                    &ldquo;Retro appearance. Modern engineering. The early Web was defined by hard
+                    edges, pixel matrices, and tactile controls designed for mechanical human feedback.&rdquo;
+                  </Blockquote>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <h3 className="font-mono text-xs font-bold uppercase text-muted-foreground mb-3">
+                      List: Pixel Bullet Variant
+                    </h3>
+                    <List type="unordered" variant="pixel">
+                      <ListItem>Floppy Disk Controller (1.44 MB DMA Channel 2)</ListItem>
+                      <ListItem>Serial Comms (RS-232 16550A UART @ 115,200 baud)</ListItem>
+                      <ListItem>Parallel Port (Centronics ECP/EPP IEEE 1284)</ListItem>
+                    </List>
+                  </div>
+
+                  <div>
+                    <h3 className="font-mono text-xs font-bold uppercase text-muted-foreground mb-3">
+                      List: Ordered Numeric Hierarchy
+                    </h3>
+                    <List type="ordered" variant="default">
+                      <ListItem>Execute BIOS POST memory integrity scan</ListItem>
+                      <ListItem>Initialize master/slave PIC interrupt controllers</ListItem>
+                      <ListItem>Bootstrap operating system sector from Master Boot Record</ListItem>
+                    </List>
+                  </div>
+                </div>
+
+                <div className="bevel-inset bg-background p-3 font-mono text-xs overflow-x-auto">
+                  <code>{`<List type="unordered" variant="pixel"><ListItem>...</ListItem></List>`}</code>
+                </div>
+              </CardContent>
+            </Card>
+          </section>
+        )}
+
+        {/* ==================================================================
+            LAYOUT PRIMITIVES (Phase 3A)
+            ================================================================== */}
+
+        {/* LAYOUT 1: CONTAINER & BOX */}
+        {(category === "all" || category === "layout") && (
+          <section id="container-box" className="space-y-4 scroll-mt-20">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="font-mono text-xl font-bold uppercase text-foreground">
+                  Container & Box
+                </h2>
+                <p className="font-mono text-xs text-muted-foreground">
+                  Content width constraints with responsive padding, and neutral polymorphic layout primitive.
+                </p>
+              </div>
+              <Badge variant="outline">@ditherweb/ui</Badge>
+            </div>
+
+            <Card>
+              <CardContent className="p-6 space-y-6">
+                <div>
+                  <h3 className="font-mono text-xs font-bold uppercase text-muted-foreground mb-3">
+                    Container Width Variants (sm, md, lg, xl, full)
+                  </h3>
+                  <div className="space-y-3 font-mono text-xs">
+                    <Container size="sm" className="border border-primary bg-primary/10 p-3 text-center">
+                      Container size=&quot;sm&quot; (max-w-screen-sm)
+                    </Container>
+                    <Container size="md" className="border border-border-strong bg-surface p-3 text-center">
+                      Container size=&quot;md&quot; (max-w-screen-md)
+                    </Container>
+                    <Container size="lg" className="border border-border bg-card p-3 text-center">
+                      Container size=&quot;lg&quot; (max-w-screen-lg)
+                    </Container>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="font-mono text-xs font-bold uppercase text-muted-foreground mb-3">
+                    Box: Polymorphic Container Primitive
+                  </h3>
+                  <Box as="section" className="bevel-inset bg-surface p-4 font-mono text-xs space-y-2">
+                    <p className="font-bold text-foreground">Box as=&quot;section&quot;</p>
+                    <p className="text-muted-foreground">
+                      Box is completely neutral for composable styling. It introduces zero unexpected margins or decorators.
+                    </p>
+                  </Box>
+                </div>
+
+                <div className="bevel-inset bg-background p-3 font-mono text-xs overflow-x-auto">
+                  <code>{`<Container size="lg"><Box as="main">...</Box></Container>`}</code>
+                </div>
+              </CardContent>
+            </Card>
+          </section>
+        )}
+
+        {/* LAYOUT 2: STACK, FLEX, & GRID */}
+        {(category === "all" || category === "layout") && (
+          <section id="stack-flex-grid" className="space-y-4 scroll-mt-20">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="font-mono text-xl font-bold uppercase text-foreground">
+                  Stack, Flex, & Grid
+                </h2>
+                <p className="font-mono text-xs text-muted-foreground">
+                  Directional stack flow, flexbox composition, and CSS grid primitives.
+                </p>
+              </div>
+              <Badge variant="outline">@ditherweb/ui</Badge>
+            </div>
+
+            <Card>
+              <CardContent className="p-6 space-y-6">
+                <div>
+                  <h3 className="font-mono text-xs font-bold uppercase text-muted-foreground mb-3">
+                    Stack (Vertical vs. Horizontal)
+                  </h3>
+                  <Stack id="test-stack-container" gap="sm" className="font-mono text-xs">
+                    <div className="p-2 border border-border bg-surface">Stack Element 1 (gap=&quot;sm&quot;)</div>
+                    <div className="p-2 border border-border bg-surface">Stack Element 2 (gap=&quot;sm&quot;)</div>
+                    <div className="p-2 border border-border bg-surface">Stack Element 3 (gap=&quot;sm&quot;)</div>
+                  </Stack>
+                </div>
+
+                <div>
+                  <h3 className="font-mono text-xs font-bold uppercase text-muted-foreground mb-3">
+                    Flex with Spacer Primitive
+                  </h3>
+                  <Flex id="test-flex-container" align="center" className="p-3 border border-border bg-surface font-mono text-xs">
+                    <Badge variant="primary">START</Badge>
+                    <Spacer />
+                    <span className="text-muted-foreground">Spacer pushes items apart</span>
+                    <Spacer />
+                    <Badge variant="secondary">END</Badge>
+                  </Flex>
+                </div>
+
+                <div>
+                  <h3 className="font-mono text-xs font-bold uppercase text-muted-foreground mb-3">
+                    Grid Primitive (4 Columns)
+                  </h3>
+                  <Grid id="test-grid-container" columns={4} gap="sm" className="font-mono text-xs text-center">
+                    <div className="p-3 border border-border bg-card">Col 1</div>
+                    <div className="p-3 border border-border bg-card">Col 2</div>
+                    <div className="p-3 border border-border bg-card">Col 3</div>
+                    <div className="p-3 border border-border bg-card">Col 4</div>
+                  </Grid>
+                </div>
+
+                <div className="bevel-inset bg-background p-3 font-mono text-xs overflow-x-auto">
+                  <code>{`<Stack gap="md"><Flex><Logo /><Spacer /><Nav /></Flex></Stack>`}</code>
+                </div>
+              </CardContent>
+            </Card>
+          </section>
+        )}
+
+        {/* LAYOUT 3: ASPECT RATIO & SCROLL AREA */}
+        {(category === "all" || category === "layout") && (
+          <section id="aspect-scroll" className="space-y-4 scroll-mt-20">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="font-mono text-xl font-bold uppercase text-foreground">
+                  AspectRatio & ScrollArea
+                </h2>
+                <p className="font-mono text-xs text-muted-foreground">
+                  CSS aspect-ratio constraint and accessible native scroll container.
+                </p>
+              </div>
+              <Badge variant="outline">@ditherweb/ui</Badge>
+            </div>
+
+            <Card>
+              <CardContent className="p-6 space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <h3 className="font-mono text-xs font-bold uppercase text-muted-foreground mb-3">
+                      AspectRatio (16 / 9)
+                    </h3>
+                    <AspectRatio
+                      id="test-aspect-ratio"
+                      ratio={16 / 9}
+                      className="bevel-inset bg-surface flex flex-col items-center justify-center font-mono text-xs"
+                    >
+                      <span className="font-bold text-primary">16 : 9 Aspect Ratio</span>
+                      <span className="text-[10px] text-muted-foreground">Responsive Pure CSS</span>
+                    </AspectRatio>
+                  </div>
+
+                  <div>
+                    <h3 className="font-mono text-xs font-bold uppercase text-muted-foreground mb-3">
+                      ScrollArea (Keyboard Accessible)
+                    </h3>
+                    <ScrollArea
+                      id="test-scroll-area"
+                      orientation="vertical"
+                      className="h-36 p-3 space-y-2 font-mono text-xs"
+                    >
+                      <p className="font-bold text-primary">[SYSTEM INITIALIZATION LOG]</p>
+                      <p className="text-muted-foreground">0001: DMA Channel 0 initialized.</p>
+                      <p className="text-muted-foreground">0002: DMA Channel 1 initialized.</p>
+                      <p className="text-muted-foreground">0003: Memory controller mapped 640K base memory.</p>
+                      <p className="text-muted-foreground">0004: Video BIOS extension at C000:0000.</p>
+                      <p className="text-muted-foreground">0005: Keyboard buffer initialized (16 bytes).</p>
+                      <p className="text-muted-foreground">0006: Serial UART 16550A ready at 03F8h.</p>
+                      <p className="text-muted-foreground">0007: Parallel printer port ready at 0378h.</p>
+                      <p className="text-muted-foreground">0008: Sound Blaster 16 DSP 4.05 detected at 220h IRQ 5 DMA 1.</p>
+                      <p className="text-muted-foreground">0009: Mouse driver loaded on IRQ 12 (PS/2 auxiliary device).</p>
+                      <p className="text-muted-foreground">0010: IDE hard disk drive C: 540 MB LBA mode ready.</p>
+                      <p className="text-muted-foreground">0011: CD-ROM drive D: ATAPI 4X ready.</p>
+                      <p className="text-muted-foreground">0012: Operating system boot sequence complete.</p>
+                    </ScrollArea>
+                  </div>
+                </div>
+
+                <div className="bevel-inset bg-background p-3 font-mono text-xs overflow-x-auto">
+                  <code>{`<AspectRatio ratio={16/9}>...</AspectRatio> | <ScrollArea className="h-48">...</ScrollArea>`}</code>
+                </div>
+              </CardContent>
+            </Card>
+          </section>
+        )}
+
+        {/* ==================================================================
+            ACTIONS & INPUTS (Phase 2 Suite)
+            ================================================================== */}
+
         {/* 1. BUTTON */}
         {(category === "all" || category === "input") && (
           <section id="button" className="space-y-4 scroll-mt-20">
@@ -122,7 +624,7 @@ export default function ComponentsPage() {
                     Variants
                   </h3>
                   <div className="flex flex-wrap gap-3">
-                    <Button variant="default">Default</Button>
+                    <Button id="test-btn-default-variant" variant="default">Default</Button>
                     <Button variant="primary">Primary</Button>
                     <Button variant="secondary">Secondary</Button>
                     <Button variant="outline">Outline</Button>
@@ -175,7 +677,7 @@ export default function ComponentsPage() {
                   </div>
                 </div>
 
-                <div className="bevel-inset bg-background p-3 font-mono text-xs">
+                <div className="bevel-inset bg-background p-3 font-mono text-xs overflow-x-auto">
                   <code>{`<Button variant="primary" size="md">Execute</Button>`}</code>
                 </div>
               </CardContent>
@@ -192,7 +694,7 @@ export default function ComponentsPage() {
                   Input
                 </h2>
                 <p className="font-mono text-xs text-muted-foreground">
-                  Text entry field with inset bevel relief, focus rings, and validation styling.
+                  Sunken bevel text field with monospace typing dynamics and focus rings.
                 </p>
               </div>
               <Badge variant="outline">@ditherweb/ui</Badge>
@@ -200,33 +702,31 @@ export default function ComponentsPage() {
 
             <Card>
               <CardContent className="p-6 space-y-4">
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-                  <div className="space-y-1.5">
-                    <div className="flex items-center justify-between">
-                      <Label htmlFor="test-input-typing">Interactive Input</Label>
-                      <span id="test-input-counter" className="font-mono text-[10px] text-muted-foreground">
-                        Chars: {inputText.length}
-                      </span>
-                    </div>
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  <div className="space-y-2">
+                    <Label htmlFor="test-input-live">Active Hardware Address</Label>
                     <Input
-                      id="test-input-typing"
+                      id="test-input-live"
+                      placeholder="e.g. 0x7FFF0000"
                       value={inputText}
                       onChange={(e) => setInputText(e.target.value)}
-                      placeholder="Type text..."
                     />
+                    <span id="test-input-value-preview" className="font-mono text-[11px] text-muted-foreground">
+                      Value: &quot;{inputText}&quot;
+                    </span>
                   </div>
-                  <div className="space-y-1.5">
-                    <Label htmlFor="test-input-invalid">Invalid State</Label>
-                    <Input id="test-input-invalid" defaultValue="invalid@bad" invalid />
-                  </div>
-                  <div className="space-y-1.5">
-                    <Label htmlFor="test-input-disabled">Disabled</Label>
-                    <Input id="test-input-disabled" value="Read-only buffer" disabled />
+                  <div className="space-y-2">
+                    <Label htmlFor="test-input-disabled">Protected ROM Block</Label>
+                    <Input
+                      id="test-input-disabled"
+                      disabled
+                      defaultValue="READ_ONLY_0xFF"
+                    />
                   </div>
                 </div>
 
-                <div className="bevel-inset bg-background p-3 font-mono text-xs">
-                  <code>{`<Input placeholder="Search..." invalid={isInvalid} />`}</code>
+                <div className="bevel-inset bg-background p-3 font-mono text-xs overflow-x-auto">
+                  <code>{`<Input placeholder="Enter value..." />`}</code>
                 </div>
               </CardContent>
             </Card>
@@ -242,7 +742,7 @@ export default function ComponentsPage() {
                   Label
                 </h2>
                 <p className="font-mono text-xs text-muted-foreground">
-                  Accessible form control label supporting standard htmlFor associations.
+                  High-contrast typography for form controls with optional required indicator.
                 </p>
               </div>
               <Badge variant="outline">@ditherweb/ui</Badge>
@@ -251,16 +751,17 @@ export default function ComponentsPage() {
             <Card>
               <CardContent className="p-6 space-y-4">
                 <div className="flex flex-wrap items-center gap-6">
-                  <Label htmlFor="sample-field" className="text-sm">
-                    Active Input Label
+                  <Label htmlFor="demo-1">Default Label</Label>
+                  <Label htmlFor="demo-2">
+                    Parameter Label <span className="text-primary">*</span>
                   </Label>
-                  <Label className="text-xs text-muted-foreground">
-                    Secondary Metadata Label
+                  <Label htmlFor="demo-3" className="opacity-50">
+                    Offline Field (Disabled)
                   </Label>
                 </div>
 
-                <div className="bevel-inset bg-background p-3 font-mono text-xs">
-                  <code>{`<Label htmlFor="username">Username</Label>`}</code>
+                <div className="bevel-inset bg-background p-3 font-mono text-xs overflow-x-auto">
+                  <code>{`<Label htmlFor="baud">Baud Rate</Label>`}</code>
                 </div>
               </CardContent>
             </Card>
@@ -276,7 +777,7 @@ export default function ComponentsPage() {
                   Checkbox
                 </h2>
                 <p className="font-mono text-xs text-muted-foreground">
-                  Binary toggle control with classic square sunken bevel and checkmark glyph.
+                  Crisp 16x16 pixel sunken checkbox supporting checked, unchecked, and indeterminate states.
                 </p>
               </div>
               <Badge variant="outline">@ditherweb/ui</Badge>
@@ -284,33 +785,33 @@ export default function ComponentsPage() {
 
             <Card>
               <CardContent className="p-6 space-y-4">
-                <div className="flex flex-wrap items-center gap-6">
+                <div className="flex flex-wrap items-center gap-8">
                   <Checkbox
                     id="test-chk-interactive"
                     checked={chkState}
                     onChange={(e) => setChkState(e.target.checked)}
                   >
-                    Interactive ({chkState ? "Checked" : "Unchecked"})
+                    DMA Controller Active ({chkState ? "Checked" : "Unchecked"})
                   </Checkbox>
                   <Checkbox
                     id="test-chk-indeterminate"
                     indeterminate={chkIndeterminate}
-                    onChange={() => setChkIndeterminate((v) => !v)}
+                    onChange={() => setChkIndeterminate(!chkIndeterminate)}
                   >
-                    Indeterminate State ({chkIndeterminate ? "Active" : "Cleared"})
+                    Interrupt Cascade ({chkIndeterminate ? "Indeterminate" : "Normal"})
                   </Checkbox>
                   <Checkbox
                     id="test-chk-disabled"
-                    defaultChecked
                     disabled
+                    checked
                     onChange={() => setDisabledChkClicks((c) => c + 1)}
                   >
-                    Disabled Checked ({disabledChkClicks})
+                    Hardware Lock ({disabledChkClicks})
                   </Checkbox>
                 </div>
 
-                <div className="bevel-inset bg-background p-3 font-mono text-xs">
-                  <code>{`<Checkbox checked={checked} onChange={(e) => setChecked(e.target.checked)}>Label</Checkbox>`}</code>
+                <div className="bevel-inset bg-background p-3 font-mono text-xs overflow-x-auto">
+                  <code>{`<Checkbox checked={active} onChange={(e) => setActive(e.target.checked)}>Enable</Checkbox>`}</code>
                 </div>
               </CardContent>
             </Card>
@@ -326,7 +827,7 @@ export default function ComponentsPage() {
                   Radio
                 </h2>
                 <p className="font-mono text-xs text-muted-foreground">
-                  Mutual exclusion selection control with circular bevels and keyboard navigation.
+                  Square-frame radio selection group for mutually exclusive options.
                 </p>
               </div>
               <Badge variant="outline">@ditherweb/ui</Badge>
@@ -380,7 +881,7 @@ export default function ComponentsPage() {
                   </Radio>
                 </div>
 
-                <div className="bevel-inset bg-background p-3 font-mono text-xs">
+                <div className="bevel-inset bg-background p-3 font-mono text-xs overflow-x-auto">
                   <code>{`<Radio name="mode" value="vga" checked={val === "vga"} onChange={...}>VGA</Radio>`}</code>
                 </div>
               </CardContent>
@@ -425,7 +926,7 @@ export default function ComponentsPage() {
                   </Switch>
                 </div>
 
-                <div className="bevel-inset bg-background p-3 font-mono text-xs">
+                <div className="bevel-inset bg-background p-3 font-mono text-xs overflow-x-auto">
                   <code>{`<Switch checked={enabled} onChange={(e) => setEnabled(e.target.checked)}>Sound</Switch>`}</code>
                 </div>
               </CardContent>
@@ -442,49 +943,52 @@ export default function ComponentsPage() {
                   Card
                 </h2>
                 <p className="font-mono text-xs text-muted-foreground">
-                  Compound surface container with raised bevel framing and sub-components.
+                  Structured container primitive with default, raised, and sunken surfaces.
                 </p>
               </div>
               <Badge variant="outline">@ditherweb/ui</Badge>
             </div>
 
-            <Card>
-              <CardContent className="p-6 space-y-4">
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="text-sm font-mono">Archive Volume 01</CardTitle>
-                      <CardDescription className="text-xs font-mono">
-                        Floppy Disk 1.44MB
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent className="text-xs font-mono text-muted-foreground">
-                      Contains utility programs and dialer configuration files.
-                    </CardContent>
-                    <CardFooter className="flex justify-between text-xs font-mono">
-                      <span>Tracks: 80</span>
-                      <Button size="sm">Mount</Button>
-                    </CardFooter>
-                  </Card>
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+              <Card variant="default">
+                <CardHeader>
+                  <CardTitle>Default Card</CardTitle>
+                  <CardDescription>Flat surface with 2px hard border.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="font-mono text-xs text-muted-foreground">Standard card container for general UI layout grouping.</p>
+                </CardContent>
+                <CardFooter>
+                  <Badge variant="outline">STATUS: OK</Badge>
+                </CardFooter>
+              </Card>
 
-                  <Card className="bevel-inset bg-muted/20">
-                    <CardHeader>
-                      <CardTitle className="text-sm font-mono">Sunken Container</CardTitle>
-                      <CardDescription className="text-xs font-mono">
-                        Alternative Bevel Profile
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent className="text-xs font-mono text-muted-foreground">
-                      Cards can be paired with bevel-inset for sunken control decks.
-                    </CardContent>
-                  </Card>
-                </div>
+              <Card variant="raised">
+                <CardHeader>
+                  <CardTitle>Raised Card</CardTitle>
+                  <CardDescription>3D elevated window bevel.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="font-mono text-xs text-muted-foreground">Tactile elevated dialog frame appearance.</p>
+                </CardContent>
+                <CardFooter>
+                  <Button size="sm">Action</Button>
+                </CardFooter>
+              </Card>
 
-                <div className="bevel-inset bg-background p-3 font-mono text-xs">
-                  <code>{`<Card><CardHeader><CardTitle>Title</CardTitle></CardHeader><CardContent>...</CardContent></Card>`}</code>
-                </div>
-              </CardContent>
-            </Card>
+              <Card variant="inset">
+                <CardHeader>
+                  <CardTitle>Inset Card</CardTitle>
+                  <CardDescription>Inverted depressed well.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="font-mono text-xs text-muted-foreground">Depressed viewport style for data logs and terminal consoles.</p>
+                </CardContent>
+                <CardFooter>
+                  <Badge variant="secondary">CACHE HIT</Badge>
+                </CardFooter>
+              </Card>
+            </div>
           </section>
         )}
 
@@ -497,7 +1001,7 @@ export default function ComponentsPage() {
                   Separator
                 </h2>
                 <p className="font-mono text-xs text-muted-foreground">
-                  Grooved divider line providing authentic optical depth between layout sections.
+                  Geometric divider supporting horizontal and vertical orientations.
                 </p>
               </div>
               <Badge variant="outline">@ditherweb/ui</Badge>
@@ -506,31 +1010,15 @@ export default function ComponentsPage() {
             <Card>
               <CardContent className="p-6 space-y-6">
                 <div>
-                  <span className="font-mono text-xs text-muted-foreground mb-2 block">
-                    Horizontal Divider:
-                  </span>
-                  <div className="space-y-2 font-mono text-xs">
-                    <div>Upper Module</div>
-                    <Separator />
-                    <div>Lower Module</div>
-                  </div>
+                  <span className="font-mono text-xs text-muted-foreground">Horizontal Divider</span>
+                  <Separator className="my-3" />
                 </div>
-
-                <div>
-                  <span className="font-mono text-xs text-muted-foreground mb-2 block">
-                    Vertical Divider:
-                  </span>
-                  <div className="flex h-6 items-center gap-3 font-mono text-xs">
-                    <span>PORT 80</span>
-                    <Separator orientation="vertical" />
-                    <span>PORT 443</span>
-                    <Separator orientation="vertical" />
-                    <span>PORT 8080</span>
-                  </div>
-                </div>
-
-                <div className="bevel-inset bg-background p-3 font-mono text-xs">
-                  <code>{`<Separator orientation="horizontal" />`}</code>
+                <div className="flex items-center gap-4 h-8 font-mono text-xs">
+                  <span>Segment A</span>
+                  <Separator orientation="vertical" />
+                  <span>Segment B</span>
+                  <Separator orientation="vertical" />
+                  <span>Segment C</span>
                 </div>
               </CardContent>
             </Card>
@@ -565,7 +1053,7 @@ export default function ComponentsPage() {
                   <Badge variant="info">INFO</Badge>
                 </div>
 
-                <div className="bevel-inset bg-background p-3 font-mono text-xs">
+                <div className="bevel-inset bg-background p-3 font-mono text-xs overflow-x-auto">
                   <code>{`<Badge variant="success">ONLINE</Badge>`}</code>
                 </div>
               </CardContent>
@@ -620,7 +1108,7 @@ export default function ComponentsPage() {
                   </Alert>
                 </div>
 
-                <div className="bevel-inset bg-background p-3 font-mono text-xs">
+                <div className="bevel-inset bg-background p-3 font-mono text-xs overflow-x-auto">
                   <code>{`<Alert variant="destructive"><AlertTitle>Error</AlertTitle><AlertDescription>...</AlertDescription></Alert>`}</code>
                 </div>
               </CardContent>
@@ -631,12 +1119,12 @@ export default function ComponentsPage() {
 
       {/* Catalog Footer Link */}
       <div className="pt-6 border-t border-border flex justify-between items-center font-mono text-xs">
-        <Link href="/" className="text-muted-foreground hover:text-foreground">
+        <NextLink href="/" className="text-muted-foreground hover:text-foreground">
           ← Back to Homepage
-        </Link>
-        <Link href="/playground" className="text-primary hover:underline font-bold">
+        </NextLink>
+        <NextLink href="/playground" className="text-primary hover:underline font-bold">
           Experiment in Playground →
-        </Link>
+        </NextLink>
       </div>
     </div>
   );
