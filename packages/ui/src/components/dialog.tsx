@@ -94,17 +94,19 @@ export const DialogTrigger = React.forwardRef<HTMLButtonElement, DialogTriggerPr
     };
 
     if (asChild && React.isValidElement(children)) {
-      return React.cloneElement(children as React.ReactElement<any>, {
+      const child = children as React.ReactElement<
+        React.HTMLAttributes<HTMLElement> & { ref?: React.Ref<HTMLElement> }
+      >;
+      return React.cloneElement(child, {
         ref: (node: HTMLElement | null) => {
-          (triggerRef as any).current = node;
-          const childRef = (children as any).ref;
-          if (typeof childRef === "function") childRef(node);
-          else if (childRef) childRef.current = node;
-          if (typeof ref === "function") ref(node as any);
-          else if (ref) (ref as any).current = node;
+          if (triggerRef) {
+            (triggerRef as React.MutableRefObject<HTMLElement | null>).current = node;
+          }
+          if (typeof ref === "function") ref(node as HTMLButtonElement | null);
+          else if (ref && "current" in ref) (ref as React.MutableRefObject<HTMLButtonElement | null>).current = node as HTMLButtonElement | null;
         },
-        onClick: (e: React.MouseEvent<HTMLButtonElement>) => {
-          (children as any).props.onClick?.(e);
+        onClick: (e: React.MouseEvent<HTMLElement>) => {
+          child.props.onClick?.(e);
           if (!e.defaultPrevented) {
             setOpen(true);
           }
@@ -115,9 +117,11 @@ export const DialogTrigger = React.forwardRef<HTMLButtonElement, DialogTriggerPr
     return (
       <button
         ref={(node) => {
-          (triggerRef as any).current = node;
+          if (triggerRef) {
+            (triggerRef as React.MutableRefObject<HTMLElement | null>).current = node;
+          }
           if (typeof ref === "function") ref(node);
-          else if (ref) (ref as any).current = node;
+          else if (ref && "current" in ref) (ref as React.MutableRefObject<HTMLButtonElement | null>).current = node;
         }}
         type="button"
         onClick={handleClick}
@@ -135,7 +139,6 @@ export interface DialogContentProps extends React.HTMLAttributes<HTMLDivElement>
   closeOnOutsideClick?: boolean;
   closeOnEscape?: boolean;
   initialFocusRef?: React.RefObject<HTMLElement | null>;
-  showCloseButton?: boolean;
 }
 
 export const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps>(
@@ -146,12 +149,11 @@ export const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps
       closeOnOutsideClick = true,
       closeOnEscape = true,
       initialFocusRef,
-      showCloseButton = true,
       ...props
     },
     forwardedRef
   ) => {
-    const { open, setOpen, titleId, descriptionId, backdropVariant, triggerRef } = useDialogContext();
+    const { open, setOpen, titleId, descriptionId, backdropVariant } = useDialogContext();
     const contentRef = React.useRef<HTMLDivElement | null>(null);
 
     React.useImperativeHandle(forwardedRef, () => contentRef.current as HTMLDivElement);
@@ -262,22 +264,22 @@ export interface DialogTitleProps extends React.HTMLAttributes<HTMLHeadingElemen
 export const DialogTitle = React.forwardRef<HTMLHeadingElement, DialogTitleProps>(
   ({ as: Component = "h2", className, children, ...props }, ref) => {
     const { titleId } = useDialogContext();
-    return (
-      <Component
-        ref={ref as any}
-        id={titleId}
-        className={cn("text-sm font-bold tracking-wider uppercase truncate", className)}
-        {...props}
-      >
-        {children}
-      </Component>
+    return React.createElement(
+      Component,
+      {
+        ref,
+        id: titleId,
+        className: cn("text-sm font-bold tracking-wider uppercase truncate", className),
+        ...props,
+      },
+      children
     );
   }
 );
 DialogTitle.displayName = "DialogTitle";
 
 // --- Dialog Description ---
-export interface DialogDescriptionProps extends React.HTMLAttributes<HTMLParagraphElement> {}
+export type DialogDescriptionProps = React.HTMLAttributes<HTMLParagraphElement>;
 
 export const DialogDescription = React.forwardRef<HTMLParagraphElement, DialogDescriptionProps>(
   ({ className, ...props }, ref) => {
@@ -295,7 +297,7 @@ export const DialogDescription = React.forwardRef<HTMLParagraphElement, DialogDe
 DialogDescription.displayName = "DialogDescription";
 
 // --- Dialog Body ---
-export interface DialogBodyProps extends React.HTMLAttributes<HTMLDivElement> {}
+export type DialogBodyProps = React.HTMLAttributes<HTMLDivElement>;
 
 export const DialogBody = React.forwardRef<HTMLDivElement, DialogBodyProps>(
   ({ className, ...props }, ref) => {
@@ -305,7 +307,7 @@ export const DialogBody = React.forwardRef<HTMLDivElement, DialogBodyProps>(
 DialogBody.displayName = "DialogBody";
 
 // --- Dialog Footer ---
-export interface DialogFooterProps extends React.HTMLAttributes<HTMLDivElement> {}
+export type DialogFooterProps = React.HTMLAttributes<HTMLDivElement>;
 
 export const DialogFooter = React.forwardRef<HTMLDivElement, DialogFooterProps>(
   ({ className, ...props }, ref) => {
@@ -340,9 +342,10 @@ export const DialogClose = React.forwardRef<HTMLButtonElement, DialogCloseProps>
     };
 
     if (asChild && React.isValidElement(children)) {
-      return React.cloneElement(children as React.ReactElement<any>, {
-        onClick: (e: React.MouseEvent<HTMLButtonElement>) => {
-          (children as any).props.onClick?.(e);
+      const child = children as React.ReactElement<React.HTMLAttributes<HTMLElement>>;
+      return React.cloneElement(child, {
+        onClick: (e: React.MouseEvent<HTMLElement>) => {
+          child.props.onClick?.(e);
           if (!e.defaultPrevented) {
             setOpen(false);
           }

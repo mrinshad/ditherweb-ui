@@ -100,17 +100,19 @@ export const DrawerTrigger = React.forwardRef<HTMLButtonElement, DrawerTriggerPr
     };
 
     if (asChild && React.isValidElement(children)) {
-      return React.cloneElement(children as React.ReactElement<any>, {
+      const child = children as React.ReactElement<
+        React.HTMLAttributes<HTMLElement> & { ref?: React.Ref<HTMLElement> }
+      >;
+      return React.cloneElement(child, {
         ref: (node: HTMLElement | null) => {
-          (triggerRef as any).current = node;
-          const childRef = (children as any).ref;
-          if (typeof childRef === "function") childRef(node);
-          else if (childRef) childRef.current = node;
-          if (typeof ref === "function") ref(node as any);
-          else if (ref) (ref as any).current = node;
+          if (triggerRef) {
+            (triggerRef as React.MutableRefObject<HTMLElement | null>).current = node;
+          }
+          if (typeof ref === "function") ref(node as HTMLButtonElement | null);
+          else if (ref && "current" in ref) (ref as React.MutableRefObject<HTMLButtonElement | null>).current = node as HTMLButtonElement | null;
         },
-        onClick: (e: React.MouseEvent<HTMLButtonElement>) => {
-          (children as any).props.onClick?.(e);
+        onClick: (e: React.MouseEvent<HTMLElement>) => {
+          child.props.onClick?.(e);
           if (!e.defaultPrevented) {
             setOpen(true);
           }
@@ -121,9 +123,11 @@ export const DrawerTrigger = React.forwardRef<HTMLButtonElement, DrawerTriggerPr
     return (
       <button
         ref={(node) => {
-          (triggerRef as any).current = node;
+          if (triggerRef) {
+            (triggerRef as React.MutableRefObject<HTMLElement | null>).current = node;
+          }
           if (typeof ref === "function") ref(node);
-          else if (ref) (ref as any).current = node;
+          else if (ref && "current" in ref) (ref as React.MutableRefObject<HTMLButtonElement | null>).current = node;
         }}
         type="button"
         onClick={handleClick}
@@ -270,22 +274,22 @@ export interface DrawerTitleProps extends React.HTMLAttributes<HTMLHeadingElemen
 export const DrawerTitle = React.forwardRef<HTMLHeadingElement, DrawerTitleProps>(
   ({ as: Component = "h2", className, children, ...props }, ref) => {
     const { titleId } = useDrawerContext();
-    return (
-      <Component
-        ref={ref as any}
-        id={titleId}
-        className={cn("text-sm font-bold uppercase tracking-wider truncate", className)}
-        {...props}
-      >
-        {children}
-      </Component>
+    return React.createElement(
+      Component,
+      {
+        ref,
+        id: titleId,
+        className: cn("text-sm font-bold uppercase tracking-wider truncate", className),
+        ...props,
+      },
+      children
     );
   }
 );
 DrawerTitle.displayName = "DrawerTitle";
 
 // --- Drawer Description ---
-export interface DrawerDescriptionProps extends React.HTMLAttributes<HTMLParagraphElement> {}
+export type DrawerDescriptionProps = React.HTMLAttributes<HTMLParagraphElement>;
 
 export const DrawerDescription = React.forwardRef<HTMLParagraphElement, DrawerDescriptionProps>(
   ({ className, ...props }, ref) => {
@@ -303,7 +307,7 @@ export const DrawerDescription = React.forwardRef<HTMLParagraphElement, DrawerDe
 DrawerDescription.displayName = "DrawerDescription";
 
 // --- Drawer Body ---
-export interface DrawerBodyProps extends React.HTMLAttributes<HTMLDivElement> {}
+export type DrawerBodyProps = React.HTMLAttributes<HTMLDivElement>;
 
 export const DrawerBody = React.forwardRef<HTMLDivElement, DrawerBodyProps>(
   ({ className, ...props }, ref) => {
@@ -313,7 +317,7 @@ export const DrawerBody = React.forwardRef<HTMLDivElement, DrawerBodyProps>(
 DrawerBody.displayName = "DrawerBody";
 
 // --- Drawer Footer ---
-export interface DrawerFooterProps extends React.HTMLAttributes<HTMLDivElement> {}
+export type DrawerFooterProps = React.HTMLAttributes<HTMLDivElement>;
 
 export const DrawerFooter = React.forwardRef<HTMLDivElement, DrawerFooterProps>(
   ({ className, ...props }, ref) => {
@@ -348,9 +352,10 @@ export const DrawerClose = React.forwardRef<HTMLButtonElement, DrawerCloseProps>
     };
 
     if (asChild && React.isValidElement(children)) {
-      return React.cloneElement(children as React.ReactElement<any>, {
-        onClick: (e: React.MouseEvent<HTMLButtonElement>) => {
-          (children as any).props.onClick?.(e);
+      const child = children as React.ReactElement<React.HTMLAttributes<HTMLElement>>;
+      return React.cloneElement(child, {
+        onClick: (e: React.MouseEvent<HTMLElement>) => {
+          child.props.onClick?.(e);
           if (!e.defaultPrevented) {
             setOpen(false);
           }

@@ -153,14 +153,16 @@ export const HoverCardTrigger = React.forwardRef<HTMLElement, HoverCardTriggerPr
     };
 
     if (asChild && React.isValidElement(children)) {
-      return React.cloneElement(children as React.ReactElement<any>, {
+      const child = children as React.ReactElement<
+        React.HTMLAttributes<HTMLElement> & { ref?: React.Ref<HTMLElement> }
+      >;
+      return React.cloneElement(child, {
         ref: (node: HTMLElement | null) => {
-          (triggerRef as any).current = node;
-          const childRef = (children as any).ref;
-          if (typeof childRef === "function") childRef(node);
-          else if (childRef) childRef.current = node;
-          if (typeof ref === "function") ref(node as any);
-          else if (ref) (ref as any).current = node;
+          if (triggerRef) {
+            (triggerRef as React.MutableRefObject<HTMLElement | null>).current = node;
+          }
+          if (typeof ref === "function") ref(node);
+          else if (ref && "current" in ref) (ref as React.MutableRefObject<HTMLElement | null>).current = node;
         },
         onMouseEnter: onEnter,
         onMouseLeave: onLeave,
@@ -172,9 +174,11 @@ export const HoverCardTrigger = React.forwardRef<HTMLElement, HoverCardTriggerPr
     return (
       <span
         ref={(node) => {
-          (triggerRef as any).current = node;
+          if (triggerRef) {
+            (triggerRef as React.MutableRefObject<HTMLElement | null>).current = node;
+          }
           if (typeof ref === "function") ref(node);
-          else if (ref) (ref as any).current = node;
+          else if (ref && "current" in ref) (ref as React.MutableRefObject<HTMLElement | null>).current = node;
         }}
         onMouseEnter={onEnter}
         onMouseLeave={onLeave}

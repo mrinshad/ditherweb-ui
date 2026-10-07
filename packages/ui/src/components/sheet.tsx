@@ -100,17 +100,19 @@ export const SheetTrigger = React.forwardRef<HTMLButtonElement, SheetTriggerProp
     };
 
     if (asChild && React.isValidElement(children)) {
-      return React.cloneElement(children as React.ReactElement<any>, {
+      const child = children as React.ReactElement<
+        React.HTMLAttributes<HTMLElement> & { ref?: React.Ref<HTMLElement> }
+      >;
+      return React.cloneElement(child, {
         ref: (node: HTMLElement | null) => {
-          (triggerRef as any).current = node;
-          const childRef = (children as any).ref;
-          if (typeof childRef === "function") childRef(node);
-          else if (childRef) childRef.current = node;
-          if (typeof ref === "function") ref(node as any);
-          else if (ref) (ref as any).current = node;
+          if (triggerRef) {
+            (triggerRef as React.MutableRefObject<HTMLElement | null>).current = node;
+          }
+          if (typeof ref === "function") ref(node as HTMLButtonElement | null);
+          else if (ref && "current" in ref) (ref as React.MutableRefObject<HTMLButtonElement | null>).current = node as HTMLButtonElement | null;
         },
-        onClick: (e: React.MouseEvent<HTMLButtonElement>) => {
-          (children as any).props.onClick?.(e);
+        onClick: (e: React.MouseEvent<HTMLElement>) => {
+          child.props.onClick?.(e);
           if (!e.defaultPrevented) {
             setOpen(true);
           }
@@ -121,9 +123,11 @@ export const SheetTrigger = React.forwardRef<HTMLButtonElement, SheetTriggerProp
     return (
       <button
         ref={(node) => {
-          (triggerRef as any).current = node;
+          if (triggerRef) {
+            (triggerRef as React.MutableRefObject<HTMLElement | null>).current = node;
+          }
           if (typeof ref === "function") ref(node);
-          else if (ref) (ref as any).current = node;
+          else if (ref && "current" in ref) (ref as React.MutableRefObject<HTMLButtonElement | null>).current = node;
         }}
         type="button"
         onClick={handleClick}
@@ -267,22 +271,22 @@ export interface SheetTitleProps extends React.HTMLAttributes<HTMLHeadingElement
 export const SheetTitle = React.forwardRef<HTMLHeadingElement, SheetTitleProps>(
   ({ as: Component = "h2", className, children, ...props }, ref) => {
     const { titleId } = useSheetContext();
-    return (
-      <Component
-        ref={ref as any}
-        id={titleId}
-        className={cn("text-sm font-bold uppercase tracking-wider truncate", className)}
-        {...props}
-      >
-        {children}
-      </Component>
+    return React.createElement(
+      Component,
+      {
+        ref,
+        id: titleId,
+        className: cn("text-sm font-bold uppercase tracking-wider truncate", className),
+        ...props,
+      },
+      children
     );
   }
 );
 SheetTitle.displayName = "SheetTitle";
 
 // --- Sheet Description ---
-export interface SheetDescriptionProps extends React.HTMLAttributes<HTMLParagraphElement> {}
+export type SheetDescriptionProps = React.HTMLAttributes<HTMLParagraphElement>;
 
 export const SheetDescription = React.forwardRef<HTMLParagraphElement, SheetDescriptionProps>(
   ({ className, ...props }, ref) => {
@@ -300,7 +304,7 @@ export const SheetDescription = React.forwardRef<HTMLParagraphElement, SheetDesc
 SheetDescription.displayName = "SheetDescription";
 
 // --- Sheet Body ---
-export interface SheetBodyProps extends React.HTMLAttributes<HTMLDivElement> {}
+export type SheetBodyProps = React.HTMLAttributes<HTMLDivElement>;
 
 export const SheetBody = React.forwardRef<HTMLDivElement, SheetBodyProps>(
   ({ className, ...props }, ref) => {
@@ -310,7 +314,7 @@ export const SheetBody = React.forwardRef<HTMLDivElement, SheetBodyProps>(
 SheetBody.displayName = "SheetBody";
 
 // --- Sheet Footer ---
-export interface SheetFooterProps extends React.HTMLAttributes<HTMLDivElement> {}
+export type SheetFooterProps = React.HTMLAttributes<HTMLDivElement>;
 
 export const SheetFooter = React.forwardRef<HTMLDivElement, SheetFooterProps>(
   ({ className, ...props }, ref) => {
@@ -345,9 +349,10 @@ export const SheetClose = React.forwardRef<HTMLButtonElement, SheetCloseProps>(
     };
 
     if (asChild && React.isValidElement(children)) {
-      return React.cloneElement(children as React.ReactElement<any>, {
-        onClick: (e: React.MouseEvent<HTMLButtonElement>) => {
-          (children as any).props.onClick?.(e);
+      const child = children as React.ReactElement<React.HTMLAttributes<HTMLElement>>;
+      return React.cloneElement(child, {
+        onClick: (e: React.MouseEvent<HTMLElement>) => {
+          child.props.onClick?.(e);
           if (!e.defaultPrevented) {
             setOpen(false);
           }

@@ -1,4 +1,6 @@
-import { useEffect, useRef, useCallback } from "react";
+"use client";
+
+import { useEffect, useRef } from "react";
 
 // ============================================================================
 // Ditherweb — Overlay Utilities & Hooks

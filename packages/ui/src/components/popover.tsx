@@ -103,17 +103,19 @@ export const PopoverTrigger = React.forwardRef<HTMLButtonElement, PopoverTrigger
     };
 
     if (asChild && React.isValidElement(children)) {
-      return React.cloneElement(children as React.ReactElement<any>, {
+      const child = children as React.ReactElement<
+        React.HTMLAttributes<HTMLElement> & { ref?: React.Ref<HTMLElement> }
+      >;
+      return React.cloneElement(child, {
         ref: (node: HTMLElement | null) => {
-          (triggerRef as any).current = node;
-          const childRef = (children as any).ref;
-          if (typeof childRef === "function") childRef(node);
-          else if (childRef) childRef.current = node;
-          if (typeof ref === "function") ref(node as any);
-          else if (ref) (ref as any).current = node;
+          if (triggerRef) {
+            (triggerRef as React.MutableRefObject<HTMLElement | null>).current = node;
+          }
+          if (typeof ref === "function") ref(node as HTMLButtonElement | null);
+          else if (ref && "current" in ref) (ref as React.MutableRefObject<HTMLButtonElement | null>).current = node as HTMLButtonElement | null;
         },
-        onClick: (e: React.MouseEvent<HTMLButtonElement>) => {
-          (children as any).props.onClick?.(e);
+        onClick: (e: React.MouseEvent<HTMLElement>) => {
+          child.props.onClick?.(e);
           if (!e.defaultPrevented) {
             setOpen(!open);
           }
@@ -126,9 +128,11 @@ export const PopoverTrigger = React.forwardRef<HTMLButtonElement, PopoverTrigger
     return (
       <button
         ref={(node) => {
-          (triggerRef as any).current = node;
+          if (triggerRef) {
+            (triggerRef as React.MutableRefObject<HTMLElement | null>).current = node;
+          }
           if (typeof ref === "function") ref(node);
-          else if (ref) (ref as any).current = node;
+          else if (ref && "current" in ref) (ref as React.MutableRefObject<HTMLButtonElement | null>).current = node;
         }}
         type="button"
         aria-haspopup="dialog"
@@ -255,9 +259,10 @@ export const PopoverClose = React.forwardRef<HTMLButtonElement, PopoverCloseProp
     };
 
     if (asChild && React.isValidElement(children)) {
-      return React.cloneElement(children as React.ReactElement<any>, {
-        onClick: (e: React.MouseEvent<HTMLButtonElement>) => {
-          (children as any).props.onClick?.(e);
+      const child = children as React.ReactElement<React.HTMLAttributes<HTMLElement>>;
+      return React.cloneElement(child, {
+        onClick: (e: React.MouseEvent<HTMLElement>) => {
+          child.props.onClick?.(e);
           if (!e.defaultPrevented) {
             setOpen(false);
           }

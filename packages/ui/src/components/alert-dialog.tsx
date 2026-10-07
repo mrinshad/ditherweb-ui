@@ -97,17 +97,19 @@ export const AlertDialogTrigger = React.forwardRef<HTMLButtonElement, AlertDialo
     };
 
     if (asChild && React.isValidElement(children)) {
-      return React.cloneElement(children as React.ReactElement<any>, {
+      const child = children as React.ReactElement<
+        React.HTMLAttributes<HTMLElement> & { ref?: React.Ref<HTMLElement> }
+      >;
+      return React.cloneElement(child, {
         ref: (node: HTMLElement | null) => {
-          (triggerRef as any).current = node;
-          const childRef = (children as any).ref;
-          if (typeof childRef === "function") childRef(node);
-          else if (childRef) childRef.current = node;
-          if (typeof ref === "function") ref(node as any);
-          else if (ref) (ref as any).current = node;
+          if (triggerRef) {
+            (triggerRef as React.MutableRefObject<HTMLElement | null>).current = node;
+          }
+          if (typeof ref === "function") ref(node as HTMLButtonElement | null);
+          else if (ref && "current" in ref) (ref as React.MutableRefObject<HTMLButtonElement | null>).current = node as HTMLButtonElement | null;
         },
-        onClick: (e: React.MouseEvent<HTMLButtonElement>) => {
-          (children as any).props.onClick?.(e);
+        onClick: (e: React.MouseEvent<HTMLElement>) => {
+          child.props.onClick?.(e);
           if (!e.defaultPrevented) {
             setOpen(true);
           }
@@ -118,9 +120,11 @@ export const AlertDialogTrigger = React.forwardRef<HTMLButtonElement, AlertDialo
     return (
       <button
         ref={(node) => {
-          (triggerRef as any).current = node;
+          if (triggerRef) {
+            (triggerRef as React.MutableRefObject<HTMLElement | null>).current = node;
+          }
           if (typeof ref === "function") ref(node);
-          else if (ref) (ref as any).current = node;
+          else if (ref && "current" in ref) (ref as React.MutableRefObject<HTMLButtonElement | null>).current = node;
         }}
         type="button"
         onClick={handleClick}
@@ -195,7 +199,7 @@ export const AlertDialogContent = React.forwardRef<HTMLDivElement, AlertDialogCo
 AlertDialogContent.displayName = "AlertDialogContent";
 
 // --- AlertDialog Header ---
-export interface AlertDialogHeaderProps extends React.HTMLAttributes<HTMLDivElement> {}
+export type AlertDialogHeaderProps = React.HTMLAttributes<HTMLDivElement>;
 
 export const AlertDialogHeader = React.forwardRef<HTMLDivElement, AlertDialogHeaderProps>(
   ({ className, children, ...props }, ref) => {
@@ -223,22 +227,22 @@ export interface AlertDialogTitleProps extends React.HTMLAttributes<HTMLHeadingE
 export const AlertDialogTitle = React.forwardRef<HTMLHeadingElement, AlertDialogTitleProps>(
   ({ as: Component = "h2", className, children, ...props }, ref) => {
     const { titleId } = useAlertDialogContext();
-    return (
-      <Component
-        ref={ref as any}
-        id={titleId}
-        className={cn("text-base font-bold tracking-tight text-[var(--foreground)]", className)}
-        {...props}
-      >
-        {children}
-      </Component>
+    return React.createElement(
+      Component,
+      {
+        ref,
+        id: titleId,
+        className: cn("text-base font-bold tracking-tight text-[var(--foreground)]", className),
+        ...props,
+      },
+      children
     );
   }
 );
 AlertDialogTitle.displayName = "AlertDialogTitle";
 
 // --- AlertDialog Description ---
-export interface AlertDialogDescriptionProps extends React.HTMLAttributes<HTMLParagraphElement> {}
+export type AlertDialogDescriptionProps = React.HTMLAttributes<HTMLParagraphElement>;
 
 export const AlertDialogDescription = React.forwardRef<HTMLParagraphElement, AlertDialogDescriptionProps>(
   ({ className, ...props }, ref) => {
@@ -256,7 +260,7 @@ export const AlertDialogDescription = React.forwardRef<HTMLParagraphElement, Ale
 AlertDialogDescription.displayName = "AlertDialogDescription";
 
 // --- AlertDialog Body ---
-export interface AlertDialogBodyProps extends React.HTMLAttributes<HTMLDivElement> {}
+export type AlertDialogBodyProps = React.HTMLAttributes<HTMLDivElement>;
 
 export const AlertDialogBody = React.forwardRef<HTMLDivElement, AlertDialogBodyProps>(
   ({ className, ...props }, ref) => {
@@ -266,7 +270,7 @@ export const AlertDialogBody = React.forwardRef<HTMLDivElement, AlertDialogBodyP
 AlertDialogBody.displayName = "AlertDialogBody";
 
 // --- AlertDialog Footer ---
-export interface AlertDialogFooterProps extends React.HTMLAttributes<HTMLDivElement> {}
+export type AlertDialogFooterProps = React.HTMLAttributes<HTMLDivElement>;
 
 export const AlertDialogFooter = React.forwardRef<HTMLDivElement, AlertDialogFooterProps>(
   ({ className, ...props }, ref) => {
@@ -301,9 +305,10 @@ export const AlertDialogAction = React.forwardRef<HTMLButtonElement, AlertDialog
     };
 
     if (asChild && React.isValidElement(children)) {
-      return React.cloneElement(children as React.ReactElement<any>, {
-        onClick: (e: React.MouseEvent<HTMLButtonElement>) => {
-          (children as any).props.onClick?.(e);
+      const child = children as React.ReactElement<React.HTMLAttributes<HTMLElement>>;
+      return React.cloneElement(child, {
+        onClick: (e: React.MouseEvent<HTMLElement>) => {
+          child.props.onClick?.(e);
           if (!e.defaultPrevented) {
             setOpen(false);
           }
@@ -346,17 +351,19 @@ export const AlertDialogCancel = React.forwardRef<HTMLButtonElement, AlertDialog
     };
 
     if (asChild && React.isValidElement(children)) {
-      return React.cloneElement(children as React.ReactElement<any>, {
+      const child = children as React.ReactElement<
+        React.HTMLAttributes<HTMLElement> & { ref?: React.Ref<HTMLElement> }
+      >;
+      return React.cloneElement(child, {
         ref: (node: HTMLElement | null) => {
-          (cancelRef as any).current = node;
-          const childRef = (children as any).ref;
-          if (typeof childRef === "function") childRef(node);
-          else if (childRef) childRef.current = node;
-          if (typeof ref === "function") ref(node as any);
-          else if (ref) (ref as any).current = node;
+          if (cancelRef) {
+            (cancelRef as React.MutableRefObject<HTMLButtonElement | null>).current = node as HTMLButtonElement | null;
+          }
+          if (typeof ref === "function") ref(node as HTMLButtonElement | null);
+          else if (ref && "current" in ref) (ref as React.MutableRefObject<HTMLButtonElement | null>).current = node as HTMLButtonElement | null;
         },
-        onClick: (e: React.MouseEvent<HTMLButtonElement>) => {
-          (children as any).props.onClick?.(e);
+        onClick: (e: React.MouseEvent<HTMLElement>) => {
+          child.props.onClick?.(e);
           if (!e.defaultPrevented) {
             setOpen(false);
           }
@@ -367,9 +374,11 @@ export const AlertDialogCancel = React.forwardRef<HTMLButtonElement, AlertDialog
     return (
       <button
         ref={(node) => {
-          (cancelRef as any).current = node;
+          if (cancelRef) {
+            (cancelRef as React.MutableRefObject<HTMLButtonElement | null>).current = node;
+          }
           if (typeof ref === "function") ref(node);
-          else if (ref) (ref as any).current = node;
+          else if (ref && "current" in ref) (ref as React.MutableRefObject<HTMLButtonElement | null>).current = node;
         }}
         type="button"
         onClick={handleClick}

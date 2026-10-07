@@ -71,14 +71,10 @@ export function Tooltip({
   open: controlledOpen,
   defaultOpen = false,
   onOpenChange,
-  delayDuration,
   side = "top",
   align = "center",
   offset = 4,
 }: TooltipProps) {
-  const provider = React.useContext(TooltipProviderContext);
-  const delay = delayDuration ?? provider.defaultDelay;
-
   const [uncontrolledOpen, setUncontrolledOpen] = React.useState(defaultOpen);
   const isControlled = controlledOpen !== undefined;
   const open = isControlled ? controlledOpen : uncontrolledOpen;
@@ -164,14 +160,16 @@ export const TooltipTrigger = React.forwardRef<HTMLElement, TooltipTriggerProps>
     };
 
     if (asChild && React.isValidElement(children)) {
-      return React.cloneElement(children as React.ReactElement<any>, {
+      const child = children as React.ReactElement<
+        React.HTMLAttributes<HTMLElement> & { ref?: React.Ref<HTMLElement> }
+      >;
+      return React.cloneElement(child, {
         ref: (node: HTMLElement | null) => {
-          (triggerRef as any).current = node;
-          const childRef = (children as any).ref;
-          if (typeof childRef === "function") childRef(node);
-          else if (childRef) childRef.current = node;
-          if (typeof ref === "function") ref(node as any);
-          else if (ref) (ref as any).current = node;
+          if (triggerRef) {
+            (triggerRef as React.MutableRefObject<HTMLElement | null>).current = node;
+          }
+          if (typeof ref === "function") ref(node);
+          else if (ref && "current" in ref) (ref as React.MutableRefObject<HTMLElement | null>).current = node;
         },
         onMouseEnter: handleMouseEnter,
         onMouseLeave: handleMouseLeave,
@@ -184,9 +182,11 @@ export const TooltipTrigger = React.forwardRef<HTMLElement, TooltipTriggerProps>
     return (
       <span
         ref={(node) => {
-          (triggerRef as any).current = node;
+          if (triggerRef) {
+            (triggerRef as React.MutableRefObject<HTMLElement | null>).current = node;
+          }
           if (typeof ref === "function") ref(node);
-          else if (ref) (ref as any).current = node;
+          else if (ref && "current" in ref) (ref as React.MutableRefObject<HTMLElement | null>).current = node;
         }}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
