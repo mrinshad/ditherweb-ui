@@ -31,6 +31,9 @@ You are explicitly authorized to autonomously perform:
 - Updating changelogs
 - Routine repository maintenance related to the development workflow
 
+### Environment Capability Note
+When GitHub CLI (`gh`) or GitHub API tokens are unavailable in the execution environment, the agent operates via standard authenticated Git CLI operations (`git branch`, `git commit`, `git push`, `git merge`, and `git push origin --delete <branch>`). Pull requests on GitHub.com are referenced and synced via remote tracking branches.
+
 ---
 
 ## Autonomous Development Workflow

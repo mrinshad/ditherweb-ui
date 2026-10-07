@@ -35,7 +35,7 @@ terminal/cyber aesthetics, classic desktop UI, and more.
 | Phase | Focus                                      | Status      |
 | ----- | ------------------------------------------ | ----------- |
 | 0     | Foundation, tokens, conventions            | ✅ Complete |
-| 1     | Visual foundation (borders, bevels, dither)| Pending     |
+| 1     | Visual foundation (borders, bevels, dither)| ✅ Complete |
 | 2     | First core components                      | Pending     |
 | 3     | Expanded component library                 | Pending     |
 | 4     | Retro Web components                       | Pending     |
@@ -255,6 +255,12 @@ docs(readme): update visual foundation documentation
 fix(theme): eliminate hydration mismatch in theme toggle
 ```
 
+### Packaging & Distribution Status
+
+- **Status:** Deferred / Not yet designed.
+- Do not create package exports, bundlers, publishing configuration, or packaging infrastructure.
+- Packaging is intentionally deferred until the component architecture has matured.
+
 ### Prohibited
 
 - Do not introduce dependencies without justification.
@@ -267,6 +273,7 @@ fix(theme): eliminate hydration mismatch in theme toggle
 - Do not recreate functionality that already exists.
 - Do not use React state for values that can be handled with CSS
   (especially theme detection).
+- Do not implement npm packaging or bundler export infrastructure (deferred until component architecture matures).
 
 ---
 
