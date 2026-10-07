@@ -1,0 +1,293 @@
+/* ==========================================================================
+   DITHERWEB — Visual Primitives (Bevels, Borders, Shadows, Dither, Typography)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Base Primitives & Focus
+   -------------------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  border-color: var(--border);
+}
+
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+::selection {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+}
+
+/* --------------------------------------------------------------------------
+   Border System
+   -------------------------------------------------------------------------- */
+.border-default {
+  border-color: var(--border);
+}
+
+.border-strong {
+  border-color: var(--border-strong);
+}
+
+.border-raised {
+  border-width: 2px;
+  border-style: solid;
+  border-top-color: var(--bevel-light);
+  border-left-color: var(--bevel-light);
+  border-bottom-color: var(--bevel-dark);
+  border-right-color: var(--bevel-dark);
+}
+
+.border-inset {
+  border-width: 2px;
+  border-style: solid;
+  border-top-color: var(--bevel-dark);
+  border-left-color: var(--bevel-dark);
+  border-bottom-color: var(--bevel-light);
+  border-right-color: var(--bevel-light);
+}
+
+.pixel-border {
+  box-shadow: inset 0 0 0 1px var(--border);
+}
+
+.pixel-border-strong {
+  box-shadow: inset 0 0 0 1px var(--border-strong);
+}
+
+/* --------------------------------------------------------------------------
+   Bevel System
+   -------------------------------------------------------------------------- */
+.bevel-raised {
+  border-width: 2px;
+  border-style: solid;
+  border-top-color: var(--bevel-light);
+  border-left-color: var(--bevel-light);
+  border-bottom-color: var(--bevel-dark);
+  border-right-color: var(--bevel-dark);
+  background-color: var(--bevel-face);
+}
+
+.bevel-inset {
+  border-width: 2px;
+  border-style: solid;
+  border-top-color: var(--bevel-dark);
+  border-left-color: var(--bevel-dark);
+  border-bottom-color: var(--bevel-light);
+  border-right-color: var(--bevel-light);
+  background-color: var(--background);
+}
+
+.bevel-pressed {
+  border-width: 2px;
+  border-style: solid;
+  border-top-color: var(--bevel-dark);
+  border-left-color: var(--bevel-dark);
+  border-bottom-color: var(--bevel-light);
+  border-right-color: var(--bevel-light);
+  background-color: var(--bevel-face);
+}
+
+.bevel-flat {
+  border-width: 2px;
+  border-style: solid;
+  border-color: var(--border);
+  background-color: var(--bevel-face);
+}
+
+.bevel-ridge {
+  border-width: 2px;
+  border-style: ridge;
+  border-color: var(--border);
+}
+
+.bevel-groove {
+  border-width: 2px;
+  border-style: groove;
+  border-color: var(--border);
+}
+
+/* --------------------------------------------------------------------------
+   Shadow System
+   -------------------------------------------------------------------------- */
+.shadow-flat {
+  box-shadow: none;
+}
+
+.shadow-hard-sm {
+  box-shadow: 1px 1px 0 var(--shadow-hard-color);
+}
+
+.shadow-hard {
+  box-shadow: 2px 2px 0 var(--shadow-hard-color);
+}
+
+.shadow-hard-md {
+  box-shadow: 3px 3px 0 var(--shadow-hard-color);
+}
+
+.shadow-hard-lg {
+  box-shadow: 4px 4px 0 var(--shadow-hard-color);
+}
+
+.shadow-hard-xl {
+  box-shadow: 6px 6px 0 var(--shadow-hard-color);
+}
+
+.shadow-inset {
+  box-shadow: inset 2px 2px 0 var(--shadow-hard-color);
+}
+
+.shadow-raised {
+  box-shadow: 2px 2px 0 var(--shadow-hard-color);
+}
+
+/* --------------------------------------------------------------------------
+   Typography Hierarchy
+   -------------------------------------------------------------------------- */
+.text-display {
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+@media (min-width: 640px) {
+  .text-display {
+    font-size: 3rem;
+    line-height: 1.1;
+  }
+}
+
+.text-heading {
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+
+.text-body {
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-weight: 400;
+}
+
+.text-small {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 400;
+}
+
+.text-caption {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 400;
+  color: var(--muted-foreground);
+}
+
+.text-code,
+.font-code,
+.text-monospace,
+.font-monospace {
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    "SF Mono",
+    Menlo,
+    Consolas,
+    "Liberation Mono",
+    monospace;
+}
+
+/* --------------------------------------------------------------------------
+   Dither Patterns (Procedural SVG Data URIs)
+   -------------------------------------------------------------------------- */
+.dither-check,
+.dither-checker {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='2' height='2'%3E%3Crect x='0' y='0' width='1' height='1' fill='%23000' opacity='0.12'/%3E%3Crect x='1' y='1' width='1' height='1' fill='%23000' opacity='0.12'/%3E%3C/svg%3E");
+  background-size: 2px 2px;
+  image-rendering: pixelated;
+}
+
+:is(.dark) .dither-check,
+:is(.dark) .dither-checker,
+.dark .dither-check,
+.dark .dither-checker {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='2' height='2'%3E%3Crect x='0' y='0' width='1' height='1' fill='%23fff' opacity='0.10'/%3E%3Crect x='1' y='1' width='1' height='1' fill='%23fff' opacity='0.10'/%3E%3C/svg%3E");
+}
+
+.dither-bayer,
+.bg-dither-medium {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Crect x='0' y='0' width='1' height='1' fill='%23000' opacity='0.15'/%3E%3Crect x='2' y='2' width='1' height='1' fill='%23000' opacity='0.10'/%3E%3Crect x='2' y='0' width='1' height='1' fill='%23000' opacity='0.08'/%3E%3Crect x='0' y='2' width='1' height='1' fill='%23000' opacity='0.12'/%3E%3C/svg%3E");
+  background-size: 4px 4px;
+  image-rendering: pixelated;
+}
+
+:is(.dark) .dither-bayer,
+:is(.dark) .bg-dither-medium,
+.dark .dither-bayer,
+.dark .bg-dither-medium {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Crect x='0' y='0' width='1' height='1' fill='%23fff' opacity='0.12'/%3E%3Crect x='2' y='2' width='1' height='1' fill='%23fff' opacity='0.08'/%3E%3Crect x='2' y='0' width='1' height='1' fill='%23fff' opacity='0.06'/%3E%3Crect x='0' y='2' width='1' height='1' fill='%23fff' opacity='0.10'/%3E%3C/svg%3E");
+}
+
+.dither-fine,
+.bg-dither-fine {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='2' height='2'%3E%3Crect x='0' y='0' width='1' height='1' fill='%23000' opacity='0.08'/%3E%3C/svg%3E");
+  background-size: 2px 2px;
+  image-rendering: pixelated;
+}
+
+:is(.dark) .dither-fine,
+:is(.dark) .bg-dither-fine,
+.dark .dither-fine,
+.dark .bg-dither-fine {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='2' height='2'%3E%3Crect x='0' y='0' width='1' height='1' fill='%23fff' opacity='0.06'/%3E%3C/svg%3E");
+}
+
+.dither-dense,
+.bg-dither-coarse {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='2' height='2'%3E%3Crect x='0' y='0' width='1' height='1' fill='%23000' opacity='0.12'/%3E%3Crect x='1' y='0' width='1' height='1' fill='%23000' opacity='0.12'/%3E%3Crect x='0' y='1' width='1' height='1' fill='%23000' opacity='0.12'/%3E%3C/svg%3E");
+  background-size: 2px 2px;
+  image-rendering: pixelated;
+}
+
+:is(.dark) .dither-dense,
+:is(.dark) .bg-dither-coarse,
+.dark .dither-dense,
+.dark .bg-dither-coarse {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='2' height='2'%3E%3Crect x='0' y='0' width='1' height='1' fill='%23fff' opacity='0.10'/%3E%3Crect x='1' y='0' width='1' height='1' fill='%23fff' opacity='0.10'/%3E%3Crect x='0' y='1' width='1' height='1' fill='%23fff' opacity='0.10'/%3E%3C/svg%3E");
+}
+
+.dither-noise,
+.bg-dither-diagonal {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Crect x='0' y='1' width='1' height='1' fill='%23000' opacity='0.12'/%3E%3Crect x='1' y='3' width='1' height='1' fill='%23000' opacity='0.12'/%3E%3Crect x='2' y='0' width='1' height='1' fill='%23000' opacity='0.12'/%3E%3Crect x='3' y='2' width='1' height='1' fill='%23000' opacity='0.12'/%3E%3C/svg%3E");
+  background-size: 4px 4px;
+  image-rendering: pixelated;
+}
+
+:is(.dark) .dither-noise,
+:is(.dark) .bg-dither-diagonal,
+.dark .dither-noise,
+.dark .bg-dither-diagonal {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Crect x='0' y='1' width='1' height='1' fill='%23fff' opacity='0.10'/%3E%3Crect x='1' y='3' width='1' height='1' fill='%23fff' opacity='0.10'/%3E%3Crect x='2' y='0' width='1' height='1' fill='%23fff' opacity='0.10'/%3E%3Crect x='3' y='2' width='1' height='1' fill='%23fff' opacity='0.10'/%3E%3C/svg%3E");
+}
+
+.dither-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}

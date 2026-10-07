@@ -38,6 +38,7 @@ terminal/cyber aesthetics, classic desktop UI, and more.
 | 1     | Visual foundation (borders, bevels, dither)| ✅ Complete |
 | 2     | First 10 core components                   | ✅ Complete |
 | 2.5   | Product website & showcase architecture    | ✅ Complete |
+| 2.75  | Architecture separation & Component QA     | ✅ Complete |
 | 3     | Expanded component library                 | Pending     |
 | 4     | Retro Web components                       | Pending     |
 | 5     | Desktop / pixel components                 | Pending     |
@@ -49,15 +50,24 @@ terminal/cyber aesthetics, classic desktop UI, and more.
 
 ```
 ditherweb/
-├── app/                        # Next.js App Router (demo/docs site)
-│   ├── globals.css             # Design tokens + base styles + Tailwind
-│   ├── layout.tsx              # Root layout (dark mode, metadata)
-│   └── page.tsx                # Landing page
-├── components/
-│   └── ui/                     # Ditherweb component library
-├── lib/
-│   └── utils.ts                # Shared utilities (cn helper)
-├── public/                     # Static assets
+├── packages/
+│   └── ui/                     # Reusable Ditherweb UI component library (@ditherweb/ui)
+│       ├── src/
+│       │   ├── components/     # 10 foundational primitives (Button, Input, Card, etc.)
+│       │   ├── styles/         # tokens.css, primitives.css, index.css
+│       │   ├── lib/utils.ts    # Reusable utility helpers (cn)
+│       │   └── index.ts        # Public UI library exports
+│       ├── package.json
+│       └── tsconfig.json
+├── apps/
+│   └── website/                # Official Ditherweb documentation & showcase site
+│       ├── app/                # Next.js App Router (homepage, components, docs, playground)
+│       ├── components/site/    # Site-specific chrome (header, footer, theme toggle)
+│       ├── public/             # Static assets
+│       ├── package.json
+│       └── next.config.ts
+├── docs/
+│   └── component-qa.md         # Permanent Component QA checklist & methodology
 ├── .agents/
 │   └── skills/                 # Specialist agent skills
 │       ├── architect/          # Architecture & API design
@@ -94,16 +104,22 @@ You are the **Orchestrator** — the primary agent the user communicates with.
 
 - **Trivial tasks** (typo fix, small CSS change, single-file edit): Perform
   directly. Do not activate specialist skills.
-- **Component creation**: Activate `architect` → `visual-designer` →
-  `ui-engineer` → `accessibility-reviewer` → `qa-engineer` →
-  `documentation-engineer` → `git-release-engineer` (in that order, skipping any that aren't relevant).
+- **Component creation & evolution**: Follow the mandatory 8-step Component QA workflow:
+  1. *Architecture inspection*: Verify boundary in `packages/ui/src/components/`, zero extraneous dependencies.
+  2. *Visual design alignment*: Map semantic tokens, bevel directions, dither textures.
+  3. *Implementation with accessibility*: React `forwardRef`, typed props interface, semantic HTML, WCAG ARIA, high-contrast focus rings.
+  4. *Interactive testing*: Keyboard operation (`Enter`, `Space`, Arrows, `Escape`), hover, active depression.
+  5. *Light + dark mode visual QA*: Both themes verified on `#c0c0c0` and `#121316` backgrounds.
+  6. *Mobile + desktop inspection*: Validated at mobile (320px–640px) and desktop (≥1280px) viewports.
+  7. *Documentation & showcase addition*: Integrated into `apps/website` catalog and interactive playground.
+  8. *Autonomous Git lifecycle*: Milestone commit via `git-release-engineer`.
 - **Architecture decisions**: Activate `architect`.
 - **Visual/aesthetic changes**: Activate `visual-designer` + `ui-engineer`.
 - **Accessibility concerns**: Activate `accessibility-reviewer`.
 - **Bug fixes**: Investigate first. Activate the relevant specialist(s) based on
   where the bug lives.
 - **Documentation**: Activate `documentation-engineer`.
-- **Validation**: Activate `qa-engineer`.
+- **Validation**: Activate `qa-engineer` (enforcing `docs/component-qa.md`).
 - **Git/GitHub lifecycle**: Activate `git-release-engineer`. The Git agent autonomously handles the complete normal development lifecycle (branches, milestone commits, push, PR creation, review, merge, branch cleanup, tags, releases).
 
 ### Autonomous Development Pipeline
@@ -158,22 +174,22 @@ specialist is active.
   hard-code colors.
 - Custom CSS only for effects Tailwind cannot express cleanly (dithering,
   pixel patterns, CRT effects).
-- All tokens are defined in `app/globals.css`.
+- All tokens are defined in `packages/ui/src/styles/tokens.css` and `primitives.css`.
 
 ### Components
 
-- Components live in `components/ui/`.
+- Components live in `packages/ui/src/components/`.
 - One component per file. File name matches component: `button.tsx` → `Button`.
-- Use `cn()` from `@/lib/utils` for class merging.
+- Use `cn()` from `../lib/utils` within the UI package.
 - Use `forwardRef` for components wrapping native HTML elements.
-- Export both the component and its prop types.
+- Export both the component and its prop types from the file and `packages/ui/src/index.ts`.
 - Keep APIs small and predictable. Avoid prop explosion.
 
 ### Component File Pattern
 
 ```tsx
 import { forwardRef } from "react";
-import { cn } from "@/lib/utils";
+import { cn } from "../lib/utils";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "default" | "secondary" | "destructive";
@@ -201,7 +217,7 @@ export { Button, type ButtonProps };
 - Strict mode is enabled.
 - All components must have explicit prop types.
 - Use `interface` for prop types, not `type` (convention).
-- Use `@/` path alias for all project imports.
+- Internal imports use relative paths within `packages/ui/src`. Consumers use `@ditherweb/ui`.
 
 ### Dark Mode
 
@@ -234,12 +250,9 @@ export { Button, type ButtonProps };
 ### Imports
 
 ```tsx
-// External
-import { forwardRef } from "react";
-
-// Internal (use @/ alias)
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+// External / Package imports in consumers (apps/website)
+import { Button, Input, Card, cn } from "@ditherweb/ui";
+import "@ditherweb/ui/styles";
 ```
 
 ### Git Commits & Branch Policy

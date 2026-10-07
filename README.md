@@ -26,14 +26,35 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
-## Project Structure
+## Project Architecture
+
+Ditherweb is structured as an npm workspace monorepo with strict architectural separation between the reusable UI library and the consumer website:
 
 ```
-app/            → Next.js App Router (demo & visual foundation showcase)
-components/ui/  → Ditherweb component library (Phase 2+)
-lib/            → Shared utilities (cn, etc.)
-public/         → Static assets
+ditherweb/
+├── packages/
+│   └── ui/                  → Reusable Ditherweb UI library (@ditherweb/ui)
+│       ├── src/components/  → 10 foundational primitives (Button, Input, Card...)
+│       ├── src/styles/      → Design tokens, bevels, procedural dither patterns
+│       ├── src/lib/utils.ts → Utility helpers (cn)
+│       └── src/index.ts     → Public library entrypoint
+├── apps/
+│   └── website/             → Official website, documentation & playground
+│       ├── app/             → Next.js App Router (/, /components, /docs, /playground)
+│       └── components/site/ → Site chrome (header, footer, theme toggle)
+├── docs/
+│   └── component-qa.md      → Permanent Visual & Interactive QA Guide
 ```
+
+### Dependency Flow
+
+The dependency graph is strictly unidirectional:
+
+$$\text{apps/website} \longrightarrow \text{@ditherweb/ui}$$
+
+- `apps/website` consumes `@ditherweb/ui` via standard workspace dependencies.
+- `packages/ui` has **zero** knowledge of `apps/website` and zero site-specific dependencies.
+- UI library components can scale and evolve independently without inflating or coupling to website code.
 
 ---
 
@@ -105,18 +126,18 @@ Theme-aware across light and dark modes with translucent pixel fills for natural
 
 ## Phase 2: Foundational Core Components
 
-Phase 2 established the first 10 production-grade Ditherweb components in `components/ui/`:
+Phase 2 established the first 10 production-grade Ditherweb components in `packages/ui/src/components/`:
 
-1. **Button** (`components/ui/button.tsx`) — Tactile action trigger with raised bevels, active depression, loading spinner, and 6 variants (`default`, `primary`, `secondary`, `destructive`, `ghost`, `outline`).
-2. **Input** (`components/ui/input.tsx`) — Monospace text input with sunken bevels, invalid validation styles, and accessible focus rings.
-3. **Label** (`components/ui/label.tsx`) — Accessible form control label with htmlFor association.
-4. **Checkbox** (`components/ui/checkbox.tsx`) — Binary toggle control with classic square sunken bevel and checkmark glyph.
-5. **Radio** (`components/ui/radio.tsx`) — Mutual exclusion control with circular bevels.
-6. **Switch** (`components/ui/switch.tsx`) — Mechanical sliding toggle with sunken track and raised thumb.
-7. **Card** (`components/ui/card.tsx`) — Modular container with CardHeader, CardTitle, CardDescription, CardContent, CardFooter.
-8. **Badge** (`components/ui/badge.tsx`) — Pixel-framed status tag with 8 variants (`default`, `primary`, `secondary`, `success`, `warning`, `destructive`, `info`, `outline`).
-9. **Alert** (`components/ui/alert.tsx`) — Accessible alert notification (`role="alert"` / `role="status"`) with distinct chromatic framing.
-10. **Separator** (`components/ui/separator.tsx`) — Grooved horizontal and vertical layout dividers.
+1. **Button** (`packages/ui/src/components/button.tsx`) — Tactile action trigger with raised bevels, active depression, loading spinner, and 6 variants (`default`, `primary`, `secondary`, `destructive`, `ghost`, `outline`).
+2. **Input** (`packages/ui/src/components/input.tsx`) — Monospace text input with sunken bevels, invalid validation styles, and accessible focus rings.
+3. **Label** (`packages/ui/src/components/label.tsx`) — Accessible form control label with htmlFor association.
+4. **Checkbox** (`packages/ui/src/components/checkbox.tsx`) — Binary toggle control with classic square sunken bevel and checkmark glyph.
+5. **Radio** (`packages/ui/src/components/radio.tsx`) — Mutual exclusion control with circular bevels.
+6. **Switch** (`packages/ui/src/components/switch.tsx`) — Mechanical sliding toggle with sunken track and raised thumb.
+7. **Card** (`packages/ui/src/components/card.tsx`) — Modular container with CardHeader, CardTitle, CardDescription, CardContent, CardFooter.
+8. **Badge** (`packages/ui/src/components/badge.tsx`) — Pixel-framed status tag with 8 variants (`default`, `primary`, `secondary`, `success`, `warning`, `destructive`, `info`, `outline`).
+9. **Alert** (`packages/ui/src/components/alert.tsx`) — Accessible alert notification (`role="alert"` / `role="status"`) with distinct chromatic framing.
+10. **Separator** (`packages/ui/src/components/separator.tsx`) — Grooved horizontal and vertical layout dividers.
 
 ---
 
@@ -133,12 +154,31 @@ Phase 2.5 transformed Ditherweb into a product website with modern presentation 
 
 ---
 
+## Phase 2.75: Architecture Separation & Component Visual QA Foundation
+
+Phase 2.75 isolated the reusable library into its own package and instituted automated-ready visual and interactive quality assurance:
+
+- **Library Monorepo Extraction (`packages/ui`)**:
+  - Reusable package `@ditherweb/ui` contains all 10 core primitives, design tokens, bevel primitives, procedural dither textures, and the `cn` utility.
+  - Zero coupling to the website application or site chrome.
+- **Consumer Website Isolation (`apps/website`)**:
+  - Next.js application cleanly consumes `@ditherweb/ui` via workspace dependency.
+  - Tailwind v4 configured with `@source` and Turbopack CSS loaders for cross-package compilation.
+- **Permanent Component QA Protocol (`docs/component-qa.md`)**:
+  - Formal 4-phase lifecycle: Pre-Implementation, Implementation QA, Visual QA Matrix, and Final Validation.
+  - Enforced across specialist skills (`qa-engineer`, `AGENTS.md`).
+- **Visual Baseline Verification**:
+  - Headless Chrome screenshot verification established across light mode (`#c0c0c0` canvas), dark mode (`#121316` canvas), mobile viewports (320px–640px), and desktop viewports (≥1280px).
+
+---
+
 ## Status
 
 - **Phase 0** — Architecture & Environment Setup (Complete & Validated ✅)
 - **Phase 1** — Visual Foundation & Primitives (Complete & Validated ✅)
 - **Phase 2** — Core Component Primitives (Complete & Validated ✅)
 - **Phase 2.5** — Product Website & Showcase Architecture (Complete & Validated ✅)
+- **Phase 2.75** — Architecture Separation & Component Visual QA (Complete & Validated ✅)
 - **Phase 3** — Interactive Overlays & Navigation (Pending)
 - **Phase 4** — Retro Web Components (Pending)
 - **Phase 5** — Desktop / Pixel Components (Pending)
