@@ -34,7 +34,7 @@ Ditherweb is structured as an npm workspace monorepo with strict architectural s
 ditherweb/
 ├── packages/
 │   └── ui/                  → Reusable Ditherweb UI library (@ditherweb/ui)
-│       ├── src/components/  → 46 primitives (10 Core, 8 Typography, 8 Layout, 10 Forms/Selection, 10 Surfaces/Feedback)
+│       ├── src/components/  → 56 primitives (10 Core, 8 Typography, 8 Layout, 10 Forms/Selection, 10 Surfaces/Feedback, 10 Overlays/Layered Interaction)
 │       ├── src/styles/      → Design tokens, bevels, procedural dither patterns
 │       ├── src/lib/utils.ts → Utility helpers (cn)
 │       └── src/index.ts     → Public library entrypoint
@@ -248,6 +248,30 @@ Phase 3C added 10 production surfaces and feedback primitives to `@ditherweb/ui`
 
 ---
 
+## Phase 3D: Overlays & Layered Interaction
+
+Phase 3D implemented 10 zero-dependency overlay and layered interaction components in `@ditherweb/ui` adhering to strict focus management, keyboard accessibility (Tab cycling, Escape handling), scroll locking, and retro window/panel styling:
+
+### 1. Infrastructure Primitives (3)
+1. **Portal** (`packages/ui/src/components/portal.tsx`) — SSR-safe DOM teleportation primitive rendering children into `#ditherweb-portal-root` on document body with zero hydration mismatch.
+2. **Backdrop** (`packages/ui/src/components/backdrop.tsx`) — Layered fixed backdrop featuring `dimmed`, `dither` stipple texture, and `transparent` variants with outside-click dismissal.
+3. **Overlay** (`packages/ui/src/components/overlay.tsx`) — Low-level composable overlay orchestrator coordinating body scroll locking, Escape propagation, outside-click detection, and backdrop integration.
+
+### 2. Modals & Dialogs (2)
+4. **Dialog** (`packages/ui/src/components/dialog.tsx`) — Classic retro desktop window modal with 3D raised bevel (`bevel-raised`), retro titlebar (`retro-window-titlebar`), close button (`✕`), Tab focus trap, and Escape handling (`Dialog`, `DialogTrigger`, `DialogContent`, `DialogHeader`, `DialogTitle`, `DialogDescription`, `DialogBody`, `DialogFooter`, `DialogClose`).
+5. **AlertDialog** (`packages/ui/src/components/alert-dialog.tsx`) — Critical confirmation modal (`role="alertdialog"`) with destructive warning header, cancellation focus priority on mount, and required explicit action (`AlertDialog`, `AlertDialogTrigger`, `AlertDialogContent`, `AlertDialogHeader`, `AlertDialogTitle`, `AlertDialogDescription`, `AlertDialogBody`, `AlertDialogFooter`, `AlertDialogAction`, `AlertDialogCancel`).
+
+### 3. Contextual Overlays (3)
+6. **Popover** (`packages/ui/src/components/popover.tsx`) — Anchored floating contextual panel with viewport collision detection, flip support, outside-click capture, and Escape dismiss (`Popover`, `PopoverTrigger`, `PopoverContent`, `PopoverClose`).
+7. **Tooltip** (`packages/ui/src/components/tooltip.tsx`) — Compact pixel-bordered informational hint that responds to hover and keyboard focus with configurable delay (`TooltipProvider`, `Tooltip`, `TooltipTrigger`, `TooltipContent`).
+8. **HoverCard** (`packages/ui/src/components/hover-card.tsx`) — Rich interactive preview card with hover intent grace period, allowing users to move their pointer into card links and controls without closing (`HoverCard`, `HoverCardTrigger`, `HoverCardContent`).
+
+### 4. Sliders & Off-Canvas Panels (2)
+9. **Drawer** (`packages/ui/src/components/drawer.tsx`) — Off-canvas sliding drawer supporting multi-directional anchoring (`bottom`, `top`, `left`, `right`), grab handle, body scroll locking, and focus trapping (`Drawer`, `DrawerTrigger`, `DrawerContent`, `DrawerHeader`, `DrawerTitle`, `DrawerDescription`, `DrawerBody`, `DrawerFooter`, `DrawerClose`).
+10. **Sheet** (`packages/ui/src/components/sheet.tsx`) — High-density slide-over side panel for complex inspectors, forms, and navigations with titlebar, scrollable body, and structured footer (`Sheet`, `SheetTrigger`, `SheetContent`, `SheetHeader`, `SheetTitle`, `SheetDescription`, `SheetBody`, `SheetFooter`, `SheetClose`).
+
+---
+
 ## Status
 
 - **Phase 0** — Architecture & Environment Setup (Complete & Validated ✅)
@@ -258,7 +282,8 @@ Phase 3C added 10 production surfaces and feedback primitives to `@ditherweb/ui`
 - **Phase 3A** — Typography & Foundational Layout Primitives (Complete & Validated ✅)
 - **Phase 3B** — Forms & Selection Primitives (Complete & Validated ✅)
 - **Phase 3C** — Surfaces & Feedback Primitives (Complete & Validated ✅)
-- **Phase 3D** — Overlays & Navigation (Pending)
+- **Phase 3D** — Overlays & Layered Interaction (Complete & Validated ✅)
+- **Phase 3E** — Navigation & Menus (Pending)
 - **Phase 4** — Retro Web Components (Pending)
 - **Phase 5** — Desktop / Pixel Components (Pending)
 - **Phase 6** — Advanced Effects & Packaging (Pending)

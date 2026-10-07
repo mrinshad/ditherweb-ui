@@ -42,7 +42,8 @@ terminal/cyber aesthetics, classic desktop UI, and more.
 | 3A    | Typography & layout primitives (16 comps)  | ✅ Complete |
 | 3B    | Forms & selection components (10 comps)    | ✅ Complete |
 | 3C    | Surfaces & feedback (10 comps)             | ✅ Complete |
-| 3D    | Overlays & navigation (Dialog, Menu, etc.) | Pending     |
+| 3D    | Overlays & layered interaction (10 comps)  | ✅ Complete |
+| 3E    | Navigation & menus                         | Pending     |
 | 4     | Retro Web components                       | Pending     |
 | 5     | Desktop / pixel components                 | Pending     |
 | 6     | Advanced effects & dithering engine        | Pending     |
@@ -56,7 +57,7 @@ ditherweb/
 ├── packages/
 │   └── ui/                     # Reusable Ditherweb UI component library (@ditherweb/ui)
 │       ├── src/
-│       │   ├── components/     # 46 primitives (10 Core, 8 Typography, 8 Layout, 10 Forms/Selection, 10 Surfaces/Feedback)
+│       │   ├── components/     # 56 primitives (10 Core, 8 Typography, 8 Layout, 10 Forms/Selection, 10 Surfaces/Feedback, 10 Overlays/Interaction)
 │       │   ├── styles/         # tokens.css, primitives.css, index.css
 │       │   ├── lib/utils.ts    # Reusable utility helpers (cn)
 │       │   └── index.ts        # Public UI library exports
