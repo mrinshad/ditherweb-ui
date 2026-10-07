@@ -48,27 +48,27 @@ export default function RetroPanel() {
   return (
     <div className="flex flex-col space-y-16 pb-16">
       {/* 1. Hero Section */}
-      <section className="w-full border-b border-border bg-black text-white relative overflow-hidden py-12 sm:py-16 lg:py-20">
+      <section className="w-full border-b border-border bg-background dark:bg-black text-foreground dark:text-white relative overflow-hidden pt-12 sm:pt-16 pb-12 sm:pb-16 lg:py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full">
           <div className="grid grid-cols-1 items-center gap-10 lg:gap-8 xl:gap-12 lg:grid-cols-12">
             {/* Left Column: Headlines & CTAs */}
             <div className="space-y-6 lg:col-span-6 xl:col-span-6 z-10">
               <div className="flex flex-wrap items-center gap-2">
-                <Badge variant="primary" className="bg-white text-black font-mono font-bold text-xs uppercase px-2.5 py-0.5 rounded-none">
+                <Badge variant="primary" className="bg-black text-white dark:bg-white dark:text-black font-mono font-bold text-xs uppercase px-2.5 py-0.5 rounded-none">
                   Next-Gen Retro UI
                 </Badge>
-                <Badge variant="outline" className="border-zinc-700 text-zinc-400 font-mono text-xs uppercase px-2.5 py-0.5 rounded-none">
+                <Badge variant="outline" className="border-border dark:border-zinc-700 text-muted-foreground dark:text-zinc-400 font-mono text-xs uppercase px-2.5 py-0.5 rounded-none">
                   React 19 • TypeScript • Tailwind
                 </Badge>
               </div>
 
               <div className="space-y-4">
-                <h1 className="font-mono text-3xl sm:text-4xl lg:text-[40px] xl:text-[45px] font-extrabold uppercase tracking-tight text-white leading-[1.1]">
+                <h1 className="font-mono text-3xl sm:text-4xl lg:text-[40px] xl:text-[45px] font-extrabold uppercase tracking-tight text-foreground dark:text-white leading-[1.1]">
                   DITHERWEB — RETRO<br />
                   APPEARANCE.<br />
                   MODERN ENGINEERING.
                 </h1>
-                <p className="font-mono text-sm sm:text-base text-zinc-400 leading-relaxed max-w-xl">
+                <p className="font-mono text-sm sm:text-base text-muted-foreground dark:text-zinc-400 leading-relaxed max-w-xl">
                   A retro-inspired React UI framework and component library built with clean primitives, modern tooling, and zero runtime bloat. Classic aesthetics. Production-ready engineering.
                 </p>
               </div>
@@ -76,12 +76,12 @@ export default function RetroPanel() {
               {/* CTAs */}
               <div className="flex flex-wrap items-center gap-3 pt-2">
                 <Link href="/components">
-                  <Button variant="primary" size="lg" className="bg-white text-black hover:bg-zinc-200">
+                  <Button variant="primary" size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 dark:bg-white dark:text-black dark:hover:bg-zinc-200">
                     Explore Components →
                   </Button>
                 </Link>
                 <Link href="/playground">
-                  <Button variant="outline" size="lg" className="border-zinc-700 text-zinc-300 hover:bg-zinc-900">
+                  <Button variant="outline" size="lg" className="border-border text-foreground hover:bg-muted dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-900">
                     Interactive Playground
                   </Button>
                 </Link>
@@ -90,8 +90,8 @@ export default function RetroPanel() {
 
             {/* Right Column: Atmospheric Ditherweb Artwork */}
             <div className="relative lg:static flex items-center justify-center lg:justify-end lg:col-span-6 xl:col-span-6 w-full">
-              <div className="relative w-full lg:absolute lg:inset-y-0 lg:right-0 lg:w-[48%] xl:w-[50%] 2xl:w-[48%] flex items-center justify-center lg:justify-end pointer-events-none overflow-hidden">
-                <div className="relative w-full h-full flex items-center justify-center lg:justify-end">
+              <div className="relative w-full lg:absolute lg:bottom-0 lg:right-0 lg:w-[48%] xl:w-[50%] 2xl:w-[48%] flex items-end justify-center lg:justify-end pointer-events-none overflow-hidden">
+                <div className="relative w-full flex items-end justify-center lg:justify-end">
                   <Image
                     src="/images/hero-artwork.jpg"
                     alt="Retro desktop workstation at night with a dithered CRT monitor displaying Ditherweb, mechanical keyboard, programming books, and a moonlit city skyline outside the window"
@@ -99,15 +99,16 @@ export default function RetroPanel() {
                     height={576}
                     priority
                     sizes="(min-width: 1280px) 50vw, (min-width: 1024px) 48vw, 100vw"
-                    className="w-full h-auto lg:h-[94%] xl:h-[96%] lg:w-auto max-h-[580px] object-contain object-right block select-none"
+                    className="w-full h-auto lg:h-auto lg:max-h-[460px] xl:max-h-[500px] 2xl:max-h-[540px] lg:w-auto object-contain object-right-bottom block select-none transition-[filter] duration-200"
                     style={{
+                      filter: "var(--hero-artwork-filter)",
                       maskImage: "linear-gradient(to right, transparent 0%, black 18%, black 100%)",
                       WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 18%, black 100%)",
                     }}
                   />
                   {/* Complementary subtle gradient overlay on the left edge for cross-browser dissolve */}
                   <div
-                    className="pointer-events-none absolute inset-y-0 left-0 w-16 sm:w-24 lg:w-32 bg-gradient-to-r from-black via-black/85 to-transparent"
+                    className="pointer-events-none absolute inset-y-0 left-0 w-16 sm:w-24 lg:w-32 bg-gradient-to-r from-background via-background/85 to-transparent dark:from-black dark:via-black/85 dark:to-transparent"
                     aria-hidden="true"
                   />
                 </div>
