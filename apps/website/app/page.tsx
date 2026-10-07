@@ -214,11 +214,11 @@ export default function RetroPanel() {
 
           {/* Dithering Showcase */}
           <div className="space-y-3">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
               <h3 className="font-mono text-xs font-bold uppercase tracking-wider text-foreground">
                 1. Procedural Bayer Dither Matrices
               </h3>
-              <div className="flex items-center gap-1 font-mono text-xs">
+              <div className="flex flex-wrap items-center gap-1 font-mono text-xs">
                 {(["fine", "medium", "coarse", "diagonal"] as const).map((density) => (
                   <button
                     key={density}

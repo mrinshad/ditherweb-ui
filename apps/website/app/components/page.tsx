@@ -1337,7 +1337,7 @@ export default function ComponentsPage() {
 
             <Card>
               <CardContent className="p-6 space-y-4">
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                   <div className="space-y-2">
                     <Label htmlFor="test-input-live">Active Hardware Address</Label>
                     <Input
@@ -1356,6 +1356,14 @@ export default function ComponentsPage() {
                       id="test-input-disabled"
                       disabled
                       defaultValue="READ_ONLY_0xFF"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="test-input-invalid">Invalid Parity Block</Label>
+                    <Input
+                      id="test-input-invalid"
+                      invalid
+                      defaultValue="BAD_CHECKSUM"
                     />
                   </div>
                 </div>
