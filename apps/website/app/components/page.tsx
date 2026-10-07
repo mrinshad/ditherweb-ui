@@ -50,9 +50,32 @@ import {
   FieldLabel,
   FieldDescription,
   FieldError,
+  Panel,
+  PanelHeader,
+  PanelTitle,
+  PanelDescription,
+  PanelContent,
+  PanelFooter,
+  GroupBox,
+  GroupBoxLegend,
+  Well,
+  Inset,
+  Progress,
+  Spinner,
+  Skeleton,
+  EmptyState,
+  EmptyStateIcon,
+  EmptyStateTitle,
+  EmptyStateDescription,
+  EmptyStateAction,
+  Result,
+  ResultTitle,
+  ResultDescription,
+  ResultAction,
+  Loading,
 } from "@ditherweb/ui";
 
-type Category = "all" | "forms" | "typography" | "layout" | "input" | "feedback";
+type Category = "all" | "surfaces" | "forms" | "typography" | "layout" | "input" | "feedback";
 
 export default function ComponentsPage() {
   const [category, setCategory] = useState<Category>("all");
@@ -80,14 +103,20 @@ export default function ComponentsPage() {
   const [toggleGroupVal, setToggleGroupVal] = useState("center");
   const [fieldInputVal, setFieldInputVal] = useState("");
 
+  // Phase 3C states
+  const [progressVal, setProgressVal] = useState(65);
+  const [emptyStateClicks, setEmptyStateClicks] = useState(0);
+  const [resultActionClicks, setResultActionClicks] = useState(0);
+  const [groupBoxDisabled, setGroupBoxDisabled] = useState(false);
+
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 space-y-12">
       {/* Page Header */}
       <div className="space-y-4">
         <div className="flex items-center gap-2">
-          <Badge variant="primary">Phase 3B Suite</Badge>
+          <Badge variant="primary">Phase 3C Suite</Badge>
           <span className="font-mono text-xs text-muted-foreground">
-            36 Production Primitives
+            46 Production Primitives
           </span>
         </div>
         <h1 className="font-mono text-3xl font-bold uppercase tracking-tight text-foreground sm:text-4xl">
@@ -96,7 +125,7 @@ export default function ComponentsPage() {
         <p className="font-mono text-sm text-muted-foreground max-w-2xl leading-relaxed">
           Every Ditherweb component is built with native accessibility semantics,
           typed props, and calibrated retro CSS tokens. Inspect interactive states,
-          typography hierarchy, layout primitives, forms, and implementation details.
+          typography hierarchy, layout primitives, forms, surfaces, and feedback components.
         </p>
 
         {/* Filter Tabs */}
@@ -108,7 +137,16 @@ export default function ComponentsPage() {
               category === "all" ? "bevel-inset bg-muted text-primary" : "bevel-raised"
             }`}
           >
-            All Primitives (36)
+            All Primitives (46)
+          </button>
+          <button
+            type="button"
+            onClick={() => setCategory("surfaces")}
+            className={`px-3 py-1 font-bold ${
+              category === "surfaces" ? "bevel-inset bg-muted text-primary" : "bevel-raised"
+            }`}
+          >
+            Surfaces & Feedback (10)
           </button>
           <button
             type="button"
@@ -1757,6 +1795,480 @@ export default function ComponentsPage() {
               </CardContent>
             </Card>
           </section>
+        )}
+
+        {/* --- Phase 3C: Surfaces & Feedback Primitives --- */}
+        {(category === "all" || category === "surfaces") && (
+          <>
+            {/* Panel */}
+            <section id="panel" className="space-y-4 scroll-mt-20">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="font-mono text-xl font-bold uppercase tracking-tight text-foreground flex items-center gap-2">
+                    Panel
+                    <Badge variant="primary">Phase 3C Primitive</Badge>
+                  </h2>
+                  <p className="font-mono text-xs text-muted-foreground">
+                    Generic application and content surface with compound header, title, description, content, and footer layout.
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <Panel id="test-panel-compound">
+                  <PanelHeader id="test-panel-header">
+                    <PanelTitle id="test-panel-title">System Architecture Panel</PanelTitle>
+                    <PanelDescription id="test-panel-description">
+                      Configured for ISA bus arbitration and memory layout.
+                    </PanelDescription>
+                  </PanelHeader>
+                  <PanelContent id="test-panel-content" className="space-y-2 text-xs">
+                    <p>Conventional Memory: 640 KB Base RAM</p>
+                    <p>Expanded Memory (EMS 4.0): 2,048 KB Paged</p>
+                    <p>Extended Memory (XMS): 8,192 KB High Memory</p>
+                  </PanelContent>
+                  <PanelFooter id="test-panel-footer" className="justify-between">
+                    <span className="text-xs text-muted-foreground">Status: NOMINAL</span>
+                    <Button size="sm">Diagnostics</Button>
+                  </PanelFooter>
+                </Panel>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <Panel variant="raised" id="test-panel-raised" className="p-4 flex flex-col justify-between">
+                    <div>
+                      <h4 className="font-bold text-xs uppercase mb-1">Raised Panel</h4>
+                      <p className="text-xs text-muted-foreground">Tactile 3D bevel face.</p>
+                    </div>
+                    <Badge variant="outline" className="mt-4 self-start">Raised</Badge>
+                  </Panel>
+                  <Panel variant="inset" id="test-panel-inset" className="p-4 flex flex-col justify-between">
+                    <div>
+                      <h4 className="font-bold text-xs uppercase mb-1">Inset Panel</h4>
+                      <p className="text-xs text-muted-foreground">Sunken cavity surface.</p>
+                    </div>
+                    <Badge variant="outline" className="mt-4 self-start">Inset</Badge>
+                  </Panel>
+                  <Panel variant="flat" id="test-panel-flat" className="p-4 flex flex-col justify-between">
+                    <div>
+                      <h4 className="font-bold text-xs uppercase mb-1">Flat Panel</h4>
+                      <p className="text-xs text-muted-foreground">Bevel flat border.</p>
+                    </div>
+                    <Badge variant="outline" className="mt-4 self-start">Flat</Badge>
+                  </Panel>
+                  <Panel variant="default" id="test-panel-default" className="p-4 flex flex-col justify-between">
+                    <div>
+                      <h4 className="font-bold text-xs uppercase mb-1">Default Panel</h4>
+                      <p className="text-xs text-muted-foreground">Border with hard shadow.</p>
+                    </div>
+                    <Badge variant="outline" className="mt-4 self-start">Default</Badge>
+                  </Panel>
+                </div>
+              </div>
+            </section>
+
+            {/* GroupBox */}
+            <section id="group-box" className="space-y-4 scroll-mt-20">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="font-mono text-xl font-bold uppercase tracking-tight text-foreground flex items-center gap-2">
+                    GroupBox
+                    <Badge variant="primary">Phase 3C Primitive</Badge>
+                  </h2>
+                  <p className="font-mono text-xs text-muted-foreground">
+                    Classic desktop grouping surface powered by native semantic &lt;fieldset&gt; and &lt;legend&gt;.
+                  </p>
+                </div>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => setGroupBoxDisabled(!groupBoxDisabled)}
+                >
+                  {groupBoxDisabled ? "Enable Fieldset" : "Disable Fieldset"}
+                </Button>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <GroupBox
+                  id="test-group-box-default"
+                  legend="Modem Carrier Config"
+                  disabled={groupBoxDisabled}
+                  className="space-y-3"
+                >
+                  <div className="space-y-1">
+                    <Label htmlFor="gb-baud">Baud Rate</Label>
+                    <Input id="gb-baud" defaultValue="57,600" />
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Checkbox id="gb-cts" defaultChecked />
+                    <Label htmlFor="gb-cts">Hardware CTS/RTS</Label>
+                  </div>
+                </GroupBox>
+
+                <GroupBox
+                  id="test-group-box-groove"
+                  variant="groove"
+                  disabled={groupBoxDisabled}
+                  className="space-y-3"
+                >
+                  <GroupBoxLegend>IRQ Routing Table</GroupBoxLegend>
+                  <p className="text-xs text-muted-foreground">Dual-channel grooved perimeter.</p>
+                  <div className="flex items-center gap-2">
+                    <Radio id="gb-irq3" name="gb-irq" />
+                    <Label htmlFor="gb-irq3">IRQ 3 (COM2)</Label>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Radio id="gb-irq4" name="gb-irq" defaultChecked />
+                    <Label htmlFor="gb-irq4">IRQ 4 (COM1)</Label>
+                  </div>
+                </GroupBox>
+
+                <GroupBox
+                  id="test-group-box-raised"
+                  variant="raised"
+                  legend="Locked ROM Registers"
+                  disabled={true}
+                  className="space-y-3"
+                >
+                  <p className="text-xs text-muted-foreground">Native disabled fieldset cascade.</p>
+                  <Input defaultValue="F000:E05B" disabled />
+                  <Button size="sm" disabled>Flash BIOS</Button>
+                </GroupBox>
+              </div>
+            </section>
+
+            {/* Well & Inset */}
+            <section id="well-inset" className="space-y-4 scroll-mt-20">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="font-mono text-xl font-bold uppercase tracking-tight text-foreground flex items-center gap-2">
+                    Well & Inset
+                    <Badge variant="primary">Phase 3C Primitives</Badge>
+                  </h2>
+                  <p className="font-mono text-xs text-muted-foreground">
+                    Recessed, sunken content surfaces for terminal buffers, log readouts, and deep cavity containers.
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Well (Recessed Regions)</CardTitle>
+                    <CardDescription>Subtle sunken background with inset bevel border.</CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <Well id="test-well-default">
+                      COM1: 9600-8-N-1 initialized. Echo cancellation verified.
+                    </Well>
+                    <Well variant="sunken" id="test-well-sunken">
+                      [MEMORY DUMP] Sector 0x1F0 read successful (512 bytes aligned).
+                    </Well>
+                    <Well variant="code" id="test-well-code">
+                      PORT 0x3F8: UART 16550A FIFO DEPTH=16 BYTES ACTIVE
+                    </Well>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Inset (Low-Level Cavity)</CardTitle>
+                    <CardDescription>Foundational sunken surface primitive with optional deep shadow.</CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <Inset id="test-inset-default" className="p-4 space-y-1">
+                      <p className="font-bold text-xs uppercase">Standard Inset</p>
+                      <p className="text-xs text-muted-foreground">Classic bevel-inset border geometry.</p>
+                    </Inset>
+                    <Inset id="test-inset-deep" deep className="p-4 space-y-1">
+                      <p className="font-bold text-xs uppercase">Deep Inset</p>
+                      <p className="text-xs text-muted-foreground">Bevel-inset with interior hard shadow depth.</p>
+                    </Inset>
+                  </CardContent>
+                </Card>
+              </div>
+            </section>
+
+            {/* Progress */}
+            <section id="progress" className="space-y-4 scroll-mt-20">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="font-mono text-xl font-bold uppercase tracking-tight text-foreground flex items-center gap-2">
+                    Progress
+                    <Badge variant="primary">Phase 3C Primitive</Badge>
+                  </h2>
+                  <p className="font-mono text-xs text-muted-foreground">
+                    Native semantic &lt;progress&gt; element with retro track, stepped fills, and animated indeterminate stripe.
+                  </p>
+                </div>
+              </div>
+
+              <Card>
+                <CardContent className="p-6 space-y-6">
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-xs font-mono">
+                      <span>Live Buffer Flush</span>
+                      <span id="test-progress-live-value">{progressVal}%</span>
+                    </div>
+                    <Progress id="test-progress-live" value={progressVal} max={100} />
+                    <div className="flex gap-2 pt-1">
+                      <Button size="sm" onClick={() => setProgressVal((v) => Math.max(0, v - 10))}>-10%</Button>
+                      <Button size="sm" onClick={() => setProgressVal((v) => Math.min(100, v + 10))}>+10%</Button>
+                      <Button size="sm" variant="outline" onClick={() => setProgressVal(25)}>Low (25%)</Button>
+                      <Button size="sm" variant="outline" onClick={() => setProgressVal(80)}>High (80%)</Button>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="space-y-1">
+                      <Label>Stepped Block Fill (80%)</Label>
+                      <Progress id="test-progress-determinate-high" value={80} max={100} variant="stepped" />
+                    </div>
+                    <div className="space-y-1">
+                      <Label>Low Progress (25%)</Label>
+                      <Progress id="test-progress-determinate-low" value={25} max={100} />
+                    </div>
+                    <div className="space-y-1">
+                      <Label>Success Variant (100%)</Label>
+                      <Progress id="test-progress-success" value={100} max={100} variant="success" />
+                    </div>
+                    <div className="space-y-1">
+                      <Label>Warning Variant (50%)</Label>
+                      <Progress id="test-progress-warning" value={50} max={100} variant="warning" />
+                    </div>
+                    <div className="space-y-1">
+                      <Label>Destructive Variant (15%)</Label>
+                      <Progress id="test-progress-destructive" value={15} max={100} variant="destructive" />
+                    </div>
+                    <div className="space-y-1">
+                      <Label>Indeterminate (Animated Retro Strip)</Label>
+                      <Progress id="test-progress-indeterminate" />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </section>
+
+            {/* Spinner & Loading */}
+            <section id="spinner-loading" className="space-y-4 scroll-mt-20">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="font-mono text-xl font-bold uppercase tracking-tight text-foreground flex items-center gap-2">
+                    Spinner & Loading
+                    <Badge variant="primary">Phase 3C Primitives</Badge>
+                  </h2>
+                  <p className="font-mono text-xs text-muted-foreground">
+                    Stepped retro pixel indicators and accessible loading composition with zero icon libraries.
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Spinner (Pixel Clock)</CardTitle>
+                    <CardDescription>CSS-driven stepped rotation with screen-reader text.</CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="flex items-center gap-6">
+                      <div className="flex flex-col items-center gap-2">
+                        <Spinner id="test-spinner-sm" size="sm" />
+                        <span className="text-[10px] text-muted-foreground">sm (16px)</span>
+                      </div>
+                      <div className="flex flex-col items-center gap-2">
+                        <Spinner id="test-spinner-md" size="md" />
+                        <span className="text-[10px] text-muted-foreground">md (24px)</span>
+                      </div>
+                      <div className="flex flex-col items-center gap-2">
+                        <Spinner id="test-spinner-lg" size="lg" />
+                        <span className="text-[10px] text-muted-foreground">lg (32px)</span>
+                      </div>
+                    </div>
+                    <div className="bevel-inset bg-background p-3 text-xs text-muted-foreground">
+                      Respects prefers-reduced-motion with static high-contrast indicator.
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Loading (Composition)</CardTitle>
+                    <CardDescription>Stacked and inline compositions with live region role=&quot;status&quot;.</CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="bevel-inset bg-background">
+                      <Loading
+                        id="test-loading-stacked"
+                        text="Synchronizing floppy tracks..."
+                        size="md"
+                      />
+                    </div>
+                    <div className="bevel-inset bg-background p-3 flex justify-between items-center">
+                      <span className="text-xs font-bold">Bus Controller</span>
+                      <Loading
+                        id="test-loading-inline"
+                        inline
+                        text="DMA Active"
+                        size="sm"
+                      />
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </section>
+
+            {/* Skeleton */}
+            <section id="skeleton" className="space-y-4 scroll-mt-20">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="font-mono text-xl font-bold uppercase tracking-tight text-foreground flex items-center gap-2">
+                    Skeleton
+                    <Badge variant="primary">Phase 3C Primitive</Badge>
+                  </h2>
+                  <p className="font-mono text-xs text-muted-foreground">
+                    Content placeholder using procedural dither patterns and stepped pulse animation.
+                  </p>
+                </div>
+              </div>
+
+              <Card>
+                <CardContent className="p-6 space-y-6">
+                  <div className="space-y-2">
+                    <Label>Line Skeletons (Configurable via className)</Label>
+                    <Skeleton id="test-skeleton-line" className="h-4 w-48" />
+                    <Skeleton className="h-4 w-72" />
+                    <Skeleton className="h-4 w-36" />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label>Composed Card Skeleton</Label>
+                    <div id="test-skeleton-card" className="bevel-raised bg-bevel-face p-4 space-y-4 max-w-sm">
+                      <div className="flex items-center gap-3">
+                        <Skeleton className="h-10 w-10 shrink-0" />
+                        <div className="space-y-2 flex-1">
+                          <Skeleton className="h-4 w-3/4" />
+                          <Skeleton className="h-3 w-1/2" />
+                        </div>
+                      </div>
+                      <Skeleton className="h-20 w-full" />
+                      <div className="flex justify-end gap-2">
+                        <Skeleton className="h-7 w-16" />
+                        <Skeleton className="h-7 w-20" />
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </section>
+
+            {/* EmptyState */}
+            <section id="empty-state" className="space-y-4 scroll-mt-20">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="font-mono text-xl font-bold uppercase tracking-tight text-foreground flex items-center gap-2">
+                    EmptyState
+                    <Badge variant="primary">Phase 3C Primitive</Badge>
+                  </h2>
+                  <p className="font-mono text-xs text-muted-foreground">
+                    Reusable empty-content presentation with title, description, and accessible action trigger.
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <EmptyState id="test-empty-state-card" variant="card">
+                  <EmptyStateIcon>
+                    <span className="font-mono text-2xl">[ 🖫 ]</span>
+                  </EmptyStateIcon>
+                  <EmptyStateTitle id="test-empty-state-title">No Floppy Disks Detected</EmptyStateTitle>
+                  <EmptyStateDescription id="test-empty-state-desc">
+                    Drive A: is empty. Insert a formatted 1.44MB diskette to mount volume.
+                  </EmptyStateDescription>
+                  <EmptyStateAction>
+                    <Button
+                      id="test-empty-state-btn"
+                      onClick={() => setEmptyStateClicks((c) => c + 1)}
+                    >
+                      Insert Diskette ({emptyStateClicks})
+                    </Button>
+                  </EmptyStateAction>
+                </EmptyState>
+
+                <EmptyState id="test-empty-state-dashed" variant="dashed">
+                  <EmptyStateTitle>Clean Work Directory</EmptyStateTitle>
+                  <EmptyStateDescription>
+                    No temporary batch files or scratch tapes present in working folder.
+                  </EmptyStateDescription>
+                  <EmptyStateAction>
+                    <Button size="sm" variant="outline">
+                      Create Batch Script
+                    </Button>
+                  </EmptyStateAction>
+                </EmptyState>
+              </div>
+            </section>
+
+            {/* Result */}
+            <section id="result" className="space-y-4 scroll-mt-20">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="font-mono text-xl font-bold uppercase tracking-tight text-foreground flex items-center gap-2">
+                    Result
+                    <Badge variant="primary">Phase 3C Primitive</Badge>
+                  </h2>
+                  <p className="font-mono text-xs text-muted-foreground">
+                    Semantic outcome presentations for success, error, warning, and info operations.
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <Result
+                  id="test-result-success"
+                  variant="success"
+                  title="Disk Formatting Complete"
+                  description="80 tracks formatted with 18 sectors per track. Zero bad clusters found."
+                  extra={
+                    <Button
+                      id="test-result-btn"
+                      size="sm"
+                      onClick={() => setResultActionClicks((c) => c + 1)}
+                    >
+                      Mount Volume ({resultActionClicks})
+                    </Button>
+                  }
+                />
+
+                <Result
+                  id="test-result-error"
+                  variant="error"
+                  title="General Protection Fault"
+                  description="Memory parity violation detected at address 0x0040:0x0013."
+                  extra={<Button size="sm" variant="destructive">Reboot System</Button>}
+                />
+
+                <Result
+                  id="test-result-warning"
+                  variant="warning"
+                  title="Disk Quota Depleted"
+                  description="Master volume contains less than 512 KB free sectors."
+                  extra={<Button size="sm" variant="outline">Compress Files</Button>}
+                />
+
+                <Result
+                  id="test-result-info"
+                  variant="info"
+                >
+                  <ResultTitle>Hardware Configuration Audit</ResultTitle>
+                  <ResultDescription>
+                    ISA bus query detected 1x VGA adapter, 1x Sound Blaster 16.
+                  </ResultDescription>
+                  <ResultAction>
+                    <Button size="sm">View Report</Button>
+                  </ResultAction>
+                </Result>
+              </div>
+            </section>
+          </>
         )}
       </div>
 
