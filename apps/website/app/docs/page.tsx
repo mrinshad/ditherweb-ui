@@ -1,5 +1,21 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Badge, Card, CardHeader, CardTitle, CardContent, Separator } from "@ditherweb/ui";
+
+export const metadata: Metadata = {
+  title: "Ditherweb Documentation — Retro UI Framework",
+  description:
+    "Technical guides and documentation for Ditherweb: design tokens, 4x4 Bayer dither matrices, beveled surfaces, accessibility standards, and React 19 component integration.",
+  alternates: {
+    canonical: "/docs",
+  },
+  openGraph: {
+    title: "Ditherweb Documentation — Retro UI Framework",
+    description:
+      "Technical guides and documentation for Ditherweb: design tokens, 4x4 Bayer dither matrices, beveled surfaces, accessibility standards, and React 19 component integration.",
+    url: "https://ditherweb.mrinshad.site/docs",
+  },
+};
 
 export default function DocsPage() {
   return (
