@@ -68,6 +68,12 @@
 
   /* --- Radius --- */
   --radius: 0px;
+
+  /* --- Z-Index Layering System --- */
+  --z-popover: 40;
+  --z-backdrop: 50;
+  --z-modal: 51;
+  --z-topmost: 60;
 }
 
 /* --------------------------------------------------------------------------
@@ -198,6 +204,11 @@
   --shadow-raised: 2px 2px 0 var(--shadow-hard-color);
   --shadow-soft-sm: 0 1px 2px var(--shadow-color);
   --shadow-soft: 0 2px 4px var(--shadow-color);
+
+  --z-index-popover: var(--z-popover);
+  --z-index-backdrop: var(--z-backdrop);
+  --z-index-modal: var(--z-modal);
+  --z-index-topmost: var(--z-topmost);
 }
 
 @custom-variant dark (&:is(.dark *));

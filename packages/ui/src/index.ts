@@ -209,7 +209,136 @@ export {
 } from "./components/result";
 export { Loading, type LoadingProps } from "./components/loading";
 
+// --- Overlays & Layered Interaction Primitives ---
+export { Portal, type PortalProps } from "./components/portal";
+export {
+  Backdrop,
+  type BackdropProps,
+  type BackdropVariant,
+} from "./components/backdrop";
+export { Overlay, type OverlayProps } from "./components/overlay";
+export {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogBody,
+  DialogFooter,
+  DialogClose,
+  type DialogProps,
+  type DialogTriggerProps,
+  type DialogContentProps,
+  type DialogHeaderProps,
+  type DialogTitleProps,
+  type DialogDescriptionProps,
+  type DialogBodyProps,
+  type DialogFooterProps,
+  type DialogCloseProps,
+} from "./components/dialog";
+export {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogAction,
+  AlertDialogCancel,
+  type AlertDialogProps,
+  type AlertDialogTriggerProps,
+  type AlertDialogContentProps,
+  type AlertDialogHeaderProps,
+  type AlertDialogTitleProps,
+  type AlertDialogDescriptionProps,
+  type AlertDialogBodyProps,
+  type AlertDialogFooterProps,
+  type AlertDialogActionProps,
+  type AlertDialogCancelProps,
+} from "./components/alert-dialog";
+export {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverClose,
+  type PopoverProps,
+  type PopoverTriggerProps,
+  type PopoverContentProps,
+  type PopoverCloseProps,
+} from "./components/popover";
+export {
+  TooltipProvider,
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+  type TooltipProviderProps,
+  type TooltipProps,
+  type TooltipTriggerProps,
+  type TooltipContentProps,
+} from "./components/tooltip";
+export {
+  HoverCard,
+  HoverCardTrigger,
+  HoverCardContent,
+  type HoverCardProps,
+  type HoverCardTriggerProps,
+  type HoverCardContentProps,
+} from "./components/hover-card";
+export {
+  Drawer,
+  DrawerTrigger,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerDescription,
+  DrawerBody,
+  DrawerFooter,
+  DrawerClose,
+  type DrawerProps,
+  type DrawerTriggerProps,
+  type DrawerContentProps,
+  type DrawerHeaderProps,
+  type DrawerTitleProps,
+  type DrawerDescriptionProps,
+  type DrawerBodyProps,
+  type DrawerFooterProps,
+  type DrawerCloseProps,
+  type DrawerSide,
+} from "./components/drawer";
+export {
+  Sheet,
+  SheetTrigger,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
+  SheetBody,
+  SheetFooter,
+  SheetClose,
+  type SheetProps,
+  type SheetTriggerProps,
+  type SheetContentProps,
+  type SheetHeaderProps,
+  type SheetTitleProps,
+  type SheetDescriptionProps,
+  type SheetBodyProps,
+  type SheetFooterProps,
+  type SheetCloseProps,
+  type SheetSide,
+} from "./components/sheet";
+
 // --- Shared Utilities ---
 export { cn } from "./lib/utils";
+export {
+  lockBodyScroll,
+  unlockBodyScroll,
+  getOrCreatePortalRoot,
+  computeFloatingPosition,
+  type OverlaySide,
+  type OverlayAlign,
+} from "./lib/overlay-utils";
 
 

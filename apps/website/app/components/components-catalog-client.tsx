@@ -73,9 +73,60 @@ import {
   ResultDescription,
   ResultAction,
   Loading,
+  Portal,
+  Backdrop,
+  Overlay,
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogBody,
+  DialogFooter,
+  DialogClose,
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogAction,
+  AlertDialogCancel,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverClose,
+  TooltipProvider,
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+  HoverCard,
+  HoverCardTrigger,
+  HoverCardContent,
+  Drawer,
+  DrawerTrigger,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerDescription,
+  DrawerBody,
+  DrawerFooter,
+  DrawerClose,
+  Sheet,
+  SheetTrigger,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
+  SheetBody,
+  SheetFooter,
+  SheetClose,
 } from "@ditherweb/ui";
 
-type Category = "all" | "surfaces" | "forms" | "typography" | "layout" | "input" | "feedback";
+type Category = "all" | "overlays" | "surfaces" | "forms" | "typography" | "layout" | "input" | "feedback";
 
 export default function ComponentsPage() {
   const [category, setCategory] = useState<Category>("all");
@@ -91,7 +142,7 @@ export default function ComponentsPage() {
   const [inputText, setInputText] = useState("");
   const [linkClicks, setLinkClicks] = useState(0);
 
-  // Phase 3B states
+  // Forms states
   const [textareaVal, setTextareaVal] = useState("Initial buffer allocation.\nSector 0x7C00 loaded.");
   const [pwdVal, setPwdVal] = useState("SecretPass99");
   const [searchVal, setSearchVal] = useState("kernel");
@@ -103,20 +154,28 @@ export default function ComponentsPage() {
   const [toggleGroupVal, setToggleGroupVal] = useState("center");
   const [fieldInputVal, setFieldInputVal] = useState("");
 
-  // Phase 3C states
+  // Surfaces & Feedback states
   const [progressVal, setProgressVal] = useState(65);
   const [emptyStateClicks, setEmptyStateClicks] = useState(0);
   const [resultActionClicks, setResultActionClicks] = useState(0);
   const [groupBoxDisabled, setGroupBoxDisabled] = useState(false);
+
+  // Overlays & Layered Interaction states
+  const [controlledDialogOpen, setControlledDialogOpen] = useState(false);
+  const [alertDialogStatus, setAlertDialogStatus] = useState<string>("Ready");
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [drawerSide, setDrawerSide] = useState<"bottom" | "right" | "left" | "top">("bottom");
+  const [sheetOpen, setSheetOpen] = useState(false);
+  const [customOverlayOpen, setCustomOverlayOpen] = useState(false);
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 space-y-12">
       {/* Page Header */}
       <div className="space-y-4">
         <div className="flex items-center gap-2">
-          <Badge variant="primary">Phase 3C Suite</Badge>
+          <Badge variant="primary">Overlays & Interaction</Badge>
           <span className="font-mono text-xs text-muted-foreground">
-            46 Production Primitives
+            56 Production Primitives
           </span>
         </div>
         <h1 className="font-mono text-3xl font-bold uppercase tracking-tight text-foreground sm:text-4xl">
@@ -135,7 +194,16 @@ export default function ComponentsPage() {
               category === "all" ? "bevel-inset bg-muted text-primary" : "bevel-raised"
             }`}
           >
-            All Primitives (46)
+            All Primitives (56)
+          </button>
+          <button
+            type="button"
+            onClick={() => setCategory("overlays")}
+            className={`px-3 py-1 font-bold ${
+              category === "overlays" ? "bevel-inset bg-muted text-primary" : "bevel-raised"
+            }`}
+          >
+            Overlays & Interaction (10)
           </button>
           <button
             type="button"
@@ -2264,6 +2332,569 @@ export default function ComponentsPage() {
                     <Button size="sm">View Report</Button>
                   </ResultAction>
                 </Result>
+              </div>
+            </section>
+          </>
+        )}
+
+        {/* ================================================================== */}
+        {/* CATEGORY: OVERLAYS & LAYERED INTERACTION (10 PRIMITIVES)            */}
+        {/* ================================================================== */}
+        {(category === "all" || category === "overlays") && (
+          <>
+            {/* Dialog */}
+            <section id="dialog" className="space-y-4 scroll-mt-20">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="font-mono text-xl font-bold uppercase tracking-tight text-foreground flex items-center gap-2">
+                    Dialog
+                    <Badge variant="primary">Layered Overlay</Badge>
+                  </h2>
+                  <p className="font-mono text-xs text-muted-foreground">
+                    Classic retro application window modal with 3D raised bevel, titlebar, focus trapping, Escape dismiss, and body scroll locking.
+                  </p>
+                </div>
+              </div>
+
+              <div className="p-6 bevel-inset bg-surface-sunken space-y-4">
+                <div className="flex flex-wrap items-center gap-4">
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button id="demo-dialog-trigger">Open System Properties Dialog</Button>
+                    </DialogTrigger>
+                    <DialogContent id="demo-dialog-modal">
+                      <DialogHeader>
+                        <span>SYSTEM.EXE — Memory & Hardware</span>
+                      </DialogHeader>
+                      <DialogBody>
+                        <DialogTitle>Hardware Profile #1</DialogTitle>
+                        <DialogDescription>
+                          Configure extended memory manager and base I/O port address mapping.
+                        </DialogDescription>
+                        <div className="space-y-3 pt-2">
+                          <label className="font-mono text-xs block font-bold">
+                            Base Port Address:
+                            <Input
+                              id="demo-dialog-input"
+                              defaultValue="0x0378"
+                              className="mt-1 font-mono text-xs"
+                            />
+                          </label>
+                          <label className="font-mono text-xs block font-bold">
+                            DMA Channel:
+                            <Input
+                              defaultValue="Channel 1 (8-bit)"
+                              className="mt-1 font-mono text-xs"
+                            />
+                          </label>
+                        </div>
+                      </DialogBody>
+                      <DialogFooter>
+                        <DialogClose asChild>
+                          <Button variant="outline" size="sm" id="demo-dialog-cancel">
+                            Cancel
+                          </Button>
+                        </DialogClose>
+                        <DialogClose asChild>
+                          <Button size="sm" id="demo-dialog-save">
+                            Save Changes
+                          </Button>
+                        </DialogClose>
+                      </DialogFooter>
+                    </DialogContent>
+                  </Dialog>
+
+                  <Button
+                    variant="outline"
+                    id="demo-dialog-controlled-toggle"
+                    onClick={() => setControlledDialogOpen(true)}
+                  >
+                    Launch Controlled Dialog
+                  </Button>
+
+                  <Dialog open={controlledDialogOpen} onOpenChange={setControlledDialogOpen}>
+                    <DialogContent>
+                      <DialogHeader>
+                        <span>CONTROLLED_WINDOW</span>
+                      </DialogHeader>
+                      <DialogBody>
+                        <DialogTitle>Controlled Modal State</DialogTitle>
+                        <DialogDescription>
+                          This dialog is driven directly via external React state.
+                        </DialogDescription>
+                        <p className="font-mono text-xs">
+                          Press Escape, click outside, or click Close to release control.
+                        </p>
+                      </DialogBody>
+                      <DialogFooter>
+                        <Button
+                          size="sm"
+                          id="demo-dialog-controlled-close"
+                          onClick={() => setControlledDialogOpen(false)}
+                        >
+                          Close Window
+                        </Button>
+                      </DialogFooter>
+                    </DialogContent>
+                  </Dialog>
+                </div>
+              </div>
+            </section>
+
+            {/* AlertDialog */}
+            <section id="alert-dialog" className="space-y-4 scroll-mt-20">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="font-mono text-xl font-bold uppercase tracking-tight text-foreground flex items-center gap-2">
+                    AlertDialog
+                    <Badge variant="destructive">Critical Modal</Badge>
+                  </h2>
+                  <p className="font-mono text-xs text-muted-foreground">
+                    Destructive confirmation modal. Disables click-outside dismiss by default and places initial focus on Cancel to avoid accidental data loss.
+                  </p>
+                </div>
+              </div>
+
+              <div className="p-6 bevel-inset bg-surface-sunken space-y-4">
+                <div className="flex flex-wrap items-center gap-4">
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button variant="destructive" id="demo-alert-dialog-trigger">
+                        Format Hard Drive
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent id="demo-alert-dialog-modal">
+                      <AlertDialogHeader>
+                        CRITICAL OPERATION WARNING
+                      </AlertDialogHeader>
+                      <AlertDialogBody>
+                        <AlertDialogTitle>Are you absolutely certain?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          This operation will permanently purge all partition tables and system records on Volume C:. This action cannot be reversed.
+                        </AlertDialogDescription>
+                      </AlertDialogBody>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel
+                          id="demo-alert-cancel-btn"
+                          onClick={() => setAlertDialogStatus("Format Cancelled")}
+                        >
+                          Cancel
+                        </AlertDialogCancel>
+                        <AlertDialogAction
+                          id="demo-alert-action-btn"
+                          onClick={() => setAlertDialogStatus("Volume Formatted")}
+                        >
+                          Yes, Format Volume
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+
+                  <span
+                    id="demo-alert-dialog-status"
+                    className="font-mono text-xs font-bold px-3 py-1 bevel-inset bg-background"
+                  >
+                    Status: {alertDialogStatus}
+                  </span>
+                </div>
+              </div>
+            </section>
+
+            {/* Popover */}
+            <section id="popover" className="space-y-4 scroll-mt-20">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="font-mono text-xl font-bold uppercase tracking-tight text-foreground flex items-center gap-2">
+                    Popover
+                    <Badge variant="primary">Contextual Floating</Badge>
+                  </h2>
+                  <p className="font-mono text-xs text-muted-foreground">
+                    Anchored non-modal floating surface with viewport boundary detection, outside-click capture, and keyboard Escape listener.
+                  </p>
+                </div>
+              </div>
+
+              <div className="p-6 bevel-inset bg-surface-sunken">
+                <div className="flex flex-wrap items-center gap-6">
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button id="demo-popover-trigger">Network Adapter Info</Button>
+                    </PopoverTrigger>
+                    <PopoverContent id="demo-popover-content">
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between border-b border-border pb-1">
+                          <h4 className="font-mono text-xs font-bold uppercase">Ethernet 10BASE-T</h4>
+                          <PopoverClose asChild>
+                            <button
+                              type="button"
+                              id="demo-popover-close-btn"
+                              className="retro-close-button"
+                              aria-label="Close popover"
+                            >
+                              ✕
+                            </button>
+                          </PopoverClose>
+                        </div>
+                        <p className="font-mono text-xs text-muted-foreground">
+                          Controller: Novell NE2000 Compatible
+                        </p>
+                        <div className="font-mono text-xs space-y-1 pt-1">
+                          <div>IP: 192.168.0.42</div>
+                          <div>Subnet: 255.255.255.0</div>
+                          <div>Status: Link Connected</div>
+                        </div>
+                      </div>
+                    </PopoverContent>
+                  </Popover>
+
+                  <Popover side="right">
+                    <PopoverTrigger asChild>
+                      <Button variant="outline" id="demo-popover-right-trigger">
+                        Right Aligned Details
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent>
+                      <div className="space-y-2">
+                        <h4 className="font-mono text-xs font-bold uppercase">Right Anchored</h4>
+                        <p className="font-mono text-xs text-muted-foreground">
+                          Positions directly to the right and automatically flips if viewport bounds collide.
+                        </p>
+                      </div>
+                    </PopoverContent>
+                  </Popover>
+                </div>
+              </div>
+            </section>
+
+            {/* Tooltip */}
+            <section id="tooltip" className="space-y-4 scroll-mt-20">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="font-mono text-xl font-bold uppercase tracking-tight text-foreground flex items-center gap-2">
+                    Tooltip
+                    <Badge variant="primary">Interactive Hint</Badge>
+                  </h2>
+                  <p className="font-mono text-xs text-muted-foreground">
+                    Compact pixel-bordered informational hint that responds to mouse hover and keyboard focus with configurable delay.
+                  </p>
+                </div>
+              </div>
+
+              <div className="p-6 bevel-inset bg-surface-sunken">
+                <TooltipProvider delayDuration={150}>
+                  <div className="flex flex-wrap items-center gap-6">
+                    <Tooltip side="top">
+                      <TooltipTrigger asChild>
+                        <Button id="demo-tooltip-top" size="sm">
+                          Top Hint
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent id="demo-tooltip-top-content">
+                        Tooltip on top [Alt+T]
+                      </TooltipContent>
+                    </Tooltip>
+
+                    <Tooltip side="bottom">
+                      <TooltipTrigger asChild>
+                        <Button id="demo-tooltip-bottom" size="sm" variant="outline">
+                          Bottom Hint
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent id="demo-tooltip-bottom-content">
+                        Write buffer to disk [Ctrl+S]
+                      </TooltipContent>
+                    </Tooltip>
+
+                    <Tooltip side="left">
+                      <TooltipTrigger asChild>
+                        <Button id="demo-tooltip-left" size="sm" variant="secondary">
+                          Left Hint
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent id="demo-tooltip-left-content">
+                        Execute 16-bit binary
+                      </TooltipContent>
+                    </Tooltip>
+
+                    <Tooltip side="right">
+                      <TooltipTrigger asChild>
+                        <Button id="demo-tooltip-right" size="sm">
+                          Right Hint
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent id="demo-tooltip-right-content">
+                        Sector verification passed
+                      </TooltipContent>
+                    </Tooltip>
+                  </div>
+                </TooltipProvider>
+              </div>
+            </section>
+
+            {/* HoverCard */}
+            <section id="hover-card" className="space-y-4 scroll-mt-20">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="font-mono text-xl font-bold uppercase tracking-tight text-foreground flex items-center gap-2">
+                    HoverCard
+                    <Badge variant="primary">Rich Interactive Preview</Badge>
+                  </h2>
+                  <p className="font-mono text-xs text-muted-foreground">
+                    Rich preview card with interactive links and hover intent grace period so users can move their pointer directly into the card.
+                  </p>
+                </div>
+              </div>
+
+              <div className="p-6 bevel-inset bg-surface-sunken">
+                <div className="flex items-center gap-4">
+                  <span className="font-mono text-xs">Authored by</span>
+                  <HoverCard openDelay={200} closeDelay={300}>
+                    <HoverCardTrigger asChild>
+                      <button
+                        type="button"
+                        id="demo-hovercard-trigger"
+                        className="font-mono text-xs font-bold text-primary underline underline-offset-4 cursor-pointer"
+                      >
+                        @sysadmin_95
+                      </button>
+                    </HoverCardTrigger>
+                    <HoverCardContent id="demo-hovercard-content">
+                      <div className="flex gap-3">
+                        <div className="w-10 h-10 bevel-inset bg-primary text-primary-foreground flex items-center justify-center font-mono font-bold text-sm shrink-0">
+                          95
+                        </div>
+                        <div className="space-y-1">
+                          <h4 className="font-mono text-xs font-bold">Chief System Operator</h4>
+                          <p className="font-mono text-xs text-muted-foreground">
+                            Retro computing engineer & kernel maintainer at Ditherweb.
+                          </p>
+                          <div className="pt-2 flex items-center gap-3 font-mono text-[11px]">
+                            <a
+                              href="https://github.com/mrinshad"
+                              target="_blank"
+                              rel="noreferrer"
+                              id="demo-hovercard-link"
+                              className="text-primary hover:underline font-bold"
+                            >
+                              GitHub Profile →
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </HoverCardContent>
+                  </HoverCard>
+                </div>
+              </div>
+            </section>
+
+            {/* Drawer */}
+            <section id="drawer" className="space-y-4 scroll-mt-20">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="font-mono text-xl font-bold uppercase tracking-tight text-foreground flex items-center gap-2">
+                    Drawer
+                    <Badge variant="primary">Slide Surface</Badge>
+                  </h2>
+                  <p className="font-mono text-xs text-muted-foreground">
+                    Off-canvas drawer sliding from viewport edge (bottom, right, left, top). Perfect for mobile consoles and terminal logs.
+                  </p>
+                </div>
+              </div>
+
+              <div className="p-6 bevel-inset bg-surface-sunken">
+                <div className="flex flex-wrap items-center gap-4">
+                  <Drawer side={drawerSide} open={drawerOpen} onOpenChange={setDrawerOpen}>
+                    <DrawerTrigger asChild>
+                      <Button
+                        id="demo-drawer-trigger"
+                        onClick={() => {
+                          setDrawerSide("bottom");
+                          setDrawerOpen(true);
+                        }}
+                      >
+                        Open Bottom Terminal Drawer
+                      </Button>
+                    </DrawerTrigger>
+                    <DrawerContent id="demo-drawer-content">
+                      <DrawerHeader>
+                        <span>TERMINAL LOG STREAM (TTY1)</span>
+                      </DrawerHeader>
+                      <DrawerBody>
+                        <DrawerTitle>Console Output</DrawerTitle>
+                        <DrawerDescription>
+                          Streaming system diagnosis and interrupt requests.
+                        </DrawerDescription>
+                        <div className="p-3 bevel-inset bg-black text-green-400 font-mono text-xs space-y-1 max-h-40 overflow-y-auto">
+                          <div>[0.000000] Linux version 1.0.0-ditherweb</div>
+                          <div>[0.002130] CPU0: Cyrix Cx486DLC stepping 02</div>
+                          <div>[0.004510] Memory: 16384K/16384K available</div>
+                          <div>[0.010200] Checking 387 coupling... OK, math coprocessor found</div>
+                          <div>[0.024000] Mounting root filesystem (minix)... OK</div>
+                        </div>
+                      </DrawerBody>
+                      <DrawerFooter>
+                        <DrawerClose asChild>
+                          <Button size="sm" id="demo-drawer-close">Close Console</Button>
+                        </DrawerClose>
+                      </DrawerFooter>
+                    </DrawerContent>
+                  </Drawer>
+
+                  <Button
+                    variant="outline"
+                    id="demo-drawer-right-trigger"
+                    onClick={() => {
+                      setDrawerSide("right");
+                      setDrawerOpen(true);
+                    }}
+                  >
+                    Open Right Slide Drawer
+                  </Button>
+                </div>
+              </div>
+            </section>
+
+            {/* Sheet */}
+            <section id="sheet" className="space-y-4 scroll-mt-20">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="font-mono text-xl font-bold uppercase tracking-tight text-foreground flex items-center gap-2">
+                    Sheet
+                    <Badge variant="primary">Worksheet & Inspector</Badge>
+                  </h2>
+                  <p className="font-mono text-xs text-muted-foreground">
+                    High-density slide-over side panel anchored to the viewport. Designed for complex configuration panels, form workflows, and inspectors.
+                  </p>
+                </div>
+              </div>
+
+              <div className="p-6 bevel-inset bg-surface-sunken">
+                <div className="flex flex-wrap items-center gap-4">
+                  <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
+                    <SheetTrigger asChild>
+                      <Button id="demo-sheet-trigger">Open Configuration Sheet</Button>
+                    </SheetTrigger>
+                    <SheetContent id="demo-sheet-content">
+                      <SheetHeader>
+                        <span>DISPLAY & CHIPSET SETTINGS</span>
+                      </SheetHeader>
+                      <SheetBody>
+                        <SheetTitle>Video Hardware Preferences</SheetTitle>
+                        <SheetDescription>
+                          Configure raster refresh rates, pixel scanline emulation, and CRT curvature.
+                        </SheetDescription>
+
+                        <div className="space-y-4 pt-3">
+                          <div className="space-y-1">
+                            <label className="font-mono text-xs font-bold block">Graphics Adapter</label>
+                            <Input defaultValue="Oak Technology OTI077 VGA" className="font-mono text-xs" />
+                          </div>
+
+                          <div className="space-y-1">
+                            <label className="font-mono text-xs font-bold block">Video RAM Size</label>
+                            <Input defaultValue="1024 KB" className="font-mono text-xs" />
+                          </div>
+
+                          <div className="space-y-2 pt-2">
+                            <label className="font-mono text-xs font-bold block">Phosphor Persistence</label>
+                            <Slider defaultValue={75} />
+                          </div>
+                        </div>
+                      </SheetBody>
+                      <SheetFooter>
+                        <SheetClose asChild>
+                          <Button variant="outline" size="sm" id="demo-sheet-cancel">Cancel</Button>
+                        </SheetClose>
+                        <SheetClose asChild>
+                          <Button size="sm" id="demo-sheet-save">Apply Settings</Button>
+                        </SheetClose>
+                      </SheetFooter>
+                    </SheetContent>
+                  </Sheet>
+                </div>
+              </div>
+            </section>
+
+            {/* Infrastructure Primitives: Portal, Backdrop, Overlay */}
+            <section id="infrastructure" className="space-y-4 scroll-mt-20">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="font-mono text-xl font-bold uppercase tracking-tight text-foreground flex items-center gap-2">
+                    Portal, Backdrop & Overlay
+                    <Badge variant="secondary">Foundation</Badge>
+                  </h2>
+                  <p className="font-mono text-xs text-muted-foreground">
+                    Low-level composable primitives providing SSR-safe DOM mounting, classic dimming/dither textures, and unified layer lifecycle management.
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="p-4 bevel-raised bg-surface space-y-2">
+                  <h3 className="font-mono text-sm font-bold uppercase">1. Portal Primitive</h3>
+                  <p className="font-mono text-xs text-muted-foreground">
+                    Teleports children cleanly into <code>#ditherweb-portal-root</code> on document body without layout leaks.
+                  </p>
+                  <div className="pt-2">
+                    <Badge variant="outline">SSR Hydration Safe</Badge>
+                    <Portal disabled>
+                      <span className="sr-only" id="demo-portal-bench">Portal Initialized</span>
+                    </Portal>
+                  </div>
+                </div>
+
+                <div className="p-4 bevel-raised bg-surface space-y-2">
+                  <h3 className="font-mono text-sm font-bold uppercase">2. Backdrop Textures</h3>
+                  <p className="font-mono text-xs text-muted-foreground">
+                    Features <code>dimmed</code>, <code>dither</code>, and <code>transparent</code> modes for authentic retro screen dimming.
+                  </p>
+                  <div className="pt-2 flex gap-1">
+                    <Badge variant="outline">Dimmed</Badge>
+                    <Badge variant="outline">Dither</Badge>
+                    <Backdrop invisible id="demo-backdrop-bench" />
+                  </div>
+                </div>
+
+                <div className="p-4 bevel-raised bg-surface space-y-2">
+                  <h3 className="font-mono text-sm font-bold uppercase">3. Overlay Orchestrator</h3>
+                  <p className="font-mono text-xs text-muted-foreground">
+                    Manages reference-counted body scroll locks, Escape propagation, and click-outside dismissal.
+                  </p>
+                  <div className="pt-2">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      id="demo-overlay-trigger"
+                      onClick={() => setCustomOverlayOpen(true)}
+                    >
+                      Test Custom Overlay
+                    </Button>
+                    <Overlay
+                      open={customOverlayOpen}
+                      onOpenChange={setCustomOverlayOpen}
+                      backdropVariant="dither"
+                    >
+                      <div className="fixed inset-0 flex items-center justify-center p-4">
+                        <div
+                          id="demo-custom-overlay-card"
+                          className="p-6 bevel-raised bg-surface shadow-hard-lg max-w-sm space-y-3"
+                        >
+                          <h4 className="font-mono text-sm font-bold uppercase">Composable Overlay</h4>
+                          <p className="font-mono text-xs text-muted-foreground">
+                            Rendered through custom Overlay with classic dither backdrop texture!
+                          </p>
+                          <Button
+                            size="sm"
+                            id="demo-overlay-close-btn"
+                            onClick={() => setCustomOverlayOpen(false)}
+                          >
+                            Close Overlay
+                          </Button>
+                        </div>
+                      </div>
+                    </Overlay>
+                  </div>
+                </div>
               </div>
             </section>
           </>
