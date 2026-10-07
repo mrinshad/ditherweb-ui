@@ -6,11 +6,11 @@ export interface AlertProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const variantStyles: Record<NonNullable<AlertProps["variant"]>, string> = {
-  default: "border-2 border-border bg-card text-card-foreground",
-  info: "border-2 border-info bg-card text-foreground",
-  success: "border-2 border-success bg-card text-foreground",
-  warning: "border-2 border-warning bg-card text-foreground",
-  destructive: "border-2 border-destructive bg-card text-foreground",
+  default: "border-2 border-border border-l-4 border-l-primary bg-card text-card-foreground",
+  info: "border-2 border-info/40 border-l-4 border-l-info bg-info/10 text-foreground",
+  success: "border-2 border-success/40 border-l-4 border-l-success bg-success/10 text-foreground",
+  warning: "border-2 border-warning/40 border-l-4 border-l-warning bg-warning/10 text-foreground",
+  destructive: "border-2 border-destructive/40 border-l-4 border-l-destructive bg-destructive/10 text-foreground",
 };
 
 const Alert = forwardRef<HTMLDivElement, AlertProps>(

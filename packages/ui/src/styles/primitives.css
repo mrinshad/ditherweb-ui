@@ -5,10 +5,12 @@
 /* --------------------------------------------------------------------------
    Base Primitives & Focus
    -------------------------------------------------------------------------- */
-*,
-*::before,
-*::after {
-  border-color: var(--border);
+@layer base {
+  *,
+  *::before,
+  *::after {
+    border-color: var(--border);
+  }
 }
 
 :focus-visible {
@@ -79,6 +81,9 @@
   border-left-color: var(--bevel-light);
   border-bottom-color: var(--bevel-dark);
   border-right-color: var(--bevel-dark);
+}
+
+.bevel-raised:not([class*="bg-"]) {
   background-color: var(--bevel-face);
 }
 
@@ -89,23 +94,31 @@
   border-left-color: var(--bevel-dark);
   border-bottom-color: var(--bevel-light);
   border-right-color: var(--bevel-light);
+}
+
+.bevel-inset:not([class*="bg-"]) {
   background-color: var(--background);
 }
 
-.bevel-pressed {
+.bevel-pressed,
+.bevel-raised:active,
+button.bevel-raised:active {
   border-width: 2px;
   border-style: solid;
   border-top-color: var(--bevel-dark);
   border-left-color: var(--bevel-dark);
   border-bottom-color: var(--bevel-light);
   border-right-color: var(--bevel-light);
-  background-color: var(--bevel-face);
+  translate: 1px 1px;
 }
 
 .bevel-flat {
   border-width: 2px;
   border-style: solid;
   border-color: var(--border);
+}
+
+.bevel-flat:not([class*="bg-"]) {
   background-color: var(--bevel-face);
 }
 
