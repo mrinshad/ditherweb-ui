@@ -120,12 +120,10 @@ export default function ComponentsPage() {
           </span>
         </div>
         <h1 className="font-mono text-3xl font-bold uppercase tracking-tight text-foreground sm:text-4xl">
-          Component Catalog
+          Ditherweb Component Catalog
         </h1>
         <p className="font-mono text-sm text-muted-foreground max-w-2xl leading-relaxed">
-          Every Ditherweb component is built with native accessibility semantics,
-          typed props, and calibrated retro CSS tokens. Inspect interactive states,
-          typography hierarchy, layout primitives, forms, surfaces, and feedback components.
+          Explore Ditherweb&apos;s complete retro React UI component library. Every primitive is built with native accessibility semantics, typed props, and calibrated retro CSS tokens. Inspect interactive states across buttons, inputs, dialogs, cards, forms, surfaces, and feedback components.
         </p>
 
         {/* Filter Tabs */}

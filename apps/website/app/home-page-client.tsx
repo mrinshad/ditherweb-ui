@@ -63,15 +63,13 @@ export default function RetroPanel() {
 
             <div className="space-y-3">
               <h1 className="font-mono text-3xl font-extrabold uppercase tracking-tight sm:text-5xl lg:text-6xl text-foreground">
-                Retro Appearance. <br />
+                Ditherweb — Retro Appearance. <br />
                 <span className="text-primary underline decoration-4 underline-offset-8">
                   Modern Engineering.
                 </span>
               </h1>
               <p className="font-mono text-sm sm:text-base text-muted-foreground leading-relaxed max-w-2xl">
-                A component system inspired by the visual language of the early Internet,
-                classic desktop user interfaces, ordered dithering, and 90s digital culture—built
-                with clean React primitives, zero runtime bloat, and full accessibility.
+                Ditherweb is a retro-inspired React UI framework and component library inspired by the visual language of the early Internet, classic desktop interfaces, ordered Bayer dithering, and 90s digital culture—built with clean React 19 primitives, zero runtime bloat, and full accessibility.
               </p>
             </div>
 
@@ -79,7 +77,7 @@ export default function RetroPanel() {
             <div className="flex flex-wrap items-center gap-3 pt-2">
               <Link href="/components">
                 <Button variant="primary" size="lg">
-                  Explore Components →
+                  Explore Ditherweb Components →
                 </Button>
               </Link>
               <Link href="/playground">
@@ -89,7 +87,7 @@ export default function RetroPanel() {
               </Link>
               <Link href="/docs">
                 <Button variant="outline" size="lg">
-                  Documentation
+                  Ditherweb Documentation
                 </Button>
               </Link>
             </div>
@@ -98,7 +96,7 @@ export default function RetroPanel() {
             <div className="grid grid-cols-3 gap-3 pt-4 border-t border-border font-mono text-xs">
               <div className="bevel-inset p-2 bg-muted/30">
                 <div className="text-muted-foreground text-[10px]">COMPONENTS</div>
-                <div className="font-bold text-foreground text-sm">10 Foundational</div>
+                <div className="font-bold text-foreground text-sm">46 Primitives</div>
               </div>
               <div className="bevel-inset p-2 bg-muted/30">
                 <div className="text-muted-foreground text-[10px]">ACCESSIBILITY</div>
@@ -414,7 +412,31 @@ export default function RetroPanel() {
         </div>
       </section>
 
-      {/* 5. Developer Experience & Quick Start */}
+      {/* 5. Topical Concept: What is Dithering in Ditherweb */}
+      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full">
+        <div className="bevel-raised bg-card p-6 sm:p-8 space-y-4">
+          <div className="flex flex-wrap items-center gap-2">
+            <Badge variant="primary">Computer Graphics Heritage</Badge>
+            <Badge variant="outline">Ordered Bayer Dithering</Badge>
+          </div>
+          <h2 className="font-mono text-xl sm:text-2xl font-bold uppercase tracking-tight text-foreground">
+            What is Dithering in Ditherweb?
+          </h2>
+          <p className="font-mono text-xs sm:text-sm text-muted-foreground leading-relaxed max-w-3xl">
+            Ditherweb takes its name from dithering—a classic computer graphics technique developed to create the illusion of color depth on early palette-constrained displays using geometric pixel arrangements like 4×4 Bayer matrices. Ditherweb brings that tactile, lo-fi aesthetic into modern web applications using pure CSS custom properties, zero-dependency SVG textures, and accessible React 19 components.
+          </p>
+          <div className="flex flex-wrap gap-4 pt-2 font-mono text-xs">
+            <Link href="/components" className="text-primary hover:underline font-bold">
+              Explore all 46 Ditherweb components →
+            </Link>
+            <Link href="/docs#dithering" className="text-muted-foreground hover:text-foreground hover:underline">
+              Read Ditherweb dithering algorithms guide →
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* 6. Developer Experience & Quick Start */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full">
         <div className="bevel-inset bg-surface-sunken p-6 sm:p-8 space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
