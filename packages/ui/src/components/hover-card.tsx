@@ -129,8 +129,8 @@ export interface HoverCardTriggerProps extends React.HTMLAttributes<HTMLElement>
 }
 
 export const HoverCardTrigger = React.forwardRef<HTMLElement, HoverCardTriggerProps>(
-  ({ asChild = false, children, onMouseEnter, onMouseLeave, onFocus, onBlur, ...props }, ref) => {
-    const { triggerRef, handleMouseEnter, handleMouseLeave, setOpen } = useHoverCardContext();
+  ({ asChild = false, children, onMouseEnter, onMouseLeave, onFocus, onBlur, onClick, ...props }, ref) => {
+    const { triggerRef, handleMouseEnter, handleMouseLeave, setOpen, open } = useHoverCardContext();
 
     const onEnter = (e: React.MouseEvent<HTMLElement>) => {
       onMouseEnter?.(e);
@@ -152,6 +152,11 @@ export const HoverCardTrigger = React.forwardRef<HTMLElement, HoverCardTriggerPr
       setOpen(false);
     };
 
+    const onClk = (e: React.MouseEvent<HTMLElement>) => {
+      onClick?.(e);
+      setOpen(!open);
+    };
+
     if (asChild && React.isValidElement(children)) {
       const child = children as React.ReactElement<
         React.HTMLAttributes<HTMLElement> & { ref?: React.Ref<HTMLElement> }
@@ -164,10 +169,26 @@ export const HoverCardTrigger = React.forwardRef<HTMLElement, HoverCardTriggerPr
           if (typeof ref === "function") ref(node);
           else if (ref && "current" in ref) (ref as React.MutableRefObject<HTMLElement | null>).current = node;
         },
-        onMouseEnter: onEnter,
-        onMouseLeave: onLeave,
-        onFocus: onFoc,
-        onBlur: onBlu,
+        onMouseEnter: (e: React.MouseEvent<HTMLElement>) => {
+          child.props.onMouseEnter?.(e);
+          onEnter(e);
+        },
+        onMouseLeave: (e: React.MouseEvent<HTMLElement>) => {
+          child.props.onMouseLeave?.(e);
+          onLeave(e);
+        },
+        onFocus: (e: React.FocusEvent<HTMLElement>) => {
+          child.props.onFocus?.(e);
+          onFoc(e);
+        },
+        onBlur: (e: React.FocusEvent<HTMLElement>) => {
+          child.props.onBlur?.(e);
+          onBlu(e);
+        },
+        onClick: (e: React.MouseEvent<HTMLElement>) => {
+          child.props.onClick?.(e);
+          onClk(e);
+        },
       });
     }
 
@@ -184,6 +205,7 @@ export const HoverCardTrigger = React.forwardRef<HTMLElement, HoverCardTriggerPr
         onMouseLeave={onLeave}
         onFocus={onFoc}
         onBlur={onBlu}
+        onClick={onClk}
         tabIndex={0}
         className="inline-flex cursor-pointer"
         {...props}
@@ -227,23 +249,40 @@ export const HoverCardContent = React.forwardRef<HTMLDivElement, HoverCardConten
       handleMouseLeave,
     } = useHoverCardContext();
 
-    const [coords, setCoords] = React.useState<{ top: number; left: number }>({ top: 0, left: 0 });
+    const [coords, setCoords] = React.useState<{ top: number; left: number } | null>(null);
 
-    React.useImperativeHandle(forwardedRef, () => contentRef.current as HTMLDivElement);
+    const updatePosition = React.useCallback(
+      (node?: HTMLElement | null) => {
+        const trigger = triggerRef.current;
+        const content = node ?? contentRef.current;
+        if (!trigger || !content) return;
+        const tRect = trigger.getBoundingClientRect();
+        const cRect = content.getBoundingClientRect();
+        const pos = computeFloatingPosition(tRect, cRect, side, align, offset);
+        setCoords({ top: pos.top, left: pos.left });
+      },
+      [triggerRef, contentRef, side, align, offset]
+    );
 
-    const updatePosition = React.useCallback(() => {
-      if (!triggerRef.current || !contentRef.current) return;
-      const tRect = triggerRef.current.getBoundingClientRect();
-      const cRect = contentRef.current.getBoundingClientRect();
-      const pos = computeFloatingPosition(tRect, cRect, side, align, offset);
-      setCoords({ top: pos.top, left: pos.left });
-    }, [triggerRef, contentRef, side, align, offset]);
+    const handleContentRef = React.useCallback(
+      (node: HTMLDivElement | null) => {
+        (contentRef as React.MutableRefObject<HTMLDivElement | null>).current = node;
+        if (typeof forwardedRef === "function") forwardedRef(node);
+        else if (forwardedRef && "current" in forwardedRef) {
+          (forwardedRef as React.MutableRefObject<HTMLDivElement | null>).current = node;
+        }
+        if (node) {
+          updatePosition(node);
+        }
+      },
+      [forwardedRef, contentRef, updatePosition]
+    );
 
     React.useLayoutEffect(() => {
-      if (open) {
-        updatePosition();
+      if (open && contentRef.current) {
+        updatePosition(contentRef.current);
       }
-    }, [open, updatePosition]);
+    }, [open, updatePosition, contentRef]);
 
     React.useEffect(() => {
       if (!open) return;
@@ -272,7 +311,7 @@ export const HoverCardContent = React.forwardRef<HTMLDivElement, HoverCardConten
 
     const element = (
       <div
-        ref={contentRef}
+        ref={handleContentRef}
         role="region"
         tabIndex={-1}
         onMouseEnter={(e) => {
@@ -288,8 +327,10 @@ export const HoverCardContent = React.forwardRef<HTMLDivElement, HoverCardConten
           className
         )}
         style={{
-          top: `${coords.top}px`,
-          left: `${coords.left}px`,
+          top: coords ? `${coords.top}px` : "-9999px",
+          left: coords ? `${coords.left}px` : "-9999px",
+          opacity: coords ? 1 : 0,
+          pointerEvents: coords ? "auto" : "none",
           ...style,
         }}
         {...props}

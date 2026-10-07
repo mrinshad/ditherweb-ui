@@ -168,23 +168,40 @@ export const PopoverContent = React.forwardRef<HTMLDivElement, PopoverContentPro
     forwardedRef
   ) => {
     const { open, setOpen, triggerRef, contentRef, side, align, offset } = usePopoverContext();
-    const [coords, setCoords] = React.useState<{ top: number; left: number }>({ top: 0, left: 0 });
+    const [coords, setCoords] = React.useState<{ top: number; left: number } | null>(null);
 
-    React.useImperativeHandle(forwardedRef, () => contentRef.current as HTMLDivElement);
+    const updatePosition = React.useCallback(
+      (node?: HTMLElement | null) => {
+        const trigger = triggerRef.current;
+        const content = node ?? contentRef.current;
+        if (!trigger || !content) return;
+        const tRect = trigger.getBoundingClientRect();
+        const cRect = content.getBoundingClientRect();
+        const pos = computeFloatingPosition(tRect, cRect, side, align, offset);
+        setCoords({ top: pos.top, left: pos.left });
+      },
+      [triggerRef, contentRef, side, align, offset]
+    );
 
-    const updatePosition = React.useCallback(() => {
-      if (!triggerRef.current || !contentRef.current) return;
-      const tRect = triggerRef.current.getBoundingClientRect();
-      const cRect = contentRef.current.getBoundingClientRect();
-      const pos = computeFloatingPosition(tRect, cRect, side, align, offset);
-      setCoords({ top: pos.top, left: pos.left });
-    }, [triggerRef, contentRef, side, align, offset]);
+    const handleContentRef = React.useCallback(
+      (node: HTMLDivElement | null) => {
+        (contentRef as React.MutableRefObject<HTMLDivElement | null>).current = node;
+        if (typeof forwardedRef === "function") forwardedRef(node);
+        else if (forwardedRef && "current" in forwardedRef) {
+          (forwardedRef as React.MutableRefObject<HTMLDivElement | null>).current = node;
+        }
+        if (node) {
+          updatePosition(node);
+        }
+      },
+      [forwardedRef, contentRef, updatePosition]
+    );
 
     React.useLayoutEffect(() => {
-      if (open) {
-        updatePosition();
+      if (open && contentRef.current) {
+        updatePosition(contentRef.current);
       }
-    }, [open, updatePosition]);
+    }, [open, updatePosition, contentRef]);
 
     React.useEffect(() => {
       if (!open) return;
@@ -215,7 +232,7 @@ export const PopoverContent = React.forwardRef<HTMLDivElement, PopoverContentPro
 
     const element = (
       <div
-        ref={contentRef}
+        ref={handleContentRef}
         role="dialog"
         tabIndex={-1}
         className={cn(
@@ -223,8 +240,10 @@ export const PopoverContent = React.forwardRef<HTMLDivElement, PopoverContentPro
           className
         )}
         style={{
-          top: `${coords.top}px`,
-          left: `${coords.left}px`,
+          top: coords ? `${coords.top}px` : "-9999px",
+          left: coords ? `${coords.left}px` : "-9999px",
+          opacity: coords ? 1 : 0,
+          pointerEvents: coords ? "auto" : "none",
           ...style,
         }}
         {...props}

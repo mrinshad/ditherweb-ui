@@ -127,7 +127,7 @@ export interface TooltipTriggerProps extends React.HTMLAttributes<HTMLElement> {
 }
 
 export const TooltipTrigger = React.forwardRef<HTMLElement, TooltipTriggerProps>(
-  ({ asChild = false, delayDuration, children, onMouseEnter, onMouseLeave, onFocus, onBlur, ...props }, ref) => {
+  ({ asChild = false, delayDuration, children, onMouseEnter, onMouseLeave, onFocus, onBlur, onClick, ...props }, ref) => {
     const { open, setOpen, triggerRef, tooltipId } = useTooltipContext();
     const provider = React.useContext(TooltipProviderContext);
     const delay = delayDuration ?? provider.defaultDelay;
@@ -159,6 +159,12 @@ export const TooltipTrigger = React.forwardRef<HTMLElement, TooltipTriggerProps>
       setOpen(false);
     };
 
+    const handleClick = (e: React.MouseEvent<HTMLElement>) => {
+      onClick?.(e);
+      if (timerRef.current) clearTimeout(timerRef.current);
+      setOpen(!open);
+    };
+
     if (asChild && React.isValidElement(children)) {
       const child = children as React.ReactElement<
         React.HTMLAttributes<HTMLElement> & { ref?: React.Ref<HTMLElement> }
@@ -171,10 +177,26 @@ export const TooltipTrigger = React.forwardRef<HTMLElement, TooltipTriggerProps>
           if (typeof ref === "function") ref(node);
           else if (ref && "current" in ref) (ref as React.MutableRefObject<HTMLElement | null>).current = node;
         },
-        onMouseEnter: handleMouseEnter,
-        onMouseLeave: handleMouseLeave,
-        onFocus: handleFocus,
-        onBlur: handleBlur,
+        onMouseEnter: (e: React.MouseEvent<HTMLElement>) => {
+          child.props.onMouseEnter?.(e);
+          handleMouseEnter(e);
+        },
+        onMouseLeave: (e: React.MouseEvent<HTMLElement>) => {
+          child.props.onMouseLeave?.(e);
+          handleMouseLeave(e);
+        },
+        onFocus: (e: React.FocusEvent<HTMLElement>) => {
+          child.props.onFocus?.(e);
+          handleFocus(e);
+        },
+        onBlur: (e: React.FocusEvent<HTMLElement>) => {
+          child.props.onBlur?.(e);
+          handleBlur(e);
+        },
+        onClick: (e: React.MouseEvent<HTMLElement>) => {
+          child.props.onClick?.(e);
+          handleClick(e);
+        },
         "aria-describedby": open ? tooltipId : undefined,
       });
     }
@@ -192,6 +214,7 @@ export const TooltipTrigger = React.forwardRef<HTMLElement, TooltipTriggerProps>
         onMouseLeave={handleMouseLeave}
         onFocus={handleFocus}
         onBlur={handleBlur}
+        onClick={handleClick}
         aria-describedby={open ? tooltipId : undefined}
         tabIndex={0}
         className="inline-flex cursor-default"
@@ -212,23 +235,40 @@ export interface TooltipContentProps extends React.HTMLAttributes<HTMLDivElement
 export const TooltipContent = React.forwardRef<HTMLDivElement, TooltipContentProps>(
   ({ children, className, portal = true, style, ...props }, forwardedRef) => {
     const { open, setOpen, triggerRef, contentRef, side, align, offset, tooltipId } = useTooltipContext();
-    const [coords, setCoords] = React.useState<{ top: number; left: number }>({ top: 0, left: 0 });
+    const [coords, setCoords] = React.useState<{ top: number; left: number } | null>(null);
 
-    React.useImperativeHandle(forwardedRef, () => contentRef.current as HTMLDivElement);
+    const updatePosition = React.useCallback(
+      (node?: HTMLElement | null) => {
+        const trigger = triggerRef.current;
+        const content = node ?? contentRef.current;
+        if (!trigger || !content) return;
+        const tRect = trigger.getBoundingClientRect();
+        const cRect = content.getBoundingClientRect();
+        const pos = computeFloatingPosition(tRect, cRect, side, align, offset);
+        setCoords({ top: pos.top, left: pos.left });
+      },
+      [triggerRef, contentRef, side, align, offset]
+    );
 
-    const updatePosition = React.useCallback(() => {
-      if (!triggerRef.current || !contentRef.current) return;
-      const tRect = triggerRef.current.getBoundingClientRect();
-      const cRect = contentRef.current.getBoundingClientRect();
-      const pos = computeFloatingPosition(tRect, cRect, side, align, offset);
-      setCoords({ top: pos.top, left: pos.left });
-    }, [triggerRef, contentRef, side, align, offset]);
+    const handleContentRef = React.useCallback(
+      (node: HTMLDivElement | null) => {
+        (contentRef as React.MutableRefObject<HTMLDivElement | null>).current = node;
+        if (typeof forwardedRef === "function") forwardedRef(node);
+        else if (forwardedRef && "current" in forwardedRef) {
+          (forwardedRef as React.MutableRefObject<HTMLDivElement | null>).current = node;
+        }
+        if (node) {
+          updatePosition(node);
+        }
+      },
+      [forwardedRef, contentRef, updatePosition]
+    );
 
     React.useLayoutEffect(() => {
-      if (open) {
-        updatePosition();
+      if (open && contentRef.current) {
+        updatePosition(contentRef.current);
       }
-    }, [open, updatePosition]);
+    }, [open, updatePosition, contentRef]);
 
     React.useEffect(() => {
       if (!open) return;
@@ -250,7 +290,7 @@ export const TooltipContent = React.forwardRef<HTMLDivElement, TooltipContentPro
 
     const element = (
       <div
-        ref={contentRef}
+        ref={handleContentRef}
         id={tooltipId}
         role="tooltip"
         className={cn(
@@ -259,8 +299,9 @@ export const TooltipContent = React.forwardRef<HTMLDivElement, TooltipContentPro
           className
         )}
         style={{
-          top: `${coords.top}px`,
-          left: `${coords.left}px`,
+          top: coords ? `${coords.top}px` : "-9999px",
+          left: coords ? `${coords.left}px` : "-9999px",
+          opacity: coords ? 1 : 0,
           ...style,
         }}
         {...props}

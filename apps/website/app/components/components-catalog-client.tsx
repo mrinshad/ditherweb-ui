@@ -168,6 +168,7 @@ export default function ComponentsPage() {
   const [sheetOpen, setSheetOpen] = useState(false);
   const [customOverlayOpen, setCustomOverlayOpen] = useState(false);
   const [backdropPreviewVariant, setBackdropPreviewVariant] = useState<"dimmed" | "dither" | null>(null);
+  const [portalDemoOpen, setPortalDemoOpen] = useState(false);
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 space-y-12">
@@ -2554,7 +2555,7 @@ export default function ComponentsPage() {
                         Right Aligned Details
                       </Button>
                     </PopoverTrigger>
-                    <PopoverContent>
+                    <PopoverContent id="demo-popover-right-content">
                       <div className="space-y-2">
                         <h4 className="font-mono text-xs font-bold uppercase">Right Anchored</h4>
                         <p className="font-mono text-xs text-muted-foreground">
@@ -2836,12 +2837,46 @@ export default function ComponentsPage() {
                   <p className="font-mono text-xs text-muted-foreground">
                     Teleports children cleanly into <code>#ditherweb-portal-root</code> on document body without layout leaks.
                   </p>
-                  <div className="pt-2">
-                    <Badge variant="outline">SSR Hydration Safe</Badge>
-                    <Portal disabled>
-                      <span className="sr-only" id="demo-portal-bench">Portal Initialized</span>
-                    </Portal>
+                  <div className="pt-2 flex flex-wrap items-center gap-2">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      id="demo-portal-btn"
+                      onClick={() => setPortalDemoOpen(!portalDemoOpen)}
+                    >
+                      {portalDemoOpen ? "Unmount Portal" : "Teleport to Document Body"}
+                    </Button>
                   </div>
+                  {portalDemoOpen && (
+                    <Portal>
+                      <div
+                        id="demo-portal-card"
+                        className="fixed top-20 right-6 z-[60] p-4 bevel-raised bg-surface border-2 border-primary shadow-hard-lg max-w-sm space-y-2"
+                      >
+                        <div className="flex items-center justify-between border-b border-border pb-1">
+                          <span className="font-mono text-xs font-bold uppercase text-primary">
+                            Portal Active
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => setPortalDemoOpen(false)}
+                            className="retro-close-button text-xs"
+                            aria-label="Close portal"
+                          >
+                            ✕
+                          </button>
+                        </div>
+                        <p className="font-mono text-xs text-muted-foreground">
+                          This element is rendered directly into <code>#ditherweb-portal-root</code> on <code>document.body</code> outside the page hierarchy!
+                        </p>
+                        <div className="pt-1 flex justify-end">
+                          <Button size="sm" onClick={() => setPortalDemoOpen(false)}>
+                            Dismiss
+                          </Button>
+                        </div>
+                      </div>
+                    </Portal>
+                  )}
                 </div>
 
                 <div className="p-4 bevel-raised bg-surface space-y-2">
@@ -2868,12 +2903,36 @@ export default function ComponentsPage() {
                     </Button>
                   </div>
                   {backdropPreviewVariant && (
-                    <Backdrop
-                      id="demo-backdrop-bench"
-                      variant={backdropPreviewVariant}
-                      onClick={() => setBackdropPreviewVariant(null)}
-                      className="cursor-pointer"
-                    />
+                    <>
+                      <Backdrop
+                        id="demo-backdrop-bench"
+                        variant={backdropPreviewVariant}
+                        onClick={() => setBackdropPreviewVariant(null)}
+                        className="cursor-pointer"
+                      />
+                      <div className="fixed inset-0 z-[51] flex items-center justify-center p-4 pointer-events-none">
+                        <div className="pointer-events-auto p-6 bevel-raised bg-surface border-2 border-border max-w-sm w-full space-y-3 shadow-hard-lg">
+                          <div className="flex items-center justify-between border-b border-border pb-2">
+                            <h4 className="font-mono text-sm font-bold uppercase">
+                              Backdrop: {backdropPreviewVariant}
+                            </h4>
+                            <span className="font-mono text-[10px] text-muted-foreground uppercase">
+                              Texture Active
+                            </span>
+                          </div>
+                          <p className="font-mono text-xs text-muted-foreground leading-relaxed">
+                            {backdropPreviewVariant === "dither"
+                              ? "Classic retro ordered Bayer stipple pattern active on the backdrop."
+                              : "Semi-opaque dimmed retro screen overlay active."}
+                          </p>
+                          <div className="pt-2 flex justify-end">
+                            <Button size="sm" onClick={() => setBackdropPreviewVariant(null)}>
+                              Dismiss Backdrop
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    </>
                   )}
                 </div>
 
