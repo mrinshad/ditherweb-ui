@@ -1,0 +1,203 @@
+/* ==========================================================================
+   DITHERWEB — Design Tokens & Tailwind Theme Registration
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Light Mode Tokens
+   --------------------------------------------------------------------------
+   Warm, off-white palette inspired by old CRT paper-white and classic UI.
+   -------------------------------------------------------------------------- */
+:root {
+  /* --- Core --- */
+  --background: oklch(0.97 0.005 90);
+  --foreground: oklch(0.15 0.01 90);
+
+  /* --- Surfaces --- */
+  --surface: oklch(0.95 0.005 90);
+  --surface-foreground: oklch(0.15 0.01 90);
+  --surface-elevated: oklch(0.98 0.003 90);
+  --surface-elevated-foreground: oklch(0.15 0.01 90);
+  --surface-sunken: oklch(0.91 0.005 90);
+
+  /* --- Muted --- */
+  --muted: oklch(0.92 0.005 90);
+  --muted-foreground: oklch(0.45 0.01 90);
+
+  /* --- Card / Popover --- */
+  --card: oklch(0.95 0.005 90);
+  --card-foreground: oklch(0.15 0.01 90);
+  --popover: oklch(0.97 0.005 90);
+  --popover-foreground: oklch(0.15 0.01 90);
+
+  /* --- Primary --- */
+  --primary: oklch(0.25 0.01 90);
+  --primary-foreground: oklch(0.95 0.005 90);
+
+  /* --- Secondary --- */
+  --secondary: oklch(0.88 0.005 90);
+  --secondary-foreground: oklch(0.20 0.01 90);
+
+  /* --- Accent --- */
+  --accent: oklch(0.50 0.18 250);
+  --accent-foreground: oklch(0.97 0.005 90);
+
+  /* --- Semantic Status --- */
+  --destructive: oklch(0.55 0.22 25);
+  --destructive-foreground: oklch(0.97 0.005 90);
+  --success: oklch(0.52 0.17 145);
+  --success-foreground: oklch(0.97 0.005 90);
+  --warning: oklch(0.75 0.15 75);
+  --warning-foreground: oklch(0.18 0.01 90);
+  --info: oklch(0.55 0.15 240);
+  --info-foreground: oklch(0.97 0.005 90);
+
+  /* --- Borders --- */
+  --border: oklch(0.80 0.005 90);
+  --border-strong: oklch(0.55 0.01 90);
+  --input: oklch(0.80 0.005 90);
+  --ring: oklch(0.25 0.01 90);
+
+  /* --- Bevel System --- */
+  --bevel-light: oklch(1.00 0 0);
+  --bevel-dark: oklch(0.45 0.005 90);
+  --bevel-face: oklch(0.88 0.005 90);
+
+  /* --- Shadows --- */
+  --shadow-color: oklch(0.15 0.01 90 / 0.25);
+  --shadow-hard-color: oklch(0.15 0.01 90 / 0.6);
+
+  /* --- Radius --- */
+  --radius: 0px;
+}
+
+/* --------------------------------------------------------------------------
+   Dark Mode Tokens
+   --------------------------------------------------------------------------
+   Deep, warm dark inspired by dimmed CRT phosphors and early terminal screens.
+   -------------------------------------------------------------------------- */
+.dark {
+  /* --- Core --- */
+  --background: oklch(0.12 0.005 90);
+  --foreground: oklch(0.90 0.005 90);
+
+  /* --- Surfaces --- */
+  --surface: oklch(0.16 0.005 90);
+  --surface-foreground: oklch(0.90 0.005 90);
+  --surface-elevated: oklch(0.20 0.005 90);
+  --surface-elevated-foreground: oklch(0.90 0.005 90);
+  --surface-sunken: oklch(0.10 0.005 90);
+
+  /* --- Muted --- */
+  --muted: oklch(0.20 0.005 90);
+  --muted-foreground: oklch(0.55 0.005 90);
+
+  /* --- Card / Popover --- */
+  --card: oklch(0.16 0.005 90);
+  --card-foreground: oklch(0.90 0.005 90);
+  --popover: oklch(0.16 0.005 90);
+  --popover-foreground: oklch(0.90 0.005 90);
+
+  /* --- Primary --- */
+  --primary: oklch(0.90 0.005 90);
+  --primary-foreground: oklch(0.12 0.005 90);
+
+  /* --- Secondary --- */
+  --secondary: oklch(0.22 0.005 90);
+  --secondary-foreground: oklch(0.90 0.005 90);
+
+  /* --- Accent --- */
+  --accent: oklch(0.62 0.18 250);
+  --accent-foreground: oklch(0.97 0.005 90);
+
+  /* --- Semantic Status --- */
+  --destructive: oklch(0.60 0.22 25);
+  --destructive-foreground: oklch(0.97 0.005 90);
+  --success: oklch(0.60 0.17 145);
+  --success-foreground: oklch(0.97 0.005 90);
+  --warning: oklch(0.78 0.15 75);
+  --warning-foreground: oklch(0.18 0.01 90);
+  --info: oklch(0.62 0.15 240);
+  --info-foreground: oklch(0.97 0.005 90);
+
+  /* --- Borders --- */
+  --border: oklch(0.28 0.005 90);
+  --border-strong: oklch(0.50 0.005 90);
+  --input: oklch(0.28 0.005 90);
+  --ring: oklch(0.80 0.005 90);
+
+  /* --- Bevel System --- */
+  --bevel-light: oklch(0.40 0.005 90);
+  --bevel-dark: oklch(0.08 0.005 90);
+  --bevel-face: oklch(0.22 0.005 90);
+
+  /* --- Shadows --- */
+  --shadow-color: oklch(0.00 0 0 / 0.45);
+  --shadow-hard-color: oklch(0.00 0 0 / 0.85);
+}
+
+/* --------------------------------------------------------------------------
+   Tailwind Theme Registration (Tailwind v4)
+   -------------------------------------------------------------------------- */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-surface: var(--surface);
+  --color-surface-foreground: var(--surface-foreground);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-surface-elevated-foreground: var(--surface-elevated-foreground);
+  --color-surface-sunken: var(--surface-sunken);
+
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-bevel-light: var(--bevel-light);
+  --color-bevel-dark: var(--bevel-dark);
+  --color-bevel-face: var(--bevel-face);
+
+  --radius-sm: calc(var(--radius) + 2px);
+  --radius-md: calc(var(--radius) + 4px);
+  --radius-lg: calc(var(--radius) + 8px);
+  --radius-xl: calc(var(--radius) + 12px);
+
+  --shadow-flat: none;
+  --shadow-hard-sm: 1px 1px 0 var(--shadow-hard-color);
+  --shadow-hard: 2px 2px 0 var(--shadow-hard-color);
+  --shadow-hard-md: 3px 3px 0 var(--shadow-hard-color);
+  --shadow-hard-lg: 4px 4px 0 var(--shadow-hard-color);
+  --shadow-hard-xl: 6px 6px 0 var(--shadow-hard-color);
+  --shadow-inset: inset 2px 2px 0 var(--shadow-hard-color);
+  --shadow-raised: 2px 2px 0 var(--shadow-hard-color);
+  --shadow-soft-sm: 0 1px 2px var(--shadow-color);
+  --shadow-soft: 0 2px 4px var(--shadow-color);
+}
+
+@custom-variant dark (&:is(.dark *));

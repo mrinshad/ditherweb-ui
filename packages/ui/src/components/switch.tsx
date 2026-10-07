@@ -1,5 +1,7 @@
+"use client";
+
 import { forwardRef } from "react";
-import { cn } from "@/lib/utils";
+import { cn } from "../lib/utils";
 
 export type SwitchProps = Omit<React.InputHTMLAttributes<HTMLInputElement>, "type">;
 
