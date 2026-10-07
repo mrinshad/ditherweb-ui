@@ -46,82 +46,71 @@ export default function RetroPanel() {
   };
 
   return (
-    <div className="flex flex-col gap-16 py-8 sm:py-16">
+    <div className="flex flex-col space-y-16 pb-16">
       {/* 1. Hero Section */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full">
-        <div className="grid grid-cols-1 items-center gap-10 lg:gap-14 xl:gap-16 lg:grid-cols-12">
-          {/* Left Column: Headlines & CTAs */}
-          <div className="space-y-6 lg:col-span-7">
-            <div className="flex flex-wrap items-center gap-2">
-              <Badge variant="primary">
-                Next-Gen Retro UI
-              </Badge>
-              <Badge variant="outline">
-                React 19 • TypeScript • Tailwind
-              </Badge>
-            </div>
-
-            <div className="space-y-3">
-              <h1 className="font-mono text-3xl font-extrabold uppercase tracking-tight sm:text-5xl lg:text-5xl xl:text-6xl text-foreground leading-[1.08]">
-                Ditherweb — Retro Appearance. <br />
-                <span className="text-primary underline decoration-4 underline-offset-8">
-                  Modern Engineering.
-                </span>
-              </h1>
-              <p className="font-mono text-sm sm:text-base text-muted-foreground leading-relaxed max-w-2xl">
-                Ditherweb is a retro-inspired React UI framework and component library inspired by the visual language of the early Internet, classic desktop interfaces, ordered Bayer dithering, and 90s digital culture—built with clean React 19 primitives, zero runtime bloat, and full accessibility.
-              </p>
-            </div>
-
-            {/* CTAs */}
-            <div className="flex flex-wrap items-center gap-3 pt-2">
-              <Link href="/components">
-                <Button variant="primary" size="lg">
-                  Explore Ditherweb Components →
-                </Button>
-              </Link>
-              <Link href="/playground">
-                <Button variant="default" size="lg">
-                  Interactive Playground
-                </Button>
-              </Link>
-              <Link href="/docs">
-                <Button variant="outline" size="lg">
-                  Ditherweb Documentation
-                </Button>
-              </Link>
-            </div>
-
-            {/* Micro stats banner */}
-            <div className="grid grid-cols-3 gap-3 pt-4 border-t border-border font-mono text-xs">
-              <div className="bevel-inset p-2 bg-muted/30">
-                <div className="text-muted-foreground text-[10px]">COMPONENTS</div>
-                <div className="font-bold text-foreground text-sm">46 Primitives</div>
+      <section className="w-full border-b border-border bg-black text-white relative overflow-hidden py-12 sm:py-16 lg:py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full">
+          <div className="grid grid-cols-1 items-center gap-10 lg:gap-8 xl:gap-12 lg:grid-cols-12">
+            {/* Left Column: Headlines & CTAs */}
+            <div className="space-y-6 lg:col-span-6 xl:col-span-6 z-10">
+              <div className="flex flex-wrap items-center gap-2">
+                <Badge variant="primary" className="bg-white text-black font-mono font-bold text-xs uppercase px-2.5 py-0.5 rounded-none">
+                  Next-Gen Retro UI
+                </Badge>
+                <Badge variant="outline" className="border-zinc-700 text-zinc-400 font-mono text-xs uppercase px-2.5 py-0.5 rounded-none">
+                  React 19 • TypeScript • Tailwind
+                </Badge>
               </div>
-              <div className="bevel-inset p-2 bg-muted/30">
-                <div className="text-muted-foreground text-[10px]">ACCESSIBILITY</div>
-                <div className="font-bold text-foreground text-sm">W3C / ARIA Compliant</div>
+
+              <div className="space-y-4">
+                <h1 className="font-mono text-3xl sm:text-4xl lg:text-[40px] xl:text-[45px] font-extrabold uppercase tracking-tight text-white leading-[1.1]">
+                  DITHERWEB — RETRO<br />
+                  APPEARANCE.<br />
+                  MODERN ENGINEERING.
+                </h1>
+                <p className="font-mono text-sm sm:text-base text-zinc-400 leading-relaxed max-w-xl">
+                  A retro-inspired React UI framework and component library built with clean primitives, modern tooling, and zero runtime bloat. Classic aesthetics. Production-ready engineering.
+                </p>
               </div>
-              <div className="bevel-inset p-2 bg-muted/30">
-                <div className="text-muted-foreground text-[10px]">EXT DEPENDENCIES</div>
-                <div className="font-bold text-foreground text-sm">0 Runtime Bloat</div>
+
+              {/* CTAs */}
+              <div className="flex flex-wrap items-center gap-3 pt-2">
+                <Link href="/components">
+                  <Button variant="primary" size="lg" className="bg-white text-black hover:bg-zinc-200">
+                    Explore Components →
+                  </Button>
+                </Link>
+                <Link href="/playground">
+                  <Button variant="outline" size="lg" className="border-zinc-700 text-zinc-300 hover:bg-zinc-900">
+                    Interactive Playground
+                  </Button>
+                </Link>
               </div>
             </div>
-          </div>
 
-          {/* Right Column: Atmospheric Ditherweb Artwork */}
-          <div className="flex items-center justify-center lg:justify-end lg:col-span-5 w-full">
-            <figure className="w-full">
-              <Image
-                src="/images/hero-artwork.jpg"
-                alt="Retro desktop workstation at night with a dithered CRT monitor displaying Ditherweb, mechanical keyboard, programming books, and a moonlit city skyline outside the window"
-                width={1024}
-                height={576}
-                priority
-                sizes="(min-width: 1024px) 45vw, 100vw"
-                className="w-full h-auto aspect-video object-contain block select-none"
-              />
-            </figure>
+            {/* Right Column: Atmospheric Ditherweb Artwork */}
+            <div className="relative flex items-center justify-center lg:justify-end lg:col-span-6 xl:col-span-6 w-full overflow-hidden">
+              <div className="relative w-full flex items-center justify-center lg:justify-end">
+                <Image
+                  src="/images/hero-artwork.jpg"
+                  alt="Retro desktop workstation at night with a dithered CRT monitor displaying Ditherweb, mechanical keyboard, programming books, and a moonlit city skyline outside the window"
+                  width={1024}
+                  height={576}
+                  priority
+                  sizes="(min-width: 1024px) 50vw, 100vw"
+                  className="w-full h-auto object-contain block select-none"
+                  style={{
+                    maskImage: "linear-gradient(to right, transparent 0%, black 16%, black 100%)",
+                    WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 16%, black 100%)",
+                  }}
+                />
+                {/* Complementary subtle gradient overlay on the left edge for cross-browser dissolve */}
+                <div
+                  className="pointer-events-none absolute inset-y-0 left-0 w-16 sm:w-24 lg:w-32 bg-gradient-to-r from-black via-black/80 to-transparent"
+                  aria-hidden="true"
+                />
+              </div>
+            </div>
           </div>
         </div>
       </section>
