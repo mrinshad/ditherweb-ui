@@ -658,4 +658,89 @@ button.bevel-raised:active {
   }
 }
 
+/* --------------------------------------------------------------------------
+   Overlays & Layered Interaction Primitives
+   -------------------------------------------------------------------------- */
+.retro-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-backdrop, 50);
+}
+
+.retro-backdrop-dimmed {
+  background-color: oklch(0 0 0 / 0.55);
+}
+
+.dark .retro-backdrop-dimmed {
+  background-color: oklch(0 0 0 / 0.75);
+}
+
+.retro-backdrop-dither {
+  background-color: oklch(0 0 0 / 0.45);
+  background-image: radial-gradient(circle, currentColor 1px, transparent 1px);
+  background-size: 3px 3px;
+  color: oklch(0 0 0 / 0.35);
+}
+
+.dark .retro-backdrop-dither {
+  background-color: oklch(0 0 0 / 0.65);
+  color: oklch(1 0 0 / 0.25);
+}
+
+.retro-window-titlebar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 8px;
+  font-family: var(--font-retro, monospace);
+  font-weight: 700;
+  font-size: 0.8125rem;
+  letter-spacing: 0.05em;
+  user-select: none;
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+}
+
+.retro-window-titlebar-muted {
+  background-color: var(--muted);
+  color: var(--muted-foreground);
+  border-bottom: 2px solid var(--border-strong);
+}
+
+.retro-close-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  font-family: var(--font-retro, monospace);
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 1;
+  border-width: 2px;
+  border-style: solid;
+  border-top-color: var(--bevel-light);
+  border-left-color: var(--bevel-light);
+  border-bottom-color: var(--bevel-dark);
+  border-right-color: var(--bevel-dark);
+  background-color: var(--bevel-face);
+  color: var(--foreground);
+  cursor: pointer;
+  user-select: none;
+}
+
+.retro-close-button:hover {
+  background-color: var(--surface-elevated);
+}
+
+.retro-close-button:active {
+  border-top-color: var(--bevel-dark);
+  border-left-color: var(--bevel-dark);
+  border-bottom-color: var(--bevel-light);
+  border-right-color: var(--bevel-light);
+  transform: translate(1px, 1px);
+}
+
+
 
