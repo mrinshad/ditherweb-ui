@@ -330,6 +330,143 @@ export {
   type SheetSide,
 } from "./components/sheet";
 
+// --- Phase 3E: Navigation Primitives ---
+export {
+  Tabs,
+  TabsList,
+  TabsTrigger,
+  TabsContent,
+  type TabsProps,
+  type TabsListProps,
+  type TabsTriggerProps,
+  type TabsContentProps,
+  type TabsOrientation,
+  type TabsActivationMode,
+} from "./components/tabs";
+export {
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+  BreadcrumbEllipsis,
+  type BreadcrumbProps,
+  type BreadcrumbListProps,
+  type BreadcrumbItemProps,
+  type BreadcrumbLinkProps,
+  type BreadcrumbPageProps,
+  type BreadcrumbSeparatorProps,
+  type BreadcrumbEllipsisProps,
+} from "./components/breadcrumb";
+export {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationPrevious,
+  PaginationNext,
+  PaginationEllipsis,
+  type PaginationProps,
+  type PaginationContentProps,
+  type PaginationItemProps,
+  type PaginationLinkProps,
+  type PaginationPreviousProps,
+  type PaginationNextProps,
+  type PaginationEllipsisProps,
+} from "./components/pagination";
+export {
+  NavigationMenu,
+  NavigationMenuList,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuTrigger,
+  NavigationMenuContent,
+  type NavigationMenuProps,
+  type NavigationMenuListProps,
+  type NavigationMenuItemProps,
+  type NavigationMenuLinkProps,
+  type NavigationMenuTriggerProps,
+  type NavigationMenuContentProps,
+} from "./components/navigation-menu";
+export {
+  Menubar,
+  MenubarMenu,
+  MenubarTrigger,
+  MenubarContent,
+  MenubarItem,
+  MenubarSeparator,
+  MenubarShortcut,
+  MenubarCheckboxItem,
+  MenubarRadioItem,
+  type MenubarProps,
+  type MenubarMenuProps,
+  type MenubarTriggerProps,
+  type MenubarContentProps,
+  type MenubarItemProps,
+  type MenubarSeparatorProps,
+  type MenubarShortcutProps,
+  type MenubarCheckboxItemProps,
+  type MenubarRadioItemProps,
+} from "./components/menubar";
+
+// --- Phase 3E: Data & Structured Content Primitives ---
+export {
+  Table,
+  TableHeader,
+  TableBody,
+  TableFooter,
+  TableRow,
+  TableHead,
+  TableCell,
+  TableCaption,
+  type TableProps,
+  type TableHeaderProps,
+  type TableBodyProps,
+  type TableFooterProps,
+  type TableRowProps,
+  type TableHeadProps,
+  type TableCellProps,
+  type TableCaptionProps,
+} from "./components/table";
+export {
+  DataTable,
+  type DataTableProps,
+  type DataTableColumn,
+  type SortDirection,
+} from "./components/data-table";
+export {
+  DescriptionList,
+  DescriptionItem,
+  DescriptionTerm,
+  DescriptionDetails,
+  type DescriptionListProps,
+  type DescriptionItemProps,
+  type DescriptionTermProps,
+  type DescriptionDetailsProps,
+  type DescriptionListLayout,
+} from "./components/description-list";
+export {
+  Tree,
+  TreeNode,
+  type TreeProps,
+  type TreeNodeProps,
+  type TreeNodeData,
+} from "./components/tree";
+export {
+  Avatar,
+  AvatarImage,
+  AvatarFallback,
+  AvatarBadge,
+  type AvatarProps,
+  type AvatarImageProps,
+  type AvatarFallbackProps,
+  type AvatarBadgeProps,
+  type AvatarSize,
+  type AvatarShape,
+  type AvatarStatus,
+} from "./components/avatar";
+
 // --- Shared Utilities ---
 export { cn } from "./lib/utils";
 export {
@@ -340,5 +477,6 @@ export {
   type OverlaySide,
   type OverlayAlign,
 } from "./lib/overlay-utils";
+
 
 

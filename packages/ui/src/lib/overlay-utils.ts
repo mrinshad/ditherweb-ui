@@ -190,6 +190,27 @@ export function useOutsideClick(
   }, [isActive, onOutsideClick, refs]);
 }
 
+/**
+ * Invokes a callback on document pointerdown events when active.
+ */
+export function useOutsidePointerDown(
+  callback: (event: MouseEvent | TouchEvent) => void,
+  isActive: boolean = true
+) {
+  useEffect(() => {
+    if (!isActive || typeof document === "undefined") return;
+
+    const handlePointerDown = (event: MouseEvent | TouchEvent) => {
+      callback(event);
+    };
+
+    document.addEventListener("pointerdown", handlePointerDown);
+    return () => {
+      document.removeEventListener("pointerdown", handlePointerDown);
+    };
+  }, [callback, isActive]);
+}
+
 export type OverlaySide = "top" | "right" | "bottom" | "left";
 export type OverlayAlign = "start" | "center" | "end";
 

@@ -124,9 +124,133 @@ import {
   SheetBody,
   SheetFooter,
   SheetClose,
+  Tabs,
+  TabsList,
+  TabsTrigger,
+  TabsContent,
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+  BreadcrumbEllipsis,
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationPrevious,
+  PaginationNext,
+  PaginationEllipsis,
+  NavigationMenu,
+  NavigationMenuList,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuTrigger,
+  NavigationMenuContent,
+  Menubar,
+  MenubarMenu,
+  MenubarTrigger,
+  MenubarContent,
+  MenubarItem,
+  MenubarSeparator,
+  MenubarShortcut,
+  MenubarCheckboxItem,
+  MenubarRadioItem,
+  Table,
+  TableHeader,
+  TableBody,
+  TableFooter,
+  TableRow,
+  TableHead,
+  TableCell,
+  TableCaption,
+  DataTable,
+  type DataTableColumn,
+  DescriptionList,
+  DescriptionItem,
+  DescriptionTerm,
+  DescriptionDetails,
+  Tree,
+  type TreeNodeData,
+  Avatar,
+  AvatarImage,
+  AvatarFallback,
 } from "@ditherweb/ui";
 
-type Category = "all" | "overlays" | "surfaces" | "forms" | "typography" | "layout" | "input" | "feedback";
+type Category = "all" | "navigation" | "overlays" | "surfaces" | "forms" | "typography" | "layout" | "input" | "feedback";
+
+type ProcessItem = {
+  id: string;
+  name: string;
+  pid: number;
+  memory: string;
+  status: "running" | "idle" | "stopped";
+};
+
+const processColumns: DataTableColumn<ProcessItem>[] = [
+  { id: "pid", header: "PID", accessorKey: "pid", sortable: true, width: "80px" },
+  { id: "name", header: "Process Name", accessorKey: "name", sortable: true },
+  { id: "memory", header: "Mem Allocation", accessorKey: "memory", sortable: true, align: "right" },
+  {
+    id: "status",
+    header: "Status",
+    accessorKey: "status",
+    sortable: true,
+    cell: ({ value }) => (
+      <Badge
+        variant={
+          value === "running" ? "success" : value === "idle" ? "outline" : "destructive"
+        }
+      >
+        {String(value).toUpperCase()}
+      </Badge>
+    ),
+  },
+];
+
+const processData: ProcessItem[] = [
+  { id: "proc-1", pid: 104, name: "KERNEL.SYS", memory: "128 KB", status: "running" },
+  { id: "proc-2", pid: 218, name: "VGA_DRIVER.BIN", memory: "64 KB", status: "running" },
+  { id: "proc-3", pid: 305, name: "DITHER_RENDER.EXE", memory: "512 KB", status: "running" },
+  { id: "proc-4", pid: 412, name: "MOUSE_SER.SYS", memory: "16 KB", status: "idle" },
+  { id: "proc-5", pid: 520, name: "SND_BLASTER.COM", memory: "32 KB", status: "stopped" },
+];
+
+const treeData: TreeNodeData[] = [
+  {
+    id: "sys-root",
+    label: "C:\\ (SYSTEM)",
+    children: [
+      {
+        id: "sys-dos",
+        label: "DOS",
+        children: [
+          { id: "sys-command", label: "COMMAND.COM" },
+          { id: "sys-ansi", label: "ANSI.SYS" },
+        ],
+      },
+      {
+        id: "sys-dither",
+        label: "DITHERWEB",
+        children: [
+          { id: "sys-core", label: "CORE.BIN" },
+          { id: "sys-tokens", label: "TOKENS.CSS" },
+          {
+            id: "sys-assets",
+            label: "PALETTES",
+            children: [
+              { id: "pal-vga", label: "VGA16.PAL" },
+              { id: "pal-cga", label: "CGA_MODE1.PAL" },
+            ],
+          },
+        ],
+      },
+      { id: "sys-autoexec", label: "AUTOEXEC.BAT" },
+      { id: "sys-config", label: "CONFIG.SYS" },
+    ],
+  },
+];
 
 export default function ComponentsPage() {
   const [category, setCategory] = useState<Category>("all");
@@ -170,6 +294,16 @@ export default function ComponentsPage() {
   const [backdropPreviewVariant, setBackdropPreviewVariant] = useState<"dimmed" | "dither" | null>(null);
   const [portalDemoOpen, setPortalDemoOpen] = useState(false);
 
+  // Navigation & Data states (Phase 3E)
+  const [activeTab, setActiveTab] = useState("hardware");
+  const [currentPage, setCurrentPage] = useState(2);
+  const [treeSelectedId, setTreeSelectedId] = useState<string | null>("sys-core");
+  const [menubarAction, setMenubarAction] = useState<string>("Ready");
+  const [menubarGridCheck, setMenubarGridCheck] = useState(true);
+  const [menubarViewMode, setMenubarViewMode] = useState("detail");
+  const [selectedTableKeys, setSelectedTableKeys] = useState<(string | number)[]>(["proc-1"]);
+
+
   useEffect(() => {
     if (!backdropPreviewVariant) return;
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -186,16 +320,16 @@ export default function ComponentsPage() {
       {/* Page Header */}
       <div className="space-y-4">
         <div className="flex items-center gap-2">
-          <Badge variant="primary">Overlays & Interaction</Badge>
+          <Badge variant="primary">Navigation & Data</Badge>
           <span className="font-mono text-xs text-muted-foreground">
-            56 Production Primitives
+            66 Production Primitives
           </span>
         </div>
         <h1 className="font-mono text-3xl font-bold uppercase tracking-tight text-foreground sm:text-4xl">
           Ditherweb Component Catalog
         </h1>
         <p className="font-mono text-sm text-muted-foreground max-w-2xl leading-relaxed">
-          Explore Ditherweb&apos;s complete retro React UI component library. Every primitive is built with native accessibility semantics, typed props, and calibrated retro CSS tokens. Inspect interactive states across buttons, inputs, dialogs, cards, forms, surfaces, and feedback components.
+          Explore Ditherweb&apos;s complete retro React UI component library. Every primitive is built with native accessibility semantics, typed props, and calibrated retro CSS tokens. Inspect interactive states across navigation, data display, overlays, buttons, inputs, dialogs, cards, surfaces, and feedback components.
         </p>
 
         {/* Filter Tabs */}
@@ -207,7 +341,16 @@ export default function ComponentsPage() {
               category === "all" ? "bevel-inset bg-muted text-primary" : "bevel-raised"
             }`}
           >
-            All Primitives (56)
+            All Primitives (66)
+          </button>
+          <button
+            type="button"
+            onClick={() => setCategory("navigation")}
+            className={`px-3 py-1 font-bold ${
+              category === "navigation" ? "bevel-inset bg-muted text-primary" : "bevel-raised"
+            }`}
+          >
+            Navigation & Data (10)
           </button>
           <button
             type="button"
@@ -3003,6 +3146,720 @@ export default function ComponentsPage() {
                         </div>
                       </div>
                     </Overlay>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </>
+        )}
+
+        {/* ==================================================================
+            NAVIGATION & DATA PRIMITIVES (Phase 3E)
+            ================================================================== */}
+        {(category === "all" || category === "navigation") && (
+          <>
+            {/* SECTION 1: TABS */}
+            <section id="demo-tabs-section" className="space-y-4">
+              <div className="flex items-center justify-between border-b border-border pb-2">
+                <div className="flex items-center gap-2">
+                  <Badge variant="primary">01</Badge>
+                  <h2 className="font-mono text-lg font-bold uppercase tracking-tight text-foreground">
+                    Tabs
+                  </h2>
+                </div>
+                <span className="font-mono text-xs text-muted-foreground">
+                  role=&quot;tablist&quot; • Arrow keys • Folders
+                </span>
+              </div>
+              <p className="font-mono text-xs text-muted-foreground">
+                Accessible tabbed navigation with W3C keyboard navigation, Home/End support, and retro beveled folder styling.
+              </p>
+
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div className="p-4 bevel-raised bg-surface space-y-3">
+                  <span className="font-mono text-xs font-bold uppercase text-primary">
+                    Horizontal Folder Tabs
+                  </span>
+                  <Tabs value={activeTab} onValueChange={setActiveTab}>
+                    <TabsList>
+                      <TabsTrigger id="tab-trigger-hardware" value="hardware">
+                        Hardware
+                      </TabsTrigger>
+                      <TabsTrigger id="tab-trigger-memory" value="memory">
+                        Memory
+                      </TabsTrigger>
+                      <TabsTrigger id="tab-trigger-peripherals" value="peripherals">
+                        Peripherals
+                      </TabsTrigger>
+                      <TabsTrigger id="tab-trigger-disabled" value="disabled" disabled>
+                        Disabled
+                      </TabsTrigger>
+                    </TabsList>
+                    <TabsContent value="hardware" className="p-4">
+                      <div className="space-y-1 font-mono text-xs">
+                        <p className="font-bold text-foreground">CPU: 80486DX2 @ 66 MHz</p>
+                        <p className="text-muted-foreground">VGA adapter: 512 KB onboard VRAM with hardware blitter.</p>
+                      </div>
+                    </TabsContent>
+                    <TabsContent value="memory" className="p-4">
+                      <div className="space-y-1 font-mono text-xs">
+                        <p className="font-bold text-foreground">Base Memory: 640 KB</p>
+                        <p className="text-muted-foreground">Extended Memory (XMS): 15,360 KB allocated via HIMEM.SYS.</p>
+                      </div>
+                    </TabsContent>
+                    <TabsContent value="peripherals" className="p-4">
+                      <div className="space-y-1 font-mono text-xs">
+                        <p className="font-bold text-foreground">Sound: Sound Blaster 16 (DSP v4.05)</p>
+                        <p className="text-muted-foreground">Bus Mouse: COM1 (1200 baud, 8N1).</p>
+                      </div>
+                    </TabsContent>
+                    <TabsContent value="disabled" className="p-4">
+                      <p className="font-mono text-xs text-muted-foreground">This content is inaccessible.</p>
+                    </TabsContent>
+                  </Tabs>
+                </div>
+
+                <div className="p-4 bevel-raised bg-surface space-y-3">
+                  <span className="font-mono text-xs font-bold uppercase text-primary">
+                    Vertical Tabs Layout
+                  </span>
+                  <Tabs defaultValue="diag-vga" orientation="vertical">
+                    <TabsList>
+                      <TabsTrigger value="diag-vga">VGA DAC</TabsTrigger>
+                      <TabsTrigger value="diag-dma">DMA Ch 1</TabsTrigger>
+                      <TabsTrigger value="diag-irq">IRQ Mask</TabsTrigger>
+                    </TabsList>
+                    <TabsContent value="diag-vga" className="p-4">
+                      <p className="font-mono text-xs font-bold">Palette DAC Register 0x3C8</p>
+                      <p className="font-mono text-xs text-muted-foreground">18-bit color lookup table active with 64 levels per channel.</p>
+                    </TabsContent>
+                    <TabsContent value="diag-dma" className="p-4">
+                      <p className="font-mono text-xs font-bold">Direct Memory Access Controller</p>
+                      <p className="font-mono text-xs text-muted-foreground">Channel 1 configured for high-speed waveform sample playback.</p>
+                    </TabsContent>
+                    <TabsContent value="diag-irq" className="p-4">
+                      <p className="font-mono text-xs font-bold">PIC 8259A Master/Slave</p>
+                      <p className="font-mono text-xs text-muted-foreground">Interrupt vector table routed to hardware interrupts 0x08-0x0F.</p>
+                    </TabsContent>
+                  </Tabs>
+                </div>
+              </div>
+            </section>
+
+            {/* SECTION 2: BREADCRUMB */}
+            <section id="demo-breadcrumb-section" className="space-y-4">
+              <div className="flex items-center justify-between border-b border-border pb-2">
+                <div className="flex items-center gap-2">
+                  <Badge variant="primary">02</Badge>
+                  <h2 className="font-mono text-lg font-bold uppercase tracking-tight text-foreground">
+                    Breadcrumb
+                  </h2>
+                </div>
+                <span className="font-mono text-xs text-muted-foreground">
+                  nav • ol • Retro separators
+                </span>
+              </div>
+              <p className="font-mono text-xs text-muted-foreground">
+                Semantic hierarchical location indicators with retro delimiters, custom glyphs, and responsive overflow.
+              </p>
+
+              <div className="p-4 bevel-raised bg-surface space-y-4">
+                <div className="space-y-1">
+                  <span className="font-mono text-[10px] uppercase text-muted-foreground">Classic Slash Separator</span>
+                  <Breadcrumb id="demo-breadcrumb-slash">
+                    <BreadcrumbList>
+                      <BreadcrumbItem>
+                        <BreadcrumbLink href="#root">ROOT</BreadcrumbLink>
+                      </BreadcrumbItem>
+                      <BreadcrumbSeparator>/</BreadcrumbSeparator>
+                      <BreadcrumbItem>
+                        <BreadcrumbLink href="#system">SYSTEM</BreadcrumbLink>
+                      </BreadcrumbItem>
+                      <BreadcrumbSeparator>/</BreadcrumbSeparator>
+                      <BreadcrumbItem>
+                        <BreadcrumbLink href="#drivers">DRIVERS</BreadcrumbLink>
+                      </BreadcrumbItem>
+                      <BreadcrumbSeparator>/</BreadcrumbSeparator>
+                      <BreadcrumbItem>
+                        <BreadcrumbPage>VGA16.SYS</BreadcrumbPage>
+                      </BreadcrumbItem>
+                    </BreadcrumbList>
+                  </Breadcrumb>
+                </div>
+
+                <div className="space-y-1">
+                  <span className="font-mono text-[10px] uppercase text-muted-foreground">Chevron Separator with Ellipsis</span>
+                  <Breadcrumb id="demo-breadcrumb-chevron">
+                    <BreadcrumbList>
+                      <BreadcrumbItem>
+                        <BreadcrumbLink href="#home">HOME</BreadcrumbLink>
+                      </BreadcrumbItem>
+                      <BreadcrumbSeparator>&gt;</BreadcrumbSeparator>
+                      <BreadcrumbItem>
+                        <BreadcrumbEllipsis />
+                      </BreadcrumbItem>
+                      <BreadcrumbSeparator>&gt;</BreadcrumbSeparator>
+                      <BreadcrumbItem>
+                        <BreadcrumbLink href="#palettes">PALETTES</BreadcrumbLink>
+                      </BreadcrumbItem>
+                      <BreadcrumbSeparator>&gt;</BreadcrumbSeparator>
+                      <BreadcrumbItem>
+                        <BreadcrumbPage>ATKINSON.PAL</BreadcrumbPage>
+                      </BreadcrumbItem>
+                    </BreadcrumbList>
+                  </Breadcrumb>
+                </div>
+              </div>
+            </section>
+
+            {/* SECTION 3: PAGINATION */}
+            <section id="demo-pagination-section" className="space-y-4">
+              <div className="flex items-center justify-between border-b border-border pb-2">
+                <div className="flex items-center gap-2">
+                  <Badge variant="primary">03</Badge>
+                  <h2 className="font-mono text-lg font-bold uppercase tracking-tight text-foreground">
+                    Pagination
+                  </h2>
+                </div>
+                <span className="font-mono text-xs text-muted-foreground">
+                  role=&quot;navigation&quot; • Page Buttons
+                </span>
+              </div>
+              <p className="font-mono text-xs text-muted-foreground">
+                Stateful pagination controls with previous/next triggers, active indicators, and ellipsis ranges.
+              </p>
+
+              <div className="p-4 bevel-raised bg-surface space-y-4">
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-xs text-muted-foreground">
+                    Viewing Page <span className="text-primary font-bold">{currentPage}</span> of 8
+                  </span>
+                  <Badge variant="outline">BUFFER PAGE {currentPage}</Badge>
+                </div>
+
+                <Pagination id="demo-pagination-control">
+                  <PaginationContent>
+                    <PaginationItem>
+                      <PaginationPrevious
+                        id="pagination-prev-btn"
+                        onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                        disabled={currentPage === 1}
+                      />
+                    </PaginationItem>
+                    {[1, 2, 3].map((page) => (
+                      <PaginationItem key={page}>
+                        <PaginationLink
+                          id={`pagination-page-${page}`}
+                          isActive={currentPage === page}
+                          onClick={() => setCurrentPage(page)}
+                        >
+                          {page}
+                        </PaginationLink>
+                      </PaginationItem>
+                    ))}
+                    <PaginationItem>
+                      <PaginationEllipsis />
+                    </PaginationItem>
+                    <PaginationItem>
+                      <PaginationLink
+                        id="pagination-page-8"
+                        isActive={currentPage === 8}
+                        onClick={() => setCurrentPage(8)}
+                      >
+                        8
+                      </PaginationLink>
+                    </PaginationItem>
+                    <PaginationItem>
+                      <PaginationNext
+                        id="pagination-next-btn"
+                        onClick={() => setCurrentPage((p) => Math.min(8, p + 1))}
+                        disabled={currentPage === 8}
+                      />
+                    </PaginationItem>
+                  </PaginationContent>
+                </Pagination>
+              </div>
+            </section>
+
+            {/* SECTION 4: NAVIGATION MENU */}
+            <section id="demo-navigation-menu-section" className="space-y-4">
+              <div className="flex items-center justify-between border-b border-border pb-2">
+                <div className="flex items-center gap-2">
+                  <Badge variant="primary">04</Badge>
+                  <h2 className="font-mono text-lg font-bold uppercase tracking-tight text-foreground">
+                    NavigationMenu
+                  </h2>
+                </div>
+                <span className="font-mono text-xs text-muted-foreground">
+                  Header Navigation • Disclosure Submenus
+                </span>
+              </div>
+              <p className="font-mono text-xs text-muted-foreground">
+                Top-level website bar with direct links, active indicator lines, and dropdown section navigation.
+              </p>
+
+              <div className="p-4 bevel-raised bg-surface">
+                <NavigationMenu id="demo-nav-menu">
+                  <NavigationMenuList>
+                    <NavigationMenuItem>
+                      <NavigationMenuLink href="#overview" active>
+                        Overview
+                      </NavigationMenuLink>
+                    </NavigationMenuItem>
+                    <NavigationMenuItem>
+                      <NavigationMenuTrigger id="nav-menu-trigger-subsystems">
+                        Subsystems
+                      </NavigationMenuTrigger>
+                      <NavigationMenuContent>
+                        <div className="p-3 w-64 space-y-2">
+                          <h4 className="font-mono text-xs font-bold uppercase text-primary border-b border-border pb-1">
+                            Core Architecture
+                          </h4>
+                          <ul className="space-y-1 font-mono text-xs">
+                            <li>
+                              <a href="#dither-engine" className="block p-1 hover:bg-muted text-foreground">
+                                • Dither Halftone Engine
+                              </a>
+                            </li>
+                            <li>
+                              <a href="#palette-table" className="block p-1 hover:bg-muted text-foreground">
+                                • Palette Table Manager
+                              </a>
+                            </li>
+                            <li>
+                              <a href="#crt-pipeline" className="block p-1 hover:bg-muted text-foreground">
+                                • CRT Scanline Pipeline
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                      </NavigationMenuContent>
+                    </NavigationMenuItem>
+                    <NavigationMenuItem>
+                      <NavigationMenuLink href="#tokens">
+                        Tokens
+                      </NavigationMenuLink>
+                    </NavigationMenuItem>
+                    <NavigationMenuItem>
+                      <NavigationMenuLink href="#docs">
+                        Docs
+                      </NavigationMenuLink>
+                    </NavigationMenuItem>
+                  </NavigationMenuList>
+                </NavigationMenu>
+              </div>
+            </section>
+
+            {/* SECTION 5: MENUBAR */}
+            <section id="demo-menubar-section" className="space-y-4">
+              <div className="flex items-center justify-between border-b border-border pb-2">
+                <div className="flex items-center gap-2">
+                  <Badge variant="primary">05</Badge>
+                  <h2 className="font-mono text-lg font-bold uppercase tracking-tight text-foreground">
+                    Menubar
+                  </h2>
+                </div>
+                <span className="font-mono text-xs text-muted-foreground">
+                  role=&quot;menubar&quot; • Shortcuts • Checkbox/Radio
+                </span>
+              </div>
+              <p className="font-mono text-xs text-muted-foreground">
+                Desktop-application horizontal menu bar with keyboard arrow navigation, submenus, shortcuts, and toggle states.
+              </p>
+
+              <div className="p-4 bevel-raised bg-surface space-y-3">
+                <div className="flex items-center justify-between pb-2 border-b border-border">
+                  <Menubar id="demo-desktop-menubar">
+                    {/* File Menu */}
+                    <MenubarMenu value="file">
+                      <MenubarTrigger id="menubar-trigger-file">File</MenubarTrigger>
+                      <MenubarContent>
+                        <MenubarItem onClick={() => setMenubarAction("File -> New Buffer")}>
+                          New Buffer
+                          <MenubarShortcut>Ctrl+N</MenubarShortcut>
+                        </MenubarItem>
+                        <MenubarItem onClick={() => setMenubarAction("File -> Open Image")}>
+                          Open Image...
+                          <MenubarShortcut>Ctrl+O</MenubarShortcut>
+                        </MenubarItem>
+                        <MenubarSeparator />
+                        <MenubarItem onClick={() => setMenubarAction("File -> Save Palette")}>
+                          Save Palette
+                          <MenubarShortcut>Ctrl+S</MenubarShortcut>
+                        </MenubarItem>
+                        <MenubarSeparator />
+                        <MenubarItem disabled>Print Spooler</MenubarItem>
+                        <MenubarItem onClick={() => setMenubarAction("File -> Exit")}>
+                          Exit
+                          <MenubarShortcut>Alt+F4</MenubarShortcut>
+                        </MenubarItem>
+                      </MenubarContent>
+                    </MenubarMenu>
+
+                    {/* Edit Menu */}
+                    <MenubarMenu value="edit">
+                      <MenubarTrigger id="menubar-trigger-edit">Edit</MenubarTrigger>
+                      <MenubarContent>
+                        <MenubarItem onClick={() => setMenubarAction("Edit -> Undo")}>
+                          Undo
+                          <MenubarShortcut>Ctrl+Z</MenubarShortcut>
+                        </MenubarItem>
+                        <MenubarItem onClick={() => setMenubarAction("Edit -> Redo")}>
+                          Redo
+                          <MenubarShortcut>Ctrl+Y</MenubarShortcut>
+                        </MenubarItem>
+                        <MenubarSeparator />
+                        <MenubarItem onClick={() => setMenubarAction("Edit -> Cut")}>Cut</MenubarItem>
+                        <MenubarItem onClick={() => setMenubarAction("Edit -> Copy")}>Copy</MenubarItem>
+                        <MenubarItem onClick={() => setMenubarAction("Edit -> Paste")}>Paste</MenubarItem>
+                      </MenubarContent>
+                    </MenubarMenu>
+
+                    {/* View Menu */}
+                    <MenubarMenu value="view">
+                      <MenubarTrigger id="menubar-trigger-view">View</MenubarTrigger>
+                      <MenubarContent>
+                        <MenubarCheckboxItem
+                          id="menubar-view-grid"
+                          checked={menubarGridCheck}
+                          onClick={() => {
+                            setMenubarGridCheck(!menubarGridCheck);
+                            setMenubarAction(`Grid: ${!menubarGridCheck ? "ON" : "OFF"}`);
+                          }}
+                        >
+                          Show Pixel Grid
+                        </MenubarCheckboxItem>
+                        <MenubarSeparator />
+                        <MenubarRadioItem
+                          checked={menubarViewMode === "detail"}
+                          onClick={() => {
+                            setMenubarViewMode("detail");
+                            setMenubarAction("View: Detail Mode");
+                          }}
+                        >
+                          Detail View
+                        </MenubarRadioItem>
+                        <MenubarRadioItem
+                          checked={menubarViewMode === "compact"}
+                          onClick={() => {
+                            setMenubarViewMode("compact");
+                            setMenubarAction("View: Compact Mode");
+                          }}
+                        >
+                          Compact View
+                        </MenubarRadioItem>
+                      </MenubarContent>
+                    </MenubarMenu>
+
+                    {/* Help Menu */}
+                    <MenubarMenu value="help">
+                      <MenubarTrigger id="menubar-trigger-help">Help</MenubarTrigger>
+                      <MenubarContent>
+                        <MenubarItem onClick={() => setMenubarAction("Help -> About Ditherweb")}>
+                          About Ditherweb 2.0
+                        </MenubarItem>
+                      </MenubarContent>
+                    </MenubarMenu>
+                  </Menubar>
+
+                  <div className="flex items-center gap-2 font-mono text-xs">
+                    <span className="text-muted-foreground">Action:</span>
+                    <Badge variant="primary" id="menubar-action-badge">{menubarAction}</Badge>
+                  </div>
+                </div>
+
+                <div className="font-mono text-xs text-muted-foreground">
+                  Use Left / Right arrow keys to move across menus, Down arrow to open, and Escape to dismiss.
+                </div>
+              </div>
+            </section>
+
+            {/* SECTION 6: TABLE */}
+            <section id="demo-table-section" className="space-y-4">
+              <div className="flex items-center justify-between border-b border-border pb-2">
+                <div className="flex items-center gap-2">
+                  <Badge variant="primary">06</Badge>
+                  <h2 className="font-mono text-lg font-bold uppercase tracking-tight text-foreground">
+                    Table
+                  </h2>
+                </div>
+                <span className="font-mono text-xs text-muted-foreground">
+                  table • striped • dense • bordered
+                </span>
+              </div>
+              <p className="font-mono text-xs text-muted-foreground">
+                Semantic HTML data table with striped rows, dense padding, cell borders, and responsive horizontal overflow.
+              </p>
+
+              <div className="space-y-4">
+                <Table id="demo-semantic-table" striped bordered dense>
+                  <TableCaption>8086 CPU PRIMARY INTERNAL REGISTERS</TableCaption>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Register</TableHead>
+                      <TableHead>Type</TableHead>
+                      <TableHead align="right">Bit Width</TableHead>
+                      <TableHead>High / Low Byte</TableHead>
+                      <TableHead>Primary Function</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell className="font-bold text-primary">AX</TableCell>
+                      <TableCell>Accumulator</TableCell>
+                      <TableCell align="right">16-bit</TableCell>
+                      <TableCell>AH / AL</TableCell>
+                      <TableCell>I/O operations, arithmetic, system interrupts</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="font-bold text-primary">BX</TableCell>
+                      <TableCell>Base Register</TableCell>
+                      <TableCell align="right">16-bit</TableCell>
+                      <TableCell>BH / BL</TableCell>
+                      <TableCell>Indexed addressing, DS memory pointer base</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="font-bold text-primary">CX</TableCell>
+                      <TableCell>Counter</TableCell>
+                      <TableCell align="right">16-bit</TableCell>
+                      <TableCell>CH / CL</TableCell>
+                      <TableCell>Loop counter, shift/rotate instructions</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="font-bold text-primary">DX</TableCell>
+                      <TableCell>Data Register</TableCell>
+                      <TableCell align="right">16-bit</TableCell>
+                      <TableCell>DH / DL</TableCell>
+                      <TableCell>Multiplication/division overflow, I/O port address</TableCell>
+                    </TableRow>
+                  </TableBody>
+                  <TableFooter>
+                    <TableRow>
+                      <TableCell colSpan={2} className="font-bold">Total General Registers</TableCell>
+                      <TableCell align="right" className="font-bold">64-bit Total</TableCell>
+                      <TableCell colSpan={2} className="text-muted-foreground">Standard Real Mode Complement</TableCell>
+                    </TableRow>
+                  </TableFooter>
+                </Table>
+              </div>
+            </section>
+
+            {/* SECTION 7: DATA TABLE */}
+            <section id="demo-data-table-section" className="space-y-4">
+              <div className="flex items-center justify-between border-b border-border pb-2">
+                <div className="flex items-center gap-2">
+                  <Badge variant="primary">07</Badge>
+                  <h2 className="font-mono text-lg font-bold uppercase tracking-tight text-foreground">
+                    DataTable
+                  </h2>
+                </div>
+                <span className="font-mono text-xs text-muted-foreground">
+                  Sorting • Multi-selection • Zero Dependencies
+                </span>
+              </div>
+              <p className="font-mono text-xs text-muted-foreground">
+                Fully typed data table component with interactive column sorting, multi-row checkbox selection, and loading/empty state fallbacks.
+              </p>
+
+              <div className="p-4 bevel-raised bg-surface space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="font-mono text-xs text-muted-foreground">Active Task Queue</span>
+                    <Badge variant="outline">{selectedTableKeys.length} selected</Badge>
+                  </div>
+                  <span className="font-mono text-[10px] text-muted-foreground uppercase">
+                    Click header to sort • Click row checkbox to select
+                  </span>
+                </div>
+
+                <DataTable<ProcessItem>
+                  id="demo-interactive-data-table"
+                  data={processData}
+                  columns={processColumns}
+                  selectable
+                  selectedKeys={selectedTableKeys}
+                  onSelectionChange={(keys) => setSelectedTableKeys(keys)}
+                  striped
+                  bordered
+                  caption="KERNEL ACTIVE PROCESS SCHEDULER"
+                />
+              </div>
+            </section>
+
+            {/* SECTION 8: DESCRIPTION LIST */}
+            <section id="demo-description-list-section" className="space-y-4">
+              <div className="flex items-center justify-between border-b border-border pb-2">
+                <div className="flex items-center gap-2">
+                  <Badge variant="primary">08</Badge>
+                  <h2 className="font-mono text-lg font-bold uppercase tracking-tight text-foreground">
+                    DescriptionList
+                  </h2>
+                </div>
+                <span className="font-mono text-xs text-muted-foreground">
+                  dl • dt • dd • Horizontal &amp; Stacked
+                </span>
+              </div>
+              <p className="font-mono text-xs text-muted-foreground">
+                Semantic key-value specification lists with horizontal alignment, responsive mobile collapse, and stacked layout variants.
+              </p>
+
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <span className="font-mono text-xs font-bold uppercase text-primary">
+                    Horizontal Layout (Divided)
+                  </span>
+                  <DescriptionList id="demo-description-list-horizontal" layout="horizontal" divided striped>
+                    <DescriptionItem>
+                      <DescriptionTerm>Graphics Standard</DescriptionTerm>
+                      <DescriptionDetails>VGA (Video Graphics Array)</DescriptionDetails>
+                    </DescriptionItem>
+                    <DescriptionItem>
+                      <DescriptionTerm>Display Resolution</DescriptionTerm>
+                      <DescriptionDetails>640 × 480 @ 60 Hz Progressive</DescriptionDetails>
+                    </DescriptionItem>
+                    <DescriptionItem>
+                      <DescriptionTerm>Color Depth</DescriptionTerm>
+                      <DescriptionDetails>4-bit (16 simultaneous colors from 262,144 palette)</DescriptionDetails>
+                    </DescriptionItem>
+                    <DescriptionItem>
+                      <DescriptionTerm>Pixel Aspect Ratio</DescriptionTerm>
+                      <DescriptionDetails>1:1 Square Pixels</DescriptionDetails>
+                    </DescriptionItem>
+                  </DescriptionList>
+                </div>
+
+                <div className="space-y-2">
+                  <span className="font-mono text-xs font-bold uppercase text-primary">
+                    Stacked Layout (Compact)
+                  </span>
+                  <DescriptionList id="demo-description-list-stacked" layout="stacked" divided dense>
+                    <DescriptionItem>
+                      <DescriptionTerm>Halftone Algorithm</DescriptionTerm>
+                      <DescriptionDetails>Floyd-Steinberg Error Diffusion Kernel</DescriptionDetails>
+                    </DescriptionItem>
+                    <DescriptionItem>
+                      <DescriptionTerm>Diffusion Coefficients</DescriptionTerm>
+                      <DescriptionDetails>7/16 (Right), 3/16 (Down-Left), 5/16 (Down), 1/16 (Down-Right)</DescriptionDetails>
+                    </DescriptionItem>
+                    <DescriptionItem>
+                      <DescriptionTerm>Execution Backend</DescriptionTerm>
+                      <DescriptionDetails>Zero-dependency WebAssembly SIMD or JS Pure Fallback</DescriptionDetails>
+                    </DescriptionItem>
+                  </DescriptionList>
+                </div>
+              </div>
+            </section>
+
+            {/* SECTION 9: TREE */}
+            <section id="demo-tree-section" className="space-y-4">
+              <div className="flex items-center justify-between border-b border-border pb-2">
+                <div className="flex items-center gap-2">
+                  <Badge variant="primary">09</Badge>
+                  <h2 className="font-mono text-lg font-bold uppercase tracking-tight text-foreground">
+                    Tree
+                  </h2>
+                </div>
+                <span className="font-mono text-xs text-muted-foreground">
+                  role=&quot;tree&quot; • Arrow Navigation • ASCII Connectors
+                </span>
+              </div>
+              <p className="font-mono text-xs text-muted-foreground">
+                Accessible hierarchical navigation tree with ASCII branch connectors, expand/collapse toggles, and roving keyboard focus.
+              </p>
+
+              <div className="p-4 bevel-raised bg-surface space-y-3">
+                <div className="flex items-center justify-between pb-2 border-b border-border">
+                  <div className="flex items-center gap-2">
+                    <span className="font-mono text-xs text-muted-foreground">Selected Node:</span>
+                    <Badge variant="primary" id="tree-selected-badge">{treeSelectedId || "None"}</Badge>
+                  </div>
+                  <span className="font-mono text-[10px] text-muted-foreground uppercase">
+                    Use Up/Down to traverse • Right/Left to expand/collapse
+                  </span>
+                </div>
+
+                <Tree
+                  id="demo-filesystem-tree"
+                  data={treeData}
+                  selectedId={treeSelectedId}
+                  defaultExpandedIds={["sys-root", "sys-dither"]}
+                  onSelect={(id) => setTreeSelectedId(id)}
+                  showGuides
+                />
+              </div>
+            </section>
+
+            {/* SECTION 10: AVATAR */}
+            <section id="demo-avatar-section" className="space-y-4">
+              <div className="flex items-center justify-between border-b border-border pb-2">
+                <div className="flex items-center gap-2">
+                  <Badge variant="primary">10</Badge>
+                  <h2 className="font-mono text-lg font-bold uppercase tracking-tight text-foreground">
+                    Avatar
+                  </h2>
+                </div>
+                <span className="font-mono text-xs text-muted-foreground">
+                  Initials Fallback • Sizes sm-xl • Status Badges
+                </span>
+              </div>
+              <p className="font-mono text-xs text-muted-foreground">
+                Visual entity representation with image fallback, monospace initials, retro bevels, square/circle shapes, and status badges.
+              </p>
+
+              <div className="p-4 bevel-raised bg-surface space-y-6">
+                <div className="space-y-2">
+                  <span className="font-mono text-xs font-bold uppercase text-primary">
+                    Sizes &amp; Status Badges (Retro Square)
+                  </span>
+                  <div className="flex items-end gap-6">
+                    <div className="flex flex-col items-center gap-1">
+                      <Avatar id="avatar-size-sm" size="sm" shape="square" status="online">
+                        <AvatarFallback>SM</AvatarFallback>
+                      </Avatar>
+                      <span className="font-mono text-[10px] text-muted-foreground">sm (24px)</span>
+                    </div>
+
+                    <div className="flex flex-col items-center gap-1">
+                      <Avatar id="avatar-size-md" size="md" shape="square" status="busy">
+                        <AvatarFallback>MD</AvatarFallback>
+                      </Avatar>
+                      <span className="font-mono text-[10px] text-muted-foreground">md (32px)</span>
+                    </div>
+
+                    <div className="flex flex-col items-center gap-1">
+                      <Avatar id="avatar-size-lg" size="lg" shape="square" status="away">
+                        <AvatarFallback>DW</AvatarFallback>
+                      </Avatar>
+                      <span className="font-mono text-[10px] text-muted-foreground">lg (40px)</span>
+                    </div>
+
+                    <div className="flex flex-col items-center gap-1">
+                      <Avatar id="avatar-size-xl" size="xl" shape="square" status="offline">
+                        <AvatarFallback>SYS</AvatarFallback>
+                      </Avatar>
+                      <span className="font-mono text-[10px] text-muted-foreground">xl (48px)</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <span className="font-mono text-xs font-bold uppercase text-primary">
+                    Circle Variant &amp; Image Fallback
+                  </span>
+                  <div className="flex items-center gap-6">
+                    <Avatar id="avatar-circle-online" size="lg" shape="circle" status="online">
+                      <AvatarImage src="/invalid-image-url.png" alt="Ada Lovelace" />
+                      <AvatarFallback>AL</AvatarFallback>
+                    </Avatar>
+
+                    <Avatar id="avatar-circle-busy" size="lg" shape="circle" status="busy">
+                      <AvatarImage src="/artwork/ditherweb_hero.png" alt="Ditherweb" />
+                      <AvatarFallback>DW</AvatarFallback>
+                    </Avatar>
+
+                    <div className="font-mono text-xs text-muted-foreground">
+                      Gracefully degrades to initials fallback on image load failure, while maintaining status indicator badge.
+                    </div>
                   </div>
                 </div>
               </div>
