@@ -13,7 +13,7 @@ import {
   AlertTitle,
   AlertDescription,
 } from "@ditherweb/ui";
-import { HeroDemo } from "@/components/site/hero-demo";
+import Image from "next/image";
 
 export default function HomePage() {
   const [activeDither, setActiveDither] = useState<"fine" | "medium" | "coarse" | "diagonal">("fine");
@@ -109,9 +109,19 @@ export default function RetroPanel() {
             </div>
           </div>
 
-          {/* Right Column: Hero Live Demo */}
-          <div className="flex justify-center lg:col-span-5">
-            <HeroDemo />
+          {/* Right Column: Editorial Hero Artwork */}
+          <div className="flex justify-center items-center lg:col-span-5">
+            <figure className="relative w-full max-w-lg lg:max-w-none border border-border/80 dark:border-border/40 bg-surface">
+              <Image
+                src="/images/hero-artwork.jpg"
+                alt="Retro desktop workstation at night with a dithered CRT monitor displaying Ditherweb, mechanical keyboard, programming books, and a moonlit city skyline outside the window"
+                width={1024}
+                height={576}
+                priority
+                sizes="(min-width: 1024px) 40vw, (min-width: 640px) 80vw, 100vw"
+                className="w-full h-auto aspect-video object-cover block"
+              />
+            </figure>
           </div>
         </div>
       </section>
