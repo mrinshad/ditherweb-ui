@@ -26,9 +26,16 @@ type Category = "all" | "input" | "layout" | "feedback";
 
 export default function ComponentsPage() {
   const [category, setCategory] = useState<Category>("all");
-  const [chkState, setChkState] = useState(true);
-  const [switchState, setSwitchState] = useState(true);
+  const [btnClicks, setBtnClicks] = useState(0);
+  const [disabledBtnClicks, setDisabledBtnClicks] = useState(0);
+  const [loadingBtnClicks, setLoadingBtnClicks] = useState(0);
+  const [chkState, setChkState] = useState(false);
+  const [chkIndeterminate, setChkIndeterminate] = useState(true);
+  const [disabledChkClicks, setDisabledChkClicks] = useState(0);
+  const [switchState, setSwitchState] = useState(false);
+  const [disabledSwitchClicks, setDisabledSwitchClicks] = useState(0);
   const [radioVal, setRadioVal] = useState("vga");
+  const [inputText, setInputText] = useState("");
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 space-y-12">
@@ -136,6 +143,38 @@ export default function ComponentsPage() {
                   </div>
                 </div>
 
+                <div>
+                  <h3 className="font-mono text-xs font-bold uppercase text-muted-foreground mb-3">
+                    Interactive Verification Bench
+                  </h3>
+                  <div className="flex flex-wrap items-center gap-3">
+                    <Button
+                      id="test-btn-interactive"
+                      variant="primary"
+                      onClick={() => setBtnClicks((c) => c + 1)}
+                    >
+                      Clicks: {btnClicks}
+                    </Button>
+                    <Button
+                      id="test-btn-disabled"
+                      disabled
+                      onClick={() => setDisabledBtnClicks((c) => c + 1)}
+                    >
+                      Disabled ({disabledBtnClicks})
+                    </Button>
+                    <Button
+                      id="test-btn-loading"
+                      loading
+                      onClick={() => setLoadingBtnClicks((c) => c + 1)}
+                    >
+                      Loading State ({loadingBtnClicks})
+                    </Button>
+                    <Button id="test-btn-focus" variant="default">
+                      Focus Target
+                    </Button>
+                  </div>
+                </div>
+
                 <div className="bevel-inset bg-background p-3 font-mono text-xs">
                   <code>{`<Button variant="primary" size="md">Execute</Button>`}</code>
                 </div>
@@ -163,16 +202,26 @@ export default function ComponentsPage() {
               <CardContent className="p-6 space-y-4">
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                   <div className="space-y-1.5">
-                    <Label htmlFor="inp-standard">Standard Input</Label>
-                    <Input id="inp-standard" placeholder="Enter text..." />
+                    <div className="flex items-center justify-between">
+                      <Label htmlFor="test-input-typing">Interactive Input</Label>
+                      <span id="test-input-counter" className="font-mono text-[10px] text-muted-foreground">
+                        Chars: {inputText.length}
+                      </span>
+                    </div>
+                    <Input
+                      id="test-input-typing"
+                      value={inputText}
+                      onChange={(e) => setInputText(e.target.value)}
+                      placeholder="Type text..."
+                    />
                   </div>
                   <div className="space-y-1.5">
-                    <Label htmlFor="inp-error">Invalid State</Label>
-                    <Input id="inp-error" defaultValue="invalid@bad" invalid />
+                    <Label htmlFor="test-input-invalid">Invalid State</Label>
+                    <Input id="test-input-invalid" defaultValue="invalid@bad" invalid />
                   </div>
                   <div className="space-y-1.5">
-                    <Label htmlFor="inp-disabled">Disabled</Label>
-                    <Input id="inp-disabled" value="Read-only buffer" disabled />
+                    <Label htmlFor="test-input-disabled">Disabled</Label>
+                    <Input id="test-input-disabled" value="Read-only buffer" disabled />
                   </div>
                 </div>
 
@@ -237,14 +286,26 @@ export default function ComponentsPage() {
               <CardContent className="p-6 space-y-4">
                 <div className="flex flex-wrap items-center gap-6">
                   <Checkbox
-                    id="cat-chk-1"
+                    id="test-chk-interactive"
                     checked={chkState}
                     onChange={(e) => setChkState(e.target.checked)}
                   >
                     Interactive ({chkState ? "Checked" : "Unchecked"})
                   </Checkbox>
-                  <Checkbox id="cat-chk-disabled" defaultChecked disabled>
-                    Disabled Checked
+                  <Checkbox
+                    id="test-chk-indeterminate"
+                    indeterminate={chkIndeterminate}
+                    onChange={() => setChkIndeterminate((v) => !v)}
+                  >
+                    Indeterminate State ({chkIndeterminate ? "Active" : "Cleared"})
+                  </Checkbox>
+                  <Checkbox
+                    id="test-chk-disabled"
+                    defaultChecked
+                    disabled
+                    onChange={() => setDisabledChkClicks((c) => c + 1)}
+                  >
+                    Disabled Checked ({disabledChkClicks})
                   </Checkbox>
                 </div>
 
@@ -274,10 +335,16 @@ export default function ComponentsPage() {
             <Card>
               <CardContent className="p-6 space-y-4">
                 <div className="space-y-2">
+                  <div className="flex items-center justify-between pb-2 border-b border-border">
+                    <span className="font-mono text-xs text-muted-foreground">Graphics Preset</span>
+                    <span id="test-radio-selected" className="font-mono text-xs font-bold text-primary uppercase">
+                      Selected: {radioVal}
+                    </span>
+                  </div>
                   <Radio
                     name="graphics-mode"
                     value="cga"
-                    id="radio-cga"
+                    id="test-radio-cga"
                     checked={radioVal === "cga"}
                     onChange={(e) => setRadioVal(e.target.value)}
                   >
@@ -286,7 +353,7 @@ export default function ComponentsPage() {
                   <Radio
                     name="graphics-mode"
                     value="ega"
-                    id="radio-ega"
+                    id="test-radio-ega"
                     checked={radioVal === "ega"}
                     onChange={(e) => setRadioVal(e.target.value)}
                   >
@@ -295,11 +362,21 @@ export default function ComponentsPage() {
                   <Radio
                     name="graphics-mode"
                     value="vga"
-                    id="radio-vga"
+                    id="test-radio-vga"
                     checked={radioVal === "vga"}
                     onChange={(e) => setRadioVal(e.target.value)}
                   >
                     VGA 256-Color (640x480)
+                  </Radio>
+                  <Radio
+                    name="graphics-mode"
+                    value="xga"
+                    id="test-radio-disabled"
+                    disabled
+                    checked={radioVal === "xga"}
+                    onChange={(e) => setRadioVal(e.target.value)}
+                  >
+                    XGA High-Res (Disabled Hardware)
                   </Radio>
                 </div>
 
@@ -330,14 +407,21 @@ export default function ComponentsPage() {
               <CardContent className="p-6 space-y-4">
                 <div className="flex flex-wrap items-center gap-8">
                   <Switch
-                    id="cat-switch"
+                    id="test-switch-interactive"
                     checked={switchState}
                     onChange={(e) => setSwitchState(e.target.checked)}
                   >
                     Modem Audio ({switchState ? "Enabled" : "Disabled"})
                   </Switch>
-                  <Switch id="cat-switch-disabled" disabled>
-                    Disabled
+                  <Switch
+                    id="test-switch-disabled"
+                    disabled
+                    onChange={() => setDisabledSwitchClicks((c) => c + 1)}
+                  >
+                    Disabled Switch ({disabledSwitchClicks})
+                  </Switch>
+                  <Switch id="test-switch-uncontrolled" defaultChecked>
+                    Uncontrolled (Hardware Cache)
                   </Switch>
                 </div>
 
