@@ -1,18 +1,20 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Badge, Card, CardHeader, CardTitle, CardContent, Separator } from "@ditherweb/ui";
+import { DocsLayout } from "@/components/docs/docs-layout";
+import { CodeBlock } from "@/components/docs/code-block";
 
 export const metadata: Metadata = {
-  title: "Ditherweb Documentation — Retro UI Framework",
+  title: "Ditherweb Documentation — Retro UI Framework for React",
   description:
-    "Technical guides and documentation for Ditherweb: design tokens, 4x4 Bayer dither matrices, beveled surfaces, accessibility standards, and React 19 component integration.",
+    "Official documentation for Ditherweb: learn how to build retro-inspired, accessible user interfaces with modern React 19 primitives, CSS tokens, and procedural Bayer dithering.",
   alternates: {
     canonical: "/docs",
   },
   openGraph: {
-    title: "Ditherweb Documentation — Retro UI Framework",
+    title: "Ditherweb Documentation — Retro UI Framework for React",
     description:
-      "Technical guides and documentation for Ditherweb: design tokens, 4x4 Bayer dither matrices, beveled surfaces, accessibility standards, and React 19 component integration.",
+      "Official documentation for Ditherweb: learn how to build retro-inspired, accessible user interfaces with modern React 19 primitives, CSS tokens, and procedural Bayer dithering.",
     url: "https://ditherweb.mrinshad.site/docs",
     images: ["/og-image.png"],
   },
@@ -20,301 +22,314 @@ export const metadata: Metadata = {
 
 export default function DocsPage() {
   return (
-    <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8 space-y-12">
-      {/* Docs Header */}
-      <div className="space-y-4">
-        <div className="flex items-center gap-2">
-          <Badge variant="primary">
-            Architecture & Guides
-          </Badge>
-          <span className="font-mono text-xs text-muted-foreground">
-            Version 0.1.0-alpha
-          </span>
+    <DocsLayout breadcrumbs={[{ label: "Overview" }]}>
+      <div className="space-y-12 font-mono">
+        {/* Header Section */}
+        <div className="space-y-4">
+          <div className="flex flex-wrap items-center gap-2">
+            <Badge variant="primary">Documentation</Badge>
+            <span className="text-xs text-muted-foreground">Version 0.1.0-alpha • 96 Production Primitives</span>
+          </div>
+          <h1 className="text-3xl sm:text-4xl font-bold uppercase tracking-tight text-foreground">
+            Documentation
+          </h1>
+          <p className="text-sm text-muted-foreground leading-relaxed max-w-2xl">
+            Get started with Ditherweb and learn how to build retro-inspired, tactile interfaces
+            with modern React engineering, CSS design tokens, and rigorous accessibility standards.
+          </p>
         </div>
-        <h1 className="font-mono text-3xl font-bold uppercase tracking-tight text-foreground sm:text-4xl">
-          Documentation
-        </h1>
-        <p className="font-mono text-sm text-muted-foreground max-w-2xl leading-relaxed">
-          Learn how Ditherweb combines the unpolished authenticity of 1990s computing
-          with modern React engineering standards, CSS custom properties, and accessible interaction patterns.
-        </p>
-      </div>
 
-      <Separator />
+        <Separator />
 
-      {/* Table of Contents */}
-      <nav aria-label="Table of contents" className="bevel-raised bg-surface p-4 font-mono text-xs space-y-2">
-        <div className="font-bold uppercase tracking-wider text-foreground">Quick Navigation</div>
-        <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 text-muted-foreground">
-          <li>
-            <a href="#quickstart" className="hover:text-foreground hover:underline">
-              1. Quick Start
-            </a>
-          </li>
-          <li>
-            <a href="#tokens" className="hover:text-foreground hover:underline">
-              2. Token System
-            </a>
-          </li>
-          <li>
-            <a href="#bevels" className="hover:text-foreground hover:underline">
-              3. Bevel Primitives
-            </a>
-          </li>
-          <li>
-            <a href="#dithering" className="hover:text-foreground hover:underline">
-              4. Dither Patterns
-            </a>
-          </li>
-          <li>
-            <a href="#accessibility" className="hover:text-foreground hover:underline">
-              5. Accessibility
-            </a>
-          </li>
-          <li>
-            <a href="#packaging" className="hover:text-foreground hover:underline">
-              6. Distribution
-            </a>
-          </li>
-          <li>
-            <a href="#roadmap" className="hover:text-foreground hover:underline">
-              7. Phase Roadmap
-            </a>
-          </li>
-        </ul>
-      </nav>
-
-      {/* 1. Quick Start */}
-      <section id="quickstart" className="space-y-4 scroll-mt-20">
-        <h2 className="font-mono text-xl font-bold uppercase tracking-wide text-foreground">
-          1. Quick Start
-        </h2>
-        <p className="font-mono text-xs text-muted-foreground leading-relaxed">
-          Ditherweb components are authored as clean, copy-pasteable React 19 primitives with zero black-box dependencies.
-          They use standard React props and consume Tailwind CSS tokens.
-        </p>
-
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-sm font-mono uppercase">
-              UI Package Architecture (@ditherweb/ui)
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3 font-mono text-xs">
-            <p className="text-muted-foreground">
-              All 10 core primitives and the <code className="text-foreground">cn(...)</code> utility are exported directly from the package <code className="text-foreground">@ditherweb/ui</code>:
-            </p>
-            <div className="bevel-inset bg-background p-3">
-              <pre className="text-foreground overflow-x-auto">
-                <code>{`import { Button, Input, Card, Badge, cn } from "@ditherweb/ui";
-import "@ditherweb/ui/styles";`}</code>
-              </pre>
+        {/* 1. Introduction */}
+        <section id="introduction" className="space-y-4 scroll-mt-20">
+          <div className="flex items-center gap-2">
+            <span className="bevel-raised bg-primary text-primary-foreground px-2 py-0.5 text-xs font-bold">
+              01
+            </span>
+            <h2 className="text-xl font-bold uppercase tracking-wider text-foreground">
+              Introduction
+            </h2>
+          </div>
+          <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+            Ditherweb is a comprehensive React UI framework combining the tactile authenticity of early
+            computing and the early Internet with contemporary frontend engineering. Rather than treating
+            nostalgic design as parody or superficial cosmetic overlay, Ditherweb provides 96 typed,
+            accessible, production-grade components engineered for real-world applications.
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
+            <div className="bevel-raised p-4 bg-surface space-y-1.5">
+              <div className="font-bold text-foreground text-xs uppercase">Authentic Aesthetics</div>
+              <p className="text-[11px] text-muted-foreground leading-relaxed">
+                Calibrated pseudo-3D bevels, ordered Bayer dithering stippling, and pixel-precise contrast.
+              </p>
             </div>
-          </CardContent>
-        </Card>
-      </section>
-
-      {/* 2. Token System */}
-      <section id="tokens" className="space-y-4 scroll-mt-20">
-        <h2 className="font-mono text-xl font-bold uppercase tracking-wide text-foreground">
-          2. Design Token Architecture
-        </h2>
-        <p className="font-mono text-xs text-muted-foreground leading-relaxed">
-          Tokens are declared as CSS custom properties in <code className="text-foreground">app/globals.css</code>.
-          Dark mode is toggled cleanly by adding or removing the <code className="text-foreground">.dark</code> class on <code className="text-foreground">&lt;html&gt;</code>.
-        </p>
-
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 font-mono text-xs">
-          <div className="bevel-raised p-4 bg-surface space-y-2">
-            <div className="font-bold text-foreground uppercase">Semantic Color Tokens</div>
-            <ul className="space-y-1 text-muted-foreground text-[11px]">
-              <li><code className="text-foreground">--background</code>: Page substrate canvas</li>
-              <li><code className="text-foreground">--surface</code>: Elevated panel surface (#c0c0c0 / #252830)</li>
-              <li><code className="text-foreground">--surface-sunken</code>: Recessed control well</li>
-              <li><code className="text-foreground">--primary</code>: Accent blue (#000080 / #3366cc)</li>
-              <li><code className="text-foreground">--secondary</code>: Teal (#008080 / #208080)</li>
-              <li><code className="text-foreground">--accent</code>: Amber highlight (#cc6600)</li>
-              <li><code className="text-foreground">--destructive</code>: Error crimson (#cc0000)</li>
-            </ul>
-          </div>
-
-          <div className="bevel-raised p-4 bg-surface space-y-2">
-            <div className="font-bold text-foreground uppercase">Bevel Light & Dark Tokens</div>
-            <ul className="space-y-1 text-muted-foreground text-[11px]">
-              <li><code className="text-foreground">--bevel-light</code>: Highlight edge (#ffffff / #404552)</li>
-              <li><code className="text-foreground">--bevel-dark</code>: Shadow edge (#808080 / #101216)</li>
-              <li><code className="text-foreground">--bevel-face</code>: Midtone face fill</li>
-              <li><code className="text-foreground">--border</code>: Hard pixel contour</li>
-              <li><code className="text-foreground">--ring</code>: High-visibility focus indicator</li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      {/* 3. Bevel Primitives */}
-      <section id="bevels" className="space-y-4 scroll-mt-20">
-        <h2 className="font-mono text-xl font-bold uppercase tracking-wide text-foreground">
-          3. Tactile Bevel Primitives
-        </h2>
-        <p className="font-mono text-xs text-muted-foreground leading-relaxed">
-          Bevels are implemented with calibrated borders to produce the classic pseudo-3D look without heavy images or filters.
-        </p>
-
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 font-mono text-xs">
-          <div className="bevel-raised p-3 bg-surface">
-            <div className="font-bold mb-1">.bevel-raised</div>
-            <p className="text-[11px] text-muted-foreground">Simulates an elevated button or dialog box with top/left highlight.</p>
-          </div>
-          <div className="bevel-inset p-3 bg-surface">
-            <div className="font-bold mb-1">.bevel-inset</div>
-            <p className="text-[11px] text-muted-foreground">Simulates a recessed input field or sunken panel well.</p>
-          </div>
-          <div className="bevel-pressed p-3 bg-surface">
-            <div className="font-bold mb-1">.bevel-pressed</div>
-            <p className="text-[11px] text-muted-foreground">Active depressed state applied to buttons and toggles on interaction.</p>
-          </div>
-        </div>
-      </section>
-
-      {/* 4. Dither Patterns */}
-      <section id="dithering" className="space-y-4 scroll-mt-20">
-        <h2 className="font-mono text-xl font-bold uppercase tracking-wide text-foreground">
-          4. Procedural Dither Patterns
-        </h2>
-        <p className="font-mono text-xs text-muted-foreground leading-relaxed">
-          Dither patterns in Ditherweb are procedural SVG data-URIs encoded directly into CSS.
-          They use pixel-aligned SVG rectangles with <code className="text-foreground">shape-rendering=&quot;crispEdges&quot;</code> to ensure identical rendering across screens.
-        </p>
-
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 font-mono text-xs">
-          <div className="space-y-1">
-            <div className="bevel-inset h-20 w-full bg-dither-fine" />
-            <div className="font-bold">.bg-dither-fine</div>
-            <div className="text-[10px] text-muted-foreground">Dense 2x2 stipple</div>
-          </div>
-          <div className="space-y-1">
-            <div className="bevel-inset h-20 w-full bg-dither-medium" />
-            <div className="font-bold">.bg-dither-medium</div>
-            <div className="text-[10px] text-muted-foreground">Ordered 4x4 matrix</div>
-          </div>
-          <div className="space-y-1">
-            <div className="bevel-inset h-20 w-full bg-dither-coarse" />
-            <div className="font-bold">.bg-dither-coarse</div>
-            <div className="text-[10px] text-muted-foreground">Sparse screen door</div>
-          </div>
-          <div className="space-y-1">
-            <div className="bevel-inset h-20 w-full bg-dither-diagonal" />
-            <div className="font-bold">.bg-dither-diagonal</div>
-            <div className="text-[10px] text-muted-foreground">Hatching line matrix</div>
-          </div>
-        </div>
-      </section>
-
-      {/* 5. Accessibility */}
-      <section id="accessibility" className="space-y-4 scroll-mt-20">
-        <h2 className="font-mono text-xl font-bold uppercase tracking-wide text-foreground">
-          5. Accessibility Standards
-        </h2>
-        <p className="font-mono text-xs text-muted-foreground leading-relaxed">
-          Early Web interfaces were often inaccessible by modern metrics.
-          Ditherweb strictly couples authentic retro visuals with uncompromising modern accessibility:
-        </p>
-        <ul className="list-disc pl-5 font-mono text-xs text-muted-foreground space-y-1 leading-relaxed">
-          <li>Full keyboard navigation: Enter and Space on buttons, Arrow keys on RadioGroups, Space on Switches and Checkboxes.</li>
-          <li>Explicit ARIA attributes: <code className="text-foreground">role=&quot;switch&quot;</code>, <code className="text-foreground">role=&quot;radiogroup&quot;</code>, <code className="text-foreground">role=&quot;alert&quot;</code>, <code className="text-foreground">aria-checked</code>, <code className="text-foreground">aria-invalid</code>.</li>
-          <li>High-contrast focus rings: <code className="text-foreground">focus-visible:outline-ring</code> ensures focus indicators are always discernible in both light and dark modes.</li>
-          <li>Semantic HTML elements are used natively whenever possible (<code className="text-foreground">&lt;button&gt;</code>, <code className="text-foreground">&lt;input&gt;</code>, <code className="text-foreground">&lt;label&gt;</code>).</li>
-        </ul>
-      </section>
-
-      {/* 6. Packaging & Distribution */}
-      <section id="packaging" className="space-y-4 scroll-mt-20">
-        <h2 className="font-mono text-xl font-bold uppercase tracking-wide text-foreground">
-          6. Package Distribution Status
-        </h2>
-        <Card className="border-border">
-          <CardContent className="p-4 font-mono text-xs space-y-2">
-            <div className="flex items-center gap-2">
-              <Badge variant="outline">npm Status</Badge>
-              <span className="font-bold text-foreground">Deferred / Not yet designed</span>
+            <div className="bevel-raised p-4 bg-surface space-y-1.5">
+              <div className="font-bold text-foreground text-xs uppercase">Modern React 19</div>
+              <p className="text-[11px] text-muted-foreground leading-relaxed">
+                Full TypeScript typings, React 19 support, composable primitives, and zero runtime bloat.
+              </p>
             </div>
-            <p className="text-muted-foreground leading-relaxed">
-              In accordance with project architecture guidelines, standalone npm packaging, exports, and publishing infrastructure are intentionally deferred until the component system and documentation reach full maturity in Phase 6. Components are currently consumed directly within Next.js / React projects.
-            </p>
-          </CardContent>
-        </Card>
-      </section>
+            <div className="bevel-raised p-4 bg-surface space-y-1.5">
+              <div className="font-bold text-foreground text-xs uppercase">Uncompromising A11y</div>
+              <p className="text-[11px] text-muted-foreground leading-relaxed">
+                Full keyboard navigation, explicit ARIA roles, high-contrast focus rings, and reduced motion.
+              </p>
+            </div>
+          </div>
+        </section>
 
-      {/* 7. Roadmap */}
-      <section id="roadmap" className="space-y-4 scroll-mt-20">
-        <h2 className="font-mono text-xl font-bold uppercase tracking-wide text-foreground">
-          7. Project Phase Roadmap
-        </h2>
-        <div className="space-y-2 font-mono text-xs">
-          <div className="bevel-raised p-3 bg-surface flex items-center justify-between">
-            <span className="font-bold">Phase 0: Project Setup & Architecture Baseline</span>
-            <Badge variant="success">COMPLETE</Badge>
+        {/* 2. Quick Start */}
+        <section id="quickstart" className="space-y-4 scroll-mt-20">
+          <div className="flex items-center gap-2">
+            <span className="bevel-raised bg-primary text-primary-foreground px-2 py-0.5 text-xs font-bold">
+              02
+            </span>
+            <h2 className="text-xl font-bold uppercase tracking-wider text-foreground">
+              Quick Start
+            </h2>
           </div>
-          <div className="bevel-raised p-3 bg-surface flex items-center justify-between">
-            <span className="font-bold">Phase 1: Visual Foundation & Design Tokens</span>
-            <Badge variant="success">COMPLETE</Badge>
-          </div>
-          <div className="bevel-raised p-3 bg-surface flex items-center justify-between">
-            <span className="font-bold">Phase 2: First 10 Core Primitives</span>
-            <Badge variant="success">COMPLETE</Badge>
-          </div>
-          <div className="bevel-raised p-3 bg-surface flex items-center justify-between">
-            <span className="font-bold">Phase 2.5: Product Website & Showcase Architecture</span>
-            <Badge variant="success">COMPLETE</Badge>
-          </div>
-          <div className="bevel-raised p-3 bg-surface flex items-center justify-between">
-            <span className="font-bold">Phase 2.75: Architecture Separation & Visual QA</span>
-            <Badge variant="success">COMPLETE</Badge>
-          </div>
-          <div className="bevel-raised p-3 bg-surface flex items-center justify-between">
-            <span className="font-bold">Phase 3A: Typography & Layout Primitives (16)</span>
-            <Badge variant="success">COMPLETE</Badge>
-          </div>
-          <div className="bevel-raised p-3 bg-surface flex items-center justify-between">
-            <span className="font-bold">Phase 3B: Forms & Selection Primitives (10)</span>
-            <Badge variant="success">COMPLETE</Badge>
-          </div>
-          <div className="bevel-raised p-3 bg-surface flex items-center justify-between">
-            <span className="font-bold">Phase 3C: Surfaces & Feedback Primitives (10)</span>
-            <Badge variant="success">COMPLETE</Badge>
-          </div>
-          <div className="bevel-raised p-3 bg-surface flex items-center justify-between">
-            <span className="font-bold">Phase 3D: Overlays & Layered Interaction (10)</span>
-            <Badge variant="success">COMPLETE</Badge>
-          </div>
-          <div className="bevel-raised p-3 bg-surface flex items-center justify-between">
-            <span className="font-bold">Phase 3E: Navigation & Data Primitives (10)</span>
-            <Badge variant="success">COMPLETE</Badge>
-          </div>
-          <div className="bevel-raised p-3 bg-surface flex items-center justify-between">
-            <span className="font-bold">Phase 4: Classic Web Primitives (10)</span>
-            <Badge variant="success">COMPLETE</Badge>
-          </div>
-          <div className="bevel-raised p-3 bg-surface flex items-center justify-between">
-            <span className="font-bold">Phase 5: Desktop & Pixel Components (10)</span>
-            <Badge variant="success">COMPLETE</Badge>
-          </div>
-          <div className="bevel-raised p-3 bg-surface flex items-center justify-between border-2 border-primary">
-            <span className="font-bold text-primary">Phase 6: Advanced Effects & Polish (10)</span>
-            <Badge variant="primary">COMPLETE</Badge>
-          </div>
+          <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+            Install the package into your React or Next.js project via your preferred package manager:
+          </p>
+
+          <CodeBlock
+            code="npm install @ditherweb/ui"
+            language="BASH"
+            filename="Terminal"
+          />
+
+          <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed pt-2">
+            Import components directly and render them with type-safe props:
+          </p>
+
+          <CodeBlock
+            code={`import { Button, Card, CardHeader, CardTitle, CardContent, Badge } from "@ditherweb/ui";
+
+export function SystemMonitor() {
+  return (
+    <Card className="max-w-sm">
+      <CardHeader>
+        <div className="flex items-center justify-between">
+          <CardTitle>TELEMETRY NODE</CardTitle>
+          <Badge variant="success">ONLINE</Badge>
         </div>
-      </section>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <p className="text-xs text-muted-foreground">
+          All subsystems operating at nominal clock frequency.
+        </p>
+        <Button variant="primary" onClick={() => alert("Command queued.")}>
+          Transmit Packet
+        </Button>
+      </CardContent>
+    </Card>
+  );
+}`}
+            language="TSX"
+            filename="src/components/system-monitor.tsx"
+          />
+        </section>
 
-      {/* Navigation Footer */}
-      <div className="pt-6 border-t border-border flex justify-between items-center font-mono text-xs">
-        <Link href="/" className="text-muted-foreground hover:text-foreground">
-          ← Back to Homepage
-        </Link>
-        <Link href="/components" className="text-primary hover:underline font-bold">
-          Explore Component Catalog →
-        </Link>
+        {/* 3. Core Concepts */}
+        <section id="core-concepts" className="space-y-4 scroll-mt-20">
+          <div className="flex items-center gap-2">
+            <span className="bevel-raised bg-primary text-primary-foreground px-2 py-0.5 text-xs font-bold">
+              03
+            </span>
+            <h2 className="text-xl font-bold uppercase tracking-wider text-foreground">
+              Core Concepts
+            </h2>
+          </div>
+          <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+            Ditherweb is designed around six foundational engineering principles:
+          </p>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-xs font-bold uppercase">1. Composability First</CardTitle>
+              </CardHeader>
+              <CardContent className="text-xs text-muted-foreground leading-relaxed">
+                Components are composable primitives, not monolithic templates. Overlays compose with panels,
+                terminals slot inside CRT monitors, and dithering wraps any arbitrary surface.
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-xs font-bold uppercase">2. CSS Custom Property Tokens</CardTitle>
+              </CardHeader>
+              <CardContent className="text-xs text-muted-foreground leading-relaxed">
+                Colors, bevel coordinates, and surface textures are governed by semantic CSS variables.
+                Consumers can theme the entire system by overriding token definitions.
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-xs font-bold uppercase">3. Semantic HTML &amp; ARIA</CardTitle>
+              </CardHeader>
+              <CardContent className="text-xs text-muted-foreground leading-relaxed">
+                Underneath retro styling sits native semantic HTML (<code className="text-foreground">&lt;button&gt;</code>, <code className="text-foreground">&lt;input&gt;</code>, <code className="text-foreground">&lt;dialog&gt;</code>).
+                Screen readers experience standard accessible landmarks and announcements.
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-xs font-bold uppercase">4. CSS-First Effects</CardTitle>
+              </CardHeader>
+              <CardContent className="text-xs text-muted-foreground leading-relaxed">
+                Scanlines, dithering stippling, and bevel geometry are implemented via lightweight SVGs and CSS
+                gradients, avoiding costly runtime raster computations.
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+
+        {/* 4. Visual System */}
+        <section id="visual-system" className="space-y-4 scroll-mt-20">
+          <div className="flex items-center gap-2">
+            <span className="bevel-raised bg-primary text-primary-foreground px-2 py-0.5 text-xs font-bold">
+              04
+            </span>
+            <h2 className="text-xl font-bold uppercase tracking-wider text-foreground">
+              Visual System
+            </h2>
+          </div>
+          <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+            The visual system marries classic desktop interface geometry with restrained retro Web treatments:
+          </p>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
+            <div className="bevel-raised p-4 bg-surface space-y-2">
+              <div className="font-bold text-foreground uppercase">Tactile Bevels</div>
+              <p className="text-[11px] text-muted-foreground">
+                Pseudo-3D bevels use calibrated 1px highlight and shadow borders to convey depth without drop shadow blur.
+              </p>
+              <div className="flex gap-2 pt-1">
+                <span className="bevel-raised px-2 py-1 bg-surface font-bold text-[10px]">Raised</span>
+                <span className="bevel-inset px-2 py-1 bg-surface font-bold text-[10px]">Inset</span>
+              </div>
+            </div>
+
+            <div className="bevel-raised p-4 bg-surface space-y-2">
+              <div className="font-bold text-foreground uppercase">Bayer Dithering</div>
+              <p className="text-[11px] text-muted-foreground">
+                Ordered dithering matrices emulate classic limited-color framebuffers (EGA, VGA, 16-color palettes).
+              </p>
+              <div className="bevel-inset h-8 w-full bg-dither-medium" />
+            </div>
+
+            <div className="bevel-raised p-4 bg-surface space-y-2">
+              <div className="font-bold text-foreground uppercase">Pixel Typography</div>
+              <p className="text-[11px] text-muted-foreground">
+                Rigorous monospace font scales provide clear grid alignment across terminals and dialog boxes.
+              </p>
+              <code className="text-primary font-bold text-[11px]">640x480 @ 60Hz</code>
+            </div>
+          </div>
+        </section>
+
+        {/* 5. Development Philosophy */}
+        <section id="philosophy" className="space-y-4 scroll-mt-20">
+          <div className="flex items-center gap-2">
+            <span className="bevel-raised bg-primary text-primary-foreground px-2 py-0.5 text-xs font-bold">
+              05
+            </span>
+            <h2 className="text-xl font-bold uppercase tracking-wider text-foreground">
+              Development Philosophy
+            </h2>
+          </div>
+          <div className="bevel-inset p-5 bg-surface/50 border border-border space-y-3">
+            <div className="text-primary font-bold text-sm tracking-wide uppercase">
+              &quot;Retro appearance. Modern engineering.&quot;
+            </div>
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              We reject the false dichotomy that retro user interfaces must be buggy toys or fragile CSS hacks.
+              By applying contemporary software discipline—strict TypeScript typings, W3C accessibility compliance,
+              zero-dependency architectures, and composable primitive boundaries—Ditherweb demonstrates that early
+              computing aesthetics can be as robust, ergonomic, and reliable as any modern enterprise design system.
+            </p>
+          </div>
+        </section>
+
+        {/* 6. Guide Index */}
+        <section id="guides-index" className="space-y-4 scroll-mt-20">
+          <div className="flex items-center gap-2">
+            <span className="bevel-raised bg-primary text-primary-foreground px-2 py-0.5 text-xs font-bold">
+              06
+            </span>
+            <h2 className="text-xl font-bold uppercase tracking-wider text-foreground">
+              Topic Guides &amp; Architecture
+            </h2>
+          </div>
+          <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+            Dive deeper into specific aspects of the framework:
+          </p>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <Link
+              href="/docs/installation"
+              className="bevel-raised hover:bevel-pressed p-4 bg-surface block transition-colors group"
+            >
+              <div className="font-bold text-foreground text-xs uppercase group-hover:text-primary">
+                Installation Guide →
+              </div>
+              <p className="text-[11px] text-muted-foreground pt-1">
+                Install dependencies, configure Tailwind CSS, import stylesheet tokens, and verify Next.js integration.
+              </p>
+            </Link>
+
+            <Link
+              href="/docs/theming"
+              className="bevel-raised hover:bevel-pressed p-4 bg-surface block transition-colors group"
+            >
+              <div className="font-bold text-foreground text-xs uppercase group-hover:text-primary">
+                Theming &amp; Tokens →
+              </div>
+              <p className="text-[11px] text-muted-foreground pt-1">
+                Learn how CSS variables, light/dark mode toggling, and bevel highlight/shadow tokens function.
+              </p>
+            </Link>
+
+            <Link
+              href="/docs/accessibility"
+              className="bevel-raised hover:bevel-pressed p-4 bg-surface block transition-colors group"
+            >
+              <div className="font-bold text-foreground text-xs uppercase group-hover:text-primary">
+                Accessibility Standards →
+              </div>
+              <p className="text-[11px] text-muted-foreground pt-1">
+                Keyboard navigation patterns, focus visibility, ARIA attributes, and reduced-motion support.
+              </p>
+            </Link>
+
+            <Link
+              href="/docs/composition"
+              className="bevel-raised hover:bevel-pressed p-4 bg-surface block transition-colors group"
+            >
+              <div className="font-bold text-foreground text-xs uppercase group-hover:text-primary">
+                Composition Patterns →
+              </div>
+              <p className="text-[11px] text-muted-foreground pt-1">
+                Real-world examples combining overlays, terminals, CRT shaders, and form controls into cohesive UIs.
+              </p>
+            </Link>
+          </div>
+        </section>
+
+        {/* Footer Navigation */}
+        <div className="pt-6 border-t border-border flex flex-wrap justify-between items-center gap-4 text-xs">
+          <Link href="/" className="text-muted-foreground hover:text-foreground">
+            ← Return to Homepage
+          </Link>
+          <Link href="/components" className="text-primary font-bold hover:underline">
+            Explore 96 Component Primitives →
+          </Link>
+        </div>
       </div>
-    </div>
+    </DocsLayout>
   );
 }

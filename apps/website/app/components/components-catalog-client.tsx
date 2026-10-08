@@ -358,6 +358,60 @@ interface CodeViewerContextValue {
   copyCode: (id: string, code: string) => void;
 }
 
+function getDocSlug(sectionId: string): string {
+  const map: Record<string, string> = {
+    "code-kbd": "code",
+    "blockquote-list": "blockquote",
+    "container-box": "container",
+    "stack-flex-grid": "stack",
+    "aspect-scroll": "aspect-ratio",
+    "well-inset": "well",
+    "spinner-loading": "spinner",
+    "infrastructure": "backdrop",
+    "demo-tabs-section": "tabs",
+    "demo-breadcrumb-section": "breadcrumb",
+    "demo-pagination-section": "pagination",
+    "demo-navigation-menu-section": "navigation-menu",
+    "demo-menubar-section": "menubar",
+    "demo-table-section": "table",
+    "demo-data-table-section": "data-table",
+    "demo-description-list-section": "description-list",
+    "demo-tree-section": "tree",
+    "demo-avatar-section": "avatar",
+    "demo-webring-section": "web-ring",
+    "demo-guestbook-section": "guestbook",
+    "demo-counter-section": "visitor-counter",
+    "demo-under-construction-section": "under-construction",
+    "demo-marquee-section": "marquee",
+    "demo-blink-section": "blink",
+    "demo-button88x31-section": "button-88x31",
+    "demo-banner-section": "retro-banner",
+    "demo-pixel-image-section": "pixel-image",
+    "demo-web-directory-section": "web-directory",
+    "demo-window-section": "window",
+    "demo-window-titlebar-section": "window-titlebar",
+    "demo-window-controls-section": "window-controls",
+    "demo-taskbar-section": "taskbar",
+    "demo-menu-section": "menu",
+    "demo-context-menu-section": "context-menu",
+    "demo-desktop-section": "desktop",
+    "demo-terminal-section": "terminal",
+    "demo-pixel-art-section": "pixel-art",
+    "demo-bitmap-canvas-section": "bitmap-canvas",
+    "demo-dither-section": "dither",
+    "demo-halftone-section": "halftone",
+    "demo-pixel-scale-section": "pixelate",
+    "demo-noise-section": "noise",
+    "demo-image-frame-section": "image-frame",
+    "demo-scanlines-section": "scanline",
+    "demo-crt-section": "crt",
+    "demo-pixel-type-section": "pixel-text",
+    "demo-typewriter-section": "typewriter",
+    "demo-matrix-rain-section": "matrix-rain",
+  };
+  return map[sectionId] || sectionId;
+}
+
 const CodeViewerContext = createContext<CodeViewerContextValue | null>(null);
 
 function ComponentActions({ sectionId }: { sectionId: string }) {
@@ -365,10 +419,18 @@ function ComponentActions({ sectionId }: { sectionId: string }) {
   const sample = componentCodeSamples[sectionId];
   const badgeText = sample?.badge ?? `@ditherweb/ui/${sectionId}`;
   const isOpen = Boolean(ctx?.openCodes[sectionId]);
+  const docSlug = getDocSlug(sectionId);
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex flex-wrap items-center gap-2">
       <Badge variant="outline">{badgeText}</Badge>
+      <NextLink
+        href={`/components/${docSlug}`}
+        className="px-2.5 py-1 font-mono text-xs font-bold bevel-raised active:bevel-pressed flex items-center gap-1 text-primary hover:bg-muted select-none"
+      >
+        <span>View docs</span>
+        <span>→</span>
+      </NextLink>
       <button
         type="button"
         onClick={() => ctx?.toggleCode(sectionId)}
