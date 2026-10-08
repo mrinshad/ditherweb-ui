@@ -14,6 +14,7 @@ import {
   SidebarRail,
   SidebarTrigger,
   useSidebar,
+  cn,
 } from "@ditherweb/ui";
 import { COMPONENT_DOCS_REGISTRY } from "@/lib/component-docs-registry";
 
@@ -70,13 +71,20 @@ export function ComponentsSidebar({ className }: ComponentsSidebarProps) {
   return (
     <Sidebar className={className}>
       <SidebarHeader>
-        <div className="flex items-center justify-between gap-2">
-          <div className="flex items-center gap-1.5 min-w-0">
-            <span className="bevel-inset bg-primary px-1.5 py-0.5 text-[9px] font-bold text-primary-foreground uppercase shrink-0">
-              PRIMITIVES
-            </span>
-            <span className="font-bold text-foreground truncate">Components</span>
-          </div>
+        <div
+          className={cn(
+            "flex items-center gap-2 w-full",
+            state === "collapsed" ? "justify-center" : "justify-between",
+          )}
+        >
+          {state === "expanded" && (
+            <div className="flex items-center gap-1.5 min-w-0">
+              <span className="bevel-inset bg-primary px-1.5 py-0.5 text-[9px] font-bold text-primary-foreground uppercase shrink-0">
+                PRIMITIVES
+              </span>
+              <span className="font-bold text-foreground truncate">Components</span>
+            </div>
+          )}
           <SidebarTrigger />
         </div>
 

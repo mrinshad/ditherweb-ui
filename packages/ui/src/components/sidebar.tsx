@@ -252,7 +252,7 @@ export const Sidebar = React.forwardRef<HTMLElement, SidebarProps>(
         data-collapsible={collapsible}
         aria-label="Sidebar"
         className={cn(
-          "sticky top-14 h-[calc(100vh-3.5rem)] shrink-0 flex flex-col",
+          "sticky top-14 h-[calc(100vh-3.5rem)] shrink-0 flex flex-col overflow-x-hidden",
           "border-r border-border bg-surface text-foreground font-mono text-xs",
           "transition-[width] duration-200 ease-in-out select-none",
           isCollapsed ? "w-14 items-center" : "w-64",
@@ -284,8 +284,8 @@ export const SidebarHeader = React.forwardRef<HTMLDivElement, SidebarHeaderProps
       <div
         ref={ref}
         className={cn(
-          "flex flex-col gap-2 p-3 border-b border-border shrink-0 w-full",
-          isCollapsed && "p-2 items-center",
+          "flex flex-col gap-2 p-3 border-b border-border shrink-0 w-full overflow-hidden",
+          isCollapsed && "p-2 items-center justify-center",
           className,
         )}
         {...props}

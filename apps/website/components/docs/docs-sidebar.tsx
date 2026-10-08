@@ -14,6 +14,7 @@ import {
   SidebarRail,
   SidebarTrigger,
   useSidebar,
+  cn,
 } from "@ditherweb/ui";
 
 export interface DocsSidebarProps {
@@ -58,13 +59,20 @@ export function DocsSidebar({ className }: DocsSidebarProps) {
   return (
     <Sidebar className={className}>
       <SidebarHeader>
-        <div className="flex items-center justify-between gap-2">
-          <div className="flex items-center gap-1.5 min-w-0">
-            <span className="bevel-inset bg-primary px-1.5 py-0.5 text-[9px] font-bold text-primary-foreground uppercase shrink-0">
-              DOCS
-            </span>
-            <span className="font-bold text-foreground truncate">Documentation</span>
-          </div>
+        <div
+          className={cn(
+            "flex items-center gap-2 w-full",
+            state === "collapsed" ? "justify-center" : "justify-between",
+          )}
+        >
+          {state === "expanded" && (
+            <div className="flex items-center gap-1.5 min-w-0">
+              <span className="bevel-inset bg-primary px-1.5 py-0.5 text-[9px] font-bold text-primary-foreground uppercase shrink-0">
+                DOCS
+              </span>
+              <span className="font-bold text-foreground truncate">Documentation</span>
+            </div>
+          )}
           <SidebarTrigger />
         </div>
 
