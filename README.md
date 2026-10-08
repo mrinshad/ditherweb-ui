@@ -34,7 +34,7 @@ Ditherweb is structured as an npm workspace monorepo with strict architectural s
 ditherweb/
 ├── packages/
 │   └── ui/                  → Reusable Ditherweb UI library (@ditherweb/ui)
-│       ├── src/components/  → 86 primitives (10 Core, 8 Typography, 8 Layout, 10 Forms/Selection, 10 Surfaces/Feedback, 10 Overlays, 10 Navigation/Data, 10 Classic Web, 10 Desktop/Pixel)
+│       ├── src/components/  → 96 primitives (10 Core, 8 Typography, 8 Layout, 10 Forms/Selection, 10 Surfaces/Feedback, 10 Overlays, 10 Navigation/Data, 10 Classic Web, 10 Desktop/Pixel, 10 Advanced Effects/Polish)
 │       ├── src/styles/      → Design tokens, bevels, procedural dither patterns
 │       ├── src/lib/utils.ts → Utility helpers (cn)
 │       └── src/index.ts     → Public library entrypoint
@@ -326,6 +326,23 @@ Phase 5 introduces classic computer, desktop, terminal, and bitmap primitives as
 
 ---
 
+## Phase 6: Advanced Effects & Polish
+
+Phase 6 completes Ditherweb's distinctive visual effect language with 10 composable primitives, zero external dependencies, and built-in `prefers-reduced-motion` compliance:
+
+1. **Dither** (`packages/ui/src/components/dither.tsx`) — Visual wrapper primitive applying procedural Bayer 4x4 matrix, checker, fine, dense, or noise dither patterns over arbitrary content or backdrops without runtime image processing.
+2. **Halftone** (`packages/ui/src/components/halftone.tsx`) — Dot-matrix halftone screen effect overlay or background texture inspired by vintage print media, CRT shadow masks, and arcade monitors.
+3. **Pixelate** (`packages/ui/src/components/pixelate.tsx`) — Presentation wrapper applying CSS nearest-neighbor image rendering, un-smoothed crisp font rendering, and integer pixel scaling.
+4. **Noise** (`packages/ui/src/components/noise.tsx`) — Procedural film grain texture overlay using lightweight inline SVG feTurbulence fractals with optional micro-jitter animation (disabled automatically on reduced motion).
+5. **ImageFrame** (`packages/ui/src/components/image-frame.tsx`) — Semantic `<figure>` container for images, bitmaps, or avatars with retro bevels, nearest-neighbor pixel rendering, optional dither overlays, and `<figcaption>` labels.
+6. **Scanline** (`packages/ui/src/components/scanline.tsx`) — Phosphor scanline stripe overlay for CRT displays, viewports, and retro monitors, supporting fine/medium/coarse densities, horizontal/vertical orientations, and rolling animation.
+7. **CRT** (`packages/ui/src/components/crt.tsx`) — Cathode Ray Tube display monitor enclosure combining scanlines, corner vignette shadow, curved screen bezel, and authentic monochrome phosphor tints (Amber, Green, Mono).
+8. **PixelText** (`packages/ui/src/components/pixel-text.tsx`) — Typography component with pixel-crisp font smoothing, stepped retro drop shadows, and phosphor glow for headlines and badges.
+9. **Typewriter** (`packages/ui/src/components/typewriter.tsx`) — Accessible character-by-character typewriter reveal with complete text immediately present in the DOM for assistive technology, and instant bypass under `prefers-reduced-motion`.
+10. **BlinkCursor** (`packages/ui/src/components/blink-cursor.tsx`) — Classic terminal blinking cursor with block, line, and underline variants, `aria-hidden="true"` accessibility protection, and reduced-motion static override.
+
+---
+
 ## Status
 
 - **Phase 0** — Architecture & Environment Setup (Complete & Validated ✅)
@@ -340,7 +357,7 @@ Phase 5 introduces classic computer, desktop, terminal, and bitmap primitives as
 - **Phase 3E** — Navigation & Data Primitives (Complete & Validated ✅)
 - **Phase 4** — Classic Web Primitives (Complete & Validated ✅)
 - **Phase 5** — Desktop & Pixel Components (Complete & Validated ✅)
-- **Phase 6** — Advanced Effects & Packaging (Pending)
+- **Phase 6** — Advanced Effects & Polish (Complete & Validated ✅)
 
 ## License
 

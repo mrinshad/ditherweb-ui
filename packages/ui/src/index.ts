@@ -694,6 +694,81 @@ export {
   type BitmapCanvasProps,
 } from "./components/bitmap-canvas";
 
+// --- Phase 6: Advanced Effects & Polish Primitives ---
+export {
+  Dither,
+  type DitherProps,
+  type DitherPattern,
+  type DitherMode,
+  type DitherIntensity,
+} from "./components/dither";
+
+export {
+  Halftone,
+  type HalftoneProps,
+  type HalftoneDensity,
+  type HalftoneSize,
+  type HalftoneMode,
+} from "./components/halftone";
+
+export {
+  Pixelate,
+  type PixelateProps,
+  type PixelateScale,
+  type PixelateRendering,
+} from "./components/pixelate";
+
+export {
+  Noise,
+  type NoiseProps,
+  type NoiseIntensity,
+  type NoiseMode,
+  type NoiseBlendMode,
+} from "./components/noise";
+
+export {
+  ImageFrame,
+  type ImageFrameProps,
+  type ImageFrameVariant,
+} from "./components/image-frame";
+
+export {
+  Scanline,
+  type ScanlineProps,
+  type ScanlineDensity,
+  type ScanlineOrientation,
+  type ScanlineMode,
+} from "./components/scanline";
+
+export {
+  CRT,
+  type CRTProps,
+  type CRTCurvature,
+  type CRTPhosphor,
+} from "./components/crt";
+
+export {
+  PixelText,
+  type PixelTextProps,
+  type PixelTextAs,
+  type PixelTextSize,
+  type PixelTextShadow,
+} from "./components/pixel-text";
+
+export {
+  Typewriter,
+  type TypewriterProps,
+  type TypewriterSpeed,
+  type TypewriterAs,
+} from "./components/typewriter";
+
+export {
+  BlinkCursor,
+  type BlinkCursorProps,
+  type BlinkCursorVariant,
+  type BlinkCursorAs,
+} from "./components/blink-cursor";
+
 // --- Shared Utilities ---
 export { cn } from "./lib/utils";
 export {
