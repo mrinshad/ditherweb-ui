@@ -137,6 +137,14 @@ export const ContextMenuContent = React.forwardRef<HTMLDivElement, ContextMenuCo
       else if (forwardedRef && "current" in forwardedRef) {
         (forwardedRef as React.MutableRefObject<HTMLDivElement | null>).current = node;
       }
+      if (node) {
+        setTimeout(() => {
+          const first = node.querySelector<HTMLElement>(
+            '[role="menuitem"]:not([aria-disabled="true"])'
+          );
+          first?.focus();
+        }, 16);
+      }
     };
 
     // Viewport collision clamping
@@ -164,16 +172,6 @@ export const ContextMenuContent = React.forwardRef<HTMLDivElement, ContextMenuCo
         top: Math.round(top + window.scrollY),
         left: Math.round(left + window.scrollX),
       });
-
-      // Focus first item on open
-      const timer = setTimeout(() => {
-        const first = contentRef.current?.querySelector<HTMLElement>(
-          '[role="menuitem"]:not([aria-disabled="true"])'
-        );
-        first?.focus();
-      }, 16);
-
-      return () => clearTimeout(timer);
     }, [isOpen, position, contentRef]);
 
     useEscapeKey(() => {
@@ -267,6 +265,7 @@ export const ContextMenuItem = React.forwardRef<HTMLButtonElement, ContextMenuIt
       onClick?.(e);
       onSelect?.();
       context?.setIsOpen(false);
+      context?.triggerRef.current?.focus();
     };
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {

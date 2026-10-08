@@ -62,8 +62,19 @@ export const BitmapCanvas = React.forwardRef<HTMLDivElement, BitmapCanvasProps>(
     }, [defaultValue, height, width, palette]);
 
     const [uncontrolledGrid, setUncontrolledGrid] = React.useState<string[][]>(createInitialGrid);
+    const [statusMessage, setStatusMessage] = React.useState<string>("");
     const isControlled = controlledValue !== undefined;
     const gridData = isControlled ? controlledValue : uncontrolledGrid;
+
+    const innerRef = React.useRef<HTMLDivElement | null>(null);
+
+    const setMergedRef = (node: HTMLDivElement | null) => {
+      innerRef.current = node;
+      if (typeof ref === "function") ref(node);
+      else if (ref && "current" in ref) {
+        (ref as React.MutableRefObject<HTMLDivElement | null>).current = node;
+      }
+    };
 
     const currentColor = activeColor ?? palette[1] ?? "#ffffff";
 
@@ -77,14 +88,44 @@ export const BitmapCanvas = React.forwardRef<HTMLDivElement, BitmapCanvasProps>(
       if (!isControlled) {
         setUncontrolledGrid(nextGrid);
       }
+      setStatusMessage(`Pixel (${col + 1}, ${row + 1}) set to ${currentColor}`);
       onChange?.(nextGrid);
+    };
+
+    const handleCellKeyDown = (e: React.KeyboardEvent<HTMLDivElement>, r: number, c: number) => {
+      if (!interactive) return;
+
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        updatePixel(r, c);
+      } else if (e.key === "ArrowRight") {
+        e.preventDefault();
+        if (c < width - 1) {
+          innerRef.current?.querySelector<HTMLElement>(`[data-row="${r}"][data-col="${c + 1}"]`)?.focus();
+        }
+      } else if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        if (c > 0) {
+          innerRef.current?.querySelector<HTMLElement>(`[data-row="${r}"][data-col="${c - 1}"]`)?.focus();
+        }
+      } else if (e.key === "ArrowDown") {
+        e.preventDefault();
+        if (r < height - 1) {
+          innerRef.current?.querySelector<HTMLElement>(`[data-row="${r + 1}"][data-col="${c}"]`)?.focus();
+        }
+      } else if (e.key === "ArrowUp") {
+        e.preventDefault();
+        if (r > 0) {
+          innerRef.current?.querySelector<HTMLElement>(`[data-row="${r - 1}"][data-col="${c}"]`)?.focus();
+        }
+      }
     };
 
     const isPointerDownRef = React.useRef(false);
 
     return (
       <div
-        ref={ref}
+        ref={setMergedRef}
         role={interactive ? "grid" : "img"}
         aria-label={alt}
         className={cn(
@@ -102,6 +143,11 @@ export const BitmapCanvas = React.forwardRef<HTMLDivElement, BitmapCanvasProps>(
         }}
         {...props}
       >
+        {interactive && (
+          <div className="sr-only" aria-live="polite" aria-atomic="true">
+            {statusMessage}
+          </div>
+        )}
         <div
           className="flex flex-col select-none"
           style={{
@@ -114,22 +160,18 @@ export const BitmapCanvas = React.forwardRef<HTMLDivElement, BitmapCanvasProps>(
               {row.map((cellColor, cIdx) => (
                 <div
                   key={`cell-${rIdx}-${cIdx}`}
+                  data-row={rIdx}
+                  data-col={cIdx}
                   role={interactive ? "gridcell" : undefined}
                   tabIndex={interactive ? 0 : -1}
-                  aria-label={interactive ? `Pixel (${cIdx + 1}, ${rIdx + 1})` : undefined}
+                  aria-label={interactive ? `Pixel (${cIdx + 1}, ${rIdx + 1}): ${cellColor}` : undefined}
                   onClick={() => updatePixel(rIdx, cIdx)}
                   onPointerEnter={() => {
                     if (isPointerDownRef.current) {
                       updatePixel(rIdx, cIdx);
                     }
                   }}
-                  onKeyDown={(e) => {
-                    if (!interactive) return;
-                    if (e.key === "Enter" || e.key === " ") {
-                      e.preventDefault();
-                      updatePixel(rIdx, cIdx);
-                    }
-                  }}
+                  onKeyDown={(e) => handleCellKeyDown(e, rIdx, cIdx)}
                   style={{
                     width: `${pixelSize}px`,
                     height: `${pixelSize}px`,

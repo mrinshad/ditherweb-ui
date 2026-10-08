@@ -164,6 +164,17 @@ export const MenuContent = React.forwardRef<HTMLDivElement, MenuContentProps>(
       }
     };
 
+    React.useEffect(() => {
+      if (!isOpen || !contentRef.current) return;
+      const timer = setTimeout(() => {
+        const first = contentRef.current?.querySelector<HTMLElement>(
+          '[role="menuitem"]:not([aria-disabled="true"])'
+        );
+        first?.focus();
+      }, 30);
+      return () => clearTimeout(timer);
+    }, [isOpen]);
+
     useEscapeKey(() => {
       if (isOpen) {
         setIsOpen(false);
@@ -251,6 +262,7 @@ export const MenuItem = React.forwardRef<HTMLButtonElement, MenuItemProps>(
       onClick?.(e);
       onSelect?.();
       context?.setIsOpen(false);
+      context?.triggerRef.current?.focus();
     };
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
@@ -314,16 +326,22 @@ export interface SubMenuProps {
   children: React.ReactNode;
 }
 
-const SubMenuContext = React.createContext<{
+interface SubMenuContextValue {
   isSubOpen: boolean;
   setIsSubOpen: (open: boolean) => void;
-} | null>(null);
+  triggerRef: React.MutableRefObject<HTMLButtonElement | null>;
+  contentRef: React.MutableRefObject<HTMLDivElement | null>;
+}
+
+const SubMenuContext = React.createContext<SubMenuContextValue | null>(null);
 
 export const SubMenu: React.FC<SubMenuProps> = ({ children }) => {
   const [isSubOpen, setIsSubOpen] = React.useState(false);
+  const triggerRef = React.useRef<HTMLButtonElement | null>(null);
+  const contentRef = React.useRef<HTMLDivElement | null>(null);
 
   return (
-    <SubMenuContext.Provider value={{ isSubOpen, setIsSubOpen }}>
+    <SubMenuContext.Provider value={{ isSubOpen, setIsSubOpen, triggerRef, contentRef }}>
       <div
         className="relative group"
         onMouseEnter={() => setIsSubOpen(true)}
@@ -339,20 +357,37 @@ SubMenu.displayName = "SubMenu";
 export type SubMenuTriggerProps = React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 export const SubMenuTrigger = React.forwardRef<HTMLButtonElement, SubMenuTriggerProps>(
-  ({ className, children, onKeyDown, ...props }, ref) => {
+  ({ className, children, onKeyDown, ...props }, forwardedRef) => {
     const subContext = React.useContext(SubMenuContext);
+
+    const setMergedRef = (node: HTMLButtonElement | null) => {
+      if (subContext) subContext.triggerRef.current = node;
+      if (typeof forwardedRef === "function") forwardedRef(node);
+      else if (forwardedRef && "current" in forwardedRef) {
+        (forwardedRef as React.MutableRefObject<HTMLButtonElement | null>).current = node;
+      }
+    };
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
       onKeyDown?.(e);
       if (e.key === "ArrowRight") {
         e.preventDefault();
         subContext?.setIsSubOpen(true);
+        setTimeout(() => {
+          const firstItem = subContext?.contentRef.current?.querySelector<HTMLElement>(
+            '[role="menuitem"]:not([aria-disabled="true"])'
+          );
+          firstItem?.focus();
+        }, 16);
+      } else if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        subContext?.setIsSubOpen(false);
       }
     };
 
     return (
       <button
-        ref={ref}
+        ref={setMergedRef}
         type="button"
         role="menuitem"
         aria-haspopup="menu"
@@ -376,15 +411,48 @@ SubMenuTrigger.displayName = "SubMenuTrigger";
 export type SubMenuContentProps = React.HTMLAttributes<HTMLDivElement>;
 
 export const SubMenuContent = React.forwardRef<HTMLDivElement, SubMenuContentProps>(
-  ({ className, children, ...props }, ref) => {
+  ({ className, children, onKeyDown, ...props }, forwardedRef) => {
     const subContext = React.useContext(SubMenuContext);
+
+    const setMergedRef = (node: HTMLDivElement | null) => {
+      if (subContext) subContext.contentRef.current = node;
+      if (typeof forwardedRef === "function") forwardedRef(node);
+      else if (forwardedRef && "current" in forwardedRef) {
+        (forwardedRef as React.MutableRefObject<HTMLDivElement | null>).current = node;
+      }
+    };
+
+    React.useEffect(() => {
+      if (!subContext?.isSubOpen) return;
+      const timer = setTimeout(() => {
+        const first = subContext?.contentRef.current?.querySelector<HTMLElement>(
+          '[role="menuitem"]:not([aria-disabled="true"])'
+        );
+        first?.focus();
+      }, 30);
+      return () => clearTimeout(timer);
+    }, [subContext?.isSubOpen]);
+
     if (!subContext?.isSubOpen) return null;
+
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+      onKeyDown?.(e);
+      if (e.defaultPrevented) return;
+
+      if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        e.stopPropagation();
+        subContext?.setIsSubOpen(false);
+        subContext?.triggerRef.current?.focus();
+      }
+    };
 
     return (
       <div
-        ref={ref}
+        ref={setMergedRef}
         role="menu"
         aria-orientation="vertical"
+        onKeyDown={handleKeyDown}
         className={cn(
           "absolute left-full top-0 z-50 ml-0.5 min-w-[150px] select-none font-mono text-xs",
           "bevel-raised bg-surface text-foreground shadow-hard-md border border-border p-1",
