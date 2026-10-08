@@ -220,10 +220,51 @@ import {
   type AvatarSize,
   type AvatarShape,
   type AvatarStatus,
+  Guestbook,
+  GuestbookHeader,
+  GuestbookTitle,
+  GuestbookEntryList,
+  GuestbookEntry,
+  GuestbookEmpty,
+  GuestbookFooter,
+  VisitorCounter,
+  UnderConstruction,
+  UnderConstructionIcon,
+  UnderConstructionTitle,
+  UnderConstructionMessage,
+  UnderConstructionEstimatedDate,
+  UnderConstructionAction,
+  Marquee,
+  Blink,
+  Button88x31,
+  RetroBanner,
+  RetroBannerTitle,
+  RetroBannerSubtitle,
+  RetroBannerAction,
+  PixelImage,
+  WebDirectory,
+  WebDirectoryHeader,
+  WebDirectoryGrid,
+  WebDirectoryCategory,
+  WebDirectoryTitle,
+  WebDirectoryList,
+  WebDirectoryItem,
+  WebDirectoryLink,
+  WebDirectoryDescription,
+  WebDirectorySubcategories,
 } from "@ditherweb/ui";
 
 export interface ComponentPreviewProps {
   slug: string;
+}
+
+interface GuestbookEntryItem {
+  author: string;
+  date: string;
+  location: string;
+  message: string;
+  websiteUrl?: string;
+  websiteName?: string;
 }
 
 interface PreviewState {
@@ -469,6 +510,50 @@ interface PreviewState {
   setAvatarStatus: (s: AvatarStatus) => void;
   avatarShowFallback: boolean;
   setAvatarShowFallback: (f: boolean) => void;
+
+  // Classic Web states
+  guestbookEmpty: boolean;
+  setGuestbookEmpty: (e: boolean) => void;
+  guestbookEntries: GuestbookEntryItem[];
+  setGuestbookEntries: React.Dispatch<React.SetStateAction<GuestbookEntryItem[]>>;
+  visitorCounterVal: number;
+  setVisitorCounterVal: React.Dispatch<React.SetStateAction<number>>;
+  visitorCounterVariant: "odometer" | "led" | "lcd" | "classic";
+  setVisitorCounterVariant: (v: "odometer" | "led" | "lcd" | "classic") => void;
+  visitorCounterSize: "sm" | "md" | "lg";
+  setVisitorCounterSize: (s: "sm" | "md" | "lg") => void;
+  underConstVariant: "stripes" | "bevel" | "simple" | "compact";
+  setUnderConstVariant: (v: "stripes" | "bevel" | "simple" | "compact") => void;
+  underConstPinged: boolean;
+  setUnderConstPinged: (p: boolean) => void;
+  marqueeDirection: "left" | "right";
+  setMarqueeDirection: (d: "left" | "right") => void;
+  marqueeSpeed: "slow" | "normal" | "fast";
+  setMarqueeSpeed: (s: "slow" | "normal" | "fast") => void;
+  marqueePause: boolean;
+  setMarqueePause: (p: boolean) => void;
+  blinkEnabled: boolean;
+  setBlinkEnabled: (e: boolean) => void;
+  blinkSpeed: "slow" | "normal" | "fast";
+  setBlinkSpeed: (s: "slow" | "normal" | "fast") => void;
+  button88x31Variant: "bevel" | "outline" | "flat";
+  setButton88x31Variant: (v: "bevel" | "outline" | "flat") => void;
+  button88x31Clicked: string;
+  setButton88x31Clicked: (c: string) => void;
+  retroBannerFormat: "standard" | "compact" | "full";
+  setRetroBannerFormat: (f: "standard" | "compact" | "full") => void;
+  retroBannerVariant: "dither" | "bevel" | "outline" | "solid";
+  setRetroBannerVariant: (v: "dither" | "bevel" | "outline" | "solid") => void;
+  retroBannerClicks: number;
+  setRetroBannerClicks: React.Dispatch<React.SetStateAction<number>>;
+  pixelImageFrame: "none" | "bevel" | "inset" | "dither" | "groove" | "simple";
+  setPixelImageFrame: (f: "none" | "bevel" | "inset" | "dither" | "groove" | "simple") => void;
+  pixelImageRatio: 1 | 2 | 3 | 4;
+  setPixelImageRatio: (r: 1 | 2 | 3 | 4) => void;
+  webDirectoryCols: 1 | 2 | 3;
+  setWebDirectoryCols: (c: 1 | 2 | 3) => void;
+  webDirectoryLastClicked: string;
+  setWebDirectoryLastClicked: (l: string) => void;
 }
 
 export function ComponentPreview({ slug }: ComponentPreviewProps) {
@@ -599,6 +684,46 @@ export function ComponentPreview({ slug }: ComponentPreviewProps) {
   const [avatarShape, setAvatarShape] = useState<AvatarShape>("square");
   const [avatarStatus, setAvatarStatus] = useState<AvatarStatus>("online");
   const [avatarShowFallback, setAvatarShowFallback] = useState(true);
+
+  // Classic Web states
+  const [guestbookEmpty, setGuestbookEmpty] = useState(false);
+  const [guestbookEntries, setGuestbookEntries] = useState<GuestbookEntryItem[]>([
+    {
+      author: "NeoSysOp_96",
+      date: "OCT 08, 1996 14:22 GMT",
+      location: "San Jose, CA [NODE 01]",
+      message: "Radical homepage! The dithered backgrounds and bevels look killer on my 17\" Sony Trinitron CRT. Added your site to my Netscape bookmarks!",
+      websiteUrl: "https://ditherweb.mrinshad.site",
+      websiteName: "SysOp HQ",
+    },
+    {
+      author: "PixelWanderer",
+      date: "OCT 07, 1996 23:48 GMT",
+      location: "Tokyo, JP",
+      message: "Surfing the World Wide Web from a 28.8k dialup modem in Akihabara. Keep the retro spirit alive!",
+      websiteUrl: "https://ditherweb.mrinshad.site",
+      websiteName: "CyberDen",
+    },
+  ]);
+  const [visitorCounterVal, setVisitorCounterVal] = useState(13370);
+  const [visitorCounterVariant, setVisitorCounterVariant] = useState<"odometer" | "led" | "lcd" | "classic">("odometer");
+  const [visitorCounterSize, setVisitorCounterSize] = useState<"sm" | "md" | "lg">("md");
+  const [underConstVariant, setUnderConstVariant] = useState<"stripes" | "bevel" | "simple" | "compact">("stripes");
+  const [underConstPinged, setUnderConstPinged] = useState(false);
+  const [marqueeDirection, setMarqueeDirection] = useState<"left" | "right">("left");
+  const [marqueeSpeed, setMarqueeSpeed] = useState<"slow" | "normal" | "fast">("normal");
+  const [marqueePause, setMarqueePause] = useState(true);
+  const [blinkEnabled, setBlinkEnabled] = useState(true);
+  const [blinkSpeed, setBlinkSpeed] = useState<"slow" | "normal" | "fast">("normal");
+  const [button88x31Variant, setButton88x31Variant] = useState<"bevel" | "outline" | "flat">("bevel");
+  const [button88x31Clicked, setButton88x31Clicked] = useState("Netscape Now 4.0");
+  const [retroBannerFormat, setRetroBannerFormat] = useState<"standard" | "compact" | "full">("standard");
+  const [retroBannerVariant, setRetroBannerVariant] = useState<"dither" | "bevel" | "outline" | "solid">("dither");
+  const [retroBannerClicks, setRetroBannerClicks] = useState(42);
+  const [pixelImageFrame, setPixelImageFrame] = useState<"none" | "bevel" | "inset" | "dither" | "groove" | "simple">("bevel");
+  const [pixelImageRatio, setPixelImageRatio] = useState<1 | 2 | 3 | 4>(1);
+  const [webDirectoryCols, setWebDirectoryCols] = useState<1 | 2 | 3>(3);
+  const [webDirectoryLastClicked, setWebDirectoryLastClicked] = useState("Sound Blaster 16 DSP");
 
   return (
     <div className="bevel-raised bg-surface p-6 font-mono text-xs border border-border space-y-4">
@@ -843,6 +968,48 @@ export function ComponentPreview({ slug }: ComponentPreviewProps) {
           setAvatarStatus,
           avatarShowFallback,
           setAvatarShowFallback,
+          guestbookEmpty,
+          setGuestbookEmpty,
+          guestbookEntries,
+          setGuestbookEntries,
+          visitorCounterVal,
+          setVisitorCounterVal,
+          visitorCounterVariant,
+          setVisitorCounterVariant,
+          visitorCounterSize,
+          setVisitorCounterSize,
+          underConstVariant,
+          setUnderConstVariant,
+          underConstPinged,
+          setUnderConstPinged,
+          marqueeDirection,
+          setMarqueeDirection,
+          marqueeSpeed,
+          setMarqueeSpeed,
+          marqueePause,
+          setMarqueePause,
+          blinkEnabled,
+          setBlinkEnabled,
+          blinkSpeed,
+          setBlinkSpeed,
+          button88x31Variant,
+          setButton88x31Variant,
+          button88x31Clicked,
+          setButton88x31Clicked,
+          retroBannerFormat,
+          setRetroBannerFormat,
+          retroBannerVariant,
+          setRetroBannerVariant,
+          retroBannerClicks,
+          setRetroBannerClicks,
+          pixelImageFrame,
+          setPixelImageFrame,
+          pixelImageRatio,
+          setPixelImageRatio,
+          webDirectoryCols,
+          setWebDirectoryCols,
+          webDirectoryLastClicked,
+          setWebDirectoryLastClicked,
         })}
       </div>
     </div>
@@ -4217,6 +4384,794 @@ function renderPreviewContent(slug: string, state: PreviewState) {
 
           <span className="text-[10px] text-muted-foreground text-center">
             Entity avatar with initials fallback and presence indicator dot.
+          </span>
+        </div>
+      );
+
+    case "guestbook":
+      return (
+        <div className="flex flex-col items-center gap-4 w-full max-w-lg">
+          <Guestbook className="w-full">
+            <GuestbookHeader>
+              <GuestbookTitle>
+                <span aria-hidden="true">📖</span>
+                <span>CYBERSPACE GUESTBOOK</span>
+              </GuestbookTitle>
+              <div className="text-[10px] text-muted-foreground font-mono">
+                PAGES: [1] {"//"} TOTAL SIGNATURES: {state.guestbookEntries.length}
+              </div>
+            </GuestbookHeader>
+
+            {state.guestbookEmpty ? (
+              <GuestbookEmpty>
+                No guest signatures logged yet. Click &quot;Sign Guestbook&quot; below to leave a note!
+              </GuestbookEmpty>
+            ) : (
+              <GuestbookEntryList>
+                {state.guestbookEntries.map((entry, idx) => (
+                  <GuestbookEntry
+                    key={idx}
+                    entryNumber={state.guestbookEntries.length - idx}
+                    author={entry.author}
+                    date={entry.date}
+                    location={entry.location}
+                    websiteUrl={entry.websiteUrl}
+                    websiteName={entry.websiteName}
+                    message={entry.message}
+                  />
+                ))}
+              </GuestbookEntryList>
+            )}
+
+            <GuestbookFooter>
+              <span className="text-[10px]">
+                Powered by Ditherweb CGI-BIN Guestbook 1.2
+              </span>
+              <button
+                type="button"
+                onClick={() => {
+                  const newEntry = {
+                    author: `Guest_${Math.floor(Math.random() * 900 + 100)}`,
+                    date: "JUST NOW",
+                    location: "Internet Relay Chat",
+                    message: "Greetings from the World Wide Web! Love the retro layout and authentic dither graphics.",
+                    websiteUrl: "https://ditherweb.mrinshad.site",
+                    websiteName: "My HomePage",
+                  };
+                  state.setGuestbookEntries((prev) => [newEntry, ...prev]);
+                  state.setGuestbookEmpty(false);
+                }}
+                className="text-primary underline hover:text-accent font-bold cursor-pointer"
+              >
+                [+ Sign Guestbook]
+              </button>
+            </GuestbookFooter>
+          </Guestbook>
+
+          <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-border w-full justify-center text-[11px]">
+            <Button
+              size="sm"
+              variant={state.guestbookEmpty ? "primary" : "outline"}
+              onClick={() => state.setGuestbookEmpty(!state.guestbookEmpty)}
+            >
+              {state.guestbookEmpty ? "Empty State: ON" : "Empty State: OFF"}
+            </Button>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => {
+                const newEntry = {
+                  author: `CyberSurfer_${Math.floor(Math.random() * 899 + 100)}`,
+                  date: "OCT 09, 1996 03:00 GMT",
+                  location: "Dial-up Gateway",
+                  message: "Awesome palette and typography. Greetings from Netscape Navigator 3.0!",
+                  websiteUrl: "https://ditherweb.mrinshad.site",
+                  websiteName: "CyberVault",
+                };
+                state.setGuestbookEntries((prev) => [newEntry, ...prev]);
+                state.setGuestbookEmpty(false);
+              }}
+            >
+              Add Entry
+            </Button>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => {
+                state.setGuestbookEntries([]);
+                state.setGuestbookEmpty(true);
+              }}
+            >
+              Clear Entries
+            </Button>
+          </div>
+
+          <span className="text-[10px] text-muted-foreground text-center">
+            Classic personal homepage guestbook presentation pattern with author metadata, timestamps, and empty state.
+          </span>
+        </div>
+      );
+
+    case "visitor-counter":
+      return (
+        <div className="flex flex-col items-center gap-5 w-full max-w-md">
+          <div className="bevel-raised bg-surface p-6 flex flex-col items-center gap-4 w-full">
+            <div className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground">
+              PAGE HIT ACCUMULATOR
+            </div>
+
+            <VisitorCounter
+              value={state.visitorCounterVal}
+              minDigits={6}
+              variant={state.visitorCounterVariant}
+              size={state.visitorCounterSize}
+              label="YOU ARE VISITOR NUMBER"
+              labelPosition="top"
+            />
+
+            <div className="text-[10px] font-mono text-muted-foreground text-center">
+              CURRENT VALUE: <span className="font-bold text-foreground">{state.visitorCounterVal.toLocaleString()}</span>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-border w-full justify-center text-[11px]">
+            <Button
+              size="sm"
+              variant="primary"
+              onClick={() => state.setVisitorCounterVal((v) => v + 1)}
+            >
+              +1 Hit
+            </Button>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => state.setVisitorCounterVal((v) => v + 10)}
+            >
+              +10 Hits
+            </Button>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => state.setVisitorCounterVal((v) => v + 1000)}
+            >
+              +1,000 Hits
+            </Button>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => state.setVisitorCounterVal(13370)}
+            >
+              Reset
+            </Button>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2 w-full justify-center text-[11px]">
+            <span className="text-muted-foreground">Variant:</span>
+            {(["odometer", "led", "lcd", "classic"] as const).map((v) => (
+              <button
+                key={v}
+                type="button"
+                onClick={() => state.setVisitorCounterVariant(v)}
+                className={`px-2 py-0.5 uppercase ${
+                  state.visitorCounterVariant === v ? "bevel-inset bg-primary text-primary-foreground font-bold" : "bevel-raised"
+                }`}
+              >
+                {v}
+              </button>
+            ))}
+
+            <span className="text-muted-foreground ml-2">Size:</span>
+            {(["sm", "md", "lg"] as const).map((s) => (
+              <button
+                key={s}
+                type="button"
+                onClick={() => state.setVisitorCounterSize(s)}
+                className={`px-2 py-0.5 uppercase ${
+                  state.visitorCounterSize === s ? "bevel-inset bg-primary text-primary-foreground font-bold" : "bevel-raised"
+                }`}
+              >
+                {s}
+              </button>
+            ))}
+          </div>
+
+          <span className="text-[10px] text-muted-foreground text-center">
+            Vintage odometer and digital display hit counters with zero-padding and live incrementing.
+          </span>
+        </div>
+      );
+
+    case "under-construction":
+      return (
+        <div className="flex flex-col items-center gap-5 w-full max-w-lg">
+          <UnderConstruction
+            variant={state.underConstVariant}
+            className="w-full"
+          >
+            <div className="flex flex-col items-center text-center space-y-2">
+              <UnderConstructionIcon size="lg" />
+              <UnderConstructionTitle>CYBERSPHERE UNDER HEAVY MAINTENANCE</UnderConstructionTitle>
+              <UnderConstructionMessage>
+                Pardon our digital dust! Webmasters are currently soldering new RJ-45 patch cables into the mainframe.
+              </UnderConstructionMessage>
+              <UnderConstructionEstimatedDate date="NOVEMBER 15, 1996" />
+              <UnderConstructionAction>
+                <Button
+                  size="sm"
+                  variant="primary"
+                  onClick={() => state.setUnderConstPinged(true)}
+                >
+                  {state.underConstPinged ? "✓ Ping Received by SysOp" : "Ping SysOp Workstation"}
+                </Button>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => state.setUnderConstPinged(false)}
+                >
+                  Reset Status
+                </Button>
+              </UnderConstructionAction>
+            </div>
+          </UnderConstruction>
+
+          <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-border w-full justify-center text-[11px]">
+            <span className="text-muted-foreground">Variant:</span>
+            {(["stripes", "bevel", "simple", "compact"] as const).map((v) => (
+              <button
+                key={v}
+                type="button"
+                onClick={() => state.setUnderConstVariant(v)}
+                className={`px-2 py-0.5 uppercase ${
+                  state.underConstVariant === v ? "bevel-inset bg-primary text-primary-foreground font-bold" : "bevel-raised"
+                }`}
+              >
+                {v}
+              </button>
+            ))}
+          </div>
+
+          <span className="text-[10px] text-muted-foreground text-center">
+            Iconic 1990s site maintenance indicator with hazard diagonal stripes, target dates, and call-to-action controls.
+          </span>
+        </div>
+      );
+
+    case "marquee":
+      return (
+        <div className="flex flex-col items-center gap-4 w-full max-w-lg">
+          <div className="w-full space-y-3">
+            <div className="text-[10px] text-muted-foreground font-mono uppercase tracking-wider flex items-center justify-between">
+              <span>LIVE BBS TICKER WIRE</span>
+              <span>STATUS: TRANSMITTING</span>
+            </div>
+
+            <Marquee
+              direction={state.marqueeDirection}
+              speed={state.marqueeSpeed}
+              pauseOnHover={state.marqueePause}
+              className="py-2.5 text-xs font-mono font-bold"
+            >
+              <span className="text-primary">⚡ BREAKING NEWS:</span>
+              <span>DITHERWEB V2.0 BETA DOWNLOAD AVAILABLE ON FTP PORT 21</span>
+              <span className="text-amber-500">★ 56K V.90 MODEM POOL ONLINE ★</span>
+              <span>NEW GUESTBOOK ENTRIES APPROVED BY SYSOP</span>
+              <span className="text-success">READY FOR NETSCAPE 3.0 GOLD</span>
+            </Marquee>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-border w-full justify-center text-[11px]">
+            <span className="text-muted-foreground">Direction:</span>
+            {(["left", "right"] as const).map((d) => (
+              <button
+                key={d}
+                type="button"
+                onClick={() => state.setMarqueeDirection(d)}
+                className={`px-2 py-0.5 uppercase ${
+                  state.marqueeDirection === d ? "bevel-inset bg-primary text-primary-foreground font-bold" : "bevel-raised"
+                }`}
+              >
+                {d}
+              </button>
+            ))}
+
+            <span className="text-muted-foreground ml-2">Speed:</span>
+            {(["slow", "normal", "fast"] as const).map((s) => (
+              <button
+                key={s}
+                type="button"
+                onClick={() => state.setMarqueeSpeed(s)}
+                className={`px-2 py-0.5 uppercase ${
+                  state.marqueeSpeed === s ? "bevel-inset bg-primary text-primary-foreground font-bold" : "bevel-raised"
+                }`}
+              >
+                {s}
+              </button>
+            ))}
+
+            <Button
+              size="sm"
+              variant={state.marqueePause ? "primary" : "outline"}
+              onClick={() => state.setMarqueePause(!state.marqueePause)}
+              className="ml-2"
+            >
+              {state.marqueePause ? "Pause on Hover: ON" : "Pause on Hover: OFF"}
+            </Button>
+          </div>
+
+          <span className="text-[10px] text-muted-foreground text-center">
+            Accessible CSS animation ticker replacing deprecated HTML &lt;marquee&gt; with pause-on-hover capability.
+          </span>
+        </div>
+      );
+
+    case "blink":
+      return (
+        <div className="flex flex-col items-center gap-5 w-full max-w-md">
+          <div className="bevel-raised bg-surface p-5 flex flex-col items-center gap-4 w-full text-center">
+            <div className="border border-border/80 bg-background/50 p-4 w-full space-y-2">
+              <div className="text-[10px] text-muted-foreground font-mono uppercase tracking-wider">
+                SYSTEM BULLETIN HEADER
+              </div>
+
+              <div className="text-sm font-bold font-mono">
+                🚨{" "}
+                <Blink
+                  enabled={state.blinkEnabled}
+                  speed={state.blinkSpeed}
+                  className="text-destructive font-black underline decoration-wavy"
+                >
+                  ATTENTION: SYSTEM BACKUP IN PROGRESS
+                </Blink>{" "}
+                🚨
+              </div>
+
+              <div className="text-xs text-muted-foreground">
+                All dial-up sessions will be suspended in 15 minutes for tape archive.
+              </div>
+            </div>
+
+            {/* Inline Badges Showcase */}
+            <div className="flex flex-wrap items-center justify-center gap-3 text-xs font-mono">
+              <span className="bevel-inset bg-amber-400 text-black px-2 py-0.5 font-bold">
+                <Blink enabled={state.blinkEnabled} speed={state.blinkSpeed}>
+                  ★ NEW ★
+                </Blink>
+              </span>
+              <span className="bevel-inset bg-primary text-primary-foreground px-2 py-0.5 font-bold">
+                <Blink enabled={state.blinkEnabled} speed={state.blinkSpeed}>
+                  HOT DOWNLOAD
+                </Blink>
+              </span>
+              <span className="bevel-inset bg-destructive text-destructive-foreground px-2 py-0.5 font-bold">
+                <Blink enabled={state.blinkEnabled} speed={state.blinkSpeed}>
+                  SALE!
+                </Blink>
+              </span>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-border w-full justify-center text-[11px]">
+            <Button
+              size="sm"
+              variant={state.blinkEnabled ? "primary" : "outline"}
+              onClick={() => state.setBlinkEnabled(!state.blinkEnabled)}
+            >
+              {state.blinkEnabled ? "Blink Animation: ON" : "Blink Animation: OFF"}
+            </Button>
+
+            <span className="text-muted-foreground ml-2">Speed:</span>
+            {(["slow", "normal", "fast"] as const).map((s) => (
+              <button
+                key={s}
+                type="button"
+                onClick={() => state.setBlinkSpeed(s)}
+                className={`px-2 py-0.5 uppercase ${
+                  state.blinkSpeed === s ? "bevel-inset bg-primary text-primary-foreground font-bold" : "bevel-raised"
+                }`}
+              >
+                {s}
+              </button>
+            ))}
+          </div>
+
+          <span className="text-[10px] text-muted-foreground text-center">
+            Accessible retro text emphasis replicating nostalgic 90s &lt;blink&gt; without browser deprecation errors.
+          </span>
+        </div>
+      );
+
+    case "button-88x31": {
+      const sampleBadges = [
+        { id: "netscape", label: "NETSCAPE", value: "NOW 4.0" },
+        { id: "notepad", label: "MADE WITH", value: "NOTEPAD" },
+        { id: "vga", label: "BEST VIEWED", value: "800x600" },
+        { id: "linux", label: "HOSTED ON", value: "LINUX" },
+        { id: "html4", label: "HTML 4.01", value: "VALID" },
+        { id: "anybrowser", label: "VIEWABLE IN", value: "ANY BROWSER" },
+      ];
+
+      return (
+        <div className="flex flex-col items-center gap-4 w-full max-w-md">
+          <div className="bevel-raised bg-surface p-5 flex flex-col items-center gap-4 w-full">
+            <div className="text-[10px] text-muted-foreground font-mono uppercase tracking-wider">
+              88×31 MICRO-BUTTON BADGE EXHIBIT
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 justify-items-center">
+              {sampleBadges.map((b) => (
+                <div
+                  key={b.id}
+                  onClick={() => state.setButton88x31Clicked(`${b.label}: ${b.value}`)}
+                  className="cursor-pointer"
+                >
+                  <Button88x31
+                    label={b.label}
+                    value={b.value}
+                    variant={state.button88x31Variant}
+                    alt={`${b.label} ${b.value}`}
+                  />
+                </div>
+              ))}
+            </div>
+
+            <div className="bevel-inset bg-background p-2 w-full text-center text-[10px] font-mono">
+              <span className="text-muted-foreground">CLICKED BADGE: </span>
+              <span className="font-bold text-foreground">{state.button88x31Clicked}</span>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-border w-full justify-center text-[11px]">
+            <span className="text-muted-foreground">Variant:</span>
+            {(["bevel", "outline", "flat"] as const).map((v) => (
+              <button
+                key={v}
+                type="button"
+                onClick={() => state.setButton88x31Variant(v)}
+                className={`px-2 py-0.5 uppercase ${
+                  state.button88x31Variant === v ? "bevel-inset bg-primary text-primary-foreground font-bold" : "bevel-raised"
+                }`}
+              >
+                {v}
+              </button>
+            ))}
+          </div>
+
+          <span className="text-[10px] text-muted-foreground text-center">
+            Authentic 88×31 pixel badges with tactile bevels and split label-value styling used in early-web footers.
+          </span>
+        </div>
+      );
+    }
+
+    case "retro-banner":
+      return (
+        <div className="flex flex-col items-center gap-5 w-full max-w-xl">
+          <div className="w-full flex justify-center">
+            <RetroBanner
+              format={state.retroBannerFormat}
+              variant={state.retroBannerVariant}
+            >
+              <div className="flex items-center gap-2 truncate">
+                <span className="text-base" aria-hidden="true">🌐</span>
+                <div className="truncate">
+                  <RetroBannerTitle>SURF THE INFORMATION SUPERHIGHWAY</RetroBannerTitle>
+                  <RetroBannerSubtitle>Join the premier dithered cyberspace web community today!</RetroBannerSubtitle>
+                </div>
+              </div>
+              <RetroBannerAction>
+                <Button
+                  size="sm"
+                  variant="primary"
+                  onClick={() => state.setRetroBannerClicks((c) => c + 1)}
+                  className="text-[10px] font-bold uppercase py-0.5 px-2"
+                >
+                  CLICK HERE! ({state.retroBannerClicks})
+                </Button>
+              </RetroBannerAction>
+            </RetroBanner>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-border w-full justify-center text-[11px]">
+            <span className="text-muted-foreground">Format:</span>
+            {(["standard", "compact", "full"] as const).map((f) => (
+              <button
+                key={f}
+                type="button"
+                onClick={() => state.setRetroBannerFormat(f)}
+                className={`px-2 py-0.5 uppercase ${
+                  state.retroBannerFormat === f ? "bevel-inset bg-primary text-primary-foreground font-bold" : "bevel-raised"
+                }`}
+              >
+                {f}
+              </button>
+            ))}
+
+            <span className="text-muted-foreground ml-2">Variant:</span>
+            {(["dither", "bevel", "outline", "solid"] as const).map((v) => (
+              <button
+                key={v}
+                type="button"
+                onClick={() => state.setRetroBannerVariant(v)}
+                className={`px-2 py-0.5 uppercase ${
+                  state.retroBannerVariant === v ? "bevel-inset bg-primary text-primary-foreground font-bold" : "bevel-raised"
+                }`}
+              >
+                {v}
+              </button>
+            ))}
+          </div>
+
+          <span className="text-[10px] text-muted-foreground text-center">
+            Classic 468×60 horizontal web banner advertisement format with dithered backgrounds and tactile actions.
+          </span>
+        </div>
+      );
+
+    case "pixel-image":
+      return (
+        <div className="flex flex-col items-center gap-5 w-full max-w-md">
+          <div className="bevel-raised bg-surface p-6 flex flex-col items-center gap-4 w-full">
+            <PixelImage
+              src="/icon-dark.png"
+              alt="Ditherweb System Icon"
+              width={64}
+              height={64}
+              pixelRatio={state.pixelImageRatio}
+              frame={state.pixelImageFrame}
+              caption="SYSTEM_ICON.BMP (Nearest Neighbor)"
+            />
+
+            <div className="text-[10px] font-mono text-muted-foreground text-center">
+              RENDERING: <span className="font-bold text-foreground">image-rendering: pixelated</span> (Scale: {state.pixelImageRatio}x)
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-border w-full justify-center text-[11px]">
+            <span className="text-muted-foreground">Frame:</span>
+            {(["bevel", "inset", "dither", "groove", "simple", "none"] as const).map((f) => (
+              <button
+                key={f}
+                type="button"
+                onClick={() => state.setPixelImageFrame(f)}
+                className={`px-2 py-0.5 uppercase ${
+                  state.pixelImageFrame === f ? "bevel-inset bg-primary text-primary-foreground font-bold" : "bevel-raised"
+                }`}
+              >
+                {f}
+              </button>
+            ))}
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2 w-full justify-center text-[11px]">
+            <span className="text-muted-foreground">Scale Ratio:</span>
+            {([1, 2, 3, 4] as const).map((r) => (
+              <button
+                key={r}
+                type="button"
+                onClick={() => state.setPixelImageRatio(r)}
+                className={`px-2 py-0.5 uppercase ${
+                  state.pixelImageRatio === r ? "bevel-inset bg-primary text-primary-foreground font-bold" : "bevel-raised"
+                }`}
+              >
+                {r}x
+              </button>
+            ))}
+          </div>
+
+          <span className="text-[10px] text-muted-foreground text-center">
+            Crisp nearest-neighbor bitmap display wrapper with vintage frames and caption figures.
+          </span>
+        </div>
+      );
+
+    case "web-directory":
+      return (
+        <div className="flex flex-col items-center gap-4 w-full max-w-2xl">
+          <WebDirectory className="w-full bevel-raised bg-surface p-5 space-y-4">
+            <WebDirectoryHeader>
+              <div className="flex items-center justify-between">
+                <span className="font-bold text-sm uppercase text-foreground">
+                  🌐 YAHOO! STYLE 1996 DIRECTORY INDEX
+                </span>
+                <span className="text-[10px] text-muted-foreground font-mono">
+                  ENTRIES: 12 {"//"} ROOT
+                </span>
+              </div>
+              <p className="text-[11px] text-muted-foreground">
+                Categorized cyberspace index for hardware, DOS software, and telecommunications.
+              </p>
+            </WebDirectoryHeader>
+
+            <WebDirectoryGrid cols={state.webDirectoryCols}>
+              <WebDirectoryCategory>
+                <WebDirectoryTitle count={3} icon="💾">
+                  Hardware &amp; Sound
+                </WebDirectoryTitle>
+                <WebDirectoryList>
+                  <WebDirectoryItem>
+                    <WebDirectoryLink
+                      isNew
+                      onClick={(e) => {
+                        e.preventDefault();
+                        state.setWebDirectoryLastClicked("Sound Blaster 16 DSP");
+                      }}
+                    >
+                      Sound Blaster 16 DSP
+                    </WebDirectoryLink>
+                    <WebDirectoryDescription>
+                      16-bit stereo sampling, OPL3 FM synthesis, and MIDI MPU-401.
+                    </WebDirectoryDescription>
+                  </WebDirectoryItem>
+                  <WebDirectoryItem>
+                    <WebDirectoryLink
+                      onClick={(e) => {
+                        e.preventDefault();
+                        state.setWebDirectoryLastClicked("Trinitron 17\" CRT");
+                      }}
+                    >
+                      Trinitron 17&quot; Monitor
+                    </WebDirectoryLink>
+                    <WebDirectoryDescription>
+                      Aperture grille display supporting 1024x768 at 85Hz.
+                    </WebDirectoryDescription>
+                  </WebDirectoryItem>
+                </WebDirectoryList>
+                <WebDirectorySubcategories>
+                  <span>Subcategories:</span>
+                  <a
+                    href="#scsi"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      state.setWebDirectoryLastClicked("SCSI Controllers");
+                    }}
+                    className="underline text-primary hover:text-accent"
+                  >
+                    SCSI (4)
+                  </a>
+                  <a
+                    href="#cdrom"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      state.setWebDirectoryLastClicked("CD-ROM 4X Drives");
+                    }}
+                    className="underline text-primary hover:text-accent"
+                  >
+                    CD-ROM (6)
+                  </a>
+                </WebDirectorySubcategories>
+              </WebDirectoryCategory>
+
+              <WebDirectoryCategory>
+                <WebDirectoryTitle count={4} icon="💻">
+                  DOS &amp; Utilities
+                </WebDirectoryTitle>
+                <WebDirectoryList>
+                  <WebDirectoryItem>
+                    <WebDirectoryLink
+                      isNew
+                      onClick={(e) => {
+                        e.preventDefault();
+                        state.setWebDirectoryLastClicked("Norton Commander 5.0");
+                      }}
+                    >
+                      Norton Commander
+                    </WebDirectoryLink>
+                    <WebDirectoryDescription>
+                      Dual-pane ortholinear file management for MS-DOS workstations.
+                    </WebDirectoryDescription>
+                  </WebDirectoryItem>
+                  <WebDirectoryItem>
+                    <WebDirectoryLink
+                      onClick={(e) => {
+                        e.preventDefault();
+                        state.setWebDirectoryLastClicked("PKUNZIP Archive Extractor");
+                      }}
+                    >
+                      PKUNZIP 2.04g
+                    </WebDirectoryLink>
+                    <WebDirectoryDescription>
+                      Standard file compression utility for BBS downloads.
+                    </WebDirectoryDescription>
+                  </WebDirectoryItem>
+                </WebDirectoryList>
+                <WebDirectorySubcategories>
+                  <span>Subcategories:</span>
+                  <a
+                    href="#pascal"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      state.setWebDirectoryLastClicked("Turbo Pascal 7.0");
+                    }}
+                    className="underline text-primary hover:text-accent"
+                  >
+                    Pascal (2)
+                  </a>
+                  <a
+                    href="#assembler"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      state.setWebDirectoryLastClicked("TASM Assembler");
+                    }}
+                    className="underline text-primary hover:text-accent"
+                  >
+                    Assembly (8)
+                  </a>
+                </WebDirectorySubcategories>
+              </WebDirectoryCategory>
+
+              <WebDirectoryCategory>
+                <WebDirectoryTitle count={5} icon="📡">
+                  Telecommunications
+                </WebDirectoryTitle>
+                <WebDirectoryList>
+                  <WebDirectoryItem>
+                    <WebDirectoryLink
+                      isNew
+                      onClick={(e) => {
+                        e.preventDefault();
+                        state.setWebDirectoryLastClicked("FidoNet Zone 1 Gateway");
+                      }}
+                    >
+                      FidoNet Zone 1
+                    </WebDirectoryLink>
+                    <WebDirectoryDescription>
+                      Worldwide store-and-forward bulletin board network.
+                    </WebDirectoryDescription>
+                  </WebDirectoryItem>
+                  <WebDirectoryItem>
+                    <WebDirectoryLink
+                      onClick={(e) => {
+                        e.preventDefault();
+                        state.setWebDirectoryLastClicked("IRC EFnet #cyber");
+                      }}
+                    >
+                      IRC EFnet #cyber
+                    </WebDirectoryLink>
+                    <WebDirectoryDescription>
+                      Global real-time chat protocol and multiplayer client networks.
+                    </WebDirectoryDescription>
+                  </WebDirectoryItem>
+                </WebDirectoryList>
+                <WebDirectorySubcategories>
+                  <span>Subcategories:</span>
+                  <a
+                    href="#usenet"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      state.setWebDirectoryLastClicked("Usenet comp.sys");
+                    }}
+                    className="underline text-primary hover:text-accent"
+                  >
+                    Usenet (14)
+                  </a>
+                </WebDirectorySubcategories>
+              </WebDirectoryCategory>
+            </WebDirectoryGrid>
+
+            <div className="bevel-inset bg-background p-2 text-center text-xs font-mono">
+              <span className="text-muted-foreground">ACTIVE LINK TARGET: </span>
+              <span className="font-bold text-foreground">{state.webDirectoryLastClicked}</span>
+            </div>
+          </WebDirectory>
+
+          <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-border w-full justify-center text-[11px]">
+            <span className="text-muted-foreground">Grid Columns:</span>
+            {([1, 2, 3] as const).map((c) => (
+              <button
+                key={c}
+                type="button"
+                onClick={() => state.setWebDirectoryCols(c)}
+                className={`px-2 py-0.5 uppercase ${
+                  state.webDirectoryCols === c ? "bevel-inset bg-primary text-primary-foreground font-bold" : "bevel-raised"
+                }`}
+              >
+                {c} Col{c > 1 ? "s" : ""}
+              </button>
+            ))}
+          </div>
+
+          <span className="text-[10px] text-muted-foreground text-center">
+            Early web portal categorized link directory in the classic Yahoo! / DMOZ hierarchy format.
           </span>
         </div>
       );
