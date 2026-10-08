@@ -75,7 +75,7 @@ const INITIAL_TASKS: TaskItem[] = [
   },
   {
     id: "TSK-112",
-    title: "Calibrate 96-component responsive layout",
+    title: "Calibrate 96-component documentation routes",
     priority: "high",
     assignee: { name: "Rin Nakata", initials: "RN" },
     status: "in-progress",
@@ -747,7 +747,7 @@ export function DashboardExampleClient() {
                         </div>
                         <div className="flex justify-between">
                           <span className="text-muted-foreground">UI Primitives:</span>
-                          <span className="font-bold text-success">96 Verified</span>
+                          <span className="font-bold text-success">97 Verified</span>
                         </div>
                       </Well>
                     </div>

@@ -274,12 +274,28 @@ export function ExamplesLandingClient() {
               </CardContent>
 
               <CardFooter className="border-t border-border pt-3 flex items-center justify-between">
-                <span className="font-mono text-[11px] text-muted-foreground italic">
-                  In Design Phase
-                </span>
-                <span className="bevel-inset px-2 py-0.5 font-mono text-[10px] text-muted-foreground uppercase select-none">
-                  Part B Roadmap
-                </span>
+                {example.status === "available" ? (
+                  <>
+                    <Link
+                      href={example.targetHref}
+                      className="bevel-raised active:bevel-pressed bg-primary text-primary-foreground px-3 py-1 font-mono text-xs font-bold uppercase select-none inline-flex items-center gap-1"
+                    >
+                      Launch {example.title.split(" ")[0]} Example →
+                    </Link>
+                    <span className="font-mono text-[10px] text-success font-bold uppercase">
+                      ● READY
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <span className="font-mono text-[11px] text-muted-foreground italic">
+                      In Design Phase
+                    </span>
+                    <span className="bevel-inset px-2 py-0.5 font-mono text-[10px] text-muted-foreground uppercase select-none">
+                      Coming Next
+                    </span>
+                  </>
+                )}
               </CardFooter>
             </Card>
           ))}
@@ -293,7 +309,7 @@ export function ExamplesLandingClient() {
         </h3>
         <p className="font-mono text-xs text-muted-foreground leading-relaxed max-w-3xl">
           Unlike generic design systems that require endless custom CSS or one-off component abstractions,
-          every screen in Ditherweb is built by compositing the existing 96 primitives.
+          every screen in Ditherweb is built by compositing the existing 97 production primitives.
           We test and verify real application workflows to guarantee zero visual leakage, robust keyboard focus,
           and rock-solid accessibility.
         </p>
@@ -302,7 +318,7 @@ export function ExamplesLandingClient() {
             href="/components"
             className="bevel-raised active:bevel-pressed px-3 py-1.5 font-mono text-xs font-bold text-foreground uppercase"
           >
-            Explore 96 Components →
+            Explore 96 Documented Components →
           </Link>
           <Link
             href="/docs"

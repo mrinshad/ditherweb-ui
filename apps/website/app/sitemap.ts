@@ -72,6 +72,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 0.8,
     },
+    {
+      url: `${baseUrl}/examples/admin`,
+      lastModified,
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
   ];
 
   const componentRoutes: MetadataRoute.Sitemap = Object.keys(COMPONENT_DOCS_REGISTRY).map(
