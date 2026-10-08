@@ -1182,6 +1182,127 @@ const treeData: TreeNodeData[] = [
   onChange={(grid) => console.log("Grid updated", grid)}
 />`,
   },
+  "demo-dither": {
+    badge: "@ditherweb/ui/dither",
+    code: `import { Dither } from "@ditherweb/ui";
+
+// Bayer matrix procedural overlay
+<Dither pattern="bayer" intensity="medium">
+  <div className="p-6 bg-surface-sunken border border-border">
+    Textured content with Bayer 4x4 dither overlay
+  </div>
+</Dither>
+
+// Fine dither backdrop
+<Dither pattern="fine" mode="backdrop" className="p-6">
+  Backdrop pattern mode
+</Dither>`,
+  },
+  "demo-halftone": {
+    badge: "@ditherweb/ui/halftone",
+    code: `import { Halftone } from "@ditherweb/ui";
+
+// Dot-matrix screen overlay
+<Halftone size="md" density="medium" opacity={0.4}>
+  <div className="p-6 bg-surface border border-border">
+    Dot-matrix halftone screen overlay
+  </div>
+</Halftone>`,
+  },
+  "demo-pixelate": {
+    badge: "@ditherweb/ui/pixelate",
+    code: `import { Pixelate } from "@ditherweb/ui";
+
+// Nearest-neighbor crisp pixel scaling
+<Pixelate rendering="pixelated" crispText scale={1}>
+  <div className="p-4 border border-border">
+    Crisp nearest-neighbor typography and graphics
+  </div>
+</Pixelate>`,
+  },
+  "demo-noise": {
+    badge: "@ditherweb/ui/noise",
+    code: `import { Noise } from "@ditherweb/ui";
+
+// Film grain texture with opt-in micro jitter
+<Noise intensity="medium" animated={false}>
+  <div className="p-6 bg-surface border border-border">
+    Micro-grain procedural surface texture
+  </div>
+</Noise>`,
+  },
+  "demo-image-frame": {
+    badge: "@ditherweb/ui/image-frame",
+    code: `import { ImageFrame } from "@ditherweb/ui";
+
+<ImageFrame
+  variant="bitmap"
+  ditherOverlay="bayer"
+  pixelated
+  caption="FIG 1.0 — High-contrast 1-bit scan specimen"
+>
+  <img src="/images/hero-preview.png" alt="Specimen" className="w-full h-40 object-cover" />
+</ImageFrame>`,
+  },
+  "demo-scanline": {
+    badge: "@ditherweb/ui/scanline",
+    code: `import { Scanline } from "@ditherweb/ui";
+
+// CRT scanline overlay with fine stripes
+<Scanline density="fine" orientation="horizontal" opacity={0.3}>
+  <div className="p-6 bg-black text-green-400 font-mono">
+    Cathode ray tube scanline simulation
+  </div>
+</Scanline>`,
+  },
+  "demo-crt": {
+    badge: "@ditherweb/ui/crt",
+    code: `import { CRT } from "@ditherweb/ui";
+
+// Complete phosphor monitor enclosure
+<CRT
+  phosphor="green"
+  curvature="subtle"
+  vignette
+  scanlines="medium"
+  flicker={false}
+>
+  <div>&gt; SYSTEM DIAGNOSTIC: ALL PRINTERS ONLINE</div>
+  <div>&gt; READY.</div>
+</CRT>`,
+  },
+  "demo-pixel-text": {
+    badge: "@ditherweb/ui/pixel-text",
+    code: `import { PixelText } from "@ditherweb/ui";
+
+<PixelText as="h2" size="2xl" shadow="stepped" crisp glow>
+  DITHERWEB v1.0
+</PixelText>
+<PixelText as="p" size="base" shadow="pixel">
+  Stepped retro drop shadow typography
+</PixelText>`,
+  },
+  "demo-typewriter": {
+    badge: "@ditherweb/ui/typewriter",
+    code: `import { Typewriter } from "@ditherweb/ui";
+
+// Screen-reader accessible character reveal
+<Typewriter
+  text="Connecting to Ditherweb host gateway..."
+  speed="medium"
+  cursor
+  loop
+/>`,
+  },
+  "demo-blink-cursor": {
+    badge: "@ditherweb/ui/blink-cursor",
+    code: `import { BlinkCursor } from "@ditherweb/ui";
+
+<span>Command prompt</span>
+<BlinkCursor variant="block" blink />
+<BlinkCursor variant="underline" blink />
+<BlinkCursor variant="line" blink />`,
+  },
 };
 
 

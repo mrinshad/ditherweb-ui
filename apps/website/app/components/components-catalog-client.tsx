@@ -259,9 +259,24 @@ import {
   PixelArt,
   BitmapCanvas,
   DEFAULT_RETRO_PALETTE,
+  Dither,
+  type DitherPattern,
+  Halftone,
+  type HalftoneDensity,
+  Pixelate,
+  Noise,
+  ImageFrame,
+  type ImageFrameVariant,
+  Scanline,
+  type ScanlineDensity,
+  CRT,
+  type CRTPhosphor,
+  PixelText,
+  Typewriter,
+  BlinkCursor,
 } from "@ditherweb/ui";
 
-type Category = "all" | "desktop" | "classic" | "navigation" | "overlays" | "surfaces" | "forms" | "typography" | "layout" | "input" | "feedback";
+type Category = "all" | "effects" | "desktop" | "classic" | "navigation" | "overlays" | "surfaces" | "forms" | "typography" | "layout" | "input" | "feedback";
 
 type ProcessItem = {
   id: string;
@@ -547,6 +562,25 @@ export default function ComponentsPage() {
     ["#000000", "#000000", "#008080", "#008080", "#008080", "#008080", "#000000", "#000000"],
   ]);
 
+  // Phase 6: Advanced Effects & Polish states
+  const [ditherPattern, setDitherPattern] = useState<DitherPattern>("bayer");
+  const [ditherIntensity, setDitherIntensity] = useState<"subtle" | "medium" | "strong">("medium");
+  const [halftoneDensity, setHalftoneDensity] = useState<HalftoneDensity>("medium");
+  const [halftoneSize, setHalftoneSize] = useState<"sm" | "md" | "lg">("md");
+  const [noiseAnimated, setNoiseAnimated] = useState(false);
+  const [noiseIntensity, setNoiseIntensity] = useState<"subtle" | "medium" | "strong">("medium");
+  const [imageFrameVariant, setImageFrameVariant] = useState<ImageFrameVariant>("bitmap");
+  const [scanlineDensity, setScanlineDensity] = useState<ScanlineDensity>("fine");
+  const [scanlineOrientation, setScanlineOrientation] = useState<"horizontal" | "vertical">("horizontal");
+  const [scanlineAnimated, setScanlineAnimated] = useState(false);
+  const [crtPhosphor, setCrtPhosphor] = useState<CRTPhosphor>("green");
+  const [crtFlicker, setCrtFlicker] = useState(false);
+  const [crtCurvature, setCrtCurvature] = useState<"none" | "subtle" | "medium">("subtle");
+  const [typewriterSpeed, setTypewriterSpeed] = useState<"slow" | "medium" | "fast">("medium");
+  const [typewriterReplayKey, setTypewriterReplayKey] = useState(0);
+  const [cursorVariant, setCursorVariant] = useState<"block" | "line" | "underline">("block");
+  const [cursorBlink, setCursorBlink] = useState(true);
+
   useEffect(() => {
     if (!backdropPreviewVariant) return;
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -564,16 +598,16 @@ export default function ComponentsPage() {
       {/* Page Header */}
       <div className="space-y-4">
         <div className="flex items-center gap-2">
-          <Badge variant="primary">Desktop &amp; Pixel</Badge>
+          <Badge variant="primary">Effects &amp; Polish</Badge>
           <span className="font-mono text-xs text-muted-foreground">
-            86 Production Primitives
+            96 Production Primitives
           </span>
         </div>
         <h1 className="font-mono text-3xl font-bold uppercase tracking-tight text-foreground sm:text-4xl">
           Ditherweb Component Catalog
         </h1>
         <p className="font-mono text-sm text-muted-foreground max-w-2xl leading-relaxed">
-          Explore Ditherweb&apos;s complete retro React UI component library. Every primitive is built with native accessibility semantics, typed props, and calibrated retro CSS tokens. Inspect interactive states across desktop windows, taskbars, menus, context actions, terminals, pixel art, classic web elements, overlays, and forms.
+          Explore Ditherweb&apos;s complete retro React UI component library. Every primitive is built with native accessibility semantics, typed props, and calibrated retro CSS tokens. Inspect interactive states across visual dithering, halftone screens, pixel scaling, noise textures, image frames, CRT monitors, scanlines, pixel typography, and typewriter reveals.
         </p>
 
         {/* Filter Tabs */}
@@ -585,7 +619,16 @@ export default function ComponentsPage() {
               category === "all" ? "bevel-inset bg-muted text-primary" : "bevel-raised"
             }`}
           >
-            All Primitives (86)
+            All Primitives (96)
+          </button>
+          <button
+            type="button"
+            onClick={() => setCategory("effects")}
+            className={`px-3 py-1 font-bold ${
+              category === "effects" ? "bevel-inset bg-muted text-primary" : "bevel-raised"
+            }`}
+          >
+            Effects &amp; Polish (10)
           </button>
           <button
             type="button"
@@ -4962,7 +5005,7 @@ export default function ComponentsPage() {
                   <WindowStatusBar>
                     <WindowStatusItem sunken>READY</WindowStatusItem>
                     <WindowStatusItem sunken>COM3: OK</WindowStatusItem>
-                    <WindowStatusItem sunken>86 PRIMITIVES</WindowStatusItem>
+                    <WindowStatusItem sunken>96 PRIMITIVES</WindowStatusItem>
                   </WindowStatusBar>
                 </Window>
               </div>
@@ -5457,10 +5500,10 @@ export default function ComponentsPage() {
                   <TerminalBody>
                     <TerminalLine>
                       <TerminalPrompt>root@ditherweb:~$</TerminalPrompt>
-                      <TerminalCommand>npx @ditherweb/ui --verify-phase5</TerminalCommand>
+                      <TerminalCommand>npx @ditherweb/ui --verify-foundation</TerminalCommand>
                     </TerminalLine>
                     <TerminalOutput>
-                      [INIT] Loading 86 production primitives...
+                      [INIT] Loading 96 production primitives...
                       [CORE] 10 Core Foundational Primitives Verified
                       [TYPO] 8 Typography Primitives Verified
                       [LAYT] 8 Layout Primitives Verified
@@ -5470,7 +5513,8 @@ export default function ComponentsPage() {
                       [NAVG] 10 Navigation &amp; Structured Data Verified
                       [CLSC] 10 Classic Web Historical Primitives Verified
                       [DSKT] 10 Desktop &amp; Pixel Primitives Verified
-                      [STATUS] All 86 primitives operational with 0 runtime dependencies.
+                      [FXPL] 10 Advanced Effects &amp; Polish Primitives Verified
+                      [STATUS] All 96 primitives operational with 0 runtime dependencies.
                     </TerminalOutput>
                     <TerminalLine>
                       <TerminalPrompt>root@ditherweb:~$</TerminalPrompt>
@@ -5646,6 +5690,648 @@ export default function ComponentsPage() {
               </div>
 
               <ComponentCodePanel sectionId="demo-bitmap-canvas" />
+            </section>
+          </>
+        )}
+
+        {/* ==================================================================== */}
+        {/* PHASE 6: ADVANCED EFFECTS & POLISH (10)                              */}
+        {/* ==================================================================== */}
+        {(category === "all" || category === "effects") && (
+          <>
+            {/* SECTION 1: DITHER */}
+            <section id="dither" className="space-y-4 pt-6 border-t border-border">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <span className="bevel-raised inline-flex h-6 w-6 items-center justify-center bg-primary text-xs font-bold text-primary-foreground">
+                    01
+                  </span>
+                  <h2 className="font-mono text-xl font-bold uppercase tracking-tight text-foreground">
+                    Dither
+                  </h2>
+                </div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <Badge variant="outline" className="font-mono text-[10px]">
+                    @ditherweb/ui/dither
+                  </Badge>
+                  <Badge variant="primary" className="font-mono text-[10px]">
+                    Phase 6 Primitive
+                  </Badge>
+                </div>
+              </div>
+
+              <p className="font-mono text-xs text-muted-foreground max-w-3xl leading-relaxed">
+                Visual wrapper primitive applying procedural Bayer 4x4 matrix, checker, fine, dense, or noise dither patterns over arbitrary elements or backdrops without runtime image processing.
+              </p>
+
+              <div className="flex flex-wrap items-center gap-2 pb-2">
+                <span className="text-xs font-bold font-mono">Pattern:</span>
+                {(["bayer", "checker", "fine", "dense", "noise"] as DitherPattern[]).map((pat) => (
+                  <Button
+                    key={pat}
+                    size="sm"
+                    variant={ditherPattern === pat ? "primary" : "outline"}
+                    onClick={() => setDitherPattern(pat)}
+                  >
+                    {pat.toUpperCase()}
+                  </Button>
+                ))}
+                <span className="text-xs font-bold font-mono ml-3">Intensity:</span>
+                {(["subtle", "medium", "strong"] as const).map((intensity) => (
+                  <Button
+                    key={intensity}
+                    size="sm"
+                    variant={ditherIntensity === intensity ? "primary" : "outline"}
+                    onClick={() => setDitherIntensity(intensity)}
+                  >
+                    {intensity.toUpperCase()}
+                  </Button>
+                ))}
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="p-4 bevel-inset bg-muted/20 flex flex-col items-center justify-center">
+                  <div className="w-full text-xs font-mono font-bold mb-2">Overlay Mode:</div>
+                  <Dither
+                    pattern={ditherPattern}
+                    intensity={ditherIntensity}
+                    className="w-full h-36 bevel-raised p-4 bg-gradient-to-br from-primary/30 to-surface flex flex-col justify-between"
+                  >
+                    <div className="font-mono text-xs font-bold uppercase">
+                      ACTIVE DITHER: {ditherPattern.toUpperCase()} ({ditherIntensity})
+                    </div>
+                    <div className="font-mono text-[11px] text-muted-foreground">
+                      Procedural SVG pattern tile overlay with pointer-events-none layer
+                    </div>
+                  </Dither>
+                </div>
+
+                <div className="p-4 bevel-inset bg-muted/20 flex flex-col items-center justify-center">
+                  <div className="w-full text-xs font-mono font-bold mb-2">Backdrop Mode:</div>
+                  <Dither
+                    pattern={ditherPattern}
+                    mode="backdrop"
+                    className="w-full h-36 bevel-inset p-4 bg-surface flex flex-col justify-between"
+                  >
+                    <div className="font-mono text-xs font-bold uppercase">
+                      BACKDROP PATTERN
+                    </div>
+                    <div className="font-mono text-[11px] text-muted-foreground">
+                      Applied directly to container background behind foreground elements
+                    </div>
+                  </Dither>
+                </div>
+              </div>
+
+              <ComponentCodePanel sectionId="demo-dither" />
+            </section>
+
+            {/* SECTION 2: HALFTONE */}
+            <section id="halftone" className="space-y-4 pt-6 border-t border-border">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <span className="bevel-raised inline-flex h-6 w-6 items-center justify-center bg-primary text-xs font-bold text-primary-foreground">
+                    02
+                  </span>
+                  <h2 className="font-mono text-xl font-bold uppercase tracking-tight text-foreground">
+                    Halftone
+                  </h2>
+                </div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <Badge variant="outline" className="font-mono text-[10px]">
+                    @ditherweb/ui/halftone
+                  </Badge>
+                  <Badge variant="primary" className="font-mono text-[10px]">
+                    Phase 6 Primitive
+                  </Badge>
+                </div>
+              </div>
+
+              <p className="font-mono text-xs text-muted-foreground max-w-3xl leading-relaxed">
+                Dot-matrix halftone screen effect overlay or background texture inspired by vintage offset print, CRT shadow masks, and arcade monitors.
+              </p>
+
+              <div className="flex flex-wrap items-center gap-2 pb-2">
+                <span className="text-xs font-bold font-mono">Density:</span>
+                {(["sparse", "medium", "dense"] as HalftoneDensity[]).map((d) => (
+                  <Button
+                    key={d}
+                    size="sm"
+                    variant={halftoneDensity === d ? "primary" : "outline"}
+                    onClick={() => setHalftoneDensity(d)}
+                  >
+                    {d.toUpperCase()}
+                  </Button>
+                ))}
+                <span className="text-xs font-bold font-mono ml-3">Dot Size:</span>
+                {(["sm", "md", "lg"] as const).map((s) => (
+                  <Button
+                    key={s}
+                    size="sm"
+                    variant={halftoneSize === s ? "primary" : "outline"}
+                    onClick={() => setHalftoneSize(s)}
+                  >
+                    {s.toUpperCase()}
+                  </Button>
+                ))}
+              </div>
+
+              <div className="p-4 sm:p-6 bevel-inset bg-muted/20 flex flex-col items-center justify-center">
+                <Halftone
+                  size={halftoneSize}
+                  density={halftoneDensity}
+                  opacity={0.4}
+                  className="w-full max-w-xl p-6 bevel-raised bg-surface space-y-2"
+                >
+                  <div className="font-mono text-sm font-bold uppercase">
+                    Halftone Dot Matrix Screen
+                  </div>
+                  <p className="font-mono text-xs text-muted-foreground">
+                    Radial gradient micro-dots calibrated across light and dark mode surfaces. Perfect for print-look cards, headers, and hero accents.
+                  </p>
+                </Halftone>
+              </div>
+
+              <ComponentCodePanel sectionId="demo-halftone" />
+            </section>
+
+            {/* SECTION 3: PIXELATE */}
+            <section id="pixelate" className="space-y-4 pt-6 border-t border-border">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <span className="bevel-raised inline-flex h-6 w-6 items-center justify-center bg-primary text-xs font-bold text-primary-foreground">
+                    03
+                  </span>
+                  <h2 className="font-mono text-xl font-bold uppercase tracking-tight text-foreground">
+                    Pixelate
+                  </h2>
+                </div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <Badge variant="outline" className="font-mono text-[10px]">
+                    @ditherweb/ui/pixelate
+                  </Badge>
+                  <Badge variant="primary" className="font-mono text-[10px]">
+                    Phase 6 Primitive
+                  </Badge>
+                </div>
+              </div>
+
+              <p className="font-mono text-xs text-muted-foreground max-w-3xl leading-relaxed">
+                Presentation wrapper applying CSS nearest-neighbor image rendering and un-smoothed crisp font rendering to child elements.
+              </p>
+
+              <div className="p-4 sm:p-6 bevel-inset bg-muted/20 flex flex-col items-center justify-center">
+                <Pixelate rendering="pixelated" crispText scale={1} className="w-full max-w-md p-5 bevel-raised bg-surface space-y-3">
+                  <div className="flex items-center justify-between border-b border-border pb-2">
+                    <span className="font-mono text-xs font-bold uppercase">Pixelate Filter Active</span>
+                    <Badge variant="success">NEAREST-NEIGHBOR</Badge>
+                  </div>
+                  <div className="font-mono text-sm font-bold tracking-tight">
+                    CRISP HARDWARE FONT SMOOTHING: OFF
+                  </div>
+                  <p className="font-mono text-xs text-muted-foreground">
+                    Ensures sharp, pixel-perfect bitmap rendering without blurry browser anti-aliasing interpolation.
+                  </p>
+                </Pixelate>
+              </div>
+
+              <ComponentCodePanel sectionId="demo-pixelate" />
+            </section>
+
+            {/* SECTION 4: NOISE */}
+            <section id="noise" className="space-y-4 pt-6 border-t border-border">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <span className="bevel-raised inline-flex h-6 w-6 items-center justify-center bg-primary text-xs font-bold text-primary-foreground">
+                    04
+                  </span>
+                  <h2 className="font-mono text-xl font-bold uppercase tracking-tight text-foreground">
+                    Noise
+                  </h2>
+                </div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <Badge variant="outline" className="font-mono text-[10px]">
+                    @ditherweb/ui/noise
+                  </Badge>
+                  <Badge variant="primary" className="font-mono text-[10px]">
+                    Phase 6 Primitive
+                  </Badge>
+                </div>
+              </div>
+
+              <p className="font-mono text-xs text-muted-foreground max-w-3xl leading-relaxed">
+                Procedural film grain texture overlay using lightweight inline SVG feTurbulence fractals with optional micro-jitter animation (disabled automatically on reduced-motion).
+              </p>
+
+              <div className="flex flex-wrap items-center gap-2 pb-2">
+                <span className="text-xs font-bold font-mono">Intensity:</span>
+                {(["subtle", "medium", "strong"] as const).map((intensity) => (
+                  <Button
+                    key={intensity}
+                    size="sm"
+                    variant={noiseIntensity === intensity ? "primary" : "outline"}
+                    onClick={() => setNoiseIntensity(intensity)}
+                  >
+                    {intensity.toUpperCase()}
+                  </Button>
+                ))}
+                <span className="text-xs font-bold font-mono ml-3">Jitter Animation:</span>
+                <Button
+                  size="sm"
+                  variant={noiseAnimated ? "primary" : "outline"}
+                  onClick={() => setNoiseAnimated(!noiseAnimated)}
+                >
+                  {noiseAnimated ? "ANIMATED (ON)" : "STATIC (OFF)"}
+                </Button>
+              </div>
+
+              <div className="p-4 sm:p-6 bevel-inset bg-muted/20 flex flex-col items-center justify-center">
+                <Noise
+                  intensity={noiseIntensity}
+                  animated={noiseAnimated}
+                  className="w-full max-w-lg p-6 bevel-raised bg-surface space-y-2"
+                >
+                  <div className="font-mono text-xs font-bold uppercase">
+                    Analog Film Grain Specimen ({noiseIntensity})
+                  </div>
+                  <p className="font-mono text-xs text-muted-foreground">
+                    Procedural noise texture overlay with zero image downloads, calibrated for retro tactile surfaces.
+                  </p>
+                </Noise>
+              </div>
+
+              <ComponentCodePanel sectionId="demo-noise" />
+            </section>
+
+            {/* SECTION 5: IMAGE FRAME */}
+            <section id="image-frame" className="space-y-4 pt-6 border-t border-border">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <span className="bevel-raised inline-flex h-6 w-6 items-center justify-center bg-primary text-xs font-bold text-primary-foreground">
+                    05
+                  </span>
+                  <h2 className="font-mono text-xl font-bold uppercase tracking-tight text-foreground">
+                    ImageFrame
+                  </h2>
+                </div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <Badge variant="outline" className="font-mono text-[10px]">
+                    @ditherweb/ui/image-frame
+                  </Badge>
+                  <Badge variant="primary" className="font-mono text-[10px]">
+                    Phase 6 Primitive
+                  </Badge>
+                </div>
+              </div>
+
+              <p className="font-mono text-xs text-muted-foreground max-w-3xl leading-relaxed">
+                Semantic &lt;figure&gt; container for images, bitmaps, or media assets featuring retro bevels, nearest-neighbor pixel rendering, optional dither overlays, and &lt;figcaption&gt; labels.
+              </p>
+
+              <div className="flex flex-wrap items-center gap-2 pb-2">
+                <span className="text-xs font-bold font-mono">Frame Variant:</span>
+                {(["plain", "pixel", "inset", "raised", "dither", "bitmap"] as ImageFrameVariant[]).map((v) => (
+                  <Button
+                    key={v}
+                    size="sm"
+                    variant={imageFrameVariant === v ? "primary" : "outline"}
+                    onClick={() => setImageFrameVariant(v)}
+                  >
+                    {v.toUpperCase()}
+                  </Button>
+                ))}
+              </div>
+
+              <div className="p-4 sm:p-6 bevel-inset bg-muted/20 flex flex-col items-center justify-center">
+                <ImageFrame
+                  variant={imageFrameVariant}
+                  pixelated
+                  ditherOverlay={imageFrameVariant === "dither" ? "bayer" : false}
+                  caption="FIG 6.1 — High-contrast 1-bit monochrome scanned artifact specimen"
+                  className="max-w-sm"
+                >
+                  <div className="w-64 h-36 bg-gradient-to-tr from-primary to-surface-sunken flex items-center justify-center font-mono text-xs font-bold p-4 text-center">
+                    BIT_DEPTH: 1-BIT [2-COLOR MONOCHROME]
+                  </div>
+                </ImageFrame>
+              </div>
+
+              <ComponentCodePanel sectionId="demo-image-frame" />
+            </section>
+
+            {/* SECTION 6: SCANLINE */}
+            <section id="scanline" className="space-y-4 pt-6 border-t border-border">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <span className="bevel-raised inline-flex h-6 w-6 items-center justify-center bg-primary text-xs font-bold text-primary-foreground">
+                    06
+                  </span>
+                  <h2 className="font-mono text-xl font-bold uppercase tracking-tight text-foreground">
+                    Scanline
+                  </h2>
+                </div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <Badge variant="outline" className="font-mono text-[10px]">
+                    @ditherweb/ui/scanline
+                  </Badge>
+                  <Badge variant="primary" className="font-mono text-[10px]">
+                    Phase 6 Primitive
+                  </Badge>
+                </div>
+              </div>
+
+              <p className="font-mono text-xs text-muted-foreground max-w-3xl leading-relaxed">
+                Phosphor scanline stripe overlay for CRT displays, viewports, and retro monitors, supporting fine, medium, or coarse densities, horizontal/vertical orientations, and rolling animation.
+              </p>
+
+              <div className="flex flex-wrap items-center gap-2 pb-2">
+                <span className="text-xs font-bold font-mono">Density:</span>
+                {(["fine", "medium", "coarse"] as ScanlineDensity[]).map((d) => (
+                  <Button
+                    key={d}
+                    size="sm"
+                    variant={scanlineDensity === d ? "primary" : "outline"}
+                    onClick={() => setScanlineDensity(d)}
+                  >
+                    {d.toUpperCase()}
+                  </Button>
+                ))}
+                <span className="text-xs font-bold font-mono ml-3">Orientation:</span>
+                {(["horizontal", "vertical"] as const).map((o) => (
+                  <Button
+                    key={o}
+                    size="sm"
+                    variant={scanlineOrientation === o ? "primary" : "outline"}
+                    onClick={() => setScanlineOrientation(o)}
+                  >
+                    {o.toUpperCase()}
+                  </Button>
+                ))}
+                <span className="text-xs font-bold font-mono ml-3">Roll Animation:</span>
+                <Button
+                  size="sm"
+                  variant={scanlineAnimated ? "primary" : "outline"}
+                  onClick={() => setScanlineAnimated(!scanlineAnimated)}
+                >
+                  {scanlineAnimated ? "ROLLING (ON)" : "STATIC (OFF)"}
+                </Button>
+              </div>
+
+              <div className="p-4 sm:p-6 bevel-inset bg-muted/20 flex flex-col items-center justify-center">
+                <Scanline
+                  density={scanlineDensity}
+                  orientation={scanlineOrientation}
+                  animated={scanlineAnimated}
+                  opacity={0.35}
+                  className="w-full max-w-lg p-6 bg-black text-green-400 font-mono bevel-inset space-y-2"
+                >
+                  <div className="text-xs font-bold uppercase">&gt; RASTER BEAM OSCILLOSCOPE ACTIVE</div>
+                  <div className="text-[11px] text-green-500">H-SYNC: 15.75 kHz | V-SYNC: 60.0 Hz | PHOSPHOR: P1 (GREEN)</div>
+                  <div className="text-[11px] text-green-600">Scanline raster simulation using CSS repeating linear gradients</div>
+                </Scanline>
+              </div>
+
+              <ComponentCodePanel sectionId="demo-scanline" />
+            </section>
+
+            {/* SECTION 7: CRT */}
+            <section id="crt" className="space-y-4 pt-6 border-t border-border">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <span className="bevel-raised inline-flex h-6 w-6 items-center justify-center bg-primary text-xs font-bold text-primary-foreground">
+                    07
+                  </span>
+                  <h2 className="font-mono text-xl font-bold uppercase tracking-tight text-foreground">
+                    CRT
+                  </h2>
+                </div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <Badge variant="outline" className="font-mono text-[10px]">
+                    @ditherweb/ui/crt
+                  </Badge>
+                  <Badge variant="primary" className="font-mono text-[10px]">
+                    Phase 6 Primitive
+                  </Badge>
+                </div>
+              </div>
+
+              <p className="font-mono text-xs text-muted-foreground max-w-3xl leading-relaxed">
+                Cathode Ray Tube display monitor enclosure combining scanlines, corner vignette shadow, curved screen bezel, and authentic monochrome phosphor tints.
+              </p>
+
+              <div className="flex flex-wrap items-center gap-2 pb-2">
+                <span className="text-xs font-bold font-mono">Phosphor:</span>
+                {(["green", "amber", "mono", "none"] as CRTPhosphor[]).map((p) => (
+                  <Button
+                    key={p}
+                    size="sm"
+                    variant={crtPhosphor === p ? "primary" : "outline"}
+                    onClick={() => setCrtPhosphor(p)}
+                  >
+                    {p.toUpperCase()}
+                  </Button>
+                ))}
+                <span className="text-xs font-bold font-mono ml-3">Curvature:</span>
+                {(["none", "subtle", "medium"] as const).map((c) => (
+                  <Button
+                    key={c}
+                    size="sm"
+                    variant={crtCurvature === c ? "primary" : "outline"}
+                    onClick={() => setCrtCurvature(c)}
+                  >
+                    {c.toUpperCase()}
+                  </Button>
+                ))}
+                <span className="text-xs font-bold font-mono ml-3">Flicker:</span>
+                <Button
+                  size="sm"
+                  variant={crtFlicker ? "primary" : "outline"}
+                  onClick={() => setCrtFlicker(!crtFlicker)}
+                >
+                  {crtFlicker ? "FLICKER (ON)" : "STEADY (OFF)"}
+                </Button>
+              </div>
+
+              <div className="p-4 sm:p-6 bevel-inset bg-muted/20 flex flex-col items-center justify-center">
+                <CRT
+                  phosphor={crtPhosphor}
+                  curvature={crtCurvature}
+                  flicker={crtFlicker}
+                  vignette
+                  scanlines="medium"
+                  className="w-full max-w-lg min-h-[160px] p-6 space-y-2 border-4 border-neutral-800"
+                >
+                  <div className="text-xs font-bold uppercase">&gt; IBM 5151 MONOCHROME MONITOR</div>
+                  <div className="text-xs">&gt; MEMORY CHECK: 640 KB OK</div>
+                  <div className="text-xs">&gt; GRAPHICS ADAPTER: MDA / HERCULES COMPATIBLE</div>
+                  <div className="text-xs">&gt; READY.</div>
+                </CRT>
+              </div>
+
+              <ComponentCodePanel sectionId="demo-crt" />
+            </section>
+
+            {/* SECTION 8: PIXEL TEXT */}
+            <section id="pixel-text" className="space-y-4 pt-6 border-t border-border">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <span className="bevel-raised inline-flex h-6 w-6 items-center justify-center bg-primary text-xs font-bold text-primary-foreground">
+                    08
+                  </span>
+                  <h2 className="font-mono text-xl font-bold uppercase tracking-tight text-foreground">
+                    PixelText
+                  </h2>
+                </div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <Badge variant="outline" className="font-mono text-[10px]">
+                    @ditherweb/ui/pixel-text
+                  </Badge>
+                  <Badge variant="primary" className="font-mono text-[10px]">
+                    Phase 6 Primitive
+                  </Badge>
+                </div>
+              </div>
+
+              <p className="font-mono text-xs text-muted-foreground max-w-3xl leading-relaxed">
+                Typography component with pixel-crisp font smoothing, stepped retro drop shadows, and optional phosphor text-glow for titles and callouts.
+              </p>
+
+              <div className="p-4 sm:p-6 bevel-inset bg-muted/20 flex flex-col items-center justify-center space-y-4">
+                <PixelText as="h2" size="2xl" shadow="stepped" crisp glow className="text-primary">
+                  DITHERWEB v1.0
+                </PixelText>
+                <PixelText as="p" size="lg" shadow="pixel" crisp>
+                  STEPPED 2-TONE DROP SHADOW TYPOGRAPHY
+                </PixelText>
+                <PixelText as="span" size="sm" crisp className="text-muted-foreground">
+                  Crisp -webkit-font-smoothing: none rendering
+                </PixelText>
+              </div>
+
+              <ComponentCodePanel sectionId="demo-pixel-text" />
+            </section>
+
+            {/* SECTION 9: TYPEWRITER */}
+            <section id="typewriter" className="space-y-4 pt-6 border-t border-border">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <span className="bevel-raised inline-flex h-6 w-6 items-center justify-center bg-primary text-xs font-bold text-primary-foreground">
+                    09
+                  </span>
+                  <h2 className="font-mono text-xl font-bold uppercase tracking-tight text-foreground">
+                    Typewriter
+                  </h2>
+                </div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <Badge variant="outline" className="font-mono text-[10px]">
+                    @ditherweb/ui/typewriter
+                  </Badge>
+                  <Badge variant="primary" className="font-mono text-[10px]">
+                    Phase 6 Primitive
+                  </Badge>
+                </div>
+              </div>
+
+              <p className="font-mono text-xs text-muted-foreground max-w-3xl leading-relaxed">
+                Accessible character-by-character typewriter reveal. Complete text is immediately available to screen readers via sr-only semantics, and prefers-reduced-motion bypasses delays instantly.
+              </p>
+
+              <div className="flex flex-wrap items-center gap-2 pb-2">
+                <span className="text-xs font-bold font-mono">Typing Speed:</span>
+                {(["slow", "medium", "fast"] as const).map((spd) => (
+                  <Button
+                    key={spd}
+                    size="sm"
+                    variant={typewriterSpeed === spd ? "primary" : "outline"}
+                    onClick={() => {
+                      setTypewriterSpeed(spd);
+                      setTypewriterReplayKey((k) => k + 1);
+                    }}
+                  >
+                    {spd.toUpperCase()}
+                  </Button>
+                ))}
+                <Button
+                  size="sm"
+                  variant="primary"
+                  className="ml-3"
+                  onClick={() => setTypewriterReplayKey((k) => k + 1)}
+                >
+                  Replay Typewriter ↺
+                </Button>
+              </div>
+
+              <div className="p-4 sm:p-6 bevel-inset bg-muted/20 flex flex-col items-center justify-center">
+                <div className="w-full max-w-lg p-5 bevel-raised bg-surface font-mono text-xs">
+                  <div className="text-muted-foreground mb-2 text-[10px]">LIVE REVEAL STREAM:</div>
+                  <Typewriter
+                    key={typewriterReplayKey}
+                    text="Establishing connection to Ditherweb gateway... All 96 primitives verified and operational."
+                    speed={typewriterSpeed}
+                    cursor
+                    className="text-foreground font-bold"
+                  />
+                </div>
+              </div>
+
+              <ComponentCodePanel sectionId="demo-typewriter" />
+            </section>
+
+            {/* SECTION 10: BLINK CURSOR */}
+            <section id="blink-cursor" className="space-y-4 pt-6 border-t border-border">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <span className="bevel-raised inline-flex h-6 w-6 items-center justify-center bg-primary text-xs font-bold text-primary-foreground">
+                    10
+                  </span>
+                  <h2 className="font-mono text-xl font-bold uppercase tracking-tight text-foreground">
+                    BlinkCursor
+                  </h2>
+                </div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <Badge variant="outline" className="font-mono text-[10px]">
+                    @ditherweb/ui/blink-cursor
+                  </Badge>
+                  <Badge variant="primary" className="font-mono text-[10px]">
+                    Phase 6 Primitive
+                  </Badge>
+                </div>
+              </div>
+
+              <p className="font-mono text-xs text-muted-foreground max-w-3xl leading-relaxed">
+                Classic terminal blinking cursor in block, line, or underline variants. Protected with aria-hidden=&quot;true&quot; so screen readers never announce cursor symbols, with steps(2, start) animation that pauses gracefully on reduced motion.
+              </p>
+
+              <div className="flex flex-wrap items-center gap-2 pb-2">
+                <span className="text-xs font-bold font-mono">Cursor Style:</span>
+                {(["block", "line", "underline"] as const).map((v) => (
+                  <Button
+                    key={v}
+                    size="sm"
+                    variant={cursorVariant === v ? "primary" : "outline"}
+                    onClick={() => setCursorVariant(v)}
+                  >
+                    {v.toUpperCase()}
+                  </Button>
+                ))}
+                <span className="text-xs font-bold font-mono ml-3">Blink Animation:</span>
+                <Button
+                  size="sm"
+                  variant={cursorBlink ? "primary" : "outline"}
+                  onClick={() => setCursorBlink(!cursorBlink)}
+                >
+                  {cursorBlink ? "BLINKING (ON)" : "SOLID (OFF)"}
+                </Button>
+              </div>
+
+              <div className="p-4 sm:p-6 bevel-inset bg-muted/20 flex flex-col items-center justify-center">
+                <div className="w-full max-w-md p-4 bevel-inset bg-black text-green-400 font-mono text-xs flex items-center gap-2">
+                  <span>C:\DITHERWEB&gt; RUN SYSCHECK.EXE</span>
+                  <BlinkCursor variant={cursorVariant} blink={cursorBlink} />
+                </div>
+              </div>
+
+              <ComponentCodePanel sectionId="demo-blink-cursor" />
             </section>
           </>
         )}

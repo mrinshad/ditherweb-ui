@@ -295,13 +295,13 @@ import "@ditherweb/ui/styles";`}</code>
             <span className="font-bold">Phase 4: Classic Web Primitives (10)</span>
             <Badge variant="success">COMPLETE</Badge>
           </div>
-          <div className="bevel-raised p-3 bg-surface flex items-center justify-between border-2 border-primary">
-            <span className="font-bold text-primary">Phase 5: Desktop & Pixel Components (10)</span>
-            <Badge variant="primary">COMPLETE</Badge>
+          <div className="bevel-raised p-3 bg-surface flex items-center justify-between">
+            <span className="font-bold">Phase 5: Desktop & Pixel Components (10)</span>
+            <Badge variant="success">COMPLETE</Badge>
           </div>
-          <div className="bevel-raised p-3 bg-surface flex items-center justify-between opacity-70">
-            <span>Phase 6: Advanced Effects, Ecosystem & Packaging</span>
-            <Badge variant="outline">PENDING</Badge>
+          <div className="bevel-raised p-3 bg-surface flex items-center justify-between border-2 border-primary">
+            <span className="font-bold text-primary">Phase 6: Advanced Effects & Polish (10)</span>
+            <Badge variant="primary">COMPLETE</Badge>
           </div>
         </div>
       </section>

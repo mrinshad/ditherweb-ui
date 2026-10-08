@@ -98,7 +98,7 @@ export default function RetroPanel() {
             <div className="grid grid-cols-3 gap-3 pt-4 border-t border-border font-mono text-xs">
               <div className="bevel-inset p-2 bg-muted/30">
                 <div className="text-muted-foreground text-[10px]">COMPONENTS</div>
-                <div className="font-bold text-foreground text-sm">86 Primitives</div>
+                <div className="font-bold text-foreground text-sm">96 Primitives</div>
               </div>
               <div className="bevel-inset p-2 bg-muted/30">
                 <div className="text-muted-foreground text-[10px]">ACCESSIBILITY</div>
