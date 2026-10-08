@@ -18,13 +18,3 @@ body {
     Arial,
     sans-serif;
 }
-
-/* Theme-adaptive hero artwork negative inversion */
-.hero-artwork-invert {
-  filter: invert(1);
-  transition: filter 0.2s ease-in-out;
-}
-.dark .hero-artwork-invert {
-  filter: invert(0);
-}
-

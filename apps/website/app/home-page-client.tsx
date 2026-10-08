@@ -13,7 +13,7 @@ import {
   AlertTitle,
   AlertDescription,
 } from "@ditherweb/ui";
-import Image from "next/image";
+import { HeroDemo } from "@/components/site/hero-demo";
 
 export default function HomePage() {
   const [activeDither, setActiveDither] = useState<"fine" | "medium" | "coarse" | "diagonal">("fine");
@@ -46,69 +46,74 @@ export default function RetroPanel() {
   };
 
   return (
-    <div className="flex flex-col space-y-16 pb-16">
+    <div className="flex flex-col gap-16 py-8 sm:py-16">
       {/* 1. Hero Section */}
-      <section className="w-full border-b border-border bg-background dark:bg-black text-foreground dark:text-white relative overflow-hidden min-h-[calc(100dvh-3.5rem)] flex items-center py-12 sm:py-16 lg:py-0">
-        {/* Full Hero Artwork Background (Light & Dark, No Feathering) */}
-        <div className="hidden lg:block absolute inset-0 pointer-events-none select-none overflow-hidden">
-          {/* Light Mode Artwork */}
-          <Image
-            src="/images/hero-artwork-light.jpg"
-            alt="Ditherweb retro workstation in daylight"
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover object-left block dark:hidden select-none"
-          />
-          {/* Dark Mode Artwork */}
-          <Image
-            src="/images/hero-artwork-dark.jpg"
-            alt="Ditherweb retro workstation at night"
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover object-left hidden dark:block select-none"
-          />
-        </div>
+      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full">
+        <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12">
+          {/* Left Column: Headlines & CTAs */}
+          <div className="space-y-6 lg:col-span-7">
+            <div className="flex flex-wrap items-center gap-2">
+              <Badge variant="primary">
+                Next-Gen Retro UI
+              </Badge>
+              <Badge variant="outline">
+                React 19 • TypeScript • Tailwind
+              </Badge>
+            </div>
 
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full relative z-10">
-          <div className="grid grid-cols-1 items-center gap-10 lg:gap-8 xl:gap-12 lg:grid-cols-12">
-            {/* Left Column: Headlines & CTAs */}
-            <div className="space-y-6 lg:col-span-6 xl:col-span-6 z-10">
-              <div className="flex flex-wrap items-center gap-2">
-                <Badge variant="primary" className="bg-black text-white dark:bg-white dark:text-black font-mono font-bold text-xs uppercase px-2.5 py-0.5 rounded-none">
-                  Next-Gen Retro UI
-                </Badge>
-                <Badge variant="outline" className="border-border dark:border-zinc-700 text-muted-foreground dark:text-zinc-400 font-mono text-xs uppercase px-2.5 py-0.5 rounded-none">
-                  React 19 • TypeScript • Tailwind
-                </Badge>
+            <div className="space-y-3">
+              <h1 className="font-mono text-3xl font-extrabold uppercase tracking-tight sm:text-5xl lg:text-6xl text-foreground">
+                Retro Appearance. <br />
+                <span className="text-primary underline decoration-4 underline-offset-8">
+                  Modern Engineering.
+                </span>
+              </h1>
+              <p className="font-mono text-sm sm:text-base text-muted-foreground leading-relaxed max-w-2xl">
+                A component system inspired by the visual language of the early Internet,
+                classic desktop user interfaces, ordered dithering, and 90s digital culture—built
+                with clean React primitives, zero runtime bloat, and full accessibility.
+              </p>
+            </div>
+
+            {/* CTAs */}
+            <div className="flex flex-wrap items-center gap-3 pt-2">
+              <Link href="/components">
+                <Button variant="primary" size="lg">
+                  Explore Components →
+                </Button>
+              </Link>
+              <Link href="/playground">
+                <Button variant="default" size="lg">
+                  Interactive Playground
+                </Button>
+              </Link>
+              <Link href="/docs">
+                <Button variant="outline" size="lg">
+                  Documentation
+                </Button>
+              </Link>
+            </div>
+
+            {/* Micro stats banner */}
+            <div className="grid grid-cols-3 gap-3 pt-4 border-t border-border font-mono text-xs">
+              <div className="bevel-inset p-2 bg-muted/30">
+                <div className="text-muted-foreground text-[10px]">COMPONENTS</div>
+                <div className="font-bold text-foreground text-sm">76 Primitives</div>
               </div>
-
-              <div className="space-y-4">
-                <h1 className="font-mono text-3xl sm:text-4xl lg:text-[40px] xl:text-[45px] font-extrabold uppercase tracking-tight text-foreground dark:text-white leading-[1.1]">
-                  DITHERWEB — RETRO<br />
-                  APPEARANCE.<br />
-                  MODERN ENGINEERING.
-                </h1>
-                <p className="font-mono text-sm sm:text-base text-muted-foreground dark:text-zinc-400 leading-relaxed max-w-xl">
-                  A retro-inspired React UI framework and component library built with clean primitives, modern tooling, and zero runtime bloat. Classic aesthetics. Production-ready engineering.
-                </p>
+              <div className="bevel-inset p-2 bg-muted/30">
+                <div className="text-muted-foreground text-[10px]">ACCESSIBILITY</div>
+                <div className="font-bold text-foreground text-sm">W3C / ARIA Compliant</div>
               </div>
-
-              {/* CTAs */}
-              <div className="flex flex-wrap items-center gap-3 pt-2">
-                <Link href="/components">
-                  <Button variant="primary" size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 dark:bg-white dark:text-black dark:hover:bg-zinc-200">
-                    Explore Components →
-                  </Button>
-                </Link>
-                <Link href="/playground">
-                  <Button variant="outline" size="lg" className="border-border text-foreground hover:bg-muted dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-900 bg-surface/80 backdrop-blur-sm">
-                    Interactive Playground
-                  </Button>
-                </Link>
+              <div className="bevel-inset p-2 bg-muted/30">
+                <div className="text-muted-foreground text-[10px]">EXT DEPENDENCIES</div>
+                <div className="font-bold text-foreground text-sm">0 Runtime Bloat</div>
               </div>
             </div>
+          </div>
+
+          {/* Right Column: Hero Live Demo */}
+          <div className="flex justify-center lg:col-span-5">
+            <HeroDemo />
           </div>
         </div>
       </section>
