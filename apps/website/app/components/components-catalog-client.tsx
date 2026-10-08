@@ -4926,12 +4926,10 @@ export default function ComponentsPage() {
                   </h2>
                 </div>
                 <div className="flex flex-wrap items-center gap-2">
-                  <Badge variant="outline" className="font-mono text-[10px]">
-                    @ditherweb/ui/window
-                  </Badge>
                   <Badge variant="primary" className="font-mono text-[10px]">
                     Phase 5 Primitive
                   </Badge>
+                  <ComponentActions sectionId="demo-window" />
                 </div>
               </div>
 
@@ -5025,12 +5023,10 @@ export default function ComponentsPage() {
                   </h2>
                 </div>
                 <div className="flex flex-wrap items-center gap-2">
-                  <Badge variant="outline" className="font-mono text-[10px]">
-                    @ditherweb/ui/window-titlebar
-                  </Badge>
                   <Badge variant="primary" className="font-mono text-[10px]">
                     Phase 5 Primitive
                   </Badge>
+                  <ComponentActions sectionId="demo-window-titlebar" />
                 </div>
               </div>
 
@@ -5085,12 +5081,10 @@ export default function ComponentsPage() {
                   </h2>
                 </div>
                 <div className="flex flex-wrap items-center gap-2">
-                  <Badge variant="outline" className="font-mono text-[10px]">
-                    @ditherweb/ui/window-controls
-                  </Badge>
                   <Badge variant="primary" className="font-mono text-[10px]">
                     Phase 5 Primitive
                   </Badge>
+                  <ComponentActions sectionId="demo-window-controls" />
                 </div>
               </div>
 
@@ -5133,12 +5127,10 @@ export default function ComponentsPage() {
                   </h2>
                 </div>
                 <div className="flex flex-wrap items-center gap-2">
-                  <Badge variant="outline" className="font-mono text-[10px]">
-                    @ditherweb/ui/taskbar
-                  </Badge>
                   <Badge variant="primary" className="font-mono text-[10px]">
                     Phase 5 Primitive
                   </Badge>
+                  <ComponentActions sectionId="demo-taskbar" />
                 </div>
               </div>
 
@@ -5199,12 +5191,10 @@ export default function ComponentsPage() {
                   </h2>
                 </div>
                 <div className="flex flex-wrap items-center gap-2">
-                  <Badge variant="outline" className="font-mono text-[10px]">
-                    @ditherweb/ui/menu
-                  </Badge>
                   <Badge variant="primary" className="font-mono text-[10px]">
                     Phase 5 Primitive
                   </Badge>
+                  <ComponentActions sectionId="demo-menu" />
                 </div>
               </div>
 
@@ -5311,12 +5301,10 @@ export default function ComponentsPage() {
                   </h2>
                 </div>
                 <div className="flex flex-wrap items-center gap-2">
-                  <Badge variant="outline" className="font-mono text-[10px]">
-                    @ditherweb/ui/context-menu
-                  </Badge>
                   <Badge variant="primary" className="font-mono text-[10px]">
                     Phase 5 Primitive
                   </Badge>
+                  <ComponentActions sectionId="demo-context-menu" />
                 </div>
               </div>
 
@@ -5390,12 +5378,10 @@ export default function ComponentsPage() {
                   </h2>
                 </div>
                 <div className="flex flex-wrap items-center gap-2">
-                  <Badge variant="outline" className="font-mono text-[10px]">
-                    @ditherweb/ui/desktop
-                  </Badge>
                   <Badge variant="primary" className="font-mono text-[10px]">
                     Phase 5 Primitive
                   </Badge>
+                  <ComponentActions sectionId="demo-desktop" />
                 </div>
               </div>
 
@@ -5479,12 +5465,10 @@ export default function ComponentsPage() {
                   </h2>
                 </div>
                 <div className="flex flex-wrap items-center gap-2">
-                  <Badge variant="outline" className="font-mono text-[10px]">
-                    @ditherweb/ui/terminal
-                  </Badge>
                   <Badge variant="primary" className="font-mono text-[10px]">
                     Phase 5 Primitive
                   </Badge>
+                  <ComponentActions sectionId="demo-terminal" />
                 </div>
               </div>
 
@@ -5539,12 +5523,10 @@ export default function ComponentsPage() {
                   </h2>
                 </div>
                 <div className="flex flex-wrap items-center gap-2">
-                  <Badge variant="outline" className="font-mono text-[10px]">
-                    @ditherweb/ui/pixel-art
-                  </Badge>
                   <Badge variant="primary" className="font-mono text-[10px]">
                     Phase 5 Primitive
                   </Badge>
+                  <ComponentActions sectionId="demo-pixel-art" />
                 </div>
               </div>
 
@@ -5606,12 +5588,10 @@ export default function ComponentsPage() {
                   </h2>
                 </div>
                 <div className="flex flex-wrap items-center gap-2">
-                  <Badge variant="outline" className="font-mono text-[10px]">
-                    @ditherweb/ui/bitmap-canvas
-                  </Badge>
                   <Badge variant="primary" className="font-mono text-[10px]">
                     Phase 5 Primitive
                   </Badge>
+                  <ComponentActions sectionId="demo-bitmap-canvas" />
                 </div>
               </div>
 
@@ -5711,12 +5691,10 @@ export default function ComponentsPage() {
                   </h2>
                 </div>
                 <div className="flex flex-wrap items-center gap-2">
-                  <Badge variant="outline" className="font-mono text-[10px]">
-                    @ditherweb/ui/dither
-                  </Badge>
                   <Badge variant="primary" className="font-mono text-[10px]">
                     Phase 6 Primitive
                   </Badge>
+                  <ComponentActions sectionId="demo-dither" />
                 </div>
               </div>
 
@@ -5798,12 +5776,10 @@ export default function ComponentsPage() {
                   </h2>
                 </div>
                 <div className="flex flex-wrap items-center gap-2">
-                  <Badge variant="outline" className="font-mono text-[10px]">
-                    @ditherweb/ui/halftone
-                  </Badge>
                   <Badge variant="primary" className="font-mono text-[10px]">
                     Phase 6 Primitive
                   </Badge>
+                  <ComponentActions sectionId="demo-halftone" />
                 </div>
               </div>
 
@@ -5867,12 +5843,10 @@ export default function ComponentsPage() {
                   </h2>
                 </div>
                 <div className="flex flex-wrap items-center gap-2">
-                  <Badge variant="outline" className="font-mono text-[10px]">
-                    @ditherweb/ui/pixelate
-                  </Badge>
                   <Badge variant="primary" className="font-mono text-[10px]">
                     Phase 6 Primitive
                   </Badge>
+                  <ComponentActions sectionId="demo-pixelate" />
                 </div>
               </div>
 
@@ -5910,12 +5884,10 @@ export default function ComponentsPage() {
                   </h2>
                 </div>
                 <div className="flex flex-wrap items-center gap-2">
-                  <Badge variant="outline" className="font-mono text-[10px]">
-                    @ditherweb/ui/noise
-                  </Badge>
                   <Badge variant="primary" className="font-mono text-[10px]">
                     Phase 6 Primitive
                   </Badge>
+                  <ComponentActions sectionId="demo-noise" />
                 </div>
               </div>
 
@@ -5975,12 +5947,10 @@ export default function ComponentsPage() {
                   </h2>
                 </div>
                 <div className="flex flex-wrap items-center gap-2">
-                  <Badge variant="outline" className="font-mono text-[10px]">
-                    @ditherweb/ui/image-frame
-                  </Badge>
                   <Badge variant="primary" className="font-mono text-[10px]">
                     Phase 6 Primitive
                   </Badge>
+                  <ComponentActions sectionId="demo-image-frame" />
                 </div>
               </div>
 
@@ -6031,12 +6001,10 @@ export default function ComponentsPage() {
                   </h2>
                 </div>
                 <div className="flex flex-wrap items-center gap-2">
-                  <Badge variant="outline" className="font-mono text-[10px]">
-                    @ditherweb/ui/scanline
-                  </Badge>
                   <Badge variant="primary" className="font-mono text-[10px]">
                     Phase 6 Primitive
                   </Badge>
+                  <ComponentActions sectionId="demo-scanline" />
                 </div>
               </div>
 
@@ -6106,12 +6074,10 @@ export default function ComponentsPage() {
                   </h2>
                 </div>
                 <div className="flex flex-wrap items-center gap-2">
-                  <Badge variant="outline" className="font-mono text-[10px]">
-                    @ditherweb/ui/crt
-                  </Badge>
                   <Badge variant="primary" className="font-mono text-[10px]">
                     Phase 6 Primitive
                   </Badge>
+                  <ComponentActions sectionId="demo-crt" />
                 </div>
               </div>
 
@@ -6183,12 +6149,10 @@ export default function ComponentsPage() {
                   </h2>
                 </div>
                 <div className="flex flex-wrap items-center gap-2">
-                  <Badge variant="outline" className="font-mono text-[10px]">
-                    @ditherweb/ui/pixel-text
-                  </Badge>
                   <Badge variant="primary" className="font-mono text-[10px]">
                     Phase 6 Primitive
                   </Badge>
+                  <ComponentActions sectionId="demo-pixel-text" />
                 </div>
               </div>
 
@@ -6223,12 +6187,10 @@ export default function ComponentsPage() {
                   </h2>
                 </div>
                 <div className="flex flex-wrap items-center gap-2">
-                  <Badge variant="outline" className="font-mono text-[10px]">
-                    @ditherweb/ui/typewriter
-                  </Badge>
                   <Badge variant="primary" className="font-mono text-[10px]">
                     Phase 6 Primitive
                   </Badge>
+                  <ComponentActions sectionId="demo-typewriter" />
                 </div>
               </div>
 
@@ -6289,12 +6251,10 @@ export default function ComponentsPage() {
                   </h2>
                 </div>
                 <div className="flex flex-wrap items-center gap-2">
-                  <Badge variant="outline" className="font-mono text-[10px]">
-                    @ditherweb/ui/blink-cursor
-                  </Badge>
                   <Badge variant="primary" className="font-mono text-[10px]">
                     Phase 6 Primitive
                   </Badge>
+                  <ComponentActions sectionId="demo-blink-cursor" />
                 </div>
               </div>
 
