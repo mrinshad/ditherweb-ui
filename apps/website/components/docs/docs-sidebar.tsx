@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   Sidebar,
@@ -103,15 +104,15 @@ export function DocsSidebar({ className }: DocsSidebarProps) {
             {filteredGettingStarted.map((item) => (
               <SidebarItem
                 key={item.href}
-                href={item.href}
                 active={pathname === item.href}
                 icon={
                   <span className="text-[10px] font-bold font-mono opacity-80">
                     {item.icon}
                   </span>
                 }
+                asChild
               >
-                {item.title}
+                <Link href={item.href}>{item.title}</Link>
               </SidebarItem>
             ))}
           </SidebarGroup>
@@ -124,15 +125,15 @@ export function DocsSidebar({ className }: DocsSidebarProps) {
             {filteredGuides.map((item) => (
               <SidebarItem
                 key={item.href}
-                href={item.href}
                 active={pathname === item.href}
                 icon={
                   <span className="text-[10px] font-bold font-mono opacity-80">
                     {item.icon}
                   </span>
                 }
+                asChild
               >
-                {item.title}
+                <Link href={item.href}>{item.title}</Link>
               </SidebarItem>
             ))}
           </SidebarGroup>
@@ -145,14 +146,15 @@ export function DocsSidebar({ className }: DocsSidebarProps) {
             {filteredReference.map((item) => (
               <SidebarItem
                 key={item.href}
-                href={item.href}
+                active={pathname === item.href}
                 icon={
                   <span className="text-[10px] font-bold font-mono opacity-70">
                     {item.icon}
                   </span>
                 }
+                asChild
               >
-                {item.title}
+                <Link href={item.href}>{item.title}</Link>
               </SidebarItem>
             ))}
           </SidebarGroup>
@@ -161,11 +163,11 @@ export function DocsSidebar({ className }: DocsSidebarProps) {
 
       <SidebarFooter>
         <SidebarItem
-          href="/components"
           icon={<span className="text-sm">▦</span>}
           badge="96"
+          asChild
         >
-          All Components →
+          <Link href="/components">All Components →</Link>
         </SidebarItem>
       </SidebarFooter>
 

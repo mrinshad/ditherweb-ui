@@ -1,7 +1,19 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Badge, Card, CardHeader, CardTitle, CardContent, Separator } from "@ditherweb/ui";
-import { DocsLayout } from "@/components/docs/docs-layout";
+import {
+  Badge,
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  Separator,
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@ditherweb/ui";
 import { CodeBlock } from "@/components/docs/code-block";
 
 export const metadata: Metadata = {
@@ -22,8 +34,19 @@ export const metadata: Metadata = {
 
 export default function DocsPage() {
   return (
-    <DocsLayout breadcrumbs={[{ label: "Overview" }]}>
-      <div className="space-y-12 font-mono">
+    <div className="space-y-12 font-mono">
+      {/* Breadcrumb */}
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/">Home</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator>/</BreadcrumbSeparator>
+          <BreadcrumbItem>
+            <BreadcrumbPage>Documentation</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
         {/* Header Section */}
         <div className="space-y-4">
           <div className="flex flex-wrap items-center gap-2">
@@ -330,6 +353,5 @@ export function SystemMonitor() {
           </Link>
         </div>
       </div>
-    </DocsLayout>
   );
 }

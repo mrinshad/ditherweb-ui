@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   Sidebar,
@@ -111,12 +112,12 @@ export function ComponentsSidebar({ className }: ComponentsSidebarProps) {
         {/* All Components Catalog Link */}
         <SidebarGroup>
           <SidebarItem
-            href="/components"
             active={pathname === "/components"}
             icon={<span className="text-sm">▦</span>}
             badge="96"
+            asChild
           >
-            All Components
+            <Link href="/components">All Components</Link>
           </SidebarItem>
         </SidebarGroup>
 
@@ -144,15 +145,15 @@ export function ComponentsSidebar({ className }: ComponentsSidebarProps) {
                 return (
                   <SidebarItem
                     key={item.slug}
-                    href={itemHref}
                     active={isActive}
                     icon={
                       <span className="text-[10px] font-mono text-muted-foreground">
                         {item.name.slice(0, 2).toUpperCase()}
                       </span>
                     }
+                    asChild
                   >
-                    {item.name}
+                    <Link href={itemHref}>{item.name}</Link>
                   </SidebarItem>
                 );
               })}
@@ -163,10 +164,10 @@ export function ComponentsSidebar({ className }: ComponentsSidebarProps) {
 
       <SidebarFooter>
         <SidebarItem
-          href="/docs"
           icon={<span className="text-sm">📖</span>}
+          asChild
         >
-          Docs &amp; Guides →
+          <Link href="/docs">Docs &amp; Guides →</Link>
         </SidebarItem>
       </SidebarFooter>
 

@@ -1,8 +1,20 @@
 "use client";
 
 import Link from "next/link";
-import { Badge, Card, CardHeader, CardTitle, CardContent, Separator } from "@ditherweb/ui";
-import { ComponentsLayout } from "@/components/docs/components-layout";
+import {
+  Badge,
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  Separator,
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@ditherweb/ui";
 import { CodeBlock } from "@/components/docs/code-block";
 import { ApiTable } from "@/components/docs/api-table";
 import { ComponentPreview } from "@/components/docs/component-preview";
@@ -14,13 +26,27 @@ export interface ComponentDocClientProps {
 
 export function ComponentDocClient({ entry }: ComponentDocClientProps) {
   return (
-    <ComponentsLayout
-      breadcrumbs={[
-        { label: entry.category },
-        { label: entry.name },
-      ]}
-    >
-      <div className="space-y-12 font-mono">
+    <div className="space-y-10 font-mono">
+      {/* Breadcrumbs */}
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/">Home</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator>/</BreadcrumbSeparator>
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/components">Components</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator>/</BreadcrumbSeparator>
+          <BreadcrumbItem>
+            <span className="text-muted-foreground">{entry.category}</span>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator>/</BreadcrumbSeparator>
+          <BreadcrumbItem>
+            <BreadcrumbPage>{entry.name}</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
         {/* Header Block */}
         <div className="space-y-3">
           <div className="flex flex-wrap items-center gap-2">
@@ -164,6 +190,5 @@ export function ComponentDocClient({ entry }: ComponentDocClientProps) {
           </Link>
         </div>
       </div>
-    </ComponentsLayout>
   );
 }

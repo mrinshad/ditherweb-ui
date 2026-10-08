@@ -3,6 +3,7 @@
 import * as React from "react";
 import { Portal } from "./portal";
 import { Backdrop } from "./backdrop";
+import { Tooltip, TooltipTrigger, TooltipContent } from "./tooltip";
 import {
   lockBodyScroll,
   unlockBodyScroll,
@@ -221,11 +222,13 @@ export const Sidebar = React.forwardRef<HTMLElement, SidebarProps>(
             variant="dimmed"
             className="z-50"
           />
-          <div
+          <aside
             ref={mobileDrawerRef}
             role="dialog"
             aria-modal="true"
-            aria-label="Sidebar navigation"
+            aria-label="Sidebar"
+            data-slot="sidebar-drawer"
+            data-state="open"
             className={cn(
               "fixed inset-y-0 z-50 flex flex-col w-72 max-w-[85vw] bg-surface text-foreground font-mono text-xs",
               "border-r border-border bevel-raised shadow-2xl",
@@ -233,7 +236,7 @@ export const Sidebar = React.forwardRef<HTMLElement, SidebarProps>(
             )}
           >
             {children}
-          </div>
+          </aside>
         </Portal>
       );
     }
@@ -244,9 +247,10 @@ export const Sidebar = React.forwardRef<HTMLElement, SidebarProps>(
     return (
       <aside
         ref={ref}
+        data-slot="sidebar"
         data-state={state}
         data-collapsible={collapsible}
-        aria-label="Sidebar navigation"
+        aria-label="Sidebar"
         className={cn(
           "sticky top-14 h-[calc(100vh-3.5rem)] shrink-0 flex flex-col",
           "border-r border-border bg-surface text-foreground font-mono text-xs",
@@ -388,6 +392,7 @@ export interface SidebarItemProps extends React.HTMLAttributes<HTMLElement> {
   disabled?: boolean;
   trailing?: React.ReactNode;
   asChild?: boolean;
+  tooltip?: React.ReactNode;
 }
 
 export const SidebarItem = React.forwardRef<HTMLElement, SidebarItemProps>(
@@ -401,6 +406,7 @@ export const SidebarItem = React.forwardRef<HTMLElement, SidebarItemProps>(
       disabled = false,
       trailing,
       asChild = false,
+      tooltip,
       className,
       onClick,
       ...props
@@ -433,8 +439,17 @@ export const SidebarItem = React.forwardRef<HTMLElement, SidebarItemProps>(
       className,
     );
 
-    const titleText =
-      typeof children === "string" ? children : undefined;
+    const childLabel =
+      asChild && React.isValidElement(children) && typeof (children.props as { children?: React.ReactNode })?.children === "string"
+        ? (children.props as { children: string }).children
+        : undefined;
+
+    const labelText =
+      tooltip ||
+      (typeof children === "string" ? children : undefined) ||
+      childLabel;
+
+    const displayLabel = labelText ?? (asChild ? null : children);
 
     // Render as anchor or button depending on href
     const content = (
@@ -453,9 +468,9 @@ export const SidebarItem = React.forwardRef<HTMLElement, SidebarItemProps>(
         )}
 
         {isCollapsed ? (
-          <span className="sr-only">{children}</span>
+          <span className="sr-only">{displayLabel}</span>
         ) : (
-          <span className="truncate flex-1 text-left">{children}</span>
+          <span className="truncate flex-1 text-left">{displayLabel}</span>
         )}
 
         {!isCollapsed && badge && (
@@ -468,29 +483,29 @@ export const SidebarItem = React.forwardRef<HTMLElement, SidebarItemProps>(
       </>
     );
 
+    let element: React.ReactElement;
+
     if (asChild && React.isValidElement(children)) {
       const child = children as React.ReactElement<{
         className?: string;
         onClick?: React.MouseEventHandler<HTMLElement>;
-        title?: string;
+        children?: React.ReactNode;
+        ref?: React.Ref<HTMLElement>;
       }>;
-      return React.cloneElement(child, {
+      element = React.cloneElement(child, {
         className: cn(commonClasses, child.props.className),
         onClick: (e: React.MouseEvent<HTMLElement>) => {
           handleClick(e);
           child.props.onClick?.(e);
         },
-        title: isCollapsed ? titleText : child.props.title,
-      });
-    }
-
-    if (href) {
-      return (
+        children: content,
+      } as React.HTMLAttributes<HTMLElement>);
+    } else if (href) {
+      element = (
         <a
           ref={ref as React.Ref<HTMLAnchorElement>}
           href={href}
           onClick={handleClick}
-          title={isCollapsed ? titleText : undefined}
           aria-current={active ? "page" : undefined}
           aria-disabled={disabled}
           className={commonClasses}
@@ -499,22 +514,36 @@ export const SidebarItem = React.forwardRef<HTMLElement, SidebarItemProps>(
           {content}
         </a>
       );
+    } else {
+      element = (
+        <button
+          ref={ref as React.Ref<HTMLButtonElement>}
+          type="button"
+          disabled={disabled}
+          onClick={handleClick}
+          aria-pressed={active}
+          className={commonClasses}
+          {...(props as React.ButtonHTMLAttributes<HTMLButtonElement>)}
+        >
+          {content}
+        </button>
+      );
     }
 
-    return (
-      <button
-        ref={ref as React.Ref<HTMLButtonElement>}
-        type="button"
-        disabled={disabled}
-        onClick={handleClick}
-        title={isCollapsed ? titleText : undefined}
-        aria-pressed={active}
-        className={commonClasses}
-        {...(props as React.ButtonHTMLAttributes<HTMLButtonElement>)}
-      >
-        {content}
-      </button>
-    );
+    if (isCollapsed && labelText) {
+      return (
+        <Tooltip side="right" align="center" delayDuration={150}>
+          <TooltipTrigger asChild>
+            {element}
+          </TooltipTrigger>
+          <TooltipContent>
+            {labelText}
+          </TooltipContent>
+        </Tooltip>
+      );
+    }
+
+    return element;
   },
 );
 
@@ -636,6 +665,7 @@ export const SidebarTrigger = React.forwardRef<HTMLButtonElement, SidebarTrigger
       <button
         ref={ref}
         type="button"
+        data-slot="sidebar-trigger"
         onClick={toggleSidebar}
         aria-label={label}
         title={label}

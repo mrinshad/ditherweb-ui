@@ -3,7 +3,6 @@
 import React, { useState, useEffect, createContext, useContext } from "react";
 import { componentCodeSamples } from "./catalog-code-samples";
 import NextLink from "next/link";
-import { ComponentsLayout } from "@/components/docs/components-layout";
 import {
   Button,
   Input,
@@ -657,8 +656,7 @@ export default function ComponentsPage() {
 
   return (
     <CodeViewerContext.Provider value={{ openCodes, copiedId, toggleCode, copyCode }}>
-      <ComponentsLayout>
-        <div className="space-y-12 min-w-0 max-w-full overflow-x-clip">
+      <div className="space-y-12 min-w-0 max-w-full overflow-x-clip">
       {/* Page Header */}
       <div className="space-y-4">
         <div className="flex items-center gap-2">
@@ -6370,8 +6368,7 @@ export default function ComponentsPage() {
           Experiment in Playground →
         </NextLink>
           </div>
-        </div>
-      </ComponentsLayout>
+      </div>
     </CodeViewerContext.Provider>
   );
 }

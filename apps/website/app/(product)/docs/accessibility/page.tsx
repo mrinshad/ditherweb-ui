@@ -1,7 +1,19 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Badge, Card, CardHeader, CardTitle, CardContent, Separator } from "@ditherweb/ui";
-import { DocsLayout } from "@/components/docs/docs-layout";
+import {
+  Badge,
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  Separator,
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@ditherweb/ui";
 import { CodeBlock } from "@/components/docs/code-block";
 
 export const metadata: Metadata = {
@@ -15,8 +27,23 @@ export const metadata: Metadata = {
 
 export default function AccessibilityPage() {
   return (
-    <DocsLayout breadcrumbs={[{ label: "Guides", href: "/docs" }, { label: "Accessibility" }]}>
-      <div className="space-y-10 font-mono">
+    <div className="space-y-10 font-mono">
+      {/* Breadcrumb */}
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/">Home</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator>/</BreadcrumbSeparator>
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/docs">Docs</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator>/</BreadcrumbSeparator>
+          <BreadcrumbItem>
+            <BreadcrumbPage>Accessibility Standards</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
         <div className="space-y-3">
           <Badge variant="primary">Guide</Badge>
           <h1 className="text-3xl font-bold uppercase tracking-tight text-foreground">
@@ -133,6 +160,5 @@ export default function AccessibilityPage() {
           </Link>
         </div>
       </div>
-    </DocsLayout>
   );
 }
