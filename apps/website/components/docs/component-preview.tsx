@@ -267,6 +267,27 @@ import {
   WebDirectoryLink,
   WebDirectoryDescription,
   WebDirectorySubcategories,
+  Halftone,
+  type HalftoneDensity,
+  type HalftoneSize,
+  type HalftoneMode,
+  Pixelate,
+  type PixelateScale,
+  type PixelateRendering,
+  Noise,
+  type NoiseBlendMode,
+  ImageFrame,
+  type ImageFrameVariant,
+  Scanline,
+  type ScanlineDensity,
+  type ScanlineOrientation,
+  PixelText,
+  type PixelTextSize,
+  type PixelTextShadow,
+  Typewriter,
+  type TypewriterSpeed,
+  BlinkCursor,
+  type BlinkCursorVariant,
 } from "@ditherweb/ui";
 
 export interface ComponentPreviewProps {
@@ -595,6 +616,64 @@ interface PreviewState {
   setBitmapCanvasGrid: (g: boolean) => void;
   bitmapCanvasKey: number;
   setBitmapCanvasKey: React.Dispatch<React.SetStateAction<number>>;
+
+  // Effects & Polish states
+  halftoneDensity: HalftoneDensity;
+  setHalftoneDensity: (d: HalftoneDensity) => void;
+  halftoneSize: HalftoneSize;
+  setHalftoneSize: (s: HalftoneSize) => void;
+  halftoneMode: HalftoneMode;
+  setHalftoneMode: (m: HalftoneMode) => void;
+  halftoneOpacity: number;
+  setHalftoneOpacity: (o: number) => void;
+  pixelateScale: PixelateScale;
+  setPixelateScale: (s: PixelateScale) => void;
+  pixelateRendering: PixelateRendering;
+  setPixelateRendering: (r: PixelateRendering) => void;
+  pixelateCrispText: boolean;
+  setPixelateCrispText: (c: boolean) => void;
+  noiseIntensity: "subtle" | "medium" | "strong";
+  setNoiseIntensity: (i: "subtle" | "medium" | "strong") => void;
+  noiseAnimated: boolean;
+  setNoiseAnimated: (a: boolean) => void;
+  noiseBlendMode: NoiseBlendMode;
+  setNoiseBlendMode: (b: NoiseBlendMode) => void;
+  imageFrameVariant: ImageFrameVariant;
+  setImageFrameVariant: (v: ImageFrameVariant) => void;
+  imageFrameDither: "none" | "bayer" | "checker" | "fine" | "dense";
+  setImageFrameDither: (d: "none" | "bayer" | "checker" | "fine" | "dense") => void;
+  imageFramePixelated: boolean;
+  setImageFramePixelated: (p: boolean) => void;
+  scanlineDensity: ScanlineDensity;
+  setScanlineDensity: (d: ScanlineDensity) => void;
+  scanlineOrientation: ScanlineOrientation;
+  setScanlineOrientation: (o: ScanlineOrientation) => void;
+  scanlineAnimated: boolean;
+  setScanlineAnimated: (a: boolean) => void;
+  scanlineOpacity: number;
+  setScanlineOpacity: (o: number) => void;
+  pixelTextSize: PixelTextSize;
+  setPixelTextSize: (s: PixelTextSize) => void;
+  pixelTextShadow: PixelTextShadow;
+  setPixelTextShadow: (s: PixelTextShadow) => void;
+  pixelTextGlow: boolean;
+  setPixelTextGlow: (g: boolean) => void;
+  pixelTextCrisp: boolean;
+  setPixelTextCrisp: (c: boolean) => void;
+  typewriterSpeed: TypewriterSpeed;
+  setTypewriterSpeed: (s: TypewriterSpeed) => void;
+  typewriterLoop: boolean;
+  setTypewriterLoop: (l: boolean) => void;
+  typewriterTextPreset: number;
+  setTypewriterTextPreset: (p: number) => void;
+  typewriterKey: number;
+  setTypewriterKey: React.Dispatch<React.SetStateAction<number>>;
+  blinkCursorVariant: BlinkCursorVariant;
+  setBlinkCursorVariant: (v: BlinkCursorVariant) => void;
+  blinkCursorBlink: boolean;
+  setBlinkCursorBlink: (b: boolean) => void;
+  blinkCursorChar: string;
+  setBlinkCursorChar: (c: string) => void;
 }
 
 export function ComponentPreview({ slug }: ComponentPreviewProps) {
@@ -779,6 +858,36 @@ export function ComponentPreview({ slug }: ComponentPreviewProps) {
   const [bitmapCanvasColor, setBitmapCanvasColor] = useState(DEFAULT_RETRO_PALETTE[1] || "#ffffff");
   const [bitmapCanvasGrid, setBitmapCanvasGrid] = useState(true);
   const [bitmapCanvasKey, setBitmapCanvasKey] = useState(0);
+
+  // Effects & Polish states
+  const [halftoneDensity, setHalftoneDensity] = useState<HalftoneDensity>("medium");
+  const [halftoneSize, setHalftoneSize] = useState<HalftoneSize>("md");
+  const [halftoneMode, setHalftoneMode] = useState<HalftoneMode>("overlay");
+  const [halftoneOpacity, setHalftoneOpacity] = useState(0.5);
+  const [pixelateScale, setPixelateScale] = useState<PixelateScale>(2);
+  const [pixelateRendering, setPixelateRendering] = useState<PixelateRendering>("pixelated");
+  const [pixelateCrispText, setPixelateCrispText] = useState(true);
+  const [noiseIntensity, setNoiseIntensity] = useState<"subtle" | "medium" | "strong">("medium");
+  const [noiseAnimated, setNoiseAnimated] = useState(true);
+  const [noiseBlendMode, setNoiseBlendMode] = useState<NoiseBlendMode>("normal");
+  const [imageFrameVariant, setImageFrameVariant] = useState<ImageFrameVariant>("raised");
+  const [imageFrameDither, setImageFrameDither] = useState<"none" | "bayer" | "checker" | "fine" | "dense">("bayer");
+  const [imageFramePixelated, setImageFramePixelated] = useState(true);
+  const [scanlineDensity, setScanlineDensity] = useState<ScanlineDensity>("medium");
+  const [scanlineOrientation, setScanlineOrientation] = useState<ScanlineOrientation>("horizontal");
+  const [scanlineAnimated, setScanlineAnimated] = useState(true);
+  const [scanlineOpacity, setScanlineOpacity] = useState(0.3);
+  const [pixelTextSize, setPixelTextSize] = useState<PixelTextSize>("xl");
+  const [pixelTextShadow, setPixelTextShadow] = useState<PixelTextShadow>("stepped");
+  const [pixelTextGlow, setPixelTextGlow] = useState(true);
+  const [pixelTextCrisp, setPixelTextCrisp] = useState(true);
+  const [typewriterSpeed, setTypewriterSpeed] = useState<TypewriterSpeed>("medium");
+  const [typewriterLoop, setTypewriterLoop] = useState(false);
+  const [typewriterTextPreset, setTypewriterTextPreset] = useState(0);
+  const [typewriterKey, setTypewriterKey] = useState(0);
+  const [blinkCursorVariant, setBlinkCursorVariant] = useState<BlinkCursorVariant>("block");
+  const [blinkCursorBlink, setBlinkCursorBlink] = useState(true);
+  const [blinkCursorChar, setBlinkCursorChar] = useState("");
 
   return (
     <div className="bevel-raised bg-surface p-6 font-mono text-xs border border-border space-y-4">
@@ -1089,6 +1198,62 @@ export function ComponentPreview({ slug }: ComponentPreviewProps) {
           setBitmapCanvasGrid,
           bitmapCanvasKey,
           setBitmapCanvasKey,
+          halftoneDensity,
+          setHalftoneDensity,
+          halftoneSize,
+          setHalftoneSize,
+          halftoneMode,
+          setHalftoneMode,
+          halftoneOpacity,
+          setHalftoneOpacity,
+          pixelateScale,
+          setPixelateScale,
+          pixelateRendering,
+          setPixelateRendering,
+          pixelateCrispText,
+          setPixelateCrispText,
+          noiseIntensity,
+          setNoiseIntensity,
+          noiseAnimated,
+          setNoiseAnimated,
+          noiseBlendMode,
+          setNoiseBlendMode,
+          imageFrameVariant,
+          setImageFrameVariant,
+          imageFrameDither,
+          setImageFrameDither,
+          imageFramePixelated,
+          setImageFramePixelated,
+          scanlineDensity,
+          setScanlineDensity,
+          scanlineOrientation,
+          setScanlineOrientation,
+          scanlineAnimated,
+          setScanlineAnimated,
+          scanlineOpacity,
+          setScanlineOpacity,
+          pixelTextSize,
+          setPixelTextSize,
+          pixelTextShadow,
+          setPixelTextShadow,
+          pixelTextGlow,
+          setPixelTextGlow,
+          pixelTextCrisp,
+          setPixelTextCrisp,
+          typewriterSpeed,
+          setTypewriterSpeed,
+          typewriterLoop,
+          setTypewriterLoop,
+          typewriterTextPreset,
+          setTypewriterTextPreset,
+          typewriterKey,
+          setTypewriterKey,
+          blinkCursorVariant,
+          setBlinkCursorVariant,
+          blinkCursorBlink,
+          setBlinkCursorBlink,
+          blinkCursorChar,
+          setBlinkCursorChar,
         })}
       </div>
     </div>
@@ -5627,6 +5792,785 @@ function renderPreviewContent(slug: string, state: PreviewState) {
           <span className="text-[10px] text-muted-foreground text-center">
             Interactive pixel paint canvas primitive supporting mouse/keyboard painting and retro 16-color palettes.
           </span>
+        </div>
+      );
+
+    case "halftone":
+      return (
+        <div className="flex flex-col items-center gap-4 w-full max-w-lg">
+          <div className="w-full bevel-raised bg-surface p-4 space-y-3">
+            <div className="flex items-center justify-between border-b border-border pb-2 text-[11px] text-muted-foreground uppercase font-mono">
+              <span className="font-bold text-foreground">HALFTONE RASTER SUBSYSTEM</span>
+              <span className="bevel-inset bg-muted/40 px-1.5 py-0.5 text-primary text-[10px]">
+                {state.halftoneDensity} {"//"} {state.halftoneSize}
+              </span>
+            </div>
+
+            <div className="relative w-full h-44 bevel-inset bg-surface-sunken flex items-center justify-center overflow-hidden">
+              <Halftone
+                density={state.halftoneDensity}
+                size={state.halftoneSize}
+                mode={state.halftoneMode}
+                opacity={state.halftoneOpacity}
+                className="w-full h-full flex items-center justify-center"
+              >
+                <div className="relative z-0 flex flex-col items-center justify-center p-6 text-center space-y-2 select-none">
+                  <div className="w-16 h-16 bevel-raised bg-primary/20 border-2 border-primary flex items-center justify-center text-primary font-mono text-2xl font-bold shadow-hard-sm">
+                    {"[::]"}
+                  </div>
+                  <div className="font-mono font-bold text-foreground text-sm uppercase tracking-wider">
+                    DOT MATRIX SCREEN
+                  </div>
+                  <div className="font-mono text-[11px] text-muted-foreground max-w-xs">
+                    Continuous-tone imagery simulated via micro-aperture dot distributions.
+                  </div>
+                </div>
+              </Halftone>
+            </div>
+
+            <div className="grid grid-cols-3 gap-2 text-[10px] font-mono">
+              <div className="bevel-inset bg-surface p-1.5 text-center">
+                <span className="text-muted-foreground block text-[9px]">DENSITY</span>
+                <span className="font-bold text-foreground uppercase">{state.halftoneDensity}</span>
+              </div>
+              <div className="bevel-inset bg-surface p-1.5 text-center">
+                <span className="text-muted-foreground block text-[9px]">DOT SIZE</span>
+                <span className="font-bold text-foreground uppercase">{state.halftoneSize}</span>
+              </div>
+              <div className="bevel-inset bg-surface p-1.5 text-center">
+                <span className="text-muted-foreground block text-[9px]">OPACITY</span>
+                <span className="font-bold text-foreground uppercase">{Math.round(state.halftoneOpacity * 100)}%</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-2 pt-2 border-t border-border w-full text-[11px] font-mono">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <span className="text-muted-foreground uppercase text-[10px]">Density:</span>
+              <div className="flex flex-wrap gap-1">
+                {(["sparse", "medium", "dense"] as HalftoneDensity[]).map((d) => (
+                  <Button
+                    key={d}
+                    size="sm"
+                    variant={state.halftoneDensity === d ? "primary" : "outline"}
+                    onClick={() => state.setHalftoneDensity(d)}
+                  >
+                    {d}
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <span className="text-muted-foreground uppercase text-[10px]">Dot Size:</span>
+              <div className="flex flex-wrap gap-1">
+                {(["sm", "md", "lg"] as HalftoneSize[]).map((s) => (
+                  <Button
+                    key={s}
+                    size="sm"
+                    variant={state.halftoneSize === s ? "primary" : "outline"}
+                    onClick={() => state.setHalftoneSize(s)}
+                  >
+                    {s}
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <span className="text-muted-foreground uppercase text-[10px]">Mode:</span>
+              <div className="flex flex-wrap gap-1">
+                {(["overlay", "background", "standalone"] as HalftoneMode[]).map((m) => (
+                  <Button
+                    key={m}
+                    size="sm"
+                    variant={state.halftoneMode === m ? "primary" : "outline"}
+                    onClick={() => state.setHalftoneMode(m)}
+                  >
+                    {m}
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <span className="text-muted-foreground uppercase text-[10px]">Opacity:</span>
+              <div className="flex flex-wrap gap-1">
+                {[0.25, 0.5, 0.75, 1.0].map((op) => (
+                  <Button
+                    key={op}
+                    size="sm"
+                    variant={state.halftoneOpacity === op ? "primary" : "outline"}
+                    onClick={() => state.setHalftoneOpacity(op)}
+                  >
+                    {Math.round(op * 100)}%
+                  </Button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+
+    case "pixelate":
+      return (
+        <div className="flex flex-col items-center gap-4 w-full max-w-md">
+          <div className="w-full bevel-raised bg-surface p-4 space-y-4">
+            <div className="flex items-center justify-between border-b border-border pb-2 text-[11px] text-muted-foreground uppercase font-mono">
+              <span className="font-bold text-foreground">PIXELATE WRAPPER</span>
+              <span className="bevel-inset bg-muted/40 px-1.5 py-0.5 text-primary text-[10px]">
+                {state.pixelateScale}x {"//"} {state.pixelateRendering}
+              </span>
+            </div>
+
+            <div className="flex flex-col items-center justify-center p-6 bevel-inset bg-background min-h-[170px] overflow-hidden">
+              <Pixelate
+                scale={state.pixelateScale}
+                rendering={state.pixelateRendering}
+                crispText={state.pixelateCrispText}
+                className="flex flex-col items-center text-center gap-2"
+              >
+                <div className="w-14 h-14 bevel-raised bg-surface-raised border-2 border-border-strong flex items-center justify-center text-primary text-xl font-mono font-bold shadow-hard-sm">
+                  {state.pixelateScale === 1 && "[1x]"}
+                  {state.pixelateScale === 2 && "[2x]"}
+                  {state.pixelateScale === 4 && "[4x]"}
+                  {state.pixelateScale === 8 && "[8x]"}
+                </div>
+                <div className="font-mono font-bold text-sm uppercase tracking-wide text-foreground">
+                  NEAREST NEIGHBOR
+                </div>
+                <div className="font-mono text-[10px] text-muted-foreground">
+                  Image and typography scaling with zero anti-aliasing blur.
+                </div>
+              </Pixelate>
+            </div>
+
+            <div className="flex items-center justify-between text-[11px] font-mono text-muted-foreground">
+              <span>Rendering Mode:</span>
+              <span className="font-bold text-foreground uppercase">{state.pixelateRendering}</span>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-2 pt-2 border-t border-border w-full text-[11px] font-mono">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <span className="text-muted-foreground uppercase text-[10px]">Scale Multiplier:</span>
+              <div className="flex flex-wrap gap-1">
+                {([1, 2, 4] as PixelateScale[]).map((sc) => (
+                  <Button
+                    key={sc}
+                    size="sm"
+                    variant={state.pixelateScale === sc ? "primary" : "outline"}
+                    onClick={() => state.setPixelateScale(sc)}
+                  >
+                    {sc}x
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <span className="text-muted-foreground uppercase text-[10px]">Rendering:</span>
+              <div className="flex flex-wrap gap-1">
+                {(["pixelated", "crisp-edges", "auto"] as PixelateRendering[]).map((r) => (
+                  <Button
+                    key={r}
+                    size="sm"
+                    variant={state.pixelateRendering === r ? "primary" : "outline"}
+                    onClick={() => state.setPixelateRendering(r)}
+                  >
+                    {r}
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <span className="text-muted-foreground uppercase text-[10px]">Crisp Text:</span>
+              <Button
+                size="sm"
+                variant={state.pixelateCrispText ? "primary" : "outline"}
+                onClick={() => state.setPixelateCrispText(!state.pixelateCrispText)}
+              >
+                {state.pixelateCrispText ? "Crisp Text: ON" : "Crisp Text: OFF"}
+              </Button>
+            </div>
+          </div>
+        </div>
+      );
+
+    case "noise":
+      return (
+        <div className="flex flex-col items-center gap-4 w-full max-w-md">
+          <div className="w-full bevel-raised bg-surface p-4 space-y-3">
+            <div className="flex items-center justify-between border-b border-border pb-2 text-[11px] text-muted-foreground uppercase font-mono">
+              <span className="font-bold text-foreground">FILM GRAIN &amp; NOISE</span>
+              <span className="bevel-inset bg-muted/40 px-1.5 py-0.5 text-primary text-[10px]">
+                {state.noiseIntensity} {"//"} {state.noiseBlendMode}
+              </span>
+            </div>
+
+            <div className="relative w-full h-44 bevel-inset bg-surface-sunken flex items-center justify-center overflow-hidden">
+              <Noise
+                intensity={state.noiseIntensity}
+                animated={state.noiseAnimated}
+                blendMode={state.noiseBlendMode}
+                className="w-full h-full flex items-center justify-center"
+              >
+                <div className="p-4 text-center space-y-2 select-none">
+                  <div className="font-mono text-xs uppercase tracking-wider text-primary font-bold">
+                    SIGNAL STATIC {"//"} CH-03
+                  </div>
+                  <div className="font-mono text-lg font-bold text-foreground">
+                    ANALOG CARRIER 67.25 MHz
+                  </div>
+                  <div className="font-mono text-[10px] text-muted-foreground">
+                    Procedural noise overlay simulating retro RF interference and film grain.
+                  </div>
+                  <div className="pt-1 flex items-center justify-center gap-2">
+                    <span className="px-2 py-0.5 bevel-raised text-[10px] font-mono font-bold text-foreground">
+                      {state.noiseAnimated ? "LIVE JITTER" : "STATIC GRAIN"}
+                    </span>
+                  </div>
+                </div>
+              </Noise>
+            </div>
+
+            <div className="flex items-center justify-between text-[11px] font-mono text-muted-foreground">
+              <span>Blend Mode:</span>
+              <span className="font-bold text-foreground uppercase">{state.noiseBlendMode}</span>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-2 pt-2 border-t border-border w-full text-[11px] font-mono">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <span className="text-muted-foreground uppercase text-[10px]">Intensity:</span>
+              <div className="flex flex-wrap gap-1">
+                {(["subtle", "medium", "strong"] as const).map((i) => (
+                  <Button
+                    key={i}
+                    size="sm"
+                    variant={state.noiseIntensity === i ? "primary" : "outline"}
+                    onClick={() => state.setNoiseIntensity(i)}
+                  >
+                    {i}
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <span className="text-muted-foreground uppercase text-[10px]">Blend Mode:</span>
+              <div className="flex flex-wrap gap-1">
+                {(["normal", "multiply", "screen", "overlay"] as NoiseBlendMode[]).map((b) => (
+                  <Button
+                    key={b}
+                    size="sm"
+                    variant={state.noiseBlendMode === b ? "primary" : "outline"}
+                    onClick={() => state.setNoiseBlendMode(b)}
+                  >
+                    {b}
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <span className="text-muted-foreground uppercase text-[10px]">Animation:</span>
+              <Button
+                size="sm"
+                variant={state.noiseAnimated ? "primary" : "outline"}
+                onClick={() => state.setNoiseAnimated(!state.noiseAnimated)}
+              >
+                {state.noiseAnimated ? "Jitter: ON" : "Jitter: OFF"}
+              </Button>
+            </div>
+          </div>
+        </div>
+      );
+
+    case "image-frame":
+      return (
+        <div className="flex flex-col items-center gap-4 w-full max-w-md">
+          <div className="w-full bevel-raised bg-surface p-4 space-y-4">
+            <div className="flex items-center justify-between border-b border-border pb-2 text-[11px] text-muted-foreground uppercase font-mono">
+              <span className="font-bold text-foreground">FIGURE IMAGE FRAME</span>
+              <span className="bevel-inset bg-muted/40 px-1.5 py-0.5 text-primary text-[10px]">
+                {state.imageFrameVariant}
+              </span>
+            </div>
+
+            <div className="flex flex-col items-center justify-center p-4 bevel-inset bg-background min-h-[190px]">
+              <ImageFrame
+                variant={state.imageFrameVariant}
+                pixelated={state.imageFramePixelated}
+                ditherOverlay={state.imageFrameDither === "none" ? false : state.imageFrameDither}
+                caption="FIG 1.0: RETRO WORKSTATION MONOCHROME VIEW"
+                className="max-w-[280px]"
+              >
+                <div className="w-64 h-36 bg-gradient-to-br from-surface to-surface-sunken flex flex-col items-center justify-center p-3 text-center">
+                  <div className="w-12 h-12 bevel-raised bg-primary/20 border border-primary flex items-center justify-center text-primary font-mono text-xl font-bold mb-1 shadow-hard-sm">
+                    {"[IMG]"}
+                  </div>
+                  <div className="font-mono text-xs font-bold text-foreground uppercase">
+                    CYBER WORKSTATION
+                  </div>
+                  <div className="font-mono text-[9px] text-muted-foreground">
+                    BITMAP RASTER 320 x 240
+                  </div>
+                </div>
+              </ImageFrame>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-2 pt-2 border-t border-border w-full text-[11px] font-mono">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <span className="text-muted-foreground uppercase text-[10px]">Variant:</span>
+              <div className="flex flex-wrap gap-1">
+                {(["raised", "inset", "pixel", "dither", "bitmap", "plain"] as ImageFrameVariant[]).map((v) => (
+                  <Button
+                    key={v}
+                    size="sm"
+                    variant={state.imageFrameVariant === v ? "primary" : "outline"}
+                    onClick={() => state.setImageFrameVariant(v)}
+                  >
+                    {v}
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <span className="text-muted-foreground uppercase text-[10px]">Dither Overlay:</span>
+              <div className="flex flex-wrap gap-1">
+                {(["none", "bayer", "checker", "fine", "dense"] as const).map((d) => (
+                  <Button
+                    key={d}
+                    size="sm"
+                    variant={state.imageFrameDither === d ? "primary" : "outline"}
+                    onClick={() => state.setImageFrameDither(d)}
+                  >
+                    {d}
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <span className="text-muted-foreground uppercase text-[10px]">Pixelated:</span>
+              <Button
+                size="sm"
+                variant={state.imageFramePixelated ? "primary" : "outline"}
+                onClick={() => state.setImageFramePixelated(!state.imageFramePixelated)}
+              >
+                {state.imageFramePixelated ? "Pixelated: ON" : "Pixelated: OFF"}
+              </Button>
+            </div>
+          </div>
+        </div>
+      );
+
+    case "scanline":
+      return (
+        <div className="flex flex-col items-center gap-4 w-full max-w-md">
+          <div className="w-full bevel-raised bg-surface p-4 space-y-3">
+            <div className="flex items-center justify-between border-b border-border pb-2 text-[11px] text-muted-foreground uppercase font-mono">
+              <span className="font-bold text-foreground">CRT SCANLINE RASTER</span>
+              <span className="bevel-inset bg-muted/40 px-1.5 py-0.5 text-primary text-[10px]">
+                {state.scanlineOrientation} {"//"} {state.scanlineDensity}
+              </span>
+            </div>
+
+            <div className="relative w-full h-44 bevel-inset bg-black flex items-center justify-center overflow-hidden">
+              <Scanline
+                density={state.scanlineDensity}
+                orientation={state.scanlineOrientation}
+                animated={state.scanlineAnimated}
+                opacity={state.scanlineOpacity}
+                className="w-full h-full flex items-center justify-center"
+              >
+                <div className="p-4 text-center space-y-1.5 select-none font-mono">
+                  <div className="text-emerald-500 font-bold text-xs uppercase tracking-widest [text-shadow:0_0_8px_#10b981]">
+                    P31 PHOSPHOR SCREEN
+                  </div>
+                  <div className="text-emerald-400 font-bold text-base [text-shadow:0_0_6px_#10b981]">
+                    VGA 640x480 @ 60Hz
+                  </div>
+                  <div className="text-emerald-600 text-[10px]">
+                    HORIZONTAL RETRACE: 31.5 kHz
+                  </div>
+                  <div className="pt-2 flex items-center justify-center gap-2">
+                    <span className="px-2 py-0.5 bg-emerald-950/80 border border-emerald-600 text-[10px] text-emerald-400 font-bold">
+                      {state.scanlineAnimated ? "ROLLING RASTER" : "STATIC GRID"}
+                    </span>
+                  </div>
+                </div>
+              </Scanline>
+            </div>
+
+            <div className="grid grid-cols-3 gap-2 text-[10px] font-mono">
+              <div className="bevel-inset bg-surface p-1.5 text-center">
+                <span className="text-muted-foreground block text-[9px]">ORIENTATION</span>
+                <span className="font-bold text-foreground uppercase">{state.scanlineOrientation}</span>
+              </div>
+              <div className="bevel-inset bg-surface p-1.5 text-center">
+                <span className="text-muted-foreground block text-[9px]">DENSITY</span>
+                <span className="font-bold text-foreground uppercase">{state.scanlineDensity}</span>
+              </div>
+              <div className="bevel-inset bg-surface p-1.5 text-center">
+                <span className="text-muted-foreground block text-[9px]">ROLL EFFECT</span>
+                <span className="font-bold text-foreground uppercase">{state.scanlineAnimated ? "ON" : "OFF"}</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-2 pt-2 border-t border-border w-full text-[11px] font-mono">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <span className="text-muted-foreground uppercase text-[10px]">Orientation:</span>
+              <div className="flex flex-wrap gap-1">
+                {(["horizontal", "vertical"] as ScanlineOrientation[]).map((o) => (
+                  <Button
+                    key={o}
+                    size="sm"
+                    variant={state.scanlineOrientation === o ? "primary" : "outline"}
+                    onClick={() => state.setScanlineOrientation(o)}
+                  >
+                    {o}
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <span className="text-muted-foreground uppercase text-[10px]">Density:</span>
+              <div className="flex flex-wrap gap-1">
+                {(["fine", "medium", "coarse"] as ScanlineDensity[]).map((d) => (
+                  <Button
+                    key={d}
+                    size="sm"
+                    variant={state.scanlineDensity === d ? "primary" : "outline"}
+                    onClick={() => state.setScanlineDensity(d)}
+                  >
+                    {d}
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <span className="text-muted-foreground uppercase text-[10px]">Rolling Animation:</span>
+              <Button
+                size="sm"
+                variant={state.scanlineAnimated ? "primary" : "outline"}
+                onClick={() => state.setScanlineAnimated(!state.scanlineAnimated)}
+              >
+                {state.scanlineAnimated ? "Animation: ON" : "Animation: OFF"}
+              </Button>
+            </div>
+
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <span className="text-muted-foreground uppercase text-[10px]">Opacity:</span>
+              <div className="flex flex-wrap gap-1">
+                {[0.2, 0.4, 0.7].map((op) => (
+                  <Button
+                    key={op}
+                    size="sm"
+                    variant={state.scanlineOpacity === op ? "primary" : "outline"}
+                    onClick={() => state.setScanlineOpacity(op)}
+                  >
+                    {Math.round(op * 100)}%
+                  </Button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+
+    case "pixel-text":
+      return (
+        <div className="flex flex-col items-center gap-4 w-full max-w-md">
+          <div className="w-full bevel-raised bg-surface p-4 space-y-4">
+            <div className="flex items-center justify-between border-b border-border pb-2 text-[11px] text-muted-foreground uppercase font-mono">
+              <span className="font-bold text-foreground">PIXEL TEXT TYPOGRAPHY</span>
+              <span className="bevel-inset bg-muted/40 px-1.5 py-0.5 text-primary text-[10px]">
+                {state.pixelTextSize} {"//"} {state.pixelTextShadow}
+              </span>
+            </div>
+
+            <div className="flex flex-col items-center justify-center p-6 bevel-inset bg-background min-h-[160px] text-center space-y-3">
+              <PixelText
+                size={state.pixelTextSize}
+                shadow={state.pixelTextShadow}
+                glow={state.pixelTextGlow}
+                crisp={state.pixelTextCrisp}
+                className="text-primary tracking-wider"
+              >
+                HIGH SCORE: 999,990
+              </PixelText>
+
+              <div className="font-mono text-[11px] text-muted-foreground">
+                <PixelText size="sm" shadow="none" crisp={state.pixelTextCrisp}>
+                  INSERT COIN TO CONTINUE {"//"} PLAYER 1 READY
+                </PixelText>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between text-[11px] font-mono text-muted-foreground">
+              <span>Shadow Mode:</span>
+              <span className="font-bold text-foreground uppercase">{state.pixelTextShadow}</span>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-2 pt-2 border-t border-border w-full text-[11px] font-mono">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <span className="text-muted-foreground uppercase text-[10px]">Size:</span>
+              <div className="flex flex-wrap gap-1">
+                {(["sm", "base", "lg", "xl", "2xl"] as PixelTextSize[]).map((s) => (
+                  <Button
+                    key={s}
+                    size="sm"
+                    variant={state.pixelTextSize === s ? "primary" : "outline"}
+                    onClick={() => state.setPixelTextSize(s)}
+                  >
+                    {s}
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <span className="text-muted-foreground uppercase text-[10px]">Shadow:</span>
+              <div className="flex flex-wrap gap-1">
+                {(["none", "pixel", "stepped"] as PixelTextShadow[]).map((sh) => (
+                  <Button
+                    key={sh}
+                    size="sm"
+                    variant={state.pixelTextShadow === sh ? "primary" : "outline"}
+                    onClick={() => state.setPixelTextShadow(sh)}
+                  >
+                    {sh}
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <span className="text-muted-foreground uppercase text-[10px]">Neon CRT Glow:</span>
+              <Button
+                size="sm"
+                variant={state.pixelTextGlow ? "primary" : "outline"}
+                onClick={() => state.setPixelTextGlow(!state.pixelTextGlow)}
+              >
+                {state.pixelTextGlow ? "Glow: ON" : "Glow: OFF"}
+              </Button>
+            </div>
+
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <span className="text-muted-foreground uppercase text-[10px]">Crisp Rendering:</span>
+              <Button
+                size="sm"
+                variant={state.pixelTextCrisp ? "primary" : "outline"}
+                onClick={() => state.setPixelTextCrisp(!state.pixelTextCrisp)}
+              >
+                {state.pixelTextCrisp ? "Crisp: ON" : "Crisp: OFF"}
+              </Button>
+            </div>
+          </div>
+        </div>
+      );
+
+    case "typewriter": {
+      const typewriterMessages = [
+        "INITIALIZING DITHERWEB KERNEL V6.4... ALL BOOTCHECKS PASSED.",
+        "CONNECTION ESTABLISHED TO HOST 192.168.1.1 ON PORT 8080.",
+        "ACCESS GRANTED: WELCOME BACK CYBER OPERATOR.",
+      ];
+
+      return (
+        <div className="flex flex-col items-center gap-4 w-full max-w-md">
+          <div className="w-full bevel-raised bg-surface p-4 space-y-3">
+            <div className="flex items-center justify-between border-b border-border pb-2 text-[11px] text-muted-foreground uppercase font-mono">
+              <span className="font-bold text-foreground">TYPEWRITER REVEAL ENGINE</span>
+              <span className="bevel-inset bg-muted/40 px-1.5 py-0.5 text-primary text-[10px]">
+                {state.typewriterSpeed} {"//"} KEY #{state.typewriterKey}
+              </span>
+            </div>
+
+            <div className="p-4 bevel-inset bg-background min-h-[140px] flex flex-col justify-between font-mono text-xs">
+              <div className="text-muted-foreground text-[10px] pb-2 border-b border-border/50">
+                ROM BIOS V4.05 (C) 1994 DITHERWEB SYSTEMS
+              </div>
+
+              <div className="py-2 text-foreground font-mono leading-relaxed min-h-[48px]">
+                <Typewriter
+                  key={`tw-${state.typewriterKey}-${state.typewriterTextPreset}-${state.typewriterSpeed}`}
+                  text={typewriterMessages[state.typewriterTextPreset] || typewriterMessages[0]}
+                  speed={state.typewriterSpeed}
+                  loop={state.typewriterLoop}
+                  cursor={true}
+                  className="text-primary font-bold"
+                />
+              </div>
+
+              <div className="flex items-center justify-between pt-2 border-t border-border/50 text-[10px] text-muted-foreground">
+                <span>Speed: {state.typewriterSpeed}</span>
+                <span>Loop: {state.typewriterLoop ? "ENABLED" : "OFF"}</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-2 pt-2 border-t border-border w-full text-[11px] font-mono">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <span className="text-muted-foreground uppercase text-[10px]">Speed:</span>
+              <div className="flex flex-wrap gap-1">
+                {(["slow", "medium", "fast"] as TypewriterSpeed[]).map((sp) => (
+                  <Button
+                    key={sp as string}
+                    size="sm"
+                    variant={state.typewriterSpeed === sp ? "primary" : "outline"}
+                    onClick={() => state.setTypewriterSpeed(sp)}
+                  >
+                    {sp as string}
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <span className="text-muted-foreground uppercase text-[10px]">Message Preset:</span>
+              <div className="flex flex-wrap gap-1">
+                {[0, 1, 2].map((idx) => (
+                  <Button
+                    key={idx}
+                    size="sm"
+                    variant={state.typewriterTextPreset === idx ? "primary" : "outline"}
+                    onClick={() => {
+                      state.setTypewriterTextPreset(idx);
+                      state.setTypewriterKey((k) => k + 1);
+                    }}
+                  >
+                    Msg {idx + 1}
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <span className="text-muted-foreground uppercase text-[10px]">Options:</span>
+              <div className="flex flex-wrap gap-1">
+                <Button
+                  size="sm"
+                  variant={state.typewriterLoop ? "primary" : "outline"}
+                  onClick={() => state.setTypewriterLoop(!state.typewriterLoop)}
+                >
+                  {state.typewriterLoop ? "Loop: ON" : "Loop: OFF"}
+                </Button>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => state.setTypewriterKey((k) => k + 1)}
+                >
+                  Replay Typing
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    case "blink-cursor":
+      return (
+        <div className="flex flex-col items-center gap-4 w-full max-w-md">
+          <div className="w-full bevel-raised bg-surface p-4 space-y-3">
+            <div className="flex items-center justify-between border-b border-border pb-2 text-[11px] text-muted-foreground uppercase font-mono">
+              <span className="font-bold text-foreground">BLINK CURSOR PROMPT</span>
+              <span className="bevel-inset bg-muted/40 px-1.5 py-0.5 text-primary text-[10px]">
+                {state.blinkCursorVariant}
+              </span>
+            </div>
+
+            <div className="p-4 bevel-inset bg-background min-h-[140px] flex flex-col justify-between font-mono text-xs">
+              <div className="text-muted-foreground text-[10px] pb-2 border-b border-border/50">
+                MS-DOS PROMPT [VERSION 6.22]
+              </div>
+
+              <div className="py-2 space-y-1 font-mono text-xs">
+                <div className="text-muted-foreground">C:\&gt; DIR /W</div>
+                <div className="text-muted-foreground">[SYSTEM]  [COMMANDS]  AUTOEXEC.BAT  CONFIG.SYS</div>
+                <div className="flex items-center text-primary font-bold pt-1">
+                  <span>C:\RETRO\SYSTEM&gt;</span>
+                  <span className="ml-1 text-foreground">RUN_PROGRAM.EXE</span>
+                  <BlinkCursor
+                    variant={state.blinkCursorVariant}
+                    blink={state.blinkCursorBlink}
+                    char={state.blinkCursorChar || undefined}
+                    className="text-primary ml-0.5"
+                  />
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between pt-2 border-t border-border/50 text-[10px] text-muted-foreground">
+                <span>Variant: {state.blinkCursorVariant}</span>
+                <span>Blink: {state.blinkCursorBlink ? "ACTIVE" : "PAUSED"}</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-2 pt-2 border-t border-border w-full text-[11px] font-mono">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <span className="text-muted-foreground uppercase text-[10px]">Cursor Variant:</span>
+              <div className="flex flex-wrap gap-1">
+                {(["block", "line", "underline"] as BlinkCursorVariant[]).map((v) => (
+                  <Button
+                    key={v}
+                    size="sm"
+                    variant={state.blinkCursorVariant === v ? "primary" : "outline"}
+                    onClick={() => {
+                      state.setBlinkCursorVariant(v);
+                      state.setBlinkCursorChar("");
+                    }}
+                  >
+                    {v === "block" && "Block █"}
+                    {v === "line" && "Line |"}
+                    {v === "underline" && "Underline _"}
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <span className="text-muted-foreground uppercase text-[10px]">Custom Glyphs:</span>
+              <div className="flex flex-wrap gap-1">
+                {[
+                  { label: "Standard", val: "" },
+                  { label: "Arrow >", val: ">" },
+                  { label: "Box ■", val: "■" },
+                  { label: "Prompt _", val: "_" },
+                ].map((c) => (
+                  <Button
+                    key={c.label}
+                    size="sm"
+                    variant={state.blinkCursorChar === c.val ? "primary" : "outline"}
+                    onClick={() => state.setBlinkCursorChar(c.val)}
+                  >
+                    {c.label}
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <span className="text-muted-foreground uppercase text-[10px]">Animation:</span>
+              <Button
+                size="sm"
+                variant={state.blinkCursorBlink ? "primary" : "outline"}
+                onClick={() => state.setBlinkCursorBlink(!state.blinkCursorBlink)}
+              >
+                {state.blinkCursorBlink ? "Blink: ON" : "Blink: OFF"}
+              </Button>
+            </div>
+          </div>
         </div>
       );
 
