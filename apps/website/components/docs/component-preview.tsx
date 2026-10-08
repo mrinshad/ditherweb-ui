@@ -14,6 +14,7 @@ import {
   CardDescription,
   CardContent,
   CardFooter,
+  Separator,
   Badge,
   Alert,
   AlertTitle,
@@ -106,6 +107,18 @@ interface PreviewState {
   setDitherPat: (p: DitherPattern) => void;
   crtPhosphor: "none" | "amber" | "green" | "mono";
   setCrtPhosphor: (p: "none" | "amber" | "green" | "mono") => void;
+  isButtonDialogOpen: boolean;
+  setIsButtonDialogOpen: (v: boolean) => void;
+  inputInvalid: boolean;
+  setInputInvalid: (v: boolean) => void;
+  inputDisabled: boolean;
+  setInputDisabled: (v: boolean) => void;
+  alertVariant: "default" | "info" | "warning" | "destructive" | "success";
+  setAlertVariant: (v: "default" | "info" | "warning" | "destructive" | "success") => void;
+  badgeVariant: "default" | "primary" | "secondary" | "success" | "warning" | "destructive" | "outline";
+  setBadgeVariant: (v: "default" | "primary" | "secondary" | "success" | "warning" | "destructive" | "outline") => void;
+  sepOrientation: "both" | "horizontal" | "vertical";
+  setSepOrientation: (v: "both" | "horizontal" | "vertical") => void;
 }
 
 export function ComponentPreview({ slug }: ComponentPreviewProps) {
@@ -115,10 +128,16 @@ export function ComponentPreview({ slug }: ComponentPreviewProps) {
   const [inputValue, setInputValue] = useState("admin@gateway.local");
   const [switchChecked, setSwitchChecked] = useState(true);
   const [chkChecked, setChkChecked] = useState(true);
-  const [radioVal, setRadioVal] = useState("opt1");
+  const [radioVal, setRadioVal] = useState("vga");
   const [sliderVal, setSliderVal] = useState(65);
   const [ditherPat, setDitherPat] = useState<DitherPattern>("bayer");
   const [crtPhosphor, setCrtPhosphor] = useState<"none" | "amber" | "green" | "mono">("green");
+  const [isButtonDialogOpen, setIsButtonDialogOpen] = useState(false);
+  const [inputInvalid, setInputInvalid] = useState(false);
+  const [inputDisabled, setInputDisabled] = useState(false);
+  const [alertVariant, setAlertVariant] = useState<"default" | "info" | "warning" | "destructive" | "success">("warning");
+  const [badgeVariant, setBadgeVariant] = useState<"default" | "primary" | "secondary" | "success" | "warning" | "destructive" | "outline">("primary");
+  const [sepOrientation, setSepOrientation] = useState<"both" | "horizontal" | "vertical">("both");
 
   return (
     <div className="bevel-raised bg-surface p-6 font-mono text-xs border border-border space-y-4">
@@ -149,6 +168,18 @@ export function ComponentPreview({ slug }: ComponentPreviewProps) {
           setDitherPat,
           crtPhosphor,
           setCrtPhosphor,
+          isButtonDialogOpen,
+          setIsButtonDialogOpen,
+          inputInvalid,
+          setInputInvalid,
+          inputDisabled,
+          setInputDisabled,
+          alertVariant,
+          setAlertVariant,
+          badgeVariant,
+          setBadgeVariant,
+          sepOrientation,
+          setSepOrientation,
         })}
       </div>
     </div>
@@ -160,18 +191,42 @@ function renderPreviewContent(slug: string, state: PreviewState) {
     case "button":
       return (
         <div className="flex flex-col items-center gap-4 w-full max-w-md">
-          <div className="flex flex-wrap items-center justify-center gap-2">
-            <Button
-              variant={state.btnVariant}
-              size={state.btnSize}
-              onClick={() => alert("Button clicked!")}
-            >
-              Execute Command
-            </Button>
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <Dialog open={state.isButtonDialogOpen} onOpenChange={state.setIsButtonDialogOpen}>
+              <DialogTrigger asChild>
+                <Button variant={state.btnVariant} size={state.btnSize}>
+                  Execute Command
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-md">
+                <DialogHeader>
+                  <DialogTitle>COMMAND EXECUTION // NODE 01</DialogTitle>
+                  <DialogDescription>
+                    Confirmation required for virtual process dispatch.
+                  </DialogDescription>
+                </DialogHeader>
+                <DialogBody>
+                  <div className="bevel-inset p-3 bg-surface space-y-1 text-xs">
+                    <div className="text-foreground font-bold">DISPATCH TARGET: sys.kernel.exec</div>
+                    <div className="text-muted-foreground">Action confirmed using authentic Ditherweb Dialog.</div>
+                  </div>
+                </DialogBody>
+                <DialogFooter>
+                  <DialogClose asChild>
+                    <Button variant="outline" size="sm">Abort</Button>
+                  </DialogClose>
+                  <DialogClose asChild>
+                    <Button variant="primary" size="sm">Acknowledge</Button>
+                  </DialogClose>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+
             <Button variant="outline" size={state.btnSize} disabled>
               Disabled State
             </Button>
           </div>
+
           <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-border w-full justify-center text-[11px]">
             <span className="text-muted-foreground">Variant:</span>
             {(["primary", "secondary", "outline", "destructive"] as const).map((v) => (
@@ -187,54 +242,180 @@ function renderPreviewContent(slug: string, state: PreviewState) {
               </button>
             ))}
           </div>
-        </div>
-      );
 
-    case "dialog":
-      return (
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button variant="primary">Launch System Dialog</Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>MODEM CARRIER CONFIGURATION</DialogTitle>
-              <DialogDescription>
-                Configure hardware serial baud rate and parity flags for COM1.
-              </DialogDescription>
-            </DialogHeader>
-            <DialogBody>
-              <p className="text-xs text-muted-foreground leading-relaxed">
-                Confirming this action will reset connection buffers and reinitialize the Hayes command set.
-              </p>
-            </DialogBody>
-            <DialogFooter>
-              <DialogClose asChild>
-                <Button variant="outline">Abort</Button>
-              </DialogClose>
-              <DialogClose asChild>
-                <Button variant="primary">Save &amp; Connect</Button>
-              </DialogClose>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+          <div className="flex flex-wrap items-center gap-2 w-full justify-center text-[11px]">
+            <span className="text-muted-foreground">Size:</span>
+            {(["sm", "md", "lg"] as const).map((s) => (
+              <button
+                key={s}
+                type="button"
+                onClick={() => state.setBtnSize(s)}
+                className={`px-2 py-0.5 uppercase ${
+                  state.btnSize === s ? "bevel-inset bg-primary text-primary-foreground font-bold" : "bevel-raised"
+                }`}
+              >
+                {s}
+              </button>
+            ))}
+          </div>
+          <span className="text-[10px] text-muted-foreground">Click &quot;Execute Command&quot; to test Ditherweb Dialog</span>
+        </div>
       );
 
     case "input":
       return (
-        <div className="w-full max-w-sm space-y-3">
-          <div className="space-y-1">
+        <div className="w-full max-w-sm space-y-4">
+          <div className="space-y-1.5">
             <Label htmlFor="demo-input">System Gateway Host</Label>
             <Input
               id="demo-input"
               value={state.inputValue}
               onChange={(e) => state.setInputValue(e.target.value)}
               placeholder="e.g. gateway.local"
+              disabled={state.inputDisabled}
+              invalid={state.inputInvalid}
             />
+            {state.inputInvalid && (
+              <p className="text-[10px] text-destructive font-bold">
+                Invalid hostname format. Please verify DNS resolver.
+              </p>
+            )}
           </div>
+
           <div className="flex items-center justify-between text-[11px] text-muted-foreground">
             <span>Current Value:</span>
-            <code className="text-foreground">{state.inputValue}</code>
+            <code className="text-foreground">{state.inputValue || "(empty)"}</code>
+          </div>
+
+          {/* State toggles */}
+          <div className="flex items-center justify-center gap-3 pt-2 border-t border-border text-[11px]">
+            <button
+              type="button"
+              onClick={() => state.setInputInvalid(!state.inputInvalid)}
+              className={`px-2 py-0.5 uppercase ${
+                state.inputInvalid ? "bevel-inset bg-destructive text-destructive-foreground font-bold" : "bevel-raised"
+              }`}
+            >
+              Toggle Invalid State
+            </button>
+            <button
+              type="button"
+              onClick={() => state.setInputDisabled(!state.inputDisabled)}
+              className={`px-2 py-0.5 uppercase ${
+                state.inputDisabled ? "bevel-inset bg-muted text-foreground font-bold" : "bevel-raised"
+              }`}
+            >
+              Toggle Disabled
+            </button>
+          </div>
+        </div>
+      );
+
+    case "label":
+      return (
+        <div className="w-full max-w-md bevel-raised bg-surface p-4 space-y-4">
+          <div className="space-y-1">
+            <div className="font-bold text-xs uppercase text-foreground">OPERATOR CREDENTIALS</div>
+            <div className="text-[10px] text-muted-foreground">Accessible form labels paired with Ditherweb controls</div>
+          </div>
+
+          <div className="space-y-3">
+            <div className="space-y-1.5">
+              <div className="flex items-center justify-between">
+                <Label htmlFor="demo-label-input">
+                  Station Operator ID <span className="text-destructive font-bold">*</span>
+                </Label>
+                <span className="text-[10px] text-muted-foreground">Required</span>
+              </div>
+              <Input
+                id="demo-label-input"
+                placeholder="e.g. operator_01"
+                defaultValue="SYS_ADMIN_RINSHAD"
+              />
+              <p className="text-[10px] text-muted-foreground">
+                Enter your alphanumeric workstation identifier.
+              </p>
+            </div>
+
+            <div className="flex items-center gap-2 pt-1">
+              <Checkbox id="demo-label-chk" defaultChecked />
+              <Label htmlFor="demo-label-chk">
+                Remember terminal preferences for this browser session
+              </Label>
+            </div>
+
+            <div className="flex items-center gap-2 opacity-60">
+              <Checkbox id="demo-label-disabled" disabled />
+              <Label htmlFor="demo-label-disabled">
+                Restricted System Mode (Requires Elevated Permissions)
+              </Label>
+            </div>
+          </div>
+        </div>
+      );
+
+    case "separator":
+      return (
+        <div className="w-full max-w-md space-y-4">
+          <div className="flex justify-center gap-2 text-[11px] pb-1 border-b border-border">
+            <span className="text-muted-foreground">Orientation Mode:</span>
+            {(["both", "horizontal", "vertical"] as const).map((mode) => (
+              <button
+                key={mode}
+                type="button"
+                onClick={() => state.setSepOrientation(mode)}
+                className={`px-2 py-0.5 uppercase ${
+                  state.sepOrientation === mode
+                    ? "bevel-inset bg-primary text-primary-foreground font-bold"
+                    : "bevel-raised"
+                }`}
+              >
+                {mode}
+              </button>
+            ))}
+          </div>
+
+          <div className="bevel-raised bg-surface p-4 space-y-3">
+            <div className="flex items-center justify-between">
+              <div>
+                <div className="font-bold text-xs uppercase text-foreground">WORKSTATION METRICS</div>
+                <div className="text-[10px] text-muted-foreground">Telemetric bus monitor</div>
+              </div>
+              <Badge variant="outline" className="text-[9px]">ACTIVE</Badge>
+            </div>
+
+            {(state.sepOrientation === "both" || state.sepOrientation === "horizontal") && (
+              <Separator orientation="horizontal" />
+            )}
+
+            <div className="text-xs space-y-2">
+              <div className="flex items-center justify-between text-muted-foreground">
+                <span>CPU Core: 42°C</span>
+                {(state.sepOrientation === "both" || state.sepOrientation === "vertical") && (
+                  <Separator orientation="vertical" className="h-4" />
+                )}
+                <span>Memory: 64MB</span>
+                {(state.sepOrientation === "both" || state.sepOrientation === "vertical") && (
+                  <Separator orientation="vertical" className="h-4" />
+                )}
+                <span>Bus: PCI 33MHz</span>
+              </div>
+            </div>
+
+            {(state.sepOrientation === "both" || state.sepOrientation === "horizontal") && (
+              <Separator orientation="horizontal" />
+            )}
+
+            <div className="flex items-center justify-between text-[11px] pt-1">
+              <span className="text-muted-foreground">Channel: COM1</span>
+              <div className="flex items-center h-4 space-x-2">
+                <span className="text-primary font-bold">57,600 baud</span>
+                {(state.sepOrientation === "both" || state.sepOrientation === "vertical") && (
+                  <Separator orientation="vertical" className="h-3.5" />
+                )}
+                <span className="text-foreground">8-N-1</span>
+              </div>
+            </div>
           </div>
         </div>
       );
@@ -411,16 +592,33 @@ function renderPreviewContent(slug: string, state: PreviewState) {
 
     case "card":
       return (
-        <Card className="w-full max-w-sm">
+        <Card className="w-full max-w-sm bevel-raised bg-surface">
           <CardHeader>
-            <CardTitle>Hardware Monitor</CardTitle>
-            <CardDescription>Sensor node cluster #04</CardDescription>
+            <div className="flex items-center justify-between">
+              <Badge variant="primary" className="text-[9px]">HARDWARE NODE</Badge>
+              <span className="text-[10px] text-muted-foreground font-mono">NODE #04</span>
+            </div>
+            <CardTitle className="text-sm font-bold uppercase mt-1">Telemetry Sensor Monitor</CardTitle>
+            <CardDescription className="text-xs">
+              Live thermodynamic bus readings from primary workstation rack.
+            </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-1">
-            <div className="text-xs">CPU Core: 38.4°C</div>
-            <div className="text-xs text-muted-foreground">Status: Optimal operation</div>
+          <CardContent className="space-y-2 text-xs">
+            <div className="flex justify-between border-b border-border/50 pb-1">
+              <span className="text-muted-foreground">CPU Core Temp:</span>
+              <span className="font-bold text-foreground">38.4°C</span>
+            </div>
+            <div className="flex justify-between border-b border-border/50 pb-1">
+              <span className="text-muted-foreground">VRAM Alloc:</span>
+              <span className="font-bold text-foreground">128 MB / 256 MB</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-muted-foreground">Bus Latency:</span>
+              <span className="font-bold text-success">● 14ms (Optimal)</span>
+            </div>
           </CardContent>
-          <CardFooter>
+          <CardFooter className="pt-2 border-t border-border flex justify-between items-center">
+            <span className="text-[10px] text-muted-foreground">Status: Nominal</span>
             <Button variant="primary" size="sm">Acknowledge</Button>
           </CardFooter>
         </Card>
@@ -428,77 +626,201 @@ function renderPreviewContent(slug: string, state: PreviewState) {
 
     case "badge":
       return (
-        <div className="flex flex-wrap items-center gap-2">
-          <Badge variant="primary">PRIMARY</Badge>
-          <Badge variant="secondary">SECONDARY</Badge>
-          <Badge variant="success">ONLINE</Badge>
-          <Badge variant="destructive">HALTED</Badge>
-          <Badge variant="outline">V0.1.0</Badge>
+        <div className="flex flex-col items-center gap-4 w-full max-w-md">
+          <div className="flex flex-wrap items-center justify-center gap-2">
+            <Badge variant="default">DEFAULT</Badge>
+            <Badge variant="primary">PRIMARY</Badge>
+            <Badge variant="secondary">SECONDARY</Badge>
+            <Badge variant="success">ONLINE</Badge>
+            <Badge variant="warning">ALERT</Badge>
+            <Badge variant="destructive">HALTED</Badge>
+            <Badge variant="outline">V0.1.0</Badge>
+          </div>
+
+          <div className="bevel-raised bg-surface p-3 w-full space-y-2 text-center">
+            <div className="text-[10px] text-muted-foreground uppercase font-bold">
+              Active Variant Highlight: <span className="text-foreground">{state.badgeVariant.toUpperCase()}</span>
+            </div>
+            <div className="flex justify-center">
+              <Badge variant={state.badgeVariant} className="text-xs px-3 py-1">
+                DEMO: {state.badgeVariant.toUpperCase()}
+              </Badge>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-center gap-1.5 text-[10px]">
+            {(["default", "primary", "secondary", "success", "warning", "destructive", "outline"] as const).map((v) => (
+              <button
+                key={v}
+                type="button"
+                onClick={() => state.setBadgeVariant(v)}
+                className={`px-2 py-0.5 uppercase ${
+                  state.badgeVariant === v ? "bevel-inset bg-primary text-primary-foreground font-bold" : "bevel-raised"
+                }`}
+              >
+                {v}
+              </button>
+            ))}
+          </div>
         </div>
       );
 
     case "alert":
       return (
-        <div className="w-full max-w-md">
-          <Alert variant="warning">
-            <AlertTitle>MODEM CARRIER LOSS</AlertTitle>
-            <AlertDescription>
-              Carrier signal lost on COM2 serial link. Retrying handshake in 5 seconds.
+        <div className="w-full max-w-md space-y-4">
+          <Alert variant={state.alertVariant}>
+            <AlertTitle className="uppercase font-bold">
+              {state.alertVariant === "destructive"
+                ? "CRITICAL BUS FAULT"
+                : state.alertVariant === "warning"
+                  ? "MODEM CARRIER LOSS"
+                  : state.alertVariant === "success"
+                    ? "HANDSHAKE ESTABLISHED"
+                    : state.alertVariant === "info"
+                      ? "SYSTEM ADVISORY"
+                      : "OPERATIONAL NOTICE"}
+            </AlertTitle>
+            <AlertDescription className="text-xs">
+              {state.alertVariant === "destructive"
+                ? "Parity check failed on memory bank 0x3F. System halted to prevent buffer corruption."
+                : state.alertVariant === "warning"
+                  ? "Carrier signal lost on COM2 serial link. Retrying handshake in 5 seconds."
+                  : state.alertVariant === "success"
+                    ? "Dialup carrier verified at 57,600 baud. Secure terminal channel open."
+                    : state.alertVariant === "info"
+                      ? "Firmware upgrade v2.41 scheduled for 03:00 UTC maintenance window."
+                      : "Standard system telemetry broadcast active on all virtual nodes."}
             </AlertDescription>
           </Alert>
+
+          <div className="flex flex-wrap items-center justify-center gap-1.5 pt-2 border-t border-border text-[11px]">
+            <span className="text-muted-foreground mr-1">Variant:</span>
+            {(["info", "warning", "destructive", "success", "default"] as const).map((v) => (
+              <button
+                key={v}
+                type="button"
+                onClick={() => state.setAlertVariant(v)}
+                className={`px-2 py-0.5 uppercase ${
+                  state.alertVariant === v ? "bevel-inset bg-primary text-primary-foreground font-bold" : "bevel-raised"
+                }`}
+              >
+                {v}
+              </button>
+            ))}
+          </div>
         </div>
       );
 
     case "switch":
       return (
-        <div className="flex items-center gap-3">
-          <Switch
-            id="preview-switch"
-            checked={state.switchChecked}
-            onChange={(e) => state.setSwitchChecked(e.target.checked)}
-          />
-          <Label htmlFor="preview-switch">
-            Hardware Acceleration ({state.switchChecked ? "ACTIVE" : "OFF"})
-          </Label>
+        <div className="w-full max-w-sm bevel-raised bg-surface p-4 space-y-4">
+          <div className="flex items-center justify-between">
+            <div className="font-bold text-xs uppercase text-foreground">HARDWARE CONTROL TOGGLES</div>
+            <Badge variant={state.switchChecked ? "success" : "outline"} className="text-[9px]">
+              {state.switchChecked ? "ACCELERATED" : "SOFTWARE"}
+            </Badge>
+          </div>
+
+          <div className="space-y-3">
+            <div className="flex items-center justify-between gap-3">
+              <Label htmlFor="preview-switch">
+                Hardware Vector Acceleration
+              </Label>
+              <Switch
+                id="preview-switch"
+                checked={state.switchChecked}
+                onChange={(e) => state.setSwitchChecked(e.target.checked)}
+              />
+            </div>
+            <div className="flex items-center justify-between gap-3">
+              <Label htmlFor="preview-switch-2">
+                Floyd-Steinberg Error Diffusion
+              </Label>
+              <Switch id="preview-switch-2" defaultChecked />
+            </div>
+            <div className="flex items-center justify-between gap-3 opacity-60">
+              <Label htmlFor="preview-switch-3">
+                Overclock Clock Multiplier (Locked)
+              </Label>
+              <Switch id="preview-switch-3" disabled />
+            </div>
+          </div>
         </div>
       );
 
     case "checkbox":
       return (
-        <div className="flex items-center gap-3">
-          <Checkbox
-            id="preview-chk"
-            checked={state.chkChecked}
-            onChange={(e) => state.setChkChecked(e.target.checked)}
-          />
-          <Label htmlFor="preview-chk">
-            Enable 4x4 Bayer Dithering Matrix
-          </Label>
+        <div className="w-full max-w-sm bevel-raised bg-surface p-4 space-y-3">
+          <div className="font-bold text-xs uppercase text-foreground">SYSTEM SETTINGS CHECKLIST</div>
+          <div className="space-y-2 text-xs">
+            <div className="flex items-center gap-2.5">
+              <Checkbox
+                id="preview-chk-1"
+                checked={state.chkChecked}
+                onChange={(e) => state.setChkChecked(e.target.checked)}
+              />
+              <Label htmlFor="preview-chk-1">
+                Enable 4×4 Bayer Dithering Matrix ({state.chkChecked ? "ON" : "OFF"})
+              </Label>
+            </div>
+            <div className="flex items-center gap-2.5">
+              <Checkbox id="preview-chk-2" defaultChecked />
+              <Label htmlFor="preview-chk-2">Simulate 56k Baud Audio Handshake</Label>
+            </div>
+            <div className="flex items-center gap-2.5">
+              <Checkbox id="preview-chk-3" />
+              <Label htmlFor="preview-chk-3">Enable CRT Curvature Distortion</Label>
+            </div>
+            <div className="flex items-center gap-2.5 opacity-60">
+              <Checkbox id="preview-chk-4" disabled defaultChecked />
+              <Label htmlFor="preview-chk-4">Core Telemetry Daemon (Locked)</Label>
+            </div>
+          </div>
         </div>
       );
 
     case "radio":
       return (
-        <div className="space-y-2">
-          <div className="flex items-center gap-2">
-            <Radio
-              id="r1"
-              name="radio-demo"
-              value="opt1"
-              checked={state.radioVal === "opt1"}
-              onChange={() => state.setRadioVal("opt1")}
-            />
-            <Label htmlFor="r1">Standard VGA (640x480)</Label>
+        <div className="w-full max-w-sm bevel-raised bg-surface p-4 space-y-3">
+          <div className="flex items-center justify-between">
+            <div className="font-bold text-xs uppercase text-foreground">DISPLAY RESOLUTION</div>
+            <span className="text-[10px] text-primary font-bold">{state.radioVal.toUpperCase()}</span>
           </div>
-          <div className="flex items-center gap-2">
-            <Radio
-              id="r2"
-              name="radio-demo"
-              value="opt2"
-              checked={state.radioVal === "opt2"}
-              onChange={() => state.setRadioVal("opt2")}
-            />
-            <Label htmlFor="r2">Super VGA (800x600)</Label>
+          <div className="space-y-2 text-xs">
+            <div className="flex items-center gap-2">
+              <Radio
+                id="r-vga"
+                name="radio-demo"
+                value="vga"
+                checked={state.radioVal === "vga"}
+                onChange={() => state.setRadioVal("vga")}
+              />
+              <Label htmlFor="r-vga">Standard VGA (640 × 480 @ 60Hz)</Label>
+            </div>
+            <div className="flex items-center gap-2">
+              <Radio
+                id="r-svga"
+                name="radio-demo"
+                value="svga"
+                checked={state.radioVal === "svga"}
+                onChange={() => state.setRadioVal("svga")}
+              />
+              <Label htmlFor="r-svga">Super VGA (800 × 600 @ 75Hz)</Label>
+            </div>
+            <div className="flex items-center gap-2">
+              <Radio
+                id="r-xga"
+                name="radio-demo"
+                value="xga"
+                checked={state.radioVal === "xga"}
+                onChange={() => state.setRadioVal("xga")}
+              />
+              <Label htmlFor="r-xga">Extended Graphics (1024 × 768 @ 85Hz)</Label>
+            </div>
+            <div className="flex items-center gap-2 opacity-60">
+              <Radio id="r-disabled" name="radio-demo" value="disabled" disabled />
+              <Label htmlFor="r-disabled">DirectX 9.0 Accelerated (Hardware Unavailable)</Label>
+            </div>
           </div>
         </div>
       );
