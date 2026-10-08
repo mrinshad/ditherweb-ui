@@ -129,6 +129,53 @@ import {
   FieldLabel,
   FieldDescription,
   FieldError,
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogAction,
+  AlertDialogCancel,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverClose,
+  TooltipProvider,
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+  HoverCard,
+  HoverCardTrigger,
+  HoverCardContent,
+  Drawer,
+  DrawerTrigger,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerDescription,
+  DrawerBody,
+  DrawerFooter,
+  DrawerClose,
+  type DrawerSide,
+  Sheet,
+  SheetTrigger,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
+  SheetBody,
+  SheetFooter,
+  SheetClose,
+  type SheetSide,
+  Backdrop,
+  type BackdropVariant,
+  Overlay,
+  Portal,
+  type OverlaySide,
+  type OverlayAlign,
 } from "@ditherweb/ui";
 
 export interface ComponentPreviewProps {
@@ -282,6 +329,62 @@ interface PreviewState {
   setFieldVal: (v: string) => void;
   fieldDisabled: boolean;
   setFieldDisabled: (d: boolean) => void;
+
+  // Overlays & Layers states
+  dialogOpen: boolean;
+  setDialogOpen: (o: boolean) => void;
+  dialogBackdrop: BackdropVariant;
+  setDialogBackdrop: (b: BackdropVariant) => void;
+  alertDialogOpen: boolean;
+  setAlertDialogOpen: (o: boolean) => void;
+  alertDialogStatus: string;
+  setAlertDialogStatus: (s: string) => void;
+  alertDialogBackdrop: BackdropVariant;
+  setAlertDialogBackdrop: (b: BackdropVariant) => void;
+  popoverOpen: boolean;
+  setPopoverOpen: (o: boolean) => void;
+  popoverSide: OverlaySide;
+  setPopoverSide: (s: OverlaySide) => void;
+  popoverAlign: OverlayAlign;
+  setPopoverAlign: (a: OverlayAlign) => void;
+  popoverVolume: number;
+  setPopoverVolume: (v: number) => void;
+  popoverMidi: boolean;
+  setPopoverMidi: (m: boolean) => void;
+  tooltipSide: OverlaySide;
+  setTooltipSide: (s: OverlaySide) => void;
+  hoverCardSide: OverlaySide;
+  setHoverCardSide: (s: OverlaySide) => void;
+  drawerOpen: boolean;
+  setDrawerOpen: (o: boolean) => void;
+  drawerSide: DrawerSide;
+  setDrawerSide: (s: DrawerSide) => void;
+  drawerBackdrop: BackdropVariant;
+  setDrawerBackdrop: (b: BackdropVariant) => void;
+  sheetOpen: boolean;
+  setSheetOpen: (o: boolean) => void;
+  sheetSide: SheetSide;
+  setSheetSide: (s: SheetSide) => void;
+  sheetBackdrop: BackdropVariant;
+  setSheetBackdrop: (b: BackdropVariant) => void;
+  backdropVariant: BackdropVariant;
+  setBackdropVariant: (b: BackdropVariant) => void;
+  backdropInvisible: boolean;
+  setBackdropInvisible: (i: boolean) => void;
+  backdropFullscreenOpen: boolean;
+  setBackdropFullscreenOpen: (o: boolean) => void;
+  overlayOpen: boolean;
+  setOverlayOpen: (o: boolean) => void;
+  overlayBackdrop: BackdropVariant;
+  setOverlayBackdrop: (b: BackdropVariant) => void;
+  overlayCloseOnEscape: boolean;
+  setOverlayCloseOnEscape: (c: boolean) => void;
+  overlayCloseOnOutside: boolean;
+  setOverlayCloseOnOutside: (c: boolean) => void;
+  portalDisabled: boolean;
+  setPortalDisabled: (d: boolean) => void;
+  portalPanelOpen: boolean;
+  setPortalPanelOpen: (o: boolean) => void;
 }
 
 export function ComponentPreview({ slug }: ComponentPreviewProps) {
@@ -362,6 +465,35 @@ export function ComponentPreview({ slug }: ComponentPreviewProps) {
   const [fieldHasError, setFieldHasError] = useState(false);
   const [fieldVal, setFieldVal] = useState("N0CALL/GATEWAY-1");
   const [fieldDisabled, setFieldDisabled] = useState(false);
+
+  // Overlays & Layers interactive state
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogBackdrop, setDialogBackdrop] = useState<BackdropVariant>("dimmed");
+  const [alertDialogOpen, setAlertDialogOpen] = useState(false);
+  const [alertDialogStatus, setAlertDialogStatus] = useState("READY // MOUNTED ON VOLUME C:");
+  const [alertDialogBackdrop, setAlertDialogBackdrop] = useState<BackdropVariant>("dither");
+  const [popoverOpen, setPopoverOpen] = useState(false);
+  const [popoverSide, setPopoverSide] = useState<OverlaySide>("bottom");
+  const [popoverAlign, setPopoverAlign] = useState<OverlayAlign>("center");
+  const [popoverVolume, setPopoverVolume] = useState(75);
+  const [popoverMidi, setPopoverMidi] = useState(true);
+  const [tooltipSide, setTooltipSide] = useState<OverlaySide>("top");
+  const [hoverCardSide, setHoverCardSide] = useState<OverlaySide>("right");
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [drawerSide, setDrawerSide] = useState<DrawerSide>("bottom");
+  const [drawerBackdrop, setDrawerBackdrop] = useState<BackdropVariant>("dimmed");
+  const [sheetOpen, setSheetOpen] = useState(false);
+  const [sheetSide, setSheetSide] = useState<SheetSide>("right");
+  const [sheetBackdrop, setSheetBackdrop] = useState<BackdropVariant>("dither");
+  const [backdropVariant, setBackdropVariant] = useState<BackdropVariant>("dither");
+  const [backdropInvisible, setBackdropInvisible] = useState(false);
+  const [backdropFullscreenOpen, setBackdropFullscreenOpen] = useState(false);
+  const [overlayOpen, setOverlayOpen] = useState(false);
+  const [overlayBackdrop, setOverlayBackdrop] = useState<BackdropVariant>("dimmed");
+  const [overlayCloseOnEscape, setOverlayCloseOnEscape] = useState(true);
+  const [overlayCloseOnOutside, setOverlayCloseOnOutside] = useState(true);
+  const [portalDisabled, setPortalDisabled] = useState(false);
+  const [portalPanelOpen, setPortalPanelOpen] = useState(true);
 
   return (
     <div className="bevel-raised bg-surface p-6 font-mono text-xs border border-border space-y-4">
@@ -514,6 +646,60 @@ export function ComponentPreview({ slug }: ComponentPreviewProps) {
           setFieldVal,
           fieldDisabled,
           setFieldDisabled,
+          dialogOpen,
+          setDialogOpen,
+          dialogBackdrop,
+          setDialogBackdrop,
+          alertDialogOpen,
+          setAlertDialogOpen,
+          alertDialogStatus,
+          setAlertDialogStatus,
+          alertDialogBackdrop,
+          setAlertDialogBackdrop,
+          popoverOpen,
+          setPopoverOpen,
+          popoverSide,
+          setPopoverSide,
+          popoverAlign,
+          setPopoverAlign,
+          popoverVolume,
+          setPopoverVolume,
+          popoverMidi,
+          setPopoverMidi,
+          tooltipSide,
+          setTooltipSide,
+          hoverCardSide,
+          setHoverCardSide,
+          drawerOpen,
+          setDrawerOpen,
+          drawerSide,
+          setDrawerSide,
+          drawerBackdrop,
+          setDrawerBackdrop,
+          sheetOpen,
+          setSheetOpen,
+          sheetSide,
+          setSheetSide,
+          sheetBackdrop,
+          setSheetBackdrop,
+          backdropVariant,
+          setBackdropVariant,
+          backdropInvisible,
+          setBackdropInvisible,
+          backdropFullscreenOpen,
+          setBackdropFullscreenOpen,
+          overlayOpen,
+          setOverlayOpen,
+          overlayBackdrop,
+          setOverlayBackdrop,
+          overlayCloseOnEscape,
+          setOverlayCloseOnEscape,
+          overlayCloseOnOutside,
+          setOverlayCloseOnOutside,
+          portalDisabled,
+          setPortalDisabled,
+          portalPanelOpen,
+          setPortalPanelOpen,
         })}
       </div>
     </div>
@@ -2550,6 +2736,750 @@ function renderPreviewContent(slug: string, state: PreviewState) {
           <div className="text-center text-[10px] text-muted-foreground">
             Field automatically wires aria-labelledby, aria-describedby, and aria-invalid between label, input, description, and error.
           </div>
+        </div>
+      );
+
+    case "dialog":
+      return (
+        <div className="flex flex-col items-center gap-4 w-full max-w-md">
+          <Dialog open={state.dialogOpen} onOpenChange={state.setDialogOpen} backdropVariant={state.dialogBackdrop}>
+            <DialogTrigger asChild>
+              <Button variant="primary">Launch Hardware Dialog</Button>
+            </DialogTrigger>
+            <DialogContent className="max-w-md">
+              <DialogHeader>
+                <DialogTitle>IRQ &amp; DMA CONFIGURATION {"//"} BUS 0</DialogTitle>
+                <DialogDescription>
+                  Direct hardware channel assignment for Sound Blaster &amp; SCSI controller.
+                </DialogDescription>
+              </DialogHeader>
+              <DialogBody>
+                <div className="bevel-inset bg-surface p-4 space-y-3 text-xs font-mono">
+                  <div className="flex items-center justify-between">
+                    <span className="text-muted-foreground">INTERRUPT LINE:</span>
+                    <span className="font-bold text-foreground">IRQ 7 (LPT1 / PASS)</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-muted-foreground">DMA CHANNEL:</span>
+                    <span className="font-bold text-foreground">DMA 1 (8-BIT SOUND)</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-muted-foreground">I/O BASE PORT:</span>
+                    <span className="font-bold text-foreground">0x220 - 0x22F</span>
+                  </div>
+                </div>
+              </DialogBody>
+              <DialogFooter>
+                <DialogClose asChild>
+                  <Button variant="outline" size="sm">Abort</Button>
+                </DialogClose>
+                <DialogClose asChild>
+                  <Button variant="primary" size="sm">Save &amp; Apply</Button>
+                </DialogClose>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+
+          <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-border w-full justify-center text-[11px]">
+            <span className="text-muted-foreground">Backdrop Scrim:</span>
+            {(["dimmed", "dither", "transparent"] as const).map((b) => (
+              <button
+                key={b}
+                type="button"
+                onClick={() => state.setDialogBackdrop(b)}
+                className={`px-2 py-0.5 uppercase ${
+                  state.dialogBackdrop === b ? "bevel-inset bg-primary text-primary-foreground font-bold" : "bevel-raised"
+                }`}
+              >
+                {b}
+              </button>
+            ))}
+          </div>
+          <span className="text-[10px] text-muted-foreground text-center">
+            Full focus trapping, Escape key listener, outside-click dismissal, and body scroll lock.
+          </span>
+        </div>
+      );
+
+    case "alert-dialog":
+      return (
+        <div className="flex flex-col items-center gap-4 w-full max-w-md">
+          <div className="w-full bevel-inset bg-surface p-3 text-center text-xs font-mono">
+            <span className="text-muted-foreground">VOLUME STATUS: </span>
+            <span className="font-bold text-foreground">{state.alertDialogStatus}</span>
+          </div>
+
+          <AlertDialog open={state.alertDialogOpen} onOpenChange={state.setAlertDialogOpen} backdropVariant={state.alertDialogBackdrop}>
+            <AlertDialogTrigger asChild>
+              <Button variant="destructive">Format Hard Drive C:\</Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent className="max-w-md">
+              <AlertDialogHeader>
+                <AlertDialogTitle>CRITICAL: FORMAT HARD DRIVE C:\</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This operation will permanently destroy all partitions, FAT allocations, and system files.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogBody>
+                <div className="bevel-inset p-3 bg-destructive/10 border border-destructive/40 text-xs font-mono space-y-1 text-destructive">
+                  <div className="font-bold">WARNING: IRREVERSIBLE ACTION</div>
+                  <div>Sector headers on Quantum Fireball 540MB will be rewritten.</div>
+                </div>
+              </AlertDialogBody>
+              <AlertDialogFooter>
+                <AlertDialogCancel asChild>
+                  <Button variant="outline" size="sm">Abort [Esc]</Button>
+                </AlertDialogCancel>
+                <AlertDialogAction asChild>
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    onClick={() => state.setAlertDialogStatus("FORMAT COMPLETE // ALL 540MB ZEROED")}
+                  >
+                    Proceed With Format
+                  </Button>
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+
+          <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-border w-full justify-center text-[11px]">
+            <span className="text-muted-foreground">Backdrop:</span>
+            {(["dither", "dimmed"] as const).map((b) => (
+              <button
+                key={b}
+                type="button"
+                onClick={() => state.setAlertDialogBackdrop(b)}
+                className={`px-2 py-0.5 uppercase ${
+                  state.alertDialogBackdrop === b ? "bevel-inset bg-primary text-primary-foreground font-bold" : "bevel-raised"
+                }`}
+              >
+                {b}
+              </button>
+            ))}
+          </div>
+          <span className="text-[10px] text-muted-foreground text-center">
+            WAI-ARIA alertdialog role with focus lock to Cancel button on open.
+          </span>
+        </div>
+      );
+
+    case "popover":
+      return (
+        <div className="flex flex-col items-center gap-4 w-full max-w-md">
+          <div className="flex items-center justify-center p-6">
+            <Popover open={state.popoverOpen} onOpenChange={state.setPopoverOpen} side={state.popoverSide} align={state.popoverAlign}>
+              <PopoverTrigger asChild>
+                <Button variant="outline" className="gap-2">
+                  Sound Blaster DSP Mixer [▼]
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-72 p-4 space-y-3 font-mono">
+                <div className="flex items-center justify-between border-b border-border pb-2 text-xs font-bold text-foreground">
+                  <span>DSP AUDIO MIXER</span>
+                  <span className="text-[10px] text-primary">PORT 0x220</span>
+                </div>
+                <div className="space-y-1">
+                  <div className="flex justify-between text-xs text-muted-foreground">
+                    <span>MASTER VOL:</span>
+                    <span className="text-foreground font-bold">{state.popoverVolume}%</span>
+                  </div>
+                  <input
+                    type="range"
+                    min="0"
+                    max="100"
+                    value={state.popoverVolume}
+                    onChange={(e) => state.setPopoverVolume(Number(e.target.value))}
+                    className="w-full accent-primary cursor-pointer"
+                  />
+                </div>
+                <div className="flex items-center justify-between text-xs pt-1">
+                  <span className="text-muted-foreground">FM SYNTHESIS (OPL3):</span>
+                  <button
+                    type="button"
+                    onClick={() => state.setPopoverMidi(!state.popoverMidi)}
+                    className={`px-2 py-0.5 text-[10px] uppercase ${
+                      state.popoverMidi ? "bevel-inset bg-success text-success-foreground font-bold" : "bevel-raised text-muted-foreground"
+                    }`}
+                  >
+                    {state.popoverMidi ? "ACTIVE" : "MUTED"}
+                  </button>
+                </div>
+                <div className="pt-2 border-t border-border flex justify-end">
+                  <PopoverClose asChild>
+                    <Button size="sm" variant="primary">Done</Button>
+                  </PopoverClose>
+                </div>
+              </PopoverContent>
+            </Popover>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-border w-full justify-center text-[11px]">
+            <span className="text-muted-foreground">Side:</span>
+            {(["top", "bottom", "left", "right"] as const).map((s) => (
+              <button
+                key={s}
+                type="button"
+                onClick={() => state.setPopoverSide(s)}
+                className={`px-2 py-0.5 uppercase ${
+                  state.popoverSide === s ? "bevel-inset bg-primary text-primary-foreground font-bold" : "bevel-raised"
+                }`}
+              >
+                {s}
+              </button>
+            ))}
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2 w-full justify-center text-[11px]">
+            <span className="text-muted-foreground">Align:</span>
+            {(["start", "center", "end"] as const).map((a) => (
+              <button
+                key={a}
+                type="button"
+                onClick={() => state.setPopoverAlign(a)}
+                className={`px-2 py-0.5 uppercase ${
+                  state.popoverAlign === a ? "bevel-inset bg-primary text-primary-foreground font-bold" : "bevel-raised"
+                }`}
+              >
+                {a}
+              </button>
+            ))}
+          </div>
+          <span className="text-[10px] text-muted-foreground text-center">
+            Anchored floating layer with dynamic viewport collision detection.
+          </span>
+        </div>
+      );
+
+    case "tooltip":
+      return (
+        <div className="flex flex-col items-center gap-5 w-full max-w-md">
+          <TooltipProvider delayDuration={150}>
+            <div className="bevel-raised bg-surface p-3 flex items-center justify-center gap-3">
+              <Tooltip side={state.tooltipSide}>
+                <TooltipTrigger asChild>
+                  <Button size="sm" variant="outline" className="px-3 font-mono">
+                    💾 SAVE
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  Commit buffer to disk (Ctrl + S)
+                </TooltipContent>
+              </Tooltip>
+
+              <Tooltip side={state.tooltipSide}>
+                <TooltipTrigger asChild>
+                  <Button size="sm" variant="outline" className="px-3 font-mono">
+                    🖨️ PRINT
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  Output to Dot Matrix LPT1
+                </TooltipContent>
+              </Tooltip>
+
+              <Tooltip side={state.tooltipSide}>
+                <TooltipTrigger asChild>
+                  <Button size="sm" variant="outline" className="px-3 font-mono">
+                    🔍 FIND
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  Search binary strings in memory (F3)
+                </TooltipContent>
+              </Tooltip>
+
+              <Tooltip side={state.tooltipSide}>
+                <TooltipTrigger asChild>
+                  <Button size="sm" variant="outline" className="px-3 font-mono">
+                    ⚙️ SETUP
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  Hardware Interrupt Configuration
+                </TooltipContent>
+              </Tooltip>
+            </div>
+          </TooltipProvider>
+
+          <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-border w-full justify-center text-[11px]">
+            <span className="text-muted-foreground">Placement Side:</span>
+            {(["top", "bottom", "left", "right"] as const).map((s) => (
+              <button
+                key={s}
+                type="button"
+                onClick={() => state.setTooltipSide(s)}
+                className={`px-2 py-0.5 uppercase ${
+                  state.tooltipSide === s ? "bevel-inset bg-primary text-primary-foreground font-bold" : "bevel-raised"
+                }`}
+              >
+                {s}
+              </button>
+            ))}
+          </div>
+          <span className="text-[10px] text-muted-foreground text-center">
+            Hover or keyboard focus trigger. Fully accessible with aria-describedby.
+          </span>
+        </div>
+      );
+
+    case "hover-card":
+      return (
+        <div className="flex flex-col items-center gap-5 w-full max-w-md">
+          <div className="bevel-raised bg-surface p-6 flex flex-col items-center gap-2 text-center text-xs font-mono w-full">
+            <span className="text-muted-foreground">SYSOP DIRECTORY ENTRY:</span>
+            <HoverCard side={state.hoverCardSide} openDelay={150} closeDelay={200}>
+              <HoverCardTrigger asChild>
+                <span className="underline cursor-pointer font-bold text-primary hover:text-primary/80 transition-colors">
+                  @sysop_dan (NODE #01)
+                </span>
+              </HoverCardTrigger>
+              <HoverCardContent className="w-80 p-4 font-mono space-y-3">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bevel-inset bg-primary/20 flex items-center justify-center font-bold text-primary text-sm">
+                    SY
+                  </div>
+                  <div>
+                    <div className="font-bold text-foreground text-xs">Dan &quot;BitStream&quot; Miller</div>
+                    <div className="text-[10px] text-muted-foreground">SysOp {"//"} The Midnight Byte BBS</div>
+                  </div>
+                </div>
+                <div className="bevel-inset bg-surface p-2 text-[10px] space-y-1">
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">MODEM:</span>
+                    <span className="font-bold text-foreground">USRobotics Courier V.Everything</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">BAUD RATE:</span>
+                    <span className="font-bold text-foreground">56,600 bps V.90</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">ACCESS LEVEL:</span>
+                    <span className="font-bold text-foreground">255 (SUPERUSER)</span>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between text-[10px] text-muted-foreground pt-1 border-t border-border">
+                  <span className="flex items-center gap-1">
+                    <span className="inline-block w-2 h-2 bg-success rounded-none" /> ONLINE COM1
+                  </span>
+                  <span>UPTIME: 14D 06H</span>
+                </div>
+              </HoverCardContent>
+            </HoverCard>
+            <span className="text-[10px] text-muted-foreground">(Hover over the handle to inspect user credentials)</span>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-border w-full justify-center text-[11px]">
+            <span className="text-muted-foreground">Side:</span>
+            {(["top", "bottom", "left", "right"] as const).map((s) => (
+              <button
+                key={s}
+                type="button"
+                onClick={() => state.setHoverCardSide(s)}
+                className={`px-2 py-0.5 uppercase ${
+                  state.hoverCardSide === s ? "bevel-inset bg-primary text-primary-foreground font-bold" : "bevel-raised"
+                }`}
+              >
+                {s}
+              </button>
+            ))}
+          </div>
+          <span className="text-[10px] text-muted-foreground text-center">
+            Intent-aware hover preview with grace period delay before closing.
+          </span>
+        </div>
+      );
+
+    case "drawer":
+      return (
+        <div className="flex flex-col items-center gap-4 w-full max-w-md">
+          <Drawer open={state.drawerOpen} onOpenChange={state.setDrawerOpen} side={state.drawerSide} backdropVariant={state.drawerBackdrop}>
+            <DrawerTrigger asChild>
+              <Button variant="primary">Slide Out Diagnostic Drawer</Button>
+            </DrawerTrigger>
+            <DrawerContent>
+              <DrawerHeader>
+                <DrawerTitle>DIAGNOSTIC BUS TELEMETRY DRAWER</DrawerTitle>
+                <DrawerDescription>
+                  Continuous DMA packet inspection and UART buffer telemetry.
+                </DrawerDescription>
+              </DrawerHeader>
+              <DrawerBody>
+                <div className="bevel-inset bg-surface p-4 font-mono text-xs space-y-2 max-h-60 overflow-y-auto">
+                  <div className="text-success">[00:04:12] DMA Channel 1 verified: 64KB allocated</div>
+                  <div className="text-foreground">[00:04:14] UART 16550A FIFO buffer initialized</div>
+                  <div className="text-muted-foreground">[00:04:15] Baud clock sync: 115200 bps ok</div>
+                  <div className="text-warning">[00:04:18] CTS signal asserted by remote peer</div>
+                  <div className="text-foreground">[00:04:20] Ring buffer ready for telemetry stream</div>
+                </div>
+              </DrawerBody>
+              <DrawerFooter>
+                <DrawerClose asChild>
+                  <Button variant="outline" size="sm">Dismiss Drawer</Button>
+                </DrawerClose>
+                <Button variant="primary" size="sm">Clear Telemetry</Button>
+              </DrawerFooter>
+            </DrawerContent>
+          </Drawer>
+
+          <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-border w-full justify-center text-[11px]">
+            <span className="text-muted-foreground">Drawer Edge:</span>
+            {(["bottom", "top", "left", "right"] as const).map((s) => (
+              <button
+                key={s}
+                type="button"
+                onClick={() => state.setDrawerSide(s)}
+                className={`px-2 py-0.5 uppercase ${
+                  state.drawerSide === s ? "bevel-inset bg-primary text-primary-foreground font-bold" : "bevel-raised"
+                }`}
+              >
+                {s}
+              </button>
+            ))}
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2 w-full justify-center text-[11px]">
+            <span className="text-muted-foreground">Backdrop:</span>
+            {(["dimmed", "dither"] as const).map((b) => (
+              <button
+                key={b}
+                type="button"
+                onClick={() => state.setDrawerBackdrop(b)}
+                className={`px-2 py-0.5 uppercase ${
+                  state.drawerBackdrop === b ? "bevel-inset bg-primary text-primary-foreground font-bold" : "bevel-raised"
+                }`}
+              >
+                {b}
+              </button>
+            ))}
+          </div>
+          <span className="text-[10px] text-muted-foreground text-center">
+            Anchored edge drawer with smooth entrance animation and tactile retro borders.
+          </span>
+        </div>
+      );
+
+    case "sheet":
+      return (
+        <div className="flex flex-col items-center gap-4 w-full max-w-md">
+          <Sheet open={state.sheetOpen} onOpenChange={state.setSheetOpen} side={state.sheetSide} backdropVariant={state.sheetBackdrop}>
+            <SheetTrigger asChild>
+              <Button variant="outline">Open Device Inspector Sheet</Button>
+            </SheetTrigger>
+            <SheetContent className="w-full sm:max-w-md">
+              <SheetHeader>
+                <SheetTitle>SERIAL PORT INSPECTOR {"//"} COM2</SheetTitle>
+                <SheetDescription>
+                  Adjust RS-232 communication framing parameters.
+                </SheetDescription>
+              </SheetHeader>
+              <SheetBody className="space-y-4 font-mono text-xs">
+                <div className="bevel-inset bg-surface p-3 space-y-2">
+                  <div className="font-bold text-foreground">FRAMING FORMAT</div>
+                  <div className="flex justify-between text-muted-foreground">
+                    <span>BAUD RATE:</span>
+                    <span className="text-foreground font-bold">14,400 BPS</span>
+                  </div>
+                  <div className="flex justify-between text-muted-foreground">
+                    <span>DATA BITS:</span>
+                    <span className="text-foreground font-bold">8 BITS</span>
+                  </div>
+                  <div className="flex justify-between text-muted-foreground">
+                    <span>PARITY:</span>
+                    <span className="text-foreground font-bold">NONE (8N1)</span>
+                  </div>
+                  <div className="flex justify-between text-muted-foreground">
+                    <span>STOP BITS:</span>
+                    <span className="text-foreground font-bold">1 BIT</span>
+                  </div>
+                </div>
+
+                <div className="bevel-raised bg-bevel-face p-3 space-y-2">
+                  <div className="font-bold text-foreground">FLOW CONTROL</div>
+                  <div className="text-muted-foreground text-[11px]">
+                    Hardware RTS/CTS line handshaking enabled for high-speed modem transfers.
+                  </div>
+                </div>
+              </SheetBody>
+              <SheetFooter>
+                <SheetClose asChild>
+                  <Button size="sm" variant="outline">Cancel</Button>
+                </SheetClose>
+                <SheetClose asChild>
+                  <Button size="sm" variant="primary">Commit Changes</Button>
+                </SheetClose>
+              </SheetFooter>
+            </SheetContent>
+          </Sheet>
+
+          <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-border w-full justify-center text-[11px]">
+            <span className="text-muted-foreground">Docking Edge:</span>
+            {(["right", "left", "top", "bottom"] as const).map((s) => (
+              <button
+                key={s}
+                type="button"
+                onClick={() => state.setSheetSide(s)}
+                className={`px-2 py-0.5 uppercase ${
+                  state.sheetSide === s ? "bevel-inset bg-primary text-primary-foreground font-bold" : "bevel-raised"
+                }`}
+              >
+                {s}
+              </button>
+            ))}
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2 w-full justify-center text-[11px]">
+            <span className="text-muted-foreground">Backdrop:</span>
+            {(["dither", "dimmed"] as const).map((b) => (
+              <button
+                key={b}
+                type="button"
+                onClick={() => state.setSheetBackdrop(b)}
+                className={`px-2 py-0.5 uppercase ${
+                  state.sheetBackdrop === b ? "bevel-inset bg-primary text-primary-foreground font-bold" : "bevel-raised"
+                }`}
+              >
+                {b}
+              </button>
+            ))}
+          </div>
+          <span className="text-[10px] text-muted-foreground text-center">
+            Full edge docking panel optimized for complex properties inspection.
+          </span>
+        </div>
+      );
+
+    case "backdrop":
+      return (
+        <div className="flex flex-col items-center gap-4 w-full max-w-md">
+          {/* Contained simulation viewport so user can directly inspect textures */}
+          <div className="relative w-full h-44 bevel-inset bg-surface overflow-hidden flex flex-col items-center justify-center p-4">
+            {/* Background elements under the backdrop */}
+            <div className="absolute inset-0 p-4 grid grid-cols-3 gap-2 opacity-80 pointer-events-none font-mono text-[10px]">
+              <div className="bevel-raised bg-background p-2">PORT 0x3F8: OK</div>
+              <div className="bevel-raised bg-background p-2">IRQ 04: ACTIVE</div>
+              <div className="bevel-raised bg-background p-2">DMA 03: READY</div>
+              <div className="bevel-raised bg-background p-2">FAT16: MOUNTED</div>
+              <div className="bevel-raised bg-background p-2">RAM: 640KB BASE</div>
+              <div className="bevel-raised bg-background p-2">VGA: MODE 13H</div>
+            </div>
+
+            {/* The backdrop rendered inside the container */}
+            <div className="absolute inset-0">
+              <Backdrop
+                className="!absolute"
+                variant={state.backdropVariant}
+                invisible={state.backdropInvisible}
+              />
+            </div>
+
+            {/* Foreground card floating above backdrop */}
+            <div className="relative z-10 bevel-raised bg-bevel-face p-3 shadow-hard text-center font-mono text-xs space-y-1">
+              <div className="font-bold text-foreground uppercase">
+                ACTIVE SCRIM: {state.backdropInvisible ? "INVISIBLE" : state.backdropVariant}
+              </div>
+              <div className="text-[10px] text-muted-foreground">
+                {state.backdropVariant === "dither" && "Classic Bayer procedural stipple pattern"}
+                {state.backdropVariant === "dimmed" && "Standard dark alpha opacity scrim"}
+                {state.backdropVariant === "transparent" && "Transparent click-intercept barrier"}
+              </div>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-border w-full justify-center text-[11px]">
+            <span className="text-muted-foreground">Pattern:</span>
+            {(["dither", "dimmed", "transparent"] as const).map((b) => (
+              <button
+                key={b}
+                type="button"
+                onClick={() => state.setBackdropVariant(b)}
+                className={`px-2 py-0.5 uppercase ${
+                  state.backdropVariant === b ? "bevel-inset bg-primary text-primary-foreground font-bold" : "bevel-raised"
+                }`}
+              >
+                {b}
+              </button>
+            ))}
+            <Button
+              size="sm"
+              variant={state.backdropInvisible ? "primary" : "outline"}
+              onClick={() => state.setBackdropInvisible(!state.backdropInvisible)}
+            >
+              {state.backdropInvisible ? "Invisible: ON" : "Invisible: OFF"}
+            </Button>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => state.setBackdropFullscreenOpen(true)}
+            >
+              Test Fullscreen Backdrop Scrim
+            </Button>
+          </div>
+
+          {state.backdropFullscreenOpen && (
+            <>
+              <Backdrop
+                variant={state.backdropVariant}
+                invisible={state.backdropInvisible}
+                onClick={() => state.setBackdropFullscreenOpen(false)}
+              />
+              <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 pointer-events-none">
+                <div className="pointer-events-auto bevel-raised bg-bevel-face p-6 shadow-hard text-center font-mono space-y-3">
+                  <div className="font-bold text-sm text-foreground">FULLSCREEN BACKDROP ACTIVE</div>
+                  <div className="text-xs text-muted-foreground">Click anywhere on scrim to dismiss.</div>
+                  <Button size="sm" variant="primary" onClick={() => state.setBackdropFullscreenOpen(false)}>
+                    Dismiss Scrim
+                  </Button>
+                </div>
+              </div>
+            </>
+          )}
+
+          <span className="text-[10px] text-muted-foreground text-center">
+            Backdrop component handles procedural dithering, dimming, and outside-click capture.
+          </span>
+        </div>
+      );
+
+    case "overlay":
+      return (
+        <div className="flex flex-col items-center gap-4 w-full max-w-md">
+          <Button
+            variant="primary"
+            onClick={() => state.setOverlayOpen(true)}
+          >
+            Mount Controlled Overlay
+          </Button>
+
+          <Overlay
+            open={state.overlayOpen}
+            onOpenChange={state.setOverlayOpen}
+            backdropVariant={state.overlayBackdrop}
+            closeOnEscape={state.overlayCloseOnEscape}
+            closeOnOutsideClick={state.overlayCloseOnOutside}
+            className="fixed inset-0 flex items-center justify-center p-4 pointer-events-none"
+          >
+            <div className="pointer-events-auto bevel-raised bg-bevel-face p-6 shadow-hard max-w-sm w-full font-mono space-y-4">
+              <div className="border-b border-border pb-2">
+                <div className="font-bold text-foreground text-sm uppercase">CUSTOM OVERLAY VIEWPORT</div>
+                <div className="text-xs text-muted-foreground">Coordinated by low-level Overlay primitive</div>
+              </div>
+              <div className="bevel-inset bg-surface p-3 text-xs space-y-1">
+                <div className="text-foreground font-bold">STATE COORDINATION:</div>
+                <div className="text-muted-foreground">✓ Automatic body scroll lock</div>
+                <div className="text-muted-foreground">✓ Portaled outside parent DOM hierarchy</div>
+                <div className="text-muted-foreground">✓ Escape dismiss: {state.overlayCloseOnEscape ? "ON" : "OFF"}</div>
+                <div className="text-muted-foreground">✓ Outside click dismiss: {state.overlayCloseOnOutside ? "ON" : "OFF"}</div>
+              </div>
+              <div className="flex justify-end gap-2">
+                <Button size="sm" variant="primary" onClick={() => state.setOverlayOpen(false)}>
+                  Close Overlay
+                </Button>
+              </div>
+            </div>
+          </Overlay>
+
+          <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-border w-full justify-center text-[11px]">
+            <span className="text-muted-foreground">Backdrop:</span>
+            {(["dimmed", "dither", "transparent"] as const).map((b) => (
+              <button
+                key={b}
+                type="button"
+                onClick={() => state.setOverlayBackdrop(b)}
+                className={`px-2 py-0.5 uppercase ${
+                  state.overlayBackdrop === b ? "bevel-inset bg-primary text-primary-foreground font-bold" : "bevel-raised"
+                }`}
+              >
+                {b}
+              </button>
+            ))}
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2 w-full justify-center text-[11px]">
+            <Button
+              size="sm"
+              variant={state.overlayCloseOnEscape ? "primary" : "outline"}
+              onClick={() => state.setOverlayCloseOnEscape(!state.overlayCloseOnEscape)}
+            >
+              {state.overlayCloseOnEscape ? "Esc Dismiss: ON" : "Esc Dismiss: OFF"}
+            </Button>
+            <Button
+              size="sm"
+              variant={state.overlayCloseOnOutside ? "primary" : "outline"}
+              onClick={() => state.setOverlayCloseOnOutside(!state.overlayCloseOnOutside)}
+            >
+              {state.overlayCloseOnOutside ? "Outside Click: ON" : "Outside Click: OFF"}
+            </Button>
+          </div>
+
+          <span className="text-[10px] text-muted-foreground text-center">
+            Low-level building block managing overlay lifecycle, portals, and dismiss listeners.
+          </span>
+        </div>
+      );
+
+    case "portal":
+      return (
+        <div className="flex flex-col items-center gap-4 w-full max-w-md">
+          <div className="w-full text-center text-xs text-muted-foreground">
+            Visual demo comparing content trapped inside an <code className="text-primary font-bold">overflow-hidden</code> container versus tele-transported via Portal.
+          </div>
+
+          {/* A container with fixed dimensions and overflow-hidden */}
+          <div className="relative w-full h-32 border-2 border-dashed border-destructive/60 bg-surface/50 p-3 overflow-hidden flex flex-col items-center justify-between">
+            <div className="text-[11px] font-mono text-destructive font-bold uppercase tracking-wider">
+              PARENT BOUNDARY [OVERFLOW: HIDDEN]
+            </div>
+
+            {state.portalPanelOpen && (
+              <Portal disabled={state.portalDisabled}>
+                <div
+                  className={
+                    state.portalDisabled
+                      ? "relative w-64 bevel-raised bg-bevel-face p-3 shadow-hard text-xs font-mono text-center -mb-16 z-10"
+                      : "fixed bottom-8 right-8 w-72 bevel-raised bg-bevel-face p-4 shadow-hard text-xs font-mono text-center z-[var(--z-popover)]"
+                  }
+                >
+                  <div className="font-bold text-foreground">
+                    {state.portalDisabled ? "⚠️ TRAPPED & CLIPPED" : "🚀 PORTAL TELEPORTED"}
+                  </div>
+                  <div className="text-[10px] text-muted-foreground mt-1">
+                    {state.portalDisabled
+                      ? "Rendered inside DOM parent — truncated by parent bounds."
+                      : "Mounted to #ditherweb-portal-root — floating unconstrained!"}
+                  </div>
+                </div>
+              </Portal>
+            )}
+
+            <div className="text-[10px] font-mono text-muted-foreground">
+              Container height: 128px {"//"} clipping active
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-border w-full justify-center text-[11px]">
+            <Button
+              size="sm"
+              variant={state.portalDisabled ? "outline" : "primary"}
+              onClick={() => state.setPortalDisabled(!state.portalDisabled)}
+            >
+              {state.portalDisabled ? "Portal Disabled (Trapped)" : "Portal Enabled (Teleported)"}
+            </Button>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => state.setPortalPanelOpen(!state.portalPanelOpen)}
+            >
+              {state.portalPanelOpen ? "Hide Panel" : "Show Panel"}
+            </Button>
+          </div>
+
+          <span className="text-[10px] text-muted-foreground text-center">
+            SSR-safe React Portal targeting document.body with automatic portal root container lifecycle.
+          </span>
         </div>
       );
 
