@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Separator } from "@ditherweb/ui";
 
 export function SiteFooter() {
@@ -9,9 +10,22 @@ export function SiteFooter() {
           {/* Brand & Manifesto */}
           <div className="space-y-3 md:col-span-1">
             <div className="flex items-center gap-2">
-              <span className="bevel-raised inline-flex h-6 w-6 items-center justify-center bg-primary text-[10px] font-bold text-primary-foreground font-mono select-none">
-                DW
-              </span>
+              <Image
+                src="/icon-light.png"
+                alt="Ditherweb logo"
+                width={24}
+                height={24}
+                unoptimized
+                className="h-6 w-6 inline dark:hidden shrink-0 select-none image-rendering-pixelated"
+              />
+              <Image
+                src="/icon-dark.png"
+                alt="Ditherweb logo"
+                width={24}
+                height={24}
+                unoptimized
+                className="h-6 w-6 hidden dark:inline shrink-0 select-none image-rendering-pixelated"
+              />
               <span className="font-mono text-sm font-bold uppercase tracking-wider">
                 Ditherweb
               </span>
@@ -65,22 +79,22 @@ export function SiteFooter() {
             </h3>
             <ul className="space-y-1.5 font-mono text-xs text-muted-foreground">
               <li>
-                <Link href="/docs#tokens" className="hover:text-foreground hover:underline">
+                <Link href="/docs/theming" className="hover:text-foreground hover:underline">
                   CSS Design Tokens
                 </Link>
               </li>
               <li>
-                <Link href="/docs#bevels" className="hover:text-foreground hover:underline">
+                <Link href="/docs/theming#bevels" className="hover:text-foreground hover:underline">
                   Bevel Primitives
                 </Link>
               </li>
               <li>
-                <Link href="/docs#dithering" className="hover:text-foreground hover:underline">
+                <Link href="/docs/theming#dithering" className="hover:text-foreground hover:underline">
                   Procedural Dither Patterns
                 </Link>
               </li>
               <li>
-                <Link href="/docs#typography" className="hover:text-foreground hover:underline">
+                <Link href="/docs/theming#typography" className="hover:text-foreground hover:underline">
                   Pixel Typography
                 </Link>
               </li>
@@ -129,7 +143,10 @@ export function SiteFooter() {
           <p>© 2026 Ditherweb Project. Built with Next.js & TypeScript.</p>
           <div className="flex flex-wrap items-center gap-2">
             <span className="bevel-raised px-2 py-0.5 text-[10px] font-bold text-foreground bg-surface select-none">
-              [ NEXT.JS 15 ]
+              [ REACT 19 ]
+            </span>
+            <span className="bevel-raised px-2 py-0.5 text-[10px] font-bold text-foreground bg-surface select-none">
+              [ NEXT.JS ]
             </span>
             <span className="bevel-raised px-2 py-0.5 text-[10px] font-bold text-foreground bg-surface select-none">
               [ TAILWIND CSS ]

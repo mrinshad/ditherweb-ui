@@ -4267,7 +4267,7 @@ export default function ComponentsPage() {
                     </Avatar>
 
                     <Avatar id="avatar-circle-busy" size="lg" shape="circle" status="busy">
-                      <AvatarImage src="/artwork/ditherweb_hero.png" alt="Ditherweb" />
+                      <AvatarImage src="/icon-dark.png" alt="Ditherweb" />
                       <AvatarFallback>DW</AvatarFallback>
                     </Avatar>
 

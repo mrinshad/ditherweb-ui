@@ -3,6 +3,20 @@
 import { forwardRef } from "react";
 import { cn } from "@ditherweb/ui";
 
+function updateFavicons(isDark: boolean) {
+  try {
+    const iconHref = isDark ? "/icon-dark.png" : "/icon-light.png";
+    const links = document.querySelectorAll<HTMLLinkElement>("link[rel*='icon']");
+    links.forEach((link) => {
+      if (!link.hasAttribute("media")) {
+        link.href = iconHref;
+      }
+    });
+  } catch {
+    // DOM unavailable
+  }
+}
+
 function toggleTheme() {
   const isDark = document.documentElement.classList.toggle("dark");
   try {
@@ -10,6 +24,7 @@ function toggleTheme() {
   } catch {
     // localStorage unavailable
   }
+  updateFavicons(isDark);
 }
 
 export type ThemeToggleProps = React.ButtonHTMLAttributes<HTMLButtonElement>;

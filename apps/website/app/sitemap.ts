@@ -1,10 +1,11 @@
 import type { MetadataRoute } from "next";
+import { COMPONENT_DOCS_REGISTRY } from "@/lib/component-docs-registry";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://ditherweb.mrinshad.site";
   const lastModified = new Date();
 
-  return [
+  const coreRoutes: MetadataRoute.Sitemap = [
     {
       url: baseUrl,
       lastModified,
@@ -30,4 +31,43 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     },
   ];
+
+  const guideRoutes: MetadataRoute.Sitemap = [
+    {
+      url: `${baseUrl}/docs/installation`,
+      lastModified,
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/docs/theming`,
+      lastModified,
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/docs/accessibility`,
+      lastModified,
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/docs/composition`,
+      lastModified,
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+  ];
+
+  const componentRoutes: MetadataRoute.Sitemap = Object.keys(COMPONENT_DOCS_REGISTRY).map(
+    (slug) => ({
+      url: `${baseUrl}/components/${slug}`,
+      lastModified,
+      changeFrequency: "weekly",
+      priority: 0.75,
+    }),
+  );
+
+  return [...coreRoutes, ...guideRoutes, ...componentRoutes];
 }
+
