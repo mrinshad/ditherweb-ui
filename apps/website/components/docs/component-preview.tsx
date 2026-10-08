@@ -45,6 +45,21 @@ import {
   WindowTitle,
   WindowContent,
   WindowControls,
+  WindowControl,
+  WindowIcon,
+  WindowStatusBar,
+  WindowStatusItem,
+  Taskbar,
+  TaskbarStart,
+  TaskbarTasks,
+  TaskbarTask,
+  TaskbarStatus,
+  TaskbarClock,
+  Desktop,
+  DesktopIconGrid,
+  DesktopIcon,
+  BitmapCanvas,
+  DEFAULT_RETRO_PALETTE,
   Terminal,
   TerminalHeader,
   TerminalBody,
@@ -554,6 +569,32 @@ interface PreviewState {
   setWebDirectoryCols: (c: 1 | 2 | 3) => void;
   webDirectoryLastClicked: string;
   setWebDirectoryLastClicked: (l: string) => void;
+
+  // Desktop & Pixel states
+  windowActive: boolean;
+  setWindowActive: (a: boolean) => void;
+  windowControlsMaximized: boolean;
+  setWindowControlsMaximized: (m: boolean) => void;
+  windowControlsDisabled: boolean;
+  setWindowControlsDisabled: (d: boolean) => void;
+  windowControlsLastClicked: string;
+  setWindowControlsLastClicked: (c: string) => void;
+  taskbarStartActive: boolean;
+  setTaskbarStartActive: (a: boolean) => void;
+  taskbarActiveTask: string;
+  setTaskbarActiveTask: (t: string) => void;
+  desktopWallpaper: "dither" | "teal" | "solid" | "grid";
+  setDesktopWallpaper: (w: "dither" | "teal" | "solid" | "grid") => void;
+  desktopSelectedIcon: string;
+  setDesktopSelectedIcon: (i: string) => void;
+  desktopLaunchedApp: string;
+  setDesktopLaunchedApp: (a: string) => void;
+  bitmapCanvasColor: string;
+  setBitmapCanvasColor: (c: string) => void;
+  bitmapCanvasGrid: boolean;
+  setBitmapCanvasGrid: (g: boolean) => void;
+  bitmapCanvasKey: number;
+  setBitmapCanvasKey: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export function ComponentPreview({ slug }: ComponentPreviewProps) {
@@ -724,6 +765,20 @@ export function ComponentPreview({ slug }: ComponentPreviewProps) {
   const [pixelImageRatio, setPixelImageRatio] = useState<1 | 2 | 3 | 4>(1);
   const [webDirectoryCols, setWebDirectoryCols] = useState<1 | 2 | 3>(3);
   const [webDirectoryLastClicked, setWebDirectoryLastClicked] = useState("Sound Blaster 16 DSP");
+
+  // Desktop & Pixel states
+  const [windowActive, setWindowActive] = useState(true);
+  const [windowControlsMaximized, setWindowControlsMaximized] = useState(false);
+  const [windowControlsDisabled, setWindowControlsDisabled] = useState(false);
+  const [windowControlsLastClicked, setWindowControlsLastClicked] = useState("None");
+  const [taskbarStartActive, setTaskbarStartActive] = useState(false);
+  const [taskbarActiveTask, setTaskbarActiveTask] = useState("Notepad");
+  const [desktopWallpaper, setDesktopWallpaper] = useState<"dither" | "teal" | "solid" | "grid">("dither");
+  const [desktopSelectedIcon, setDesktopSelectedIcon] = useState("computer");
+  const [desktopLaunchedApp, setDesktopLaunchedApp] = useState("My Computer");
+  const [bitmapCanvasColor, setBitmapCanvasColor] = useState(DEFAULT_RETRO_PALETTE[1] || "#ffffff");
+  const [bitmapCanvasGrid, setBitmapCanvasGrid] = useState(true);
+  const [bitmapCanvasKey, setBitmapCanvasKey] = useState(0);
 
   return (
     <div className="bevel-raised bg-surface p-6 font-mono text-xs border border-border space-y-4">
@@ -1010,6 +1065,30 @@ export function ComponentPreview({ slug }: ComponentPreviewProps) {
           setWebDirectoryCols,
           webDirectoryLastClicked,
           setWebDirectoryLastClicked,
+          windowActive,
+          setWindowActive,
+          windowControlsMaximized,
+          setWindowControlsMaximized,
+          windowControlsDisabled,
+          setWindowControlsDisabled,
+          windowControlsLastClicked,
+          setWindowControlsLastClicked,
+          taskbarStartActive,
+          setTaskbarStartActive,
+          taskbarActiveTask,
+          setTaskbarActiveTask,
+          desktopWallpaper,
+          setDesktopWallpaper,
+          desktopSelectedIcon,
+          setDesktopSelectedIcon,
+          desktopLaunchedApp,
+          setDesktopLaunchedApp,
+          bitmapCanvasColor,
+          setBitmapCanvasColor,
+          bitmapCanvasGrid,
+          setBitmapCanvasGrid,
+          bitmapCanvasKey,
+          setBitmapCanvasKey,
         })}
       </div>
     </div>
@@ -1699,16 +1778,63 @@ function renderPreviewContent(slug: string, state: PreviewState) {
 
     case "window":
       return (
-        <Window className="w-full max-w-md">
-          <WindowTitleBar>
-            <WindowTitle>SYSTEM_PROPERTIES.EXE</WindowTitle>
-            <WindowControls />
-          </WindowTitleBar>
-          <WindowContent className="p-4 space-y-2">
-            <div className="font-bold">Intel 80486DX2 @ 66MHz</div>
-            <p className="text-muted-foreground">Conventional Memory: 640 KB Base + 15,360 KB Extended.</p>
-          </WindowContent>
-        </Window>
+        <div className="flex flex-col items-center gap-4 w-full max-w-md">
+          <Window active={state.windowActive} className="w-full">
+            <WindowTitleBar active={state.windowActive}>
+              <WindowIcon icon={<span>💻</span>} />
+              <WindowTitle>SYSTEM_PROPERTIES.EXE</WindowTitle>
+              <WindowControls
+                isMaximized={state.windowControlsMaximized}
+                onMinimize={() => state.setWindowControlsLastClicked("Minimize")}
+                onMaximize={() => {
+                  state.setWindowControlsMaximized(!state.windowControlsMaximized);
+                  state.setWindowControlsLastClicked(state.windowControlsMaximized ? "Restore" : "Maximize");
+                }}
+                onClose={() => state.setWindowControlsLastClicked("Close")}
+              />
+            </WindowTitleBar>
+            <WindowContent className="p-4 space-y-3 font-mono text-xs">
+              <div className="font-bold text-foreground">Intel 80486DX2 @ 66MHz</div>
+              <p className="text-muted-foreground text-[11px] leading-relaxed">
+                Conventional Memory: 640 KB Base + 15,360 KB Extended. Math Coprocessor: Integrated.
+              </p>
+              <div className="bevel-inset bg-surface p-2 text-[10px] space-y-1">
+                <div>BUS: VESA Local Bus (VLB) 32-bit</div>
+                <div>GRAPHICS: S3 Trio64V+ 2MB VRAM</div>
+              </div>
+            </WindowContent>
+            <WindowStatusBar>
+              <WindowStatusItem>READY</WindowStatusItem>
+              <WindowStatusItem>640K BASE</WindowStatusItem>
+              <WindowStatusItem className="ml-auto">LPT1: ON</WindowStatusItem>
+            </WindowStatusBar>
+          </Window>
+
+          <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-border w-full justify-center text-[11px]">
+            <Button
+              size="sm"
+              variant={state.windowActive ? "primary" : "outline"}
+              onClick={() => state.setWindowActive(!state.windowActive)}
+            >
+              {state.windowActive ? "Window Focus: ACTIVE" : "Window Focus: INACTIVE"}
+            </Button>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => {
+                const next = !state.windowControlsMaximized;
+                state.setWindowControlsMaximized(next);
+                state.setWindowControlsLastClicked(next ? "Maximize" : "Restore");
+              }}
+            >
+              {state.windowControlsMaximized ? "Restore" : "Maximize"}
+            </Button>
+          </div>
+
+          <div className="text-[10px] font-mono text-muted-foreground text-center">
+            LAST TITLEBAR ACTION: <span className="font-bold text-foreground">{state.windowControlsLastClicked}</span>
+          </div>
+        </div>
       );
 
     case "sidebar":
@@ -5172,6 +5298,334 @@ function renderPreviewContent(slug: string, state: PreviewState) {
 
           <span className="text-[10px] text-muted-foreground text-center">
             Early web portal categorized link directory in the classic Yahoo! / DMOZ hierarchy format.
+          </span>
+        </div>
+      );
+
+    case "window-titlebar":
+      return (
+        <div className="flex flex-col items-center gap-5 w-full max-w-md">
+          <div className="bevel-raised bg-surface p-4 w-full space-y-3">
+            <div className="text-[10px] text-muted-foreground font-mono uppercase tracking-wider">
+              TITLEBAR STRIP PREVIEW
+            </div>
+
+            <WindowTitleBar active={state.windowActive} className="w-full">
+              <WindowIcon icon={<span>📂</span>} />
+              <WindowTitle>C:\DOS\DRIVERS\SOUND16.SYS</WindowTitle>
+              <WindowControls
+                isMaximized={state.windowControlsMaximized}
+                onMinimize={() => state.setWindowControlsLastClicked("Minimize Titlebar")}
+                onMaximize={() => {
+                  state.setWindowControlsMaximized(!state.windowControlsMaximized);
+                  state.setWindowControlsLastClicked("Maximize Titlebar");
+                }}
+                onClose={() => state.setWindowControlsLastClicked("Close Titlebar")}
+              />
+            </WindowTitleBar>
+
+            <div className="bevel-inset bg-background p-3 text-xs font-mono text-muted-foreground">
+              Window title bars convey window focus hierarchy with primary high-contrast highlight when active and muted grey when inactive.
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-border w-full justify-center text-[11px]">
+            <Button
+              size="sm"
+              variant={state.windowActive ? "primary" : "outline"}
+              onClick={() => state.setWindowActive(!state.windowActive)}
+            >
+              {state.windowActive ? "Focus: ACTIVE (Primary)" : "Focus: INACTIVE (Muted)"}
+            </Button>
+          </div>
+
+          <span className="text-[10px] text-muted-foreground text-center">
+            Classic application window title bar strip with active/inactive visual contrast and embedded controls.
+          </span>
+        </div>
+      );
+
+    case "window-controls":
+      return (
+        <div className="flex flex-col items-center gap-5 w-full max-w-md">
+          <div className="bevel-raised bg-surface p-5 flex flex-col items-center gap-4 w-full">
+            <div className="text-[10px] text-muted-foreground font-mono uppercase tracking-wider">
+              WINDOW MANAGEMENT BUTTONS
+            </div>
+
+            <div className="flex items-center justify-between w-full p-2 bevel-inset bg-primary text-primary-foreground font-mono text-xs">
+              <span className="font-bold">DEMO_WINDOW.EXE</span>
+              <WindowControls
+                disabled={state.windowControlsDisabled}
+                isMaximized={state.windowControlsMaximized}
+                showHelp={true}
+                onHelp={() => state.setWindowControlsLastClicked("Help (? clicked)")}
+                onMinimize={() => state.setWindowControlsLastClicked("Minimize (_ clicked)")}
+                onMaximize={() => {
+                  state.setWindowControlsMaximized(!state.windowControlsMaximized);
+                  state.setWindowControlsLastClicked(state.windowControlsMaximized ? "Restore (□ clicked)" : "Maximize (□ clicked)");
+                }}
+                onClose={() => state.setWindowControlsLastClicked("Close (✕ clicked)")}
+              />
+            </div>
+
+            <div className="grid grid-cols-5 gap-3 items-center justify-items-center pt-2">
+              <div className="flex flex-col items-center gap-1">
+                <WindowControl variant="minimize" onClick={() => state.setWindowControlsLastClicked("Minimize Button")} />
+                <span className="text-[9px] text-muted-foreground font-mono">Min</span>
+              </div>
+              <div className="flex flex-col items-center gap-1">
+                <WindowControl variant="maximize" onClick={() => state.setWindowControlsLastClicked("Maximize Button")} />
+                <span className="text-[9px] text-muted-foreground font-mono">Max</span>
+              </div>
+              <div className="flex flex-col items-center gap-1">
+                <WindowControl variant="restore" onClick={() => state.setWindowControlsLastClicked("Restore Button")} />
+                <span className="text-[9px] text-muted-foreground font-mono">Restore</span>
+              </div>
+              <div className="flex flex-col items-center gap-1">
+                <WindowControl variant="close" onClick={() => state.setWindowControlsLastClicked("Close Button")} />
+                <span className="text-[9px] text-muted-foreground font-mono">Close</span>
+              </div>
+              <div className="flex flex-col items-center gap-1">
+                <WindowControl variant="help" onClick={() => state.setWindowControlsLastClicked("Help Button")} />
+                <span className="text-[9px] text-muted-foreground font-mono">Help</span>
+              </div>
+            </div>
+
+            <div className="bevel-inset bg-background p-2 w-full text-center text-xs font-mono">
+              <span className="text-muted-foreground">LAST BUTTON ACTION: </span>
+              <span className="font-bold text-foreground">{state.windowControlsLastClicked}</span>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-border w-full justify-center text-[11px]">
+            <Button
+              size="sm"
+              variant={state.windowControlsMaximized ? "primary" : "outline"}
+              onClick={() => state.setWindowControlsMaximized(!state.windowControlsMaximized)}
+            >
+              {state.windowControlsMaximized ? "State: Maximized" : "State: Windowed"}
+            </Button>
+            <Button
+              size="sm"
+              variant={state.windowControlsDisabled ? "primary" : "outline"}
+              onClick={() => state.setWindowControlsDisabled(!state.windowControlsDisabled)}
+            >
+              {state.windowControlsDisabled ? "Disabled: ON" : "Disabled: OFF"}
+            </Button>
+          </div>
+
+          <span className="text-[10px] text-muted-foreground text-center">
+            The trio of minimize, maximize/restore, and close buttons with tactile bevel press states.
+          </span>
+        </div>
+      );
+
+    case "taskbar":
+      return (
+        <div className="flex flex-col items-center gap-5 w-full max-w-xl">
+          <div className="w-full bevel-inset bg-surface/50 p-4 min-h-[160px] flex flex-col justify-between">
+            <div className="text-xs font-mono text-muted-foreground text-center pt-2">
+              Workstation Canvas (Taskbar docked at bottom)
+            </div>
+
+            <Taskbar className="w-full">
+              <TaskbarStart
+                active={state.taskbarStartActive}
+                onClick={() => state.setTaskbarStartActive(!state.taskbarStartActive)}
+              >
+                Start
+              </TaskbarStart>
+
+              <TaskbarTasks>
+                {(["Notepad", "Paint", "Terminal"] as const).map((task) => (
+                  <TaskbarTask
+                    key={task}
+                    active={state.taskbarActiveTask === task}
+                    onClick={() => state.setTaskbarActiveTask(task)}
+                    icon={<span>{task === "Notepad" ? "📝" : task === "Paint" ? "🎨" : "💻"}</span>}
+                  >
+                    {task}
+                  </TaskbarTask>
+                ))}
+              </TaskbarTasks>
+
+              <TaskbarStatus>
+                <span className="text-[10px]" aria-hidden="true">🔊</span>
+                <span className="text-[10px]" aria-hidden="true">⚡</span>
+                <TaskbarClock />
+              </TaskbarStatus>
+            </Taskbar>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-border w-full justify-center text-[11px]">
+            <Button
+              size="sm"
+              variant={state.taskbarStartActive ? "primary" : "outline"}
+              onClick={() => state.setTaskbarStartActive(!state.taskbarStartActive)}
+            >
+              {state.taskbarStartActive ? "Start Menu: OPEN" : "Start Menu: CLOSED"}
+            </Button>
+
+            <span className="text-muted-foreground ml-2">Active Task:</span>
+            {(["Notepad", "Paint", "Terminal"] as const).map((t) => (
+              <button
+                key={t}
+                type="button"
+                onClick={() => state.setTaskbarActiveTask(t)}
+                className={`px-2 py-0.5 uppercase ${
+                  state.taskbarActiveTask === t ? "bevel-inset bg-primary text-primary-foreground font-bold" : "bevel-raised"
+                }`}
+              >
+                {t}
+              </button>
+            ))}
+          </div>
+
+          <span className="text-[10px] text-muted-foreground text-center">
+            Bottom application dock with Start button trigger, running tasks, and digital system tray clock.
+          </span>
+        </div>
+      );
+
+    case "desktop":
+      return (
+        <div className="flex flex-col items-center gap-4 w-full max-w-xl">
+          <Desktop
+            wallpaper={state.desktopWallpaper}
+            className="w-full min-h-[320px] rounded-none"
+          >
+            <DesktopIconGrid>
+              <DesktopIcon
+                label="My Computer"
+                selected={state.desktopSelectedIcon === "computer"}
+                icon={<span>🖥️</span>}
+                onClick={() => state.desktopSelectedIcon === "computer" ? state.setDesktopLaunchedApp("My Computer") : state.setDesktopSelectedIcon("computer")}
+                onOpen={() => state.setDesktopLaunchedApp("My Computer")}
+              />
+              <DesktopIcon
+                label="Recycle Bin"
+                selected={state.desktopSelectedIcon === "recycle"}
+                icon={<span>🗑️</span>}
+                onClick={() => state.desktopSelectedIcon === "recycle" ? state.setDesktopLaunchedApp("Recycle Bin") : state.setDesktopSelectedIcon("recycle")}
+                onOpen={() => state.setDesktopLaunchedApp("Recycle Bin")}
+              />
+              <DesktopIcon
+                label="BBS Terminal"
+                selected={state.desktopSelectedIcon === "bbs"}
+                icon={<span>📡</span>}
+                onClick={() => state.desktopSelectedIcon === "bbs" ? state.setDesktopLaunchedApp("BBS Terminal") : state.setDesktopSelectedIcon("bbs")}
+                onOpen={() => state.setDesktopLaunchedApp("BBS Terminal")}
+              />
+              <DesktopIcon
+                label="Pixel Paint"
+                selected={state.desktopSelectedIcon === "paint"}
+                icon={<span>🎨</span>}
+                onClick={() => state.desktopSelectedIcon === "paint" ? state.setDesktopLaunchedApp("Pixel Paint") : state.setDesktopSelectedIcon("paint")}
+                onOpen={() => state.setDesktopLaunchedApp("Pixel Paint")}
+              />
+            </DesktopIconGrid>
+
+            <div className="p-2 bevel-inset bg-background/80 text-center text-xs font-mono mx-4 mb-2">
+              <span className="text-muted-foreground">ACTIVE WORKSPACE APP: </span>
+              <span className="font-bold text-foreground uppercase">{state.desktopLaunchedApp}</span>
+            </div>
+
+            <Taskbar>
+              <TaskbarStart active={false}>Start</TaskbarStart>
+              <TaskbarTasks>
+                <TaskbarTask active>{state.desktopLaunchedApp}</TaskbarTask>
+              </TaskbarTasks>
+              <TaskbarStatus>
+                <TaskbarClock />
+              </TaskbarStatus>
+            </Taskbar>
+          </Desktop>
+
+          <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-border w-full justify-center text-[11px]">
+            <span className="text-muted-foreground">Wallpaper:</span>
+            {(["dither", "teal", "solid", "grid"] as const).map((w) => (
+              <button
+                key={w}
+                type="button"
+                onClick={() => state.setDesktopWallpaper(w)}
+                className={`px-2 py-0.5 uppercase ${
+                  state.desktopWallpaper === w ? "bevel-inset bg-primary text-primary-foreground font-bold" : "bevel-raised"
+                }`}
+              >
+                {w}
+              </button>
+            ))}
+          </div>
+
+          <span className="text-[10px] text-muted-foreground text-center">
+            Full desktop workspace canvas with selectable icon grid, wallpaper patterns, and bottom taskbar.
+          </span>
+        </div>
+      );
+
+    case "bitmap-canvas":
+      return (
+        <div className="flex flex-col items-center gap-4 w-full max-w-md">
+          <div className="bevel-raised bg-surface p-5 flex flex-col items-center gap-4 w-full">
+            <div className="text-[10px] text-muted-foreground font-mono uppercase tracking-wider">
+              16×16 RETRO PIXEL PAINT CANVAS
+            </div>
+
+            <BitmapCanvas
+              key={state.bitmapCanvasKey}
+              width={16}
+              height={16}
+              pixelSize={14}
+              grid={state.bitmapCanvasGrid}
+              interactive={true}
+              activeColor={state.bitmapCanvasColor}
+              alt="16x16 Interactive Bitmap Canvas"
+            />
+
+            {/* Vintage Palette Picker */}
+            <div className="flex flex-col items-center gap-2 w-full pt-1">
+              <div className="text-[10px] text-muted-foreground font-mono uppercase">
+                ACTIVE COLOR: <span className="font-bold text-foreground">{state.bitmapCanvasColor}</span>
+              </div>
+              <div className="flex flex-wrap items-center justify-center gap-1.5">
+                {DEFAULT_RETRO_PALETTE.map((color) => (
+                  <button
+                    key={color}
+                    type="button"
+                    aria-label={`Select color ${color}`}
+                    onClick={() => state.setBitmapCanvasColor(color)}
+                    style={{ backgroundColor: color }}
+                    className={`w-6 h-6 border-2 transition-transform cursor-pointer ${
+                      state.bitmapCanvasColor === color
+                        ? "border-primary scale-110 shadow-hard-sm ring-2 ring-primary/40"
+                        : "border-border hover:scale-105"
+                    }`}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-border w-full justify-center text-[11px]">
+            <Button
+              size="sm"
+              variant={state.bitmapCanvasGrid ? "primary" : "outline"}
+              onClick={() => state.setBitmapCanvasGrid(!state.bitmapCanvasGrid)}
+            >
+              {state.bitmapCanvasGrid ? "Grid: ON" : "Grid: OFF"}
+            </Button>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => state.setBitmapCanvasKey((k) => k + 1)}
+            >
+              Clear Canvas
+            </Button>
+          </div>
+
+          <span className="text-[10px] text-muted-foreground text-center">
+            Interactive pixel paint canvas primitive supporting mouse/keyboard painting and retro 16-color palettes.
           </span>
         </div>
       );
