@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect, createContext, useContext } from "react";
+import { componentCodeSamples } from "./catalog-code-samples";
 import NextLink from "next/link";
 import {
   Button,
@@ -252,6 +253,70 @@ const treeData: TreeNodeData[] = [
   },
 ];
 
+
+interface CodeViewerContextValue {
+  openCodes: Record<string, boolean>;
+  copiedId: string | null;
+  toggleCode: (id: string) => void;
+  copyCode: (id: string, code: string) => void;
+}
+
+const CodeViewerContext = createContext<CodeViewerContextValue | null>(null);
+
+function ComponentActions({ sectionId }: { sectionId: string }) {
+  const ctx = useContext(CodeViewerContext);
+  const sample = componentCodeSamples[sectionId];
+  const badgeText = sample?.badge ?? `@ditherweb/ui/${sectionId}`;
+  const isOpen = Boolean(ctx?.openCodes[sectionId]);
+
+  return (
+    <div className="flex items-center gap-2">
+      <Badge variant="outline">{badgeText}</Badge>
+      <button
+        type="button"
+        onClick={() => ctx?.toggleCode(sectionId)}
+        aria-expanded={isOpen}
+        aria-controls={`code-sample-${sectionId}`}
+        className="px-2.5 py-1 font-mono text-xs font-bold bevel-raised active:bevel-pressed flex items-center gap-1.5 text-foreground hover:bg-muted select-none"
+      >
+        <span className="text-[10px] text-primary font-bold">&lt;/&gt;</span>
+        {isOpen ? "Hide Code" : "View Code"}
+      </button>
+    </div>
+  );
+}
+
+function ComponentCodePanel({ sectionId }: { sectionId: string }) {
+  const ctx = useContext(CodeViewerContext);
+  const sample = componentCodeSamples[sectionId];
+  if (!sample || !ctx?.openCodes[sectionId]) return null;
+  const isCopied = ctx.copiedId === sectionId;
+
+  return (
+    <div
+      id={`code-sample-${sectionId}`}
+      className="bevel-inset bg-background p-4 relative font-mono text-xs space-y-3 animate-in fade-in duration-150"
+    >
+      <div className="flex items-center justify-between pb-2 border-b border-border/40 text-[11px] text-muted-foreground">
+        <span className="font-bold text-foreground flex items-center gap-2">
+          <span>SOURCE SAMPLE</span>
+          <span className="text-[10px] text-muted-foreground">({sample.badge})</span>
+        </span>
+        <button
+          type="button"
+          onClick={() => ctx.copyCode(sectionId, sample.code)}
+          className="bevel-raised active:bevel-pressed px-2.5 py-0.5 font-bold text-foreground hover:bg-muted text-[11px]"
+        >
+          {isCopied ? "✓ Copied!" : "Copy Code"}
+        </button>
+      </div>
+      <pre className="text-foreground leading-relaxed overflow-x-auto selection:bg-primary selection:text-primary-foreground">
+        <code>{sample.code}</code>
+      </pre>
+    </div>
+  );
+}
+
 export default function ComponentsPage() {
   const [category, setCategory] = useState<Category>("all");
   const [btnClicks, setBtnClicks] = useState(0);
@@ -303,6 +368,26 @@ export default function ComponentsPage() {
   const [menubarViewMode, setMenubarViewMode] = useState("detail");
   const [selectedTableKeys, setSelectedTableKeys] = useState<(string | number)[]>(["proc-1"]);
 
+  const [openCodes, setOpenCodes] = useState<Record<string, boolean>>({});
+  const [copiedId, setCopiedId] = useState<string | null>(null);
+
+  const toggleCode = (sectionId: string) => {
+    setOpenCodes((prev) => ({ ...prev, [sectionId]: !prev[sectionId] }));
+  };
+
+  const copyCode = async (sectionId: string, code: string) => {
+    try {
+      await navigator.clipboard.writeText(code);
+      setCopiedId(sectionId);
+      setTimeout(() => {
+        setCopiedId((curr) => (curr === sectionId ? null : curr));
+      }, 2000);
+    } catch (err) {
+      console.error("Failed to copy code", err);
+    }
+  };
+
+
 
   useEffect(() => {
     if (!backdropPreviewVariant) return;
@@ -316,7 +401,8 @@ export default function ComponentsPage() {
   }, [backdropPreviewVariant]);
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 space-y-12">
+    <CodeViewerContext.Provider value={{ openCodes, copiedId, toggleCode, copyCode }}>
+      <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 space-y-12">
       {/* Page Header */}
       <div className="space-y-4">
         <div className="flex items-center gap-2">
@@ -436,7 +522,7 @@ export default function ComponentsPage() {
                   Semantic heading (h1-h6) with decoupled visual size scaling.
                 </p>
               </div>
-              <Badge variant="outline">@ditherweb/ui</Badge>
+              <ComponentActions sectionId="heading" />
             </div>
 
             <Card>
@@ -468,12 +554,10 @@ export default function ComponentsPage() {
                     </Heading>
                   </div>
                 </div>
-
-                <div className="bevel-inset bg-background p-3 font-mono text-xs overflow-x-auto">
-                  <code>{`<Heading level={2} size="xl">System Core</Heading>`}</code>
-                </div>
               </CardContent>
             </Card>
+
+            <ComponentCodePanel sectionId="heading" />
           </section>
         )}
 
@@ -489,7 +573,7 @@ export default function ComponentsPage() {
                   General-purpose typographic primitive supporting tags, scales, weights, and tones.
                 </p>
               </div>
-              <Badge variant="outline">@ditherweb/ui</Badge>
+              <ComponentActions sectionId="text" />
             </div>
 
             <Card>
@@ -518,12 +602,10 @@ export default function ComponentsPage() {
                     <Text mono size="sm" variant="muted">Monospace Font Stack Flag Enabled (mono)</Text>
                   </div>
                 </div>
-
-                <div className="bevel-inset bg-background p-3 font-mono text-xs overflow-x-auto">
-                  <code>{`<Text as="p" size="base" variant="muted" weight="medium">Ditherweb</Text>`}</code>
-                </div>
               </CardContent>
             </Card>
+
+            <ComponentCodePanel sectionId="text" />
           </section>
         )}
 
@@ -539,7 +621,7 @@ export default function ComponentsPage() {
                   Framework-agnostic anchor primitive with calibrated retro hover and keyboard states.
                 </p>
               </div>
-              <Badge variant="outline">@ditherweb/ui</Badge>
+              <ComponentActions sectionId="link" />
             </div>
 
             <Card>
@@ -586,12 +668,10 @@ export default function ComponentsPage() {
                     </UiLink>
                   </div>
                 </div>
-
-                <div className="bevel-inset bg-background p-3 font-mono text-xs overflow-x-auto">
-                  <code>{`<Link href="/docs" variant="default">Documentation →</Link>`}</code>
-                </div>
               </CardContent>
             </Card>
+
+            <ComponentCodePanel sectionId="link" />
           </section>
         )}
 
@@ -607,7 +687,7 @@ export default function ComponentsPage() {
                   Sunken inline code substrate and tactile raised keycap shortcut primitives.
                 </p>
               </div>
-              <Badge variant="outline">@ditherweb/ui</Badge>
+              <ComponentActions sectionId="code-kbd" />
             </div>
 
             <Card>
@@ -640,12 +720,10 @@ export default function ComponentsPage() {
                     </span>
                   </div>
                 </div>
-
-                <div className="bevel-inset bg-background p-3 font-mono text-xs overflow-x-auto">
-                  <code>{`<Code>npm i @ditherweb/ui</Code> | <Kbd>Ctrl</Kbd> + <Kbd>K</Kbd>`}</code>
-                </div>
               </CardContent>
             </Card>
+
+            <ComponentCodePanel sectionId="code-kbd" />
           </section>
         )}
 
@@ -661,7 +739,7 @@ export default function ComponentsPage() {
                   Vintage quote indentation and semantic ordered/unordered list primitives with pixel bullets.
                 </p>
               </div>
-              <Badge variant="outline">@ditherweb/ui</Badge>
+              <ComponentActions sectionId="blockquote-list" />
             </div>
 
             <Card>
@@ -699,12 +777,10 @@ export default function ComponentsPage() {
                     </List>
                   </div>
                 </div>
-
-                <div className="bevel-inset bg-background p-3 font-mono text-xs overflow-x-auto">
-                  <code>{`<List type="unordered" variant="pixel"><ListItem>...</ListItem></List>`}</code>
-                </div>
               </CardContent>
             </Card>
+
+            <ComponentCodePanel sectionId="blockquote-list" />
           </section>
         )}
 
@@ -724,7 +800,7 @@ export default function ComponentsPage() {
                   Content width constraints with responsive padding, and neutral polymorphic layout primitive.
                 </p>
               </div>
-              <Badge variant="outline">@ditherweb/ui</Badge>
+              <ComponentActions sectionId="container-box" />
             </div>
 
             <Card>
@@ -757,12 +833,10 @@ export default function ComponentsPage() {
                     </p>
                   </Box>
                 </div>
-
-                <div className="bevel-inset bg-background p-3 font-mono text-xs overflow-x-auto">
-                  <code>{`<Container size="lg"><Box as="main">...</Box></Container>`}</code>
-                </div>
               </CardContent>
             </Card>
+
+            <ComponentCodePanel sectionId="container-box" />
           </section>
         )}
 
@@ -778,7 +852,7 @@ export default function ComponentsPage() {
                   Directional stack flow, flexbox composition, and CSS grid primitives.
                 </p>
               </div>
-              <Badge variant="outline">@ditherweb/ui</Badge>
+              <ComponentActions sectionId="stack-flex-grid" />
             </div>
 
             <Card>
@@ -818,12 +892,10 @@ export default function ComponentsPage() {
                     <div className="p-3 border border-border bg-card">Col 4</div>
                   </Grid>
                 </div>
-
-                <div className="bevel-inset bg-background p-3 font-mono text-xs overflow-x-auto">
-                  <code>{`<Stack gap="md"><Flex><Logo /><Spacer /><Nav /></Flex></Stack>`}</code>
-                </div>
               </CardContent>
             </Card>
+
+            <ComponentCodePanel sectionId="stack-flex-grid" />
           </section>
         )}
 
@@ -839,7 +911,7 @@ export default function ComponentsPage() {
                   CSS aspect-ratio constraint and accessible native scroll container.
                 </p>
               </div>
-              <Badge variant="outline">@ditherweb/ui</Badge>
+              <ComponentActions sectionId="aspect-scroll" />
             </div>
 
             <Card>
@@ -884,12 +956,10 @@ export default function ComponentsPage() {
                     </ScrollArea>
                   </div>
                 </div>
-
-                <div className="bevel-inset bg-background p-3 font-mono text-xs overflow-x-auto">
-                  <code>{`<AspectRatio ratio={16/9}>...</AspectRatio> | <ScrollArea className="h-48">...</ScrollArea>`}</code>
-                </div>
               </CardContent>
             </Card>
+
+            <ComponentCodePanel sectionId="aspect-scroll" />
           </section>
         )}
 
@@ -909,7 +979,7 @@ export default function ComponentsPage() {
                   Native multiline input with sunken inset styling, invalid states, and zero-radius geometry.
                 </p>
               </div>
-              <Badge variant="outline">@ditherweb/ui</Badge>
+              <ComponentActions sectionId="textarea" />
             </div>
 
             <Card>
@@ -949,12 +1019,10 @@ export default function ComponentsPage() {
                     </div>
                   </div>
                 </div>
-
-                <div className="bevel-inset bg-background p-3 font-mono text-xs overflow-x-auto">
-                  <code>{`<Textarea rows={4} placeholder="..." invalid={hasError} />`}</code>
-                </div>
               </CardContent>
             </Card>
+
+            <ComponentCodePanel sectionId="textarea" />
           </section>
         )}
 
@@ -970,7 +1038,7 @@ export default function ComponentsPage() {
                   Masked credential field with non-submitting retro show/hide toggle and focus preservation.
                 </p>
               </div>
-              <Badge variant="outline">@ditherweb/ui</Badge>
+              <ComponentActions sectionId="password-input" />
             </div>
 
             <Card>
@@ -1008,12 +1076,10 @@ export default function ComponentsPage() {
                     </div>
                   </div>
                 </div>
-
-                <div className="bevel-inset bg-background p-3 font-mono text-xs overflow-x-auto">
-                  <code>{`<PasswordInput value={pwd} onChange={...} showToggle />`}</code>
-                </div>
               </CardContent>
             </Card>
+
+            <ComponentCodePanel sectionId="password-input" />
           </section>
         )}
 
@@ -1029,7 +1095,7 @@ export default function ComponentsPage() {
                   Native type=&quot;search&quot; field with accessible clear button and zero form disruption.
                 </p>
               </div>
-              <Badge variant="outline">@ditherweb/ui</Badge>
+              <ComponentActions sectionId="search-input" />
             </div>
 
             <Card>
@@ -1067,12 +1133,10 @@ export default function ComponentsPage() {
                     </div>
                   </div>
                 </div>
-
-                <div className="bevel-inset bg-background p-3 font-mono text-xs overflow-x-auto">
-                  <code>{`<SearchInput value={query} onClear={() => setQuery("")} placeholder="Search..." />`}</code>
-                </div>
               </CardContent>
             </Card>
+
+            <ComponentCodePanel sectionId="search-input" />
           </section>
         )}
 
@@ -1088,7 +1152,7 @@ export default function ComponentsPage() {
                   Native numeric input with min, max, step boundaries and sunken retro bevel.
                 </p>
               </div>
-              <Badge variant="outline">@ditherweb/ui</Badge>
+              <ComponentActions sectionId="number-input" />
             </div>
 
             <Card>
@@ -1127,12 +1191,10 @@ export default function ComponentsPage() {
                     />
                   </div>
                 </div>
-
-                <div className="bevel-inset bg-background p-3 font-mono text-xs overflow-x-auto">
-                  <code>{`<NumberInput min={0} max={100} step={2} value={val} onChange={...} />`}</code>
-                </div>
               </CardContent>
             </Card>
+
+            <ComponentCodePanel sectionId="number-input" />
           </section>
         )}
 
@@ -1148,7 +1210,7 @@ export default function ComponentsPage() {
                   Native HTML select dropdown styled with custom pixel caret and sunken well.
                 </p>
               </div>
-              <Badge variant="outline">@ditherweb/ui</Badge>
+              <ComponentActions sectionId="select" />
             </div>
 
             <Card>
@@ -1186,12 +1248,10 @@ export default function ComponentsPage() {
                     </Select>
                   </div>
                 </div>
-
-                <div className="bevel-inset bg-background p-3 font-mono text-xs overflow-x-auto">
-                  <code>{`<Select value={mode} onChange={...}><option value="...">...</option></Select>`}</code>
-                </div>
               </CardContent>
             </Card>
+
+            <ComponentCodePanel sectionId="select" />
           </section>
         )}
 
@@ -1207,7 +1267,7 @@ export default function ComponentsPage() {
                   Accessible WAI-ARIA searchable listbox with keyboard navigation, active-descendant, and empty state.
                 </p>
               </div>
-              <Badge variant="outline">@ditherweb/ui</Badge>
+              <ComponentActions sectionId="combobox" />
             </div>
 
             <Card>
@@ -1256,12 +1316,10 @@ export default function ComponentsPage() {
                     </div>
                   </div>
                 </div>
-
-                <div className="bevel-inset bg-background p-3 font-mono text-xs overflow-x-auto">
-                  <code>{`<Combobox options={[{ value, label }]} value={val} onValueChange={...} />`}</code>
-                </div>
               </CardContent>
             </Card>
+
+            <ComponentCodePanel sectionId="combobox" />
           </section>
         )}
 
@@ -1277,7 +1335,7 @@ export default function ComponentsPage() {
                   Native range input with grooved retro channel and tactile raised square thumb.
                 </p>
               </div>
-              <Badge variant="outline">@ditherweb/ui</Badge>
+              <ComponentActions sectionId="slider" />
             </div>
 
             <Card>
@@ -1312,12 +1370,10 @@ export default function ComponentsPage() {
                     />
                   </div>
                 </div>
-
-                <div className="bevel-inset bg-background p-3 font-mono text-xs overflow-x-auto">
-                  <code>{`<Slider min={0} max={100} value={val} onChange={...} />`}</code>
-                </div>
               </CardContent>
             </Card>
+
+            <ComponentCodePanel sectionId="slider" />
           </section>
         )}
 
@@ -1333,7 +1389,7 @@ export default function ComponentsPage() {
                   Button-style pressed/unpressed state with aria-pressed and bevel inversion.
                 </p>
               </div>
-              <Badge variant="outline">@ditherweb/ui</Badge>
+              <ComponentActions sectionId="toggle" />
             </div>
 
             <Card>
@@ -1368,12 +1424,10 @@ export default function ComponentsPage() {
                 <span className="block font-mono text-xs text-muted-foreground">
                   Status: <span className="font-bold text-primary">{togglePressed ? "ACTIVE (PRESSED)" : "INACTIVE (RAISED)"}</span>
                 </span>
-
-                <div className="bevel-inset bg-background p-3 font-mono text-xs overflow-x-auto">
-                  <code>{`<Toggle pressed={active} onPressedChange={setActive}>BOLD</Toggle>`}</code>
-                </div>
               </CardContent>
             </Card>
+
+            <ComponentCodePanel sectionId="toggle" />
           </section>
         )}
 
@@ -1389,7 +1443,7 @@ export default function ComponentsPage() {
                   Accessible grouped toggles with single or multiple selection modes.
                 </p>
               </div>
-              <Badge variant="outline">@ditherweb/ui</Badge>
+              <ComponentActions sectionId="toggle-group" />
             </div>
 
             <Card>
@@ -1430,12 +1484,10 @@ export default function ComponentsPage() {
                     </span>
                   </div>
                 </div>
-
-                <div className="bevel-inset bg-background p-3 font-mono text-xs overflow-x-auto">
-                  <code>{`<ToggleGroup type="single" value={val} onValueChange={...}><ToggleGroupItem value="...">...</ToggleGroupItem></ToggleGroup>`}</code>
-                </div>
               </CardContent>
             </Card>
+
+            <ComponentCodePanel sectionId="toggle-group" />
           </section>
         )}
 
@@ -1451,7 +1503,7 @@ export default function ComponentsPage() {
                   Accessible form-field composition primitive wiring label, description, error, and aria attributes.
                 </p>
               </div>
-              <Badge variant="outline">@ditherweb/ui</Badge>
+              <ComponentActions sectionId="field" />
             </div>
 
             <Card>
@@ -1484,12 +1536,10 @@ export default function ComponentsPage() {
                     </FieldError>
                   </Field>
                 </div>
-
-                <div className="bevel-inset bg-background p-3 font-mono text-xs overflow-x-auto">
-                  <code>{`<Field required error="..."><FieldLabel>...</FieldLabel><Input ... /><FieldDescription>...</FieldDescription></Field>`}</code>
-                </div>
               </CardContent>
             </Card>
+
+            <ComponentCodePanel sectionId="field" />
           </section>
         )}
 
@@ -1509,7 +1559,7 @@ export default function ComponentsPage() {
                   Tactile action trigger with raised bevels and active pressed depression.
                 </p>
               </div>
-              <Badge variant="outline">@ditherweb/ui</Badge>
+              <ComponentActions sectionId="button" />
             </div>
 
             <Card>
@@ -1571,12 +1621,10 @@ export default function ComponentsPage() {
                     </Button>
                   </div>
                 </div>
-
-                <div className="bevel-inset bg-background p-3 font-mono text-xs overflow-x-auto">
-                  <code>{`<Button variant="primary" size="md">Execute</Button>`}</code>
-                </div>
               </CardContent>
             </Card>
+
+            <ComponentCodePanel sectionId="button" />
           </section>
         )}
 
@@ -1592,7 +1640,7 @@ export default function ComponentsPage() {
                   Sunken bevel text field with monospace typing dynamics and focus rings.
                 </p>
               </div>
-              <Badge variant="outline">@ditherweb/ui</Badge>
+              <ComponentActions sectionId="input" />
             </div>
 
             <Card>
@@ -1627,12 +1675,10 @@ export default function ComponentsPage() {
                     />
                   </div>
                 </div>
-
-                <div className="bevel-inset bg-background p-3 font-mono text-xs overflow-x-auto">
-                  <code>{`<Input placeholder="Enter value..." />`}</code>
-                </div>
               </CardContent>
             </Card>
+
+            <ComponentCodePanel sectionId="input" />
           </section>
         )}
 
@@ -1648,7 +1694,7 @@ export default function ComponentsPage() {
                   High-contrast typography for form controls with optional required indicator.
                 </p>
               </div>
-              <Badge variant="outline">@ditherweb/ui</Badge>
+              <ComponentActions sectionId="label" />
             </div>
 
             <Card>
@@ -1662,12 +1708,10 @@ export default function ComponentsPage() {
                     Offline Field (Disabled)
                   </Label>
                 </div>
-
-                <div className="bevel-inset bg-background p-3 font-mono text-xs overflow-x-auto">
-                  <code>{`<Label htmlFor="baud">Baud Rate</Label>`}</code>
-                </div>
               </CardContent>
             </Card>
+
+            <ComponentCodePanel sectionId="label" />
           </section>
         )}
 
@@ -1683,7 +1727,7 @@ export default function ComponentsPage() {
                   Crisp 16x16 pixel sunken checkbox supporting checked, unchecked, and indeterminate states.
                 </p>
               </div>
-              <Badge variant="outline">@ditherweb/ui</Badge>
+              <ComponentActions sectionId="checkbox" />
             </div>
 
             <Card>
@@ -1712,12 +1756,10 @@ export default function ComponentsPage() {
                     Hardware Lock ({disabledChkClicks})
                   </Checkbox>
                 </div>
-
-                <div className="bevel-inset bg-background p-3 font-mono text-xs overflow-x-auto">
-                  <code>{`<Checkbox checked={active} onChange={(e) => setActive(e.target.checked)}>Enable</Checkbox>`}</code>
-                </div>
               </CardContent>
             </Card>
+
+            <ComponentCodePanel sectionId="checkbox" />
           </section>
         )}
 
@@ -1733,7 +1775,7 @@ export default function ComponentsPage() {
                   Square-frame radio selection group for mutually exclusive options.
                 </p>
               </div>
-              <Badge variant="outline">@ditherweb/ui</Badge>
+              <ComponentActions sectionId="radio" />
             </div>
 
             <Card>
@@ -1783,12 +1825,10 @@ export default function ComponentsPage() {
                     XGA High-Res (Disabled Hardware)
                   </Radio>
                 </div>
-
-                <div className="bevel-inset bg-background p-3 font-mono text-xs overflow-x-auto">
-                  <code>{`<Radio name="mode" value="vga" checked={val === "vga"} onChange={...}>VGA</Radio>`}</code>
-                </div>
               </CardContent>
             </Card>
+
+            <ComponentCodePanel sectionId="radio" />
           </section>
         )}
 
@@ -1804,7 +1844,7 @@ export default function ComponentsPage() {
                   Tactile slider switch with bevel thumb and track depression.
                 </p>
               </div>
-              <Badge variant="outline">@ditherweb/ui</Badge>
+              <ComponentActions sectionId="switch" />
             </div>
 
             <Card>
@@ -1828,12 +1868,10 @@ export default function ComponentsPage() {
                     Uncontrolled (Hardware Cache)
                   </Switch>
                 </div>
-
-                <div className="bevel-inset bg-background p-3 font-mono text-xs overflow-x-auto">
-                  <code>{`<Switch checked={enabled} onChange={(e) => setEnabled(e.target.checked)}>Sound</Switch>`}</code>
-                </div>
               </CardContent>
             </Card>
+
+            <ComponentCodePanel sectionId="switch" />
           </section>
         )}
 
@@ -1849,7 +1887,7 @@ export default function ComponentsPage() {
                   Structured container primitive with default, raised, and sunken surfaces.
                 </p>
               </div>
-              <Badge variant="outline">@ditherweb/ui</Badge>
+              <ComponentActions sectionId="card" />
             </div>
 
             <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
@@ -1892,6 +1930,8 @@ export default function ComponentsPage() {
                 </CardFooter>
               </Card>
             </div>
+
+            <ComponentCodePanel sectionId="card" />
           </section>
         )}
 
@@ -1907,7 +1947,7 @@ export default function ComponentsPage() {
                   Geometric divider supporting horizontal and vertical orientations.
                 </p>
               </div>
-              <Badge variant="outline">@ditherweb/ui</Badge>
+              <ComponentActions sectionId="separator" />
             </div>
 
             <Card>
@@ -1925,6 +1965,8 @@ export default function ComponentsPage() {
                 </div>
               </CardContent>
             </Card>
+
+            <ComponentCodePanel sectionId="separator" />
           </section>
         )}
 
@@ -1940,7 +1982,7 @@ export default function ComponentsPage() {
                   Pixel-framed status tag for metadata, state indicators, and tags.
                 </p>
               </div>
-              <Badge variant="outline">@ditherweb/ui</Badge>
+              <ComponentActions sectionId="badge" />
             </div>
 
             <Card>
@@ -1955,12 +1997,10 @@ export default function ComponentsPage() {
                   <Badge variant="destructive">DESTRUCTIVE</Badge>
                   <Badge variant="info">INFO</Badge>
                 </div>
-
-                <div className="bevel-inset bg-background p-3 font-mono text-xs overflow-x-auto">
-                  <code>{`<Badge variant="success">ONLINE</Badge>`}</code>
-                </div>
               </CardContent>
             </Card>
+
+            <ComponentCodePanel sectionId="badge" />
           </section>
         )}
 
@@ -1976,7 +2016,7 @@ export default function ComponentsPage() {
                   System message notification with role=&quot;alert&quot; and distinct chromatic borders.
                 </p>
               </div>
-              <Badge variant="outline">@ditherweb/ui</Badge>
+              <ComponentActions sectionId="alert" />
             </div>
 
             <Card>
@@ -2010,12 +2050,10 @@ export default function ComponentsPage() {
                     </AlertDescription>
                   </Alert>
                 </div>
-
-                <div className="bevel-inset bg-background p-3 font-mono text-xs overflow-x-auto">
-                  <code>{`<Alert variant="destructive"><AlertTitle>Error</AlertTitle><AlertDescription>...</AlertDescription></Alert>`}</code>
-                </div>
               </CardContent>
             </Card>
+
+            <ComponentCodePanel sectionId="alert" />
           </section>
         )}
 
@@ -2034,6 +2072,7 @@ export default function ComponentsPage() {
                     Generic application and content surface with compound header, title, description, content, and footer layout.
                   </p>
                 </div>
+                <ComponentActions sectionId="panel" />
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -2086,7 +2125,9 @@ export default function ComponentsPage() {
                   </Panel>
                 </div>
               </div>
-            </section>
+
+            <ComponentCodePanel sectionId="panel" />
+          </section>
 
             {/* GroupBox */}
             <section id="group-box" className="space-y-4 scroll-mt-20">
@@ -2156,7 +2197,9 @@ export default function ComponentsPage() {
                   <Button size="sm" disabled>Flash BIOS</Button>
                 </GroupBox>
               </div>
-            </section>
+
+            <ComponentCodePanel sectionId="group-box" />
+          </section>
 
             {/* Well & Inset */}
             <section id="well-inset" className="space-y-4 scroll-mt-20">
@@ -2170,6 +2213,7 @@ export default function ComponentsPage() {
                     Recessed, sunken content surfaces for terminal buffers, log readouts, and deep cavity containers.
                   </p>
                 </div>
+                <ComponentActions sectionId="well-inset" />
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -2208,7 +2252,9 @@ export default function ComponentsPage() {
                   </CardContent>
                 </Card>
               </div>
-            </section>
+
+            <ComponentCodePanel sectionId="well-inset" />
+          </section>
 
             {/* Progress */}
             <section id="progress" className="space-y-4 scroll-mt-20">
@@ -2222,6 +2268,7 @@ export default function ComponentsPage() {
                     Native semantic &lt;progress&gt; element with retro track, stepped fills, and animated indeterminate stripe.
                   </p>
                 </div>
+                <ComponentActions sectionId="progress" />
               </div>
 
               <Card>
@@ -2268,7 +2315,9 @@ export default function ComponentsPage() {
                   </div>
                 </CardContent>
               </Card>
-            </section>
+
+            <ComponentCodePanel sectionId="progress" />
+          </section>
 
             {/* Spinner & Loading */}
             <section id="spinner-loading" className="space-y-4 scroll-mt-20">
@@ -2282,6 +2331,7 @@ export default function ComponentsPage() {
                     Stepped retro pixel indicators and accessible loading composition with zero icon libraries.
                   </p>
                 </div>
+                <ComponentActions sectionId="spinner-loading" />
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -2336,7 +2386,9 @@ export default function ComponentsPage() {
                   </CardContent>
                 </Card>
               </div>
-            </section>
+
+            <ComponentCodePanel sectionId="spinner-loading" />
+          </section>
 
             {/* Skeleton */}
             <section id="skeleton" className="space-y-4 scroll-mt-20">
@@ -2350,6 +2402,7 @@ export default function ComponentsPage() {
                     Content placeholder using procedural dither patterns and stepped pulse animation.
                   </p>
                 </div>
+                <ComponentActions sectionId="skeleton" />
               </div>
 
               <Card>
@@ -2380,7 +2433,9 @@ export default function ComponentsPage() {
                   </div>
                 </CardContent>
               </Card>
-            </section>
+
+            <ComponentCodePanel sectionId="skeleton" />
+          </section>
 
             {/* EmptyState */}
             <section id="empty-state" className="space-y-4 scroll-mt-20">
@@ -2394,6 +2449,7 @@ export default function ComponentsPage() {
                     Reusable empty-content presentation with title, description, and accessible action trigger.
                   </p>
                 </div>
+                <ComponentActions sectionId="empty-state" />
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -2427,7 +2483,9 @@ export default function ComponentsPage() {
                   </EmptyStateAction>
                 </EmptyState>
               </div>
-            </section>
+
+            <ComponentCodePanel sectionId="empty-state" />
+          </section>
 
             {/* Result */}
             <section id="result" className="space-y-4 scroll-mt-20">
@@ -2441,6 +2499,7 @@ export default function ComponentsPage() {
                     Semantic outcome presentations for success, error, warning, and info operations.
                   </p>
                 </div>
+                <ComponentActions sectionId="result" />
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -2489,7 +2548,9 @@ export default function ComponentsPage() {
                   </ResultAction>
                 </Result>
               </div>
-            </section>
+
+            <ComponentCodePanel sectionId="result" />
+          </section>
           </>
         )}
 
@@ -2510,6 +2571,7 @@ export default function ComponentsPage() {
                     Classic retro application window modal with 3D raised bevel, titlebar, focus trapping, Escape dismiss, and body scroll locking.
                   </p>
                 </div>
+                <ComponentActions sectionId="dialog" />
               </div>
 
               <div className="p-6 bevel-inset bg-surface-sunken space-y-4">
@@ -2595,7 +2657,9 @@ export default function ComponentsPage() {
                   </Dialog>
                 </div>
               </div>
-            </section>
+
+            <ComponentCodePanel sectionId="dialog" />
+          </section>
 
             {/* AlertDialog */}
             <section id="alert-dialog" className="space-y-4 scroll-mt-20">
@@ -2609,6 +2673,7 @@ export default function ComponentsPage() {
                     Destructive confirmation modal. Disables click-outside dismiss by default and places initial focus on Cancel to avoid accidental data loss.
                   </p>
                 </div>
+                <ComponentActions sectionId="alert-dialog" />
               </div>
 
               <div className="p-6 bevel-inset bg-surface-sunken space-y-4">
@@ -2654,7 +2719,9 @@ export default function ComponentsPage() {
                   </span>
                 </div>
               </div>
-            </section>
+
+            <ComponentCodePanel sectionId="alert-dialog" />
+          </section>
 
             {/* Popover */}
             <section id="popover" className="space-y-4 scroll-mt-20">
@@ -2668,6 +2735,7 @@ export default function ComponentsPage() {
                     Anchored non-modal floating surface with viewport boundary detection, outside-click capture, and keyboard Escape listener.
                   </p>
                 </div>
+                <ComponentActions sectionId="popover" />
               </div>
 
               <div className="p-6 bevel-inset bg-surface-sunken">
@@ -2720,7 +2788,9 @@ export default function ComponentsPage() {
                   </Popover>
                 </div>
               </div>
-            </section>
+
+            <ComponentCodePanel sectionId="popover" />
+          </section>
 
             {/* Tooltip */}
             <section id="tooltip" className="space-y-4 scroll-mt-20">
@@ -2734,6 +2804,7 @@ export default function ComponentsPage() {
                     Compact pixel-bordered informational hint that responds to mouse hover and keyboard focus with configurable delay.
                   </p>
                 </div>
+                <ComponentActions sectionId="tooltip" />
               </div>
 
               <div className="p-6 bevel-inset bg-surface-sunken">
@@ -2785,7 +2856,9 @@ export default function ComponentsPage() {
                   </div>
                 </TooltipProvider>
               </div>
-            </section>
+
+            <ComponentCodePanel sectionId="tooltip" />
+          </section>
 
             {/* HoverCard */}
             <section id="hover-card" className="space-y-4 scroll-mt-20">
@@ -2799,6 +2872,7 @@ export default function ComponentsPage() {
                     Rich preview card with interactive links and hover intent grace period so users can move their pointer directly into the card.
                   </p>
                 </div>
+                <ComponentActions sectionId="hover-card" />
               </div>
 
               <div className="p-6 bevel-inset bg-surface-sunken">
@@ -2841,7 +2915,9 @@ export default function ComponentsPage() {
                   </HoverCard>
                 </div>
               </div>
-            </section>
+
+            <ComponentCodePanel sectionId="hover-card" />
+          </section>
 
             {/* Drawer */}
             <section id="drawer" className="space-y-4 scroll-mt-20">
@@ -2855,6 +2931,7 @@ export default function ComponentsPage() {
                     Off-canvas drawer sliding from viewport edge (bottom, right, left, top). Perfect for mobile consoles and terminal logs.
                   </p>
                 </div>
+                <ComponentActions sectionId="drawer" />
               </div>
 
               <div className="p-6 bevel-inset bg-surface-sunken">
@@ -2908,7 +2985,9 @@ export default function ComponentsPage() {
                   </Button>
                 </div>
               </div>
-            </section>
+
+            <ComponentCodePanel sectionId="drawer" />
+          </section>
 
             {/* Sheet */}
             <section id="sheet" className="space-y-4 scroll-mt-20">
@@ -2922,6 +3001,7 @@ export default function ComponentsPage() {
                     High-density slide-over side panel anchored to the viewport. Designed for complex configuration panels, form workflows, and inspectors.
                   </p>
                 </div>
+                <ComponentActions sectionId="sheet" />
               </div>
 
               <div className="p-6 bevel-inset bg-surface-sunken">
@@ -2969,7 +3049,9 @@ export default function ComponentsPage() {
                   </Sheet>
                 </div>
               </div>
-            </section>
+
+            <ComponentCodePanel sectionId="sheet" />
+          </section>
 
             {/* Infrastructure Primitives: Portal, Backdrop, Overlay */}
             <section id="infrastructure" className="space-y-4 scroll-mt-20">
@@ -2983,6 +3065,7 @@ export default function ComponentsPage() {
                     Low-level composable primitives providing SSR-safe DOM mounting, classic dimming/dither textures, and unified layer lifecycle management.
                   </p>
                 </div>
+                <ComponentActions sectionId="infrastructure" />
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -3149,7 +3232,9 @@ export default function ComponentsPage() {
                   </div>
                 </div>
               </div>
-            </section>
+
+            <ComponentCodePanel sectionId="infrastructure" />
+          </section>
           </>
         )}
 
@@ -3167,9 +3252,12 @@ export default function ComponentsPage() {
                     Tabs
                   </h2>
                 </div>
-                <span className="font-mono text-xs text-muted-foreground">
+                <div className="flex items-center gap-3">
+                  <span className="font-mono text-xs text-muted-foreground">
                   role=&quot;tablist&quot; • Arrow keys • Folders
                 </span>
+                  <ComponentActions sectionId="demo-tabs-section" />
+                </div>
               </div>
               <p className="font-mono text-xs text-muted-foreground">
                 Accessible tabbed navigation with W3C keyboard navigation, Home/End support, and retro beveled folder styling.
@@ -3244,7 +3332,9 @@ export default function ComponentsPage() {
                   </Tabs>
                 </div>
               </div>
-            </section>
+
+            <ComponentCodePanel sectionId="demo-tabs-section" />
+          </section>
 
             {/* SECTION 2: BREADCRUMB */}
             <section id="demo-breadcrumb-section" className="space-y-4">
@@ -3255,9 +3345,12 @@ export default function ComponentsPage() {
                     Breadcrumb
                   </h2>
                 </div>
-                <span className="font-mono text-xs text-muted-foreground">
+                <div className="flex items-center gap-3">
+                  <span className="font-mono text-xs text-muted-foreground">
                   nav • ol • Retro separators
                 </span>
+                  <ComponentActions sectionId="demo-breadcrumb-section" />
+                </div>
               </div>
               <p className="font-mono text-xs text-muted-foreground">
                 Semantic hierarchical location indicators with retro delimiters, custom glyphs, and responsive overflow.
@@ -3310,7 +3403,9 @@ export default function ComponentsPage() {
                   </Breadcrumb>
                 </div>
               </div>
-            </section>
+
+            <ComponentCodePanel sectionId="demo-breadcrumb-section" />
+          </section>
 
             {/* SECTION 3: PAGINATION */}
             <section id="demo-pagination-section" className="space-y-4">
@@ -3321,9 +3416,12 @@ export default function ComponentsPage() {
                     Pagination
                   </h2>
                 </div>
-                <span className="font-mono text-xs text-muted-foreground">
+                <div className="flex items-center gap-3">
+                  <span className="font-mono text-xs text-muted-foreground">
                   role=&quot;navigation&quot; • Page Buttons
                 </span>
+                  <ComponentActions sectionId="demo-pagination-section" />
+                </div>
               </div>
               <p className="font-mono text-xs text-muted-foreground">
                 Stateful pagination controls with previous/next triggers, active indicators, and ellipsis ranges.
@@ -3379,7 +3477,9 @@ export default function ComponentsPage() {
                   </PaginationContent>
                 </Pagination>
               </div>
-            </section>
+
+            <ComponentCodePanel sectionId="demo-pagination-section" />
+          </section>
 
             {/* SECTION 4: NAVIGATION MENU */}
             <section id="demo-navigation-menu-section" className="space-y-4">
@@ -3390,9 +3490,12 @@ export default function ComponentsPage() {
                     NavigationMenu
                   </h2>
                 </div>
-                <span className="font-mono text-xs text-muted-foreground">
+                <div className="flex items-center gap-3">
+                  <span className="font-mono text-xs text-muted-foreground">
                   Header Navigation • Disclosure Submenus
                 </span>
+                  <ComponentActions sectionId="demo-navigation-menu-section" />
+                </div>
               </div>
               <p className="font-mono text-xs text-muted-foreground">
                 Top-level website bar with direct links, active indicator lines, and dropdown section navigation.
@@ -3448,7 +3551,9 @@ export default function ComponentsPage() {
                   </NavigationMenuList>
                 </NavigationMenu>
               </div>
-            </section>
+
+            <ComponentCodePanel sectionId="demo-navigation-menu-section" />
+          </section>
 
             {/* SECTION 5: MENUBAR */}
             <section id="demo-menubar-section" className="space-y-4">
@@ -3459,9 +3564,12 @@ export default function ComponentsPage() {
                     Menubar
                   </h2>
                 </div>
-                <span className="font-mono text-xs text-muted-foreground">
+                <div className="flex items-center gap-3">
+                  <span className="font-mono text-xs text-muted-foreground">
                   role=&quot;menubar&quot; • Shortcuts • Checkbox/Radio
                 </span>
+                  <ComponentActions sectionId="demo-menubar-section" />
+                </div>
               </div>
               <p className="font-mono text-xs text-muted-foreground">
                 Desktop-application horizontal menu bar with keyboard arrow navigation, submenus, shortcuts, and toggle states.
@@ -3572,7 +3680,9 @@ export default function ComponentsPage() {
                   Use Left / Right arrow keys to move across menus, Down arrow to open, and Escape to dismiss.
                 </div>
               </div>
-            </section>
+
+            <ComponentCodePanel sectionId="demo-menubar-section" />
+          </section>
 
             {/* SECTION 6: TABLE */}
             <section id="demo-table-section" className="space-y-4">
@@ -3583,9 +3693,12 @@ export default function ComponentsPage() {
                     Table
                   </h2>
                 </div>
-                <span className="font-mono text-xs text-muted-foreground">
+                <div className="flex items-center gap-3">
+                  <span className="font-mono text-xs text-muted-foreground">
                   table • striped • dense • bordered
                 </span>
+                  <ComponentActions sectionId="demo-table-section" />
+                </div>
               </div>
               <p className="font-mono text-xs text-muted-foreground">
                 Semantic HTML data table with striped rows, dense padding, cell borders, and responsive horizontal overflow.
@@ -3642,7 +3755,9 @@ export default function ComponentsPage() {
                   </TableFooter>
                 </Table>
               </div>
-            </section>
+
+            <ComponentCodePanel sectionId="demo-table-section" />
+          </section>
 
             {/* SECTION 7: DATA TABLE */}
             <section id="demo-data-table-section" className="space-y-4">
@@ -3653,9 +3768,12 @@ export default function ComponentsPage() {
                     DataTable
                   </h2>
                 </div>
-                <span className="font-mono text-xs text-muted-foreground">
+                <div className="flex items-center gap-3">
+                  <span className="font-mono text-xs text-muted-foreground">
                   Sorting • Multi-selection • Zero Dependencies
                 </span>
+                  <ComponentActions sectionId="demo-data-table-section" />
+                </div>
               </div>
               <p className="font-mono text-xs text-muted-foreground">
                 Fully typed data table component with interactive column sorting, multi-row checkbox selection, and loading/empty state fallbacks.
@@ -3684,7 +3802,9 @@ export default function ComponentsPage() {
                   caption="KERNEL ACTIVE PROCESS SCHEDULER"
                 />
               </div>
-            </section>
+
+            <ComponentCodePanel sectionId="demo-data-table-section" />
+          </section>
 
             {/* SECTION 8: DESCRIPTION LIST */}
             <section id="demo-description-list-section" className="space-y-4">
@@ -3695,9 +3815,12 @@ export default function ComponentsPage() {
                     DescriptionList
                   </h2>
                 </div>
-                <span className="font-mono text-xs text-muted-foreground">
+                <div className="flex items-center gap-3">
+                  <span className="font-mono text-xs text-muted-foreground">
                   dl • dt • dd • Horizontal &amp; Stacked
                 </span>
+                  <ComponentActions sectionId="demo-description-list-section" />
+                </div>
               </div>
               <p className="font-mono text-xs text-muted-foreground">
                 Semantic key-value specification lists with horizontal alignment, responsive mobile collapse, and stacked layout variants.
@@ -3748,7 +3871,9 @@ export default function ComponentsPage() {
                   </DescriptionList>
                 </div>
               </div>
-            </section>
+
+            <ComponentCodePanel sectionId="demo-description-list-section" />
+          </section>
 
             {/* SECTION 9: TREE */}
             <section id="demo-tree-section" className="space-y-4">
@@ -3759,9 +3884,12 @@ export default function ComponentsPage() {
                     Tree
                   </h2>
                 </div>
-                <span className="font-mono text-xs text-muted-foreground">
+                <div className="flex items-center gap-3">
+                  <span className="font-mono text-xs text-muted-foreground">
                   role=&quot;tree&quot; • Arrow Navigation • ASCII Connectors
                 </span>
+                  <ComponentActions sectionId="demo-tree-section" />
+                </div>
               </div>
               <p className="font-mono text-xs text-muted-foreground">
                 Accessible hierarchical navigation tree with ASCII branch connectors, expand/collapse toggles, and roving keyboard focus.
@@ -3787,7 +3915,9 @@ export default function ComponentsPage() {
                   showGuides
                 />
               </div>
-            </section>
+
+            <ComponentCodePanel sectionId="demo-tree-section" />
+          </section>
 
             {/* SECTION 10: AVATAR */}
             <section id="demo-avatar-section" className="space-y-4">
@@ -3798,9 +3928,12 @@ export default function ComponentsPage() {
                     Avatar
                   </h2>
                 </div>
-                <span className="font-mono text-xs text-muted-foreground">
+                <div className="flex items-center gap-3">
+                  <span className="font-mono text-xs text-muted-foreground">
                   Initials Fallback • Sizes sm-xl • Status Badges
                 </span>
+                  <ComponentActions sectionId="demo-avatar-section" />
+                </div>
               </div>
               <p className="font-mono text-xs text-muted-foreground">
                 Visual entity representation with image fallback, monospace initials, retro bevels, square/circle shapes, and status badges.
@@ -3863,7 +3996,9 @@ export default function ComponentsPage() {
                   </div>
                 </div>
               </div>
-            </section>
+
+            <ComponentCodePanel sectionId="demo-avatar-section" />
+          </section>
           </>
         )}
       </div>
@@ -3878,5 +4013,6 @@ export default function ComponentsPage() {
         </NextLink>
       </div>
     </div>
+    </CodeViewerContext.Provider>
   );
 }

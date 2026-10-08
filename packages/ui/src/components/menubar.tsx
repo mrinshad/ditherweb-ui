@@ -195,7 +195,7 @@ export const MenubarContent = React.forwardRef<HTMLDivElement, MenubarContentPro
 
     React.useEffect(() => {
       if (isOpen && contentRef.current) {
-        const firstItem = contentRef.current.querySelector<HTMLElement>('[role="menuitem"]:not([aria-disabled="true"])');
+        const firstItem = contentRef.current.querySelector<HTMLElement>('[role^="menuitem"]:not([aria-disabled="true"])');
         firstItem?.focus();
       }
     }, [isOpen]);
@@ -205,7 +205,7 @@ export const MenubarContent = React.forwardRef<HTMLDivElement, MenubarContentPro
       if (!contentRef.current) return;
 
       const items = Array.from(
-        contentRef.current.querySelectorAll<HTMLElement>('[role="menuitem"]:not([aria-disabled="true"])')
+        contentRef.current.querySelectorAll<HTMLElement>('[role^="menuitem"]:not([aria-disabled="true"])')
       );
       const activeElement = document.activeElement as HTMLElement;
       const currentIndex = items.indexOf(activeElement);
@@ -266,7 +266,7 @@ export interface MenubarItemProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export const MenubarItem = React.forwardRef<HTMLDivElement, MenubarItemProps>(
-  ({ className, disabled = false, children, onClick, onKeyDown, ...props }, ref) => {
+  ({ className, disabled = false, children, onClick, onKeyDown, onMouseEnter, ...props }, ref) => {
     const menuContext = React.useContext(MenubarMenuContext);
 
     const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -287,6 +287,12 @@ export const MenubarItem = React.forwardRef<HTMLDivElement, MenubarItemProps>(
       }
     };
 
+    const handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
+      onMouseEnter?.(e);
+      if (disabled) return;
+      e.currentTarget.focus();
+    };
+
     return (
       <div
         ref={ref}
@@ -295,9 +301,13 @@ export const MenubarItem = React.forwardRef<HTMLDivElement, MenubarItemProps>(
         aria-disabled={disabled}
         onClick={handleClick}
         onKeyDown={handleKeyDown}
+        onMouseEnter={handleMouseEnter}
+        onPointerEnter={handleMouseEnter}
+        onMouseOver={handleMouseEnter}
         className={cn(
-          "flex items-center px-2 py-1 font-mono text-xs font-medium cursor-pointer transition-colors select-none",
+          "group flex items-center px-2 py-1 font-mono text-xs font-medium cursor-pointer transition-colors select-none",
           "focus-visible:outline-none focus:bg-primary focus:text-primary-foreground focus:font-bold",
+          "hover:bg-primary hover:text-primary-foreground hover:font-bold",
           disabled && "opacity-40 cursor-not-allowed pointer-events-none",
           className
         )}
@@ -332,6 +342,7 @@ export const MenubarShortcut: React.FC<MenubarShortcutProps> = ({ className, ...
   <span
     className={cn(
       "ml-auto pl-4 font-mono text-[10px] uppercase text-muted-foreground tracking-widest",
+      "group-focus:text-primary-foreground group-hover:text-primary-foreground",
       className
     )}
     {...props}

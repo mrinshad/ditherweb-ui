@@ -101,8 +101,12 @@
 }
 
 .bevel-pressed,
-.bevel-raised:active,
-button.bevel-raised:active {
+button.bevel-raised:active,
+a.bevel-raised:active,
+[role="button"].bevel-raised:active,
+input[type="button"].bevel-raised:active,
+input[type="submit"].bevel-raised:active,
+input[type="reset"].bevel-raised:active {
   border-width: 2px;
   border-style: solid;
   border-top-color: var(--bevel-dark);
