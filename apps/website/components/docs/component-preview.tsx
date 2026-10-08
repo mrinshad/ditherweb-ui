@@ -82,6 +82,39 @@ import {
   ContextMenuItem,
   ContextMenuLabel,
   ContextMenuSeparator,
+  Heading,
+  type HeadingLevel,
+  type HeadingSize,
+  Text,
+  type TextSize,
+  type TextWeight,
+  type TextVariant,
+  Link as UiLink,
+  Code,
+  Kbd,
+  Blockquote,
+  List,
+  ListItem,
+  type ListType,
+  type ListVariant,
+  Container,
+  type ContainerSize,
+  Box,
+  type BoxElement,
+  Stack,
+  type StackDirection,
+  type StackGap,
+  Flex,
+  type FlexJustify,
+  type FlexAlign,
+  Grid,
+  type GridColumns,
+  type GridGap,
+  Spacer,
+  type SpacerSize,
+  AspectRatio,
+  ScrollArea,
+  type ScrollAreaOrientation,
 } from "@ditherweb/ui";
 
 export interface ComponentPreviewProps {
@@ -119,6 +152,62 @@ interface PreviewState {
   setBadgeVariant: (v: "default" | "primary" | "secondary" | "success" | "warning" | "destructive" | "outline") => void;
   sepOrientation: "both" | "horizontal" | "vertical";
   setSepOrientation: (v: "both" | "horizontal" | "vertical") => void;
+
+  // Typography states
+  headingLevel: HeadingLevel;
+  setHeadingLevel: (l: HeadingLevel) => void;
+  headingSize: HeadingSize | "auto";
+  setHeadingSize: (s: HeadingSize | "auto") => void;
+  textSize: TextSize;
+  setTextSize: (s: TextSize) => void;
+  textWeight: TextWeight;
+  setTextWeight: (w: TextWeight) => void;
+  textVariant: TextVariant;
+  setTextVariant: (v: TextVariant) => void;
+  textMono: boolean;
+  setTextMono: (m: boolean) => void;
+  linkVariant: "default" | "subtle" | "underline";
+  setLinkVariant: (v: "default" | "subtle" | "underline") => void;
+  linkClicks: number;
+  setLinkClicks: (n: number) => void;
+  codeCopied: boolean;
+  setCodeCopied: (c: boolean) => void;
+  lastKeyPressed: string;
+  setLastKeyPressed: (k: string) => void;
+  blockquoteQuoteIdx: number;
+  setBlockquoteQuoteIdx: (i: number) => void;
+  blockquoteShowCite: boolean;
+  setBlockquoteShowCite: (s: boolean) => void;
+  listType: ListType;
+  setListType: (t: ListType) => void;
+  listVariant: ListVariant;
+  setListVariant: (v: ListVariant) => void;
+
+  // Layout states
+  containerSize: ContainerSize;
+  setContainerSize: (s: ContainerSize) => void;
+  boxAs: BoxElement;
+  setBoxAs: (a: BoxElement) => void;
+  boxPreset: "raised" | "inset" | "flat";
+  setBoxPreset: (p: "raised" | "inset" | "flat") => void;
+  stackDirection: StackDirection;
+  setStackDirection: (d: StackDirection) => void;
+  stackGap: StackGap;
+  setStackGap: (g: StackGap) => void;
+  flexJustify: FlexJustify;
+  setFlexJustify: (j: FlexJustify) => void;
+  flexAlign: FlexAlign;
+  setFlexAlign: (a: FlexAlign) => void;
+  gridCols: GridColumns;
+  setGridCols: (c: GridColumns) => void;
+  gridGap: GridGap;
+  setGridGap: (g: GridGap) => void;
+  aspectRatioRatio: number;
+  setAspectRatioRatio: (r: number) => void;
+  scrollAreaOrientation: ScrollAreaOrientation;
+  setScrollAreaOrientation: (o: ScrollAreaOrientation) => void;
+  spacerSize: SpacerSize;
+  setSpacerSize: (s: SpacerSize) => void;
 }
 
 export function ComponentPreview({ slug }: ComponentPreviewProps) {
@@ -138,6 +227,36 @@ export function ComponentPreview({ slug }: ComponentPreviewProps) {
   const [alertVariant, setAlertVariant] = useState<"default" | "info" | "warning" | "destructive" | "success">("warning");
   const [badgeVariant, setBadgeVariant] = useState<"default" | "primary" | "secondary" | "success" | "warning" | "destructive" | "outline">("primary");
   const [sepOrientation, setSepOrientation] = useState<"both" | "horizontal" | "vertical">("both");
+
+  // Typography interactive state
+  const [headingLevel, setHeadingLevel] = useState<HeadingLevel>(2);
+  const [headingSize, setHeadingSize] = useState<HeadingSize | "auto">("auto");
+  const [textSize, setTextSize] = useState<TextSize>("base");
+  const [textWeight, setTextWeight] = useState<TextWeight>("normal");
+  const [textVariant, setTextVariant] = useState<TextVariant>("default");
+  const [textMono, setTextMono] = useState(false);
+  const [linkVariant, setLinkVariant] = useState<"default" | "subtle" | "underline">("default");
+  const [linkClicks, setLinkClicks] = useState(0);
+  const [codeCopied, setCodeCopied] = useState(false);
+  const [lastKeyPressed, setLastKeyPressed] = useState("Ctrl + C");
+  const [blockquoteQuoteIdx, setBlockquoteQuoteIdx] = useState(0);
+  const [blockquoteShowCite, setBlockquoteShowCite] = useState(true);
+  const [listType, setListType] = useState<ListType>("unordered");
+  const [listVariant, setListVariant] = useState<ListVariant>("pixel");
+
+  // Layout interactive state
+  const [containerSize, setContainerSize] = useState<ContainerSize>("md");
+  const [boxAs, setBoxAs] = useState<BoxElement>("section");
+  const [boxPreset, setBoxPreset] = useState<"raised" | "inset" | "flat">("raised");
+  const [stackDirection, setStackDirection] = useState<StackDirection>("vertical");
+  const [stackGap, setStackGap] = useState<StackGap>("md");
+  const [flexJustify, setFlexJustify] = useState<FlexJustify>("between");
+  const [flexAlign, setFlexAlign] = useState<FlexAlign>("center");
+  const [gridCols, setGridCols] = useState<GridColumns>(3);
+  const [gridGap, setGridGap] = useState<GridGap>("md");
+  const [aspectRatioRatio, setAspectRatioRatio] = useState<number>(16 / 9);
+  const [scrollAreaOrientation, setScrollAreaOrientation] = useState<ScrollAreaOrientation>("vertical");
+  const [spacerSize, setSpacerSize] = useState<SpacerSize>("md");
 
   return (
     <div className="bevel-raised bg-surface p-6 font-mono text-xs border border-border space-y-4">
@@ -180,6 +299,58 @@ export function ComponentPreview({ slug }: ComponentPreviewProps) {
           setBadgeVariant,
           sepOrientation,
           setSepOrientation,
+          headingLevel,
+          setHeadingLevel,
+          headingSize,
+          setHeadingSize,
+          textSize,
+          setTextSize,
+          textWeight,
+          setTextWeight,
+          textVariant,
+          setTextVariant,
+          textMono,
+          setTextMono,
+          linkVariant,
+          setLinkVariant,
+          linkClicks,
+          setLinkClicks,
+          codeCopied,
+          setCodeCopied,
+          lastKeyPressed,
+          setLastKeyPressed,
+          blockquoteQuoteIdx,
+          setBlockquoteQuoteIdx,
+          blockquoteShowCite,
+          setBlockquoteShowCite,
+          listType,
+          setListType,
+          listVariant,
+          setListVariant,
+          containerSize,
+          setContainerSize,
+          boxAs,
+          setBoxAs,
+          boxPreset,
+          setBoxPreset,
+          stackDirection,
+          setStackDirection,
+          stackGap,
+          setStackGap,
+          flexJustify,
+          setFlexJustify,
+          flexAlign,
+          setFlexAlign,
+          gridCols,
+          setGridCols,
+          gridGap,
+          setGridGap,
+          aspectRatioRatio,
+          setAspectRatioRatio,
+          scrollAreaOrientation,
+          setScrollAreaOrientation,
+          spacerSize,
+          setSpacerSize,
         })}
       </div>
     </div>
@@ -200,7 +371,7 @@ function renderPreviewContent(slug: string, state: PreviewState) {
               </DialogTrigger>
               <DialogContent className="max-w-md">
                 <DialogHeader>
-                  <DialogTitle>COMMAND EXECUTION // NODE 01</DialogTitle>
+                  <DialogTitle>COMMAND EXECUTION {"//"} NODE 01</DialogTitle>
                   <DialogDescription>
                     Confirmation required for virtual process dispatch.
                   </DialogDescription>
@@ -938,6 +1109,744 @@ function renderPreviewContent(slug: string, state: PreviewState) {
               <ContextMenuItem disabled>Lock Workspace</ContextMenuItem>
             </ContextMenuContent>
           </ContextMenu>
+        </div>
+      );
+
+    // =========================================================================
+    // TYPOGRAPHY PRIMITIVES
+    // =========================================================================
+
+    case "heading":
+      return (
+        <div className="flex flex-col items-center gap-6 w-full max-w-xl">
+          <div className="w-full bevel-inset bg-surface/50 p-6 flex flex-col items-center justify-center text-center space-y-3">
+            <Heading
+              level={state.headingLevel}
+              size={state.headingSize === "auto" ? undefined : state.headingSize}
+            >
+              System Architecture {"//"} Level {state.headingLevel}
+            </Heading>
+            <div className="flex items-center gap-2 text-[10px] text-muted-foreground uppercase">
+              <span className="bevel-raised bg-surface px-1.5 py-0.5">Tag: &lt;h{state.headingLevel}&gt;</span>
+              <span className="bevel-raised bg-surface px-1.5 py-0.5">
+                Size: {state.headingSize === "auto" ? `Default (h${state.headingLevel})` : state.headingSize}
+              </span>
+            </div>
+          </div>
+
+          <div className="w-full space-y-3">
+            <div className="flex flex-wrap items-center justify-center gap-2">
+              <span className="text-[11px] text-muted-foreground uppercase font-bold mr-1">Semantic Level:</span>
+              {([1, 2, 3, 4, 5, 6] as HeadingLevel[]).map((lvl) => (
+                <Button
+                  key={lvl}
+                  size="sm"
+                  variant={state.headingLevel === lvl ? "primary" : "outline"}
+                  onClick={() => state.setHeadingLevel(lvl)}
+                >
+                  H{lvl}
+                </Button>
+              ))}
+            </div>
+
+            <div className="flex flex-wrap items-center justify-center gap-2">
+              <span className="text-[11px] text-muted-foreground uppercase font-bold mr-1">Size Override:</span>
+              {(["auto", "sm", "md", "lg", "xl", "2xl", "display"] as const).map((sz) => (
+                <Button
+                  key={sz}
+                  size="sm"
+                  variant={state.headingSize === sz ? "primary" : "outline"}
+                  onClick={() => state.setHeadingSize(sz)}
+                >
+                  {sz}
+                </Button>
+              ))}
+            </div>
+          </div>
+
+          <div className="w-full border-t border-border pt-4 text-center">
+            <span className="text-[11px] text-muted-foreground">
+              Heading decouples semantic HTML document outline (&lt;h1&gt;–&lt;h6&gt;) from visual font scale styling.
+            </span>
+          </div>
+        </div>
+      );
+
+    case "text":
+      return (
+        <div className="flex flex-col items-center gap-5 w-full max-w-xl">
+          <div className="w-full bevel-inset bg-surface/50 p-6 space-y-3">
+            <Text
+              size={state.textSize}
+              weight={state.textWeight}
+              variant={state.textVariant}
+              mono={state.textMono}
+            >
+              {state.textMono
+                ? "0x7FFE4000: Memory subsystem initialized. High-memory buffers allocated for mainframe bus."
+                : "The early digital era was characterized by deliberate typographic restraint, high contrast geometry, and calibrated screen legibility across CRT raster lines."}
+            </Text>
+            <div className="flex flex-wrap items-center gap-2 text-[10px] text-muted-foreground border-t border-border/50 pt-2">
+              <span className="bevel-raised bg-surface px-1.5 py-0.5">Size: {state.textSize}</span>
+              <span className="bevel-raised bg-surface px-1.5 py-0.5">Weight: {state.textWeight}</span>
+              <span className="bevel-raised bg-surface px-1.5 py-0.5">Tone: {state.textVariant}</span>
+              <span className="bevel-raised bg-surface px-1.5 py-0.5">Font: {state.textMono ? "Monospace" : "Sans"}</span>
+            </div>
+          </div>
+
+          <div className="w-full space-y-2">
+            <div className="flex flex-wrap items-center justify-center gap-1.5">
+              <span className="text-[11px] text-muted-foreground uppercase font-bold mr-1">Scale:</span>
+              {(["xs", "sm", "base", "lg", "xl"] as TextSize[]).map((sz) => (
+                <Button
+                  key={sz}
+                  size="sm"
+                  variant={state.textSize === sz ? "primary" : "outline"}
+                  onClick={() => state.setTextSize(sz)}
+                >
+                  {sz}
+                </Button>
+              ))}
+            </div>
+
+            <div className="flex flex-wrap items-center justify-center gap-1.5">
+              <span className="text-[11px] text-muted-foreground uppercase font-bold mr-1">Tone:</span>
+              {(["default", "muted", "accent"] as TextVariant[]).map((vt) => (
+                <Button
+                  key={vt}
+                  size="sm"
+                  variant={state.textVariant === vt ? "primary" : "outline"}
+                  onClick={() => state.setTextVariant(vt)}
+                >
+                  {vt}
+                </Button>
+              ))}
+              <Button
+                size="sm"
+                variant={state.textMono ? "primary" : "outline"}
+                onClick={() => state.setTextMono(!state.textMono)}
+                className="ml-2"
+              >
+                {state.textMono ? "Mono: ON" : "Mono: OFF"}
+              </Button>
+            </div>
+          </div>
+        </div>
+      );
+
+    case "link":
+      return (
+        <div className="flex flex-col items-center gap-6 w-full max-w-lg">
+          <div className="w-full bevel-inset bg-surface/50 p-6 flex flex-col items-center justify-center gap-4 text-center">
+            <div className="flex flex-wrap items-center justify-center gap-6">
+              <UiLink
+                href="#demo"
+                variant={state.linkVariant}
+                onClick={(e) => {
+                  e.preventDefault();
+                  state.setLinkClicks(state.linkClicks + 1);
+                }}
+              >
+                Interactive Terminal Link [Clicks: {state.linkClicks}]
+              </UiLink>
+
+              <UiLink
+                href="https://github.com/ditherweb/ditherweb"
+                target="_blank"
+                variant={state.linkVariant}
+              >
+                External Repo ↗
+              </UiLink>
+            </div>
+
+            <p className="text-[11px] text-muted-foreground">
+              Click the link above to test active click state or explore external window handling.
+            </p>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-center gap-2">
+            <span className="text-[11px] text-muted-foreground uppercase font-bold mr-1">Variant:</span>
+            {(["default", "subtle", "underline"] as const).map((v) => (
+              <Button
+                key={v}
+                size="sm"
+                variant={state.linkVariant === v ? "primary" : "outline"}
+                onClick={() => state.setLinkVariant(v)}
+              >
+                {v}
+              </Button>
+            ))}
+          </div>
+        </div>
+      );
+
+    case "code":
+      return (
+        <div className="flex flex-col items-center gap-5 w-full max-w-lg">
+          <div className="w-full bevel-raised bg-surface p-6 space-y-4">
+            <div className="text-foreground text-sm leading-relaxed space-y-2">
+              <p>
+                To integrate Ditherweb primitives, install <Code>@ditherweb/ui</Code> via your package manager.
+              </p>
+              <p className="text-muted-foreground text-xs">
+                Import stylesheet tokens in root: <Code>import &quot;@ditherweb/ui/tokens.css&quot;;</Code>
+              </p>
+              <p className="text-muted-foreground text-xs">
+                Configured device driver: <Code>DEVICE=C:\DOS\HIMEM.SYS /TESTMEM:OFF</Code>
+              </p>
+            </div>
+
+            <div className="flex items-center justify-between border-t border-border pt-3">
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => {
+                  navigator.clipboard?.writeText("npm install @ditherweb/ui");
+                  state.setCodeCopied(true);
+                  setTimeout(() => state.setCodeCopied(false), 2000);
+                }}
+              >
+                {state.codeCopied ? "✓ Copied to Clipboard" : "Copy Install Command"}
+              </Button>
+              <span className="text-[10px] text-muted-foreground">
+                Rendered with sunken bevel <Code>bevel-inset</Code>
+              </span>
+            </div>
+          </div>
+        </div>
+      );
+
+    case "kbd":
+      return (
+        <div className="flex flex-col items-center gap-6 w-full max-w-lg">
+          <div className="w-full bevel-inset bg-surface/50 p-6 flex flex-col items-center justify-center gap-4 text-center">
+            <div className="text-[11px] text-muted-foreground uppercase font-bold">
+              Tactile Keyboard Shortcuts
+            </div>
+
+            <div className="flex flex-wrap items-center justify-center gap-4 text-xs">
+              <button
+                type="button"
+                className="flex items-center gap-1.5 p-1.5 hover:bg-muted/40 transition-colors"
+                onClick={() => state.setLastKeyPressed("Ctrl + C (Copy)")}
+              >
+                <Kbd>Ctrl</Kbd> + <Kbd>C</Kbd> <span className="text-muted-foreground">Copy</span>
+              </button>
+
+              <button
+                type="button"
+                className="flex items-center gap-1.5 p-1.5 hover:bg-muted/40 transition-colors"
+                onClick={() => state.setLastKeyPressed("Ctrl + V (Paste)")}
+              >
+                <Kbd>Ctrl</Kbd> + <Kbd>V</Kbd> <span className="text-muted-foreground">Paste</span>
+              </button>
+
+              <button
+                type="button"
+                className="flex items-center gap-1.5 p-1.5 hover:bg-muted/40 transition-colors"
+                onClick={() => state.setLastKeyPressed("Alt + F4 (Close)")}
+              >
+                <Kbd>Alt</Kbd> + <Kbd>F4</Kbd> <span className="text-muted-foreground">Exit</span>
+              </button>
+
+              <button
+                type="button"
+                className="flex items-center gap-1.5 p-1.5 hover:bg-muted/40 transition-colors"
+                onClick={() => state.setLastKeyPressed("Esc (Cancel)")}
+              >
+                <Kbd>Esc</Kbd> <span className="text-muted-foreground">Cancel</span>
+              </button>
+
+              <button
+                type="button"
+                className="flex items-center gap-1.5 p-1.5 hover:bg-muted/40 transition-colors"
+                onClick={() => state.setLastKeyPressed("Enter ↵ (Execute)")}
+              >
+                <Kbd>Enter ↵</Kbd> <span className="text-muted-foreground">Execute</span>
+              </button>
+            </div>
+
+            <div className="bevel-raised bg-background px-3 py-1.5 text-xs text-primary font-bold">
+              &gt; EVENT CAPTURED: [{state.lastKeyPressed}]
+            </div>
+          </div>
+
+          <div className="text-center text-[11px] text-muted-foreground">
+            Click any key combo above to simulate physical key actuation with tactile 3D bevels.
+          </div>
+        </div>
+      );
+
+    case "blockquote": {
+      const quotes = [
+        {
+          text: "Retro appearance. Modern engineering. The early Web was defined by hard edges, pixel matrices, and tactile controls designed for mechanical human feedback.",
+          cite: "Ditherweb Manifesto (1995/2026)",
+        },
+        {
+          text: "Simplicity is prerequisite for reliability. Software engineering is the art of controlling complexity.",
+          cite: "Edsger W. Dijkstra, Turing Award Lecture",
+        },
+        {
+          text: "640K ought to be enough for anybody. Conventional memory architecture was a triumph of pragmatic engineering.",
+          cite: "MS-DOS Architecture Bulletin, 1981",
+        },
+      ];
+      const activeQuote = quotes[state.blockquoteQuoteIdx % quotes.length];
+
+      return (
+        <div className="flex flex-col items-center gap-6 w-full max-w-xl">
+          <div className="w-full bevel-raised bg-surface p-6 space-y-4">
+            <Blockquote
+              cite={state.blockquoteShowCite ? activeQuote.cite : undefined}
+              className="my-1"
+            >
+              &ldquo;{activeQuote.text}&rdquo;
+              {state.blockquoteShowCite && (
+                <footer className="mt-2 text-xs text-muted-foreground not-italic font-normal">
+                  &mdash; <cite className="text-primary">{activeQuote.cite}</cite>
+                </footer>
+              )}
+            </Blockquote>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-center gap-2">
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => state.setBlockquoteQuoteIdx((state.blockquoteQuoteIdx + 1) % quotes.length)}
+            >
+              Next Quote ({state.blockquoteQuoteIdx + 1}/{quotes.length})
+            </Button>
+            <Button
+              size="sm"
+              variant={state.blockquoteShowCite ? "primary" : "outline"}
+              onClick={() => state.setBlockquoteShowCite(!state.blockquoteShowCite)}
+            >
+              Citation: {state.blockquoteShowCite ? "Shown" : "Hidden"}
+            </Button>
+          </div>
+
+          <div className="text-center text-[11px] text-muted-foreground">
+            Blockquote styles editorial quotes and passages with a prominent retro left accent bar.
+          </div>
+        </div>
+      );
+    }
+
+    case "list":
+      return (
+        <div className="flex flex-col items-center gap-6 w-full max-w-lg">
+          <div className="w-full bevel-inset bg-surface/50 p-6 space-y-3">
+            <div className="text-[11px] text-muted-foreground uppercase font-bold border-b border-border/50 pb-2">
+              Subsystem Device Registry ({state.listType.toUpperCase()} {"//"} {state.listVariant.toUpperCase()})
+            </div>
+
+            <List type={state.listType} variant={state.listVariant}>
+              <ListItem>HIMEM.SYS &mdash; High memory manager 1.04MB</ListItem>
+              <ListItem>EMM386.EXE &mdash; Expanded memory emulator / RAM pool</ListItem>
+              <ListItem>COMMAND.COM &mdash; Interactive DOS shell interpreter</ListItem>
+              <ListItem>AUTOEXEC.BAT &mdash; Boot automation batch routine</ListItem>
+            </List>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <div className="flex items-center gap-1">
+              <span className="text-[11px] text-muted-foreground uppercase font-bold mr-1">Type:</span>
+              {(["unordered", "ordered"] as const).map((t) => (
+                <Button
+                  key={t}
+                  size="sm"
+                  variant={state.listType === t ? "primary" : "outline"}
+                  onClick={() => state.setListType(t)}
+                >
+                  {t}
+                </Button>
+              ))}
+            </div>
+
+            <div className="flex items-center gap-1">
+              <span className="text-[11px] text-muted-foreground uppercase font-bold mr-1">Marker:</span>
+              {(["pixel", "default", "none"] as const).map((v) => (
+                <Button
+                  key={v}
+                  size="sm"
+                  variant={state.listVariant === v ? "primary" : "outline"}
+                  onClick={() => state.setListVariant(v)}
+                >
+                  {v === "pixel" ? "■ Pixel" : v}
+                </Button>
+              ))}
+            </div>
+          </div>
+        </div>
+      );
+
+    // =========================================================================
+    // LAYOUT PRIMITIVES
+    // =========================================================================
+
+    case "container":
+      return (
+        <div className="flex flex-col items-center gap-5 w-full">
+          <div className="w-full bg-background border border-dashed border-border p-2">
+            <div className="text-[10px] text-muted-foreground text-center mb-1">
+              ← Viewport Container Bound (Simulated Max Width: {state.containerSize}) →
+            </div>
+            <Container size={state.containerSize} centered className="p-0">
+              <div className="bevel-raised bg-surface p-4 text-center space-y-2 border border-primary/40">
+                <div className="font-bold text-foreground">
+                  Container [size=&quot;{state.containerSize}&quot;]
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  Responsive max-width constraints with centered layout margin auto and standard gutters.
+                </p>
+                <div className="text-[10px] text-primary">
+                  {state.containerSize === "sm" && "max-w-screen-sm (640px)"}
+                  {state.containerSize === "md" && "max-w-screen-md (768px)"}
+                  {state.containerSize === "lg" && "max-w-screen-lg (1024px)"}
+                  {state.containerSize === "xl" && "max-w-7xl (1280px)"}
+                  {state.containerSize === "full" && "max-w-full (100% fluid)"}
+                </div>
+              </div>
+            </Container>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-center gap-1.5">
+            <span className="text-[11px] text-muted-foreground uppercase font-bold mr-1">Width Size:</span>
+            {(["sm", "md", "lg", "xl", "full"] as ContainerSize[]).map((sz) => (
+              <Button
+                key={sz}
+                size="sm"
+                variant={state.containerSize === sz ? "primary" : "outline"}
+                onClick={() => state.setContainerSize(sz)}
+              >
+                {sz}
+              </Button>
+            ))}
+          </div>
+        </div>
+      );
+
+    case "box":
+      return (
+        <div className="flex flex-col items-center gap-5 w-full max-w-lg">
+          <Box
+            as={state.boxAs}
+            className={`w-full p-6 text-center space-y-2 ${
+              state.boxPreset === "raised"
+                ? "bevel-raised bg-surface"
+                : state.boxPreset === "inset"
+                ? "bevel-inset bg-surface-sunken"
+                : "border border-border bg-card"
+            }`}
+          >
+            <div className="font-bold text-foreground uppercase">
+              Box as=&quot;{state.boxAs}&quot;
+            </div>
+            <p className="text-xs text-muted-foreground">
+              Zero default margins or opinionated paddings. Polymorphic base block component for complete design control.
+            </p>
+            <Badge variant="primary">Semantic Tag: &lt;{state.boxAs}&gt;</Badge>
+          </Box>
+
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <div className="flex items-center gap-1">
+              <span className="text-[11px] text-muted-foreground uppercase font-bold mr-1">Tag:</span>
+              {(["section", "div", "article", "main"] as BoxElement[]).map((el) => (
+                <Button
+                  key={el}
+                  size="sm"
+                  variant={state.boxAs === el ? "primary" : "outline"}
+                  onClick={() => state.setBoxAs(el)}
+                >
+                  &lt;{el}&gt;
+                </Button>
+              ))}
+            </div>
+
+            <div className="flex items-center gap-1">
+              <span className="text-[11px] text-muted-foreground uppercase font-bold mr-1">Bevel:</span>
+              {(["raised", "inset", "flat"] as const).map((pr) => (
+                <Button
+                  key={pr}
+                  size="sm"
+                  variant={state.boxPreset === pr ? "primary" : "outline"}
+                  onClick={() => state.setBoxPreset(pr)}
+                >
+                  {pr}
+                </Button>
+              ))}
+            </div>
+          </div>
+        </div>
+      );
+
+    case "stack":
+      return (
+        <div className="flex flex-col items-center gap-5 w-full max-w-lg">
+          <div className="w-full bevel-inset bg-surface/40 p-4 min-h-[160px] flex items-center justify-center">
+            <Stack
+              direction={state.stackDirection}
+              gap={state.stackGap}
+              className="w-full"
+            >
+              <div className="bevel-raised bg-surface p-3 text-center text-xs font-bold text-foreground">
+                Stack Unit Alpha [01]
+              </div>
+              <div className="bevel-raised bg-surface p-3 text-center text-xs font-bold text-foreground">
+                Stack Unit Beta [02]
+              </div>
+              <div className="bevel-raised bg-surface p-3 text-center text-xs font-bold text-foreground">
+                Stack Unit Gamma [03]
+              </div>
+            </Stack>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <div className="flex items-center gap-1">
+              <span className="text-[11px] text-muted-foreground uppercase font-bold mr-1">Direction:</span>
+              {(["vertical", "horizontal"] as StackDirection[]).map((d) => (
+                <Button
+                  key={d}
+                  size="sm"
+                  variant={state.stackDirection === d ? "primary" : "outline"}
+                  onClick={() => state.setStackDirection(d)}
+                >
+                  {d}
+                </Button>
+              ))}
+            </div>
+
+            <div className="flex items-center gap-1">
+              <span className="text-[11px] text-muted-foreground uppercase font-bold mr-1">Gap:</span>
+              {(["none", "xs", "sm", "md", "lg", "xl"] as StackGap[]).map((g) => (
+                <Button
+                  key={g}
+                  size="sm"
+                  variant={state.stackGap === g ? "primary" : "outline"}
+                  onClick={() => state.setStackGap(g)}
+                >
+                  {g}
+                </Button>
+              ))}
+            </div>
+          </div>
+        </div>
+      );
+
+    case "flex":
+      return (
+        <div className="flex flex-col items-center gap-5 w-full max-w-xl">
+          <div className="w-full bevel-inset bg-surface/40 p-4">
+            <Flex
+              justify={state.flexJustify}
+              align={state.flexAlign}
+              className="w-full p-2 bg-background border border-border min-h-[80px]"
+            >
+              <Badge variant="primary">START ITEM</Badge>
+              <div className="bevel-raised bg-surface px-3 py-1.5 text-xs text-foreground">
+                FLEX NODE
+              </div>
+              <Badge variant="secondary">END ITEM</Badge>
+            </Flex>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <div className="flex flex-wrap items-center gap-1">
+              <span className="text-[11px] text-muted-foreground uppercase font-bold mr-1">Justify:</span>
+              {(["start", "center", "end", "between", "around", "evenly"] as FlexJustify[]).map((j) => (
+                <Button
+                  key={j}
+                  size="sm"
+                  variant={state.flexJustify === j ? "primary" : "outline"}
+                  onClick={() => state.setFlexJustify(j)}
+                >
+                  {j}
+                </Button>
+              ))}
+            </div>
+
+            <div className="flex items-center gap-1">
+              <span className="text-[11px] text-muted-foreground uppercase font-bold mr-1">Align:</span>
+              {(["start", "center", "end", "stretch"] as FlexAlign[]).map((a) => (
+                <Button
+                  key={a}
+                  size="sm"
+                  variant={state.flexAlign === a ? "primary" : "outline"}
+                  onClick={() => state.setFlexAlign(a)}
+                >
+                  {a}
+                </Button>
+              ))}
+            </div>
+          </div>
+        </div>
+      );
+
+    case "grid":
+      return (
+        <div className="flex flex-col items-center gap-5 w-full max-w-xl">
+          <div className="w-full bevel-inset bg-surface/40 p-4">
+            <Grid
+              columns={state.gridCols}
+              gap={state.gridGap}
+              className="w-full"
+            >
+              {[1, 2, 3, 4, 5, 6].map((i) => (
+                <div
+                  key={i}
+                  className="bevel-raised bg-surface p-4 text-center space-y-1"
+                >
+                  <div className="text-xs font-bold text-foreground">Cell 0{i}</div>
+                  <div className="text-[10px] text-muted-foreground">Track {i}</div>
+                </div>
+              ))}
+            </Grid>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <div className="flex items-center gap-1">
+              <span className="text-[11px] text-muted-foreground uppercase font-bold mr-1">Columns:</span>
+              {([1, 2, 3, 4, 6, "auto"] as GridColumns[]).map((c) => (
+                <Button
+                  key={String(c)}
+                  size="sm"
+                  variant={state.gridCols === c ? "primary" : "outline"}
+                  onClick={() => state.setGridCols(c)}
+                >
+                  {c}
+                </Button>
+              ))}
+            </div>
+
+            <div className="flex items-center gap-1">
+              <span className="text-[11px] text-muted-foreground uppercase font-bold mr-1">Gap:</span>
+              {(["sm", "md", "lg"] as GridGap[]).map((g) => (
+                <Button
+                  key={g}
+                  size="sm"
+                  variant={state.gridGap === g ? "primary" : "outline"}
+                  onClick={() => state.setGridGap(g)}
+                >
+                  {g}
+                </Button>
+              ))}
+            </div>
+          </div>
+        </div>
+      );
+
+    case "aspect-ratio":
+      return (
+        <div className="flex flex-col items-center gap-5 w-full max-w-md">
+          <div className="w-full bevel-inset bg-surface/50 p-4">
+            <AspectRatio
+              ratio={state.aspectRatioRatio}
+              className="bevel-raised bg-background flex flex-col items-center justify-center text-center p-4 border border-border"
+            >
+              <div className="text-primary font-bold text-sm tracking-wider uppercase">
+                CRT Monitor Display
+              </div>
+              <div className="text-xs text-muted-foreground mt-1">
+                Aspect Ratio: {state.aspectRatioRatio === 16 / 9 ? "16:9 Widescreen" : state.aspectRatioRatio === 4 / 3 ? "4:3 Classic CRT" : state.aspectRatioRatio === 1 ? "1:1 Square" : "21:9 Ultrawide"}
+              </div>
+              <div className="text-[10px] text-muted-foreground/80 mt-2 font-mono">
+                Locks height proportionally to parent width without layout jump
+              </div>
+            </AspectRatio>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-center gap-2">
+            <span className="text-[11px] text-muted-foreground uppercase font-bold mr-1">Ratio:</span>
+            {[
+              { label: "16:9", val: 16 / 9 },
+              { label: "4:3 (CRT)", val: 4 / 3 },
+              { label: "1:1", val: 1 },
+              { label: "21:9", val: 21 / 9 },
+            ].map((item) => (
+              <Button
+                key={item.label}
+                size="sm"
+                variant={state.aspectRatioRatio === item.val ? "primary" : "outline"}
+                onClick={() => state.setAspectRatioRatio(item.val)}
+              >
+                {item.label}
+              </Button>
+            ))}
+          </div>
+        </div>
+      );
+
+    case "scroll-area":
+      return (
+        <div className="flex flex-col items-center gap-5 w-full max-w-md">
+          <div className="w-full">
+            <ScrollArea
+              orientation={state.scrollAreaOrientation}
+              className="h-44 p-4 space-y-2 text-xs"
+            >
+              <div className="font-bold text-primary pb-1 border-b border-border/40">
+                [BIOS INITIALIZATION TELEMETRY STREAM]
+              </div>
+              <p className="text-foreground">00:00.012 - CPU Microcode patch Revision 0x24 loaded.</p>
+              <p className="text-muted-foreground">00:00.045 - RAM POST: 640 KB Base + 384 KB Upper Memory verified OK.</p>
+              <p className="text-muted-foreground">00:00.091 - IDE Primary Master: QUANTUM FIREBALL 540MB detected.</p>
+              <p className="text-muted-foreground">00:00.120 - Floppy Drive A: 1.44MB 3.5-inch initialized.</p>
+              <p className="text-muted-foreground">00:00.160 - Video BIOS: ET4000/W32i 2MB VRAM (1024x768 256 colors).</p>
+              <p className="text-muted-foreground">00:00.210 - Sound Blaster 16: DSP v4.05 on Port 0x220, IRQ 5, DMA 1.</p>
+              <p className="text-muted-foreground">00:00.280 - 3Com EtherLink III ISA 10Mbps 10BASE-T link active.</p>
+              <p className="text-muted-foreground">00:00.340 - MSCDEX version 2.23 installed (Drive D: Mitsumi 4X).</p>
+              <p className="text-primary font-bold">00:00.410 - SYSTEM READY. Shell prompt invoked at C:\&gt;</p>
+            </ScrollArea>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-center gap-2">
+            <span className="text-[11px] text-muted-foreground uppercase font-bold mr-1">Orientation:</span>
+            {(["vertical", "horizontal", "both"] as ScrollAreaOrientation[]).map((o) => (
+              <Button
+                key={o}
+                size="sm"
+                variant={state.scrollAreaOrientation === o ? "primary" : "outline"}
+                onClick={() => state.setScrollAreaOrientation(o)}
+              >
+                {o}
+              </Button>
+            ))}
+          </div>
+        </div>
+      );
+
+    case "spacer":
+      return (
+        <div className="flex flex-col items-center gap-5 w-full max-w-lg">
+          <div className="w-full bevel-inset bg-surface/50 p-4">
+            <div className="flex items-center p-3 bg-surface border border-border text-xs min-h-[48px]">
+              <Badge variant="primary">LEFT BLOCK</Badge>
+              <Spacer size={state.spacerSize} className="bg-primary/20 border border-dashed border-primary/50" />
+              <Badge variant="secondary">RIGHT BLOCK</Badge>
+            </div>
+          </div>
+
+          <div className="text-center text-[10px] text-muted-foreground">
+            {state.spacerSize === "auto"
+              ? "Spacer size=\"auto\" fills all available flex space (flex-1 self-stretch)."
+              : `Spacer size="${state.spacerSize}" provides calibrated pixel spacing intervals.`}
+          </div>
+
+          <div className="flex flex-wrap items-center justify-center gap-1.5">
+            <span className="text-[11px] text-muted-foreground uppercase font-bold mr-1">Spacer Size:</span>
+            {(["xs", "sm", "md", "lg", "xl", "auto"] as SpacerSize[]).map((sz) => (
+              <Button
+                key={sz}
+                size="sm"
+                variant={state.spacerSize === sz ? "primary" : "outline"}
+                onClick={() => state.setSpacerSize(sz)}
+              >
+                {sz}
+              </Button>
+            ))}
+          </div>
         </div>
       );
 
