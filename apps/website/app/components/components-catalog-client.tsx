@@ -594,7 +594,7 @@ export default function ComponentsPage() {
 
   return (
     <CodeViewerContext.Provider value={{ openCodes, copiedId, toggleCode, copyCode }}>
-      <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 space-y-12">
+      <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 space-y-12 min-w-0 max-w-full overflow-x-clip">
       {/* Page Header */}
       <div className="space-y-4">
         <div className="flex items-center gap-2">
