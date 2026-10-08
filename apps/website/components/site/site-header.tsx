@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { cn } from "@ditherweb/ui";
@@ -25,9 +26,24 @@ export function SiteHeader() {
             href="/"
             className="flex items-center gap-2 font-mono font-bold text-foreground text-sm tracking-wider uppercase transition-opacity hover:opacity-80"
           >
-            <span className="bevel-raised inline-flex h-6 w-6 items-center justify-center bg-primary text-[10px] font-bold text-primary-foreground select-none">
-              DW
-            </span>
+            <Image
+              src="/icon-light.png"
+              alt="Ditherweb logo"
+              width={24}
+              height={24}
+              priority
+              unoptimized
+              className="h-6 w-6 inline dark:hidden shrink-0 select-none image-rendering-pixelated"
+            />
+            <Image
+              src="/icon-dark.png"
+              alt="Ditherweb logo"
+              width={24}
+              height={24}
+              priority
+              unoptimized
+              className="h-6 w-6 hidden dark:inline shrink-0 select-none image-rendering-pixelated"
+            />
             <span>Ditherweb</span>
           </Link>
           <span className="bevel-inset hidden rounded-none px-1.5 py-0.5 text-[10px] font-mono uppercase tracking-widest text-muted-foreground sm:inline-block">

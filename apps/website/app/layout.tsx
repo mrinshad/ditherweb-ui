@@ -37,6 +37,22 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/",
   },
+  icons: {
+    icon: [
+      {
+        url: "/icon-light.png",
+        media: "(prefers-color-scheme: light)",
+        type: "image/png",
+      },
+      {
+        url: "/icon-dark.png",
+        media: "(prefers-color-scheme: dark)",
+        type: "image/png",
+      },
+    ],
+    shortcut: "/icon-dark.png",
+    apple: "/apple-icon.png",
+  },
   robots: {
     index: true,
     follow: true,
