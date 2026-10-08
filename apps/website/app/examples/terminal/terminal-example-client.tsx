@@ -227,12 +227,16 @@ export function TerminalExampleClient() {
   // Window states
   const [windows, setWindows] = React.useState<Record<WindowId, WindowState>>({
     terminal: { isOpen: true, isMinimized: false, isMaximized: false },
-    files: { isOpen: true, isMinimized: false, isMaximized: false },
-    monitor: { isOpen: true, isMinimized: false, isMaximized: false },
-    canvas: { isOpen: true, isMinimized: false, isMaximized: false },
+    files: { isOpen: false, isMinimized: false, isMaximized: false },
+    monitor: { isOpen: false, isMinimized: false, isMaximized: false },
+    canvas: { isOpen: false, isMinimized: false, isMaximized: false },
   });
 
   const [activeWindow, setActiveWindow] = React.useState<WindowId>("terminal");
+
+  const openWindowCount = (Object.keys(windows) as WindowId[]).filter(
+    (k) => windows[k].isOpen && !windows[k].isMinimized
+  ).length;
 
   // Terminal state
   const [terminalInput, setTerminalInput] = React.useState("");
@@ -595,8 +599,15 @@ export function TerminalExampleClient() {
                 />
               </DesktopIconGrid>
 
-              {/* Windows Layer (Desktop Layout: Grid or Stacking) */}
-              <div className="flex-1 w-full pl-0 sm:pl-24 pt-2 sm:pt-0 pb-12 grid grid-cols-1 md:grid-cols-2 gap-4 items-start content-start z-20">
+              {/* Windows Layer (Desktop Layout: Grid or Focused Hero) */}
+              <div
+                className={cn(
+                  "flex-1 w-full pl-0 sm:pl-24 pt-2 sm:pt-0 pb-12 z-20",
+                  openWindowCount > 1
+                    ? "grid grid-cols-1 md:grid-cols-2 gap-4 items-start content-start"
+                    : "flex flex-col items-center justify-start"
+                )}
+              >
                 {/* WINDOW 1: TERMINAL */}
                 {windows.terminal.isOpen && !windows.terminal.isMinimized && (
                   <Window
@@ -604,7 +615,11 @@ export function TerminalExampleClient() {
                     onClick={() => setActiveWindow("terminal")}
                     className={cn(
                       "w-full transition-shadow duration-150",
-                      windows.terminal.isMaximized ? "md:col-span-2" : "col-span-1",
+                      openWindowCount === 1
+                        ? "max-w-4xl mx-auto"
+                        : windows.terminal.isMaximized
+                          ? "md:col-span-2"
+                          : "col-span-1",
                       activeWindow === "terminal" ? "ring-2 ring-primary shadow-hard-lg" : "opacity-95"
                     )}
                   >
@@ -633,7 +648,14 @@ export function TerminalExampleClient() {
                     <WindowContent padded={false} className="bg-black text-zinc-100 flex flex-col">
                       <Terminal variant="dark" className="border-0 rounded-none h-full">
                         <TerminalHeader title="operator@byteworks: ~ (bash-compat v3.2)" />
-                        <TerminalBody className="max-h-[220px] sm:max-h-[260px] text-xs">
+                        <TerminalBody
+                          className={cn(
+                            "text-xs transition-all",
+                            openWindowCount === 1
+                              ? "min-h-[320px] max-h-[460px]"
+                              : "max-h-[220px] sm:max-h-[260px]"
+                          )}
+                        >
                           <TerminalLine>
                             <TerminalOutput>
                               BYTEWORKS WORKSTATION NODE 01 (Virtual Architecture){"\n"}
@@ -685,7 +707,11 @@ export function TerminalExampleClient() {
                     onClick={() => setActiveWindow("files")}
                     className={cn(
                       "w-full transition-shadow duration-150",
-                      windows.files.isMaximized ? "md:col-span-2" : "col-span-1",
+                      openWindowCount === 1
+                        ? "max-w-4xl mx-auto"
+                        : windows.files.isMaximized
+                          ? "md:col-span-2"
+                          : "col-span-1",
                       activeWindow === "files" ? "ring-2 ring-primary shadow-hard-lg" : "opacity-95"
                     )}
                   >
@@ -783,7 +809,11 @@ export function TerminalExampleClient() {
                     onClick={() => setActiveWindow("monitor")}
                     className={cn(
                       "w-full transition-shadow duration-150",
-                      windows.monitor.isMaximized ? "md:col-span-2" : "col-span-1",
+                      openWindowCount === 1
+                        ? "max-w-4xl mx-auto"
+                        : windows.monitor.isMaximized
+                          ? "md:col-span-2"
+                          : "col-span-1",
                       activeWindow === "monitor" ? "ring-2 ring-primary shadow-hard-lg" : "opacity-95"
                     )}
                   >
@@ -905,7 +935,11 @@ export function TerminalExampleClient() {
                     onClick={() => setActiveWindow("canvas")}
                     className={cn(
                       "w-full transition-shadow duration-150",
-                      windows.canvas.isMaximized ? "md:col-span-2" : "col-span-1",
+                      openWindowCount === 1
+                        ? "max-w-4xl mx-auto"
+                        : windows.canvas.isMaximized
+                          ? "md:col-span-2"
+                          : "col-span-1",
                       activeWindow === "canvas" ? "ring-2 ring-primary shadow-hard-lg" : "opacity-95"
                     )}
                   >
@@ -1027,37 +1061,69 @@ export function TerminalExampleClient() {
                 </TaskbarStart>
 
                 <TaskbarTasks>
-                  <TaskbarTask
-                    active={activeWindow === "terminal" && windows.terminal.isOpen && !windows.terminal.isMinimized}
-                    onClick={() => focusWindow("terminal")}
-                    icon={<span>⌨</span>}
-                  >
-                    Terminal
-                  </TaskbarTask>
+                  {windows.terminal.isOpen && (
+                    <TaskbarTask
+                      active={activeWindow === "terminal" && !windows.terminal.isMinimized}
+                      onClick={() =>
+                        windows.terminal.isMinimized
+                          ? focusWindow("terminal")
+                          : activeWindow === "terminal"
+                            ? toggleMinimize("terminal")
+                            : focusWindow("terminal")
+                      }
+                      icon={<span>⌨</span>}
+                    >
+                      Terminal
+                    </TaskbarTask>
+                  )}
 
-                  <TaskbarTask
-                    active={activeWindow === "files" && windows.files.isOpen && !windows.files.isMinimized}
-                    onClick={() => focusWindow("files")}
-                    icon={<span>📁</span>}
-                  >
-                    Files
-                  </TaskbarTask>
+                  {windows.files.isOpen && (
+                    <TaskbarTask
+                      active={activeWindow === "files" && !windows.files.isMinimized}
+                      onClick={() =>
+                        windows.files.isMinimized
+                          ? focusWindow("files")
+                          : activeWindow === "files"
+                            ? toggleMinimize("files")
+                            : focusWindow("files")
+                      }
+                      icon={<span>📁</span>}
+                    >
+                      Files
+                    </TaskbarTask>
+                  )}
 
-                  <TaskbarTask
-                    active={activeWindow === "monitor" && windows.monitor.isOpen && !windows.monitor.isMinimized}
-                    onClick={() => focusWindow("monitor")}
-                    icon={<span>📊</span>}
-                  >
-                    Monitor
-                  </TaskbarTask>
+                  {windows.monitor.isOpen && (
+                    <TaskbarTask
+                      active={activeWindow === "monitor" && !windows.monitor.isMinimized}
+                      onClick={() =>
+                        windows.monitor.isMinimized
+                          ? focusWindow("monitor")
+                          : activeWindow === "monitor"
+                            ? toggleMinimize("monitor")
+                            : focusWindow("monitor")
+                      }
+                      icon={<span>📊</span>}
+                    >
+                      Monitor
+                    </TaskbarTask>
+                  )}
 
-                  <TaskbarTask
-                    active={activeWindow === "canvas" && windows.canvas.isOpen && !windows.canvas.isMinimized}
-                    onClick={() => focusWindow("canvas")}
-                    icon={<span>🎨</span>}
-                  >
-                    Canvas
-                  </TaskbarTask>
+                  {windows.canvas.isOpen && (
+                    <TaskbarTask
+                      active={activeWindow === "canvas" && !windows.canvas.isMinimized}
+                      onClick={() =>
+                        windows.canvas.isMinimized
+                          ? focusWindow("canvas")
+                          : activeWindow === "canvas"
+                            ? toggleMinimize("canvas")
+                            : focusWindow("canvas")
+                      }
+                      icon={<span>🎨</span>}
+                    >
+                      Canvas
+                    </TaskbarTask>
+                  )}
                 </TaskbarTasks>
 
                 <TaskbarStatus>

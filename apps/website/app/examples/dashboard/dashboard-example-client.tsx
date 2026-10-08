@@ -11,7 +11,6 @@ import {
   SidebarGroupLabel,
   SidebarItem,
   SidebarFooter,
-  SidebarRail,
   SidebarTrigger,
   useSidebar,
   Card,
@@ -22,7 +21,6 @@ import {
   PanelContent,
   Badge,
   Button,
-  Progress,
   Table,
   TableHeader,
   TableBody,
@@ -31,19 +29,9 @@ import {
   TableCell,
   Avatar,
   AvatarFallback,
-  AvatarBadge,
-  Tabs,
-  TabsList,
-  TabsTrigger,
-  TabsContent,
   Alert,
   AlertTitle,
   AlertDescription,
-  DescriptionList,
-  DescriptionItem,
-  DescriptionTerm,
-  DescriptionDetails,
-  Well,
   cn,
 } from "@ditherweb/ui";
 
@@ -132,7 +120,6 @@ function DashboardSidebar({
       </SidebarHeader>
 
       <SidebarContent>
-        {/* Operations Group */}
         <SidebarGroup>
           <SidebarGroupLabel>Operations</SidebarGroupLabel>
           <SidebarItem
@@ -151,74 +138,53 @@ function DashboardSidebar({
             Projects
           </SidebarItem>
           <SidebarItem
-            active={activeNav === "tasks"}
-            onClick={() => setActiveNav("tasks")}
-            badge="14"
-            icon={<span className="text-sm">📋</span>}
+            active={activeNav === "deployments"}
+            onClick={() => setActiveNav("deployments")}
+            icon={<span className="text-sm">🚀</span>}
           >
-            Work Queue
-          </SidebarItem>
-          <SidebarItem
-            active={activeNav === "activity"}
-            onClick={() => setActiveNav("activity")}
-            icon={<span className="text-sm">⚡</span>}
-          >
-            Activity
+            Deployments
           </SidebarItem>
         </SidebarGroup>
 
-        {/* Management Group */}
         <SidebarGroup>
-          <SidebarGroupLabel>Administration</SidebarGroupLabel>
+          <SidebarGroupLabel>Services</SidebarGroupLabel>
           <SidebarItem
-            active={activeNav === "reports"}
-            onClick={() => setActiveNav("reports")}
-            icon={<span className="text-sm">📊</span>}
+            active={activeNav === "nodes"}
+            onClick={() => setActiveNav("nodes")}
+            badge="6"
+            icon={<span className="text-sm">⚡</span>}
           >
-            Reports
+            Edge Nodes
           </SidebarItem>
           <SidebarItem
             active={activeNav === "settings"}
             onClick={() => setActiveNav("settings")}
             icon={<span className="text-sm">⚙</span>}
           >
-            System Settings
+            Settings
           </SidebarItem>
         </SidebarGroup>
       </SidebarContent>
 
       <SidebarFooter>
-        <div
-          className={cn(
-            "flex items-center gap-2 p-1.5 border border-border bg-background/50",
-            state === "collapsed" && "justify-center p-1",
-          )}
-        >
-          <Avatar size="sm" status="online">
-            <AvatarFallback className="font-bold text-[10px]">OP</AvatarFallback>
-            <AvatarBadge status="online" />
-          </Avatar>
-          {state === "expanded" && (
-            <div className="min-w-0 flex-1 font-mono">
-              <div className="text-[11px] font-bold text-foreground truncate">sys_adm</div>
-              <div className="text-[9px] text-success flex items-center gap-1">
-                <span className="inline-block h-1.5 w-1.5 bg-success rounded-full" />
-                <span>ONLINE</span>
-              </div>
+        {state === "expanded" && (
+          <div className="p-3 text-[11px] font-mono text-muted-foreground border-t border-border/60">
+            <div className="flex items-center gap-1.5">
+              <span className="h-2 w-2 rounded-full bg-success inline-block" />
+              <span className="font-bold text-foreground">Cluster Nominal</span>
             </div>
-          )}
-        </div>
+            <div className="text-[10px] mt-0.5">edge-node-04.dal</div>
+          </div>
+        )}
       </SidebarFooter>
-
-      <SidebarRail />
     </Sidebar>
   );
 }
 
 export function DashboardExampleClient() {
   const [activeNav, setActiveNav] = React.useState("overview");
-  const [taskFilter, setTaskFilter] = React.useState<"all" | "in-progress" | "high">("all");
   const [tasks, setTasks] = React.useState<TaskItem[]>(INITIAL_TASKS);
+  const [taskFilter, setTaskFilter] = React.useState<"all" | "in-progress" | "high">("all");
   const [actionNotice, setActionNotice] = React.useState<string | null>(null);
 
   const filteredTasks = React.useMemo(() => {
@@ -231,17 +197,20 @@ export function DashboardExampleClient() {
     return tasks;
   }, [tasks, taskFilter]);
 
-  const handleTaskAction = (id: string) => {
-    setActionNotice(`Acknowledged action on ${id}. Operator timestamp logged.`);
-    setTimeout(() => setActionNotice(null), 4000);
+  const handleTaskAction = (taskId: string) => {
+    setTasks((prev) =>
+      prev.map((t) => (t.id === taskId ? { ...t, status: "done" } : t)),
+    );
+    setActionNotice(`Task ${taskId} marked as completed.`);
+    setTimeout(() => setActionNotice(null), 3000);
   };
 
   return (
-    <div className="w-full flex flex-col min-h-[calc(100vh-3.5rem)] bg-background">
-      {/* 1. Explanatory Header Bar */}
-      <div className="border-b border-border bg-surface px-4 py-2.5 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-          <div className="flex items-center gap-2 font-mono text-xs">
+    <div className="flex min-h-screen flex-col bg-background text-foreground font-mono">
+      {/* 1. Context Navigation Bar */}
+      <div className="border-b border-border bg-surface px-4 py-2 sm:px-6">
+        <div className="flex flex-wrap items-center justify-between gap-3 text-xs">
+          <div className="flex items-center gap-2">
             <Link
               href="/examples"
               className="text-primary hover:underline font-bold flex items-center gap-1"
@@ -287,20 +256,20 @@ export function DashboardExampleClient() {
             </div>
 
             {/* Dashboard Content Container */}
-            <div className="mx-auto max-w-7xl w-full px-4 py-6 sm:px-6 lg:px-8 space-y-6 flex-1">
+            <div className="mx-auto max-w-5xl w-full px-4 py-8 sm:px-8 space-y-8 flex-1 min-w-0">
               {/* Desk Titlebar */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border pb-4">
-                <div>
-                  <div className="flex items-center gap-2">
-                    <h1 className="font-mono text-xl sm:text-2xl font-bold uppercase tracking-tight text-foreground">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border pb-6">
+                <div className="space-y-1">
+                  <div className="flex items-center gap-3">
+                    <h1 className="font-mono text-2xl font-bold uppercase tracking-tight text-foreground">
                       BYTEBASE // Studio Operations
                     </h1>
-                    <Badge variant="outline" className="hidden sm:inline-flex text-success border-success font-mono text-[10px] font-bold">
+                    <Badge variant="outline" className="text-success border-success font-mono text-[10px] font-bold">
                       ● NOMINAL
                     </Badge>
                   </div>
-                  <p className="font-mono text-xs text-muted-foreground mt-1">
-                    Real-time software telemetry, sprint velocity, and active service health.
+                  <p className="font-mono text-xs text-muted-foreground">
+                    Engineering delivery velocity and active service health for Sprint 24.
                   </p>
                 </div>
 
@@ -349,106 +318,60 @@ export function DashboardExampleClient() {
                 </Alert>
               )}
 
-              {/* 3. Summary KPI Cards (4 cards in responsive grid) */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                {/* KPI 1 */}
-                <Card className="border border-border bg-surface p-4 space-y-2">
+              {/* 3. High-Signal Operational Cards (2 Focused Cards) */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <Card className="border border-border bg-surface p-6 space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="font-mono text-[10px] font-bold uppercase text-muted-foreground">
-                      Active Projects
+                    <span className="font-mono text-xs font-bold uppercase text-muted-foreground">
+                      Sprint 24 Delivery
                     </span>
-                    <Badge variant="outline" className="font-mono text-[9px] py-0">
-                      Q4 TARGET
+                    <Badge variant="outline" className="font-mono text-[10px] text-success border-success">
+                      75% ON TRACK
                     </Badge>
                   </div>
                   <div className="flex items-baseline gap-2">
-                    <span className="font-mono text-3xl font-bold tracking-tight text-foreground">
-                      08
-                    </span>
-                    <span className="font-mono text-xs text-muted-foreground">/ 10</span>
-                  </div>
-                  <Progress value={80} className="h-1.5" />
-                  <p className="font-mono text-[10px] text-muted-foreground pt-1">
-                    +2 projects slated for sprint release
-                  </p>
-                </Card>
-
-                {/* KPI 2 */}
-                <Card className="border border-border bg-surface p-4 space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="font-mono text-[10px] font-bold uppercase text-muted-foreground">
-                      Completed Tasks
-                    </span>
-                    <Badge variant="outline" className="font-mono text-[9px] text-success border-success">
-                      75%
-                    </Badge>
-                  </div>
-                  <div className="flex items-baseline gap-2">
-                    <span className="font-mono text-3xl font-bold tracking-tight text-foreground">
+                    <span className="font-mono text-4xl font-bold tracking-tight text-foreground">
                       42
                     </span>
-                    <span className="font-mono text-xs text-muted-foreground">/ 56</span>
+                    <span className="font-mono text-sm text-muted-foreground">/ 56 tasks closed</span>
                   </div>
-                  <Progress value={75} className="h-1.5" />
-                  <p className="font-mono text-[10px] text-muted-foreground pt-1">
-                    14 items remaining in sprint backlog
+                  <p className="font-mono text-xs text-muted-foreground leading-relaxed pt-1">
+                    14 items remaining in sprint backlog. Targeted for Friday production deployment.
                   </p>
                 </Card>
 
-                {/* KPI 3 */}
-                <Card className="border border-border bg-surface p-4 space-y-2">
+                <Card className="border border-border bg-surface p-6 space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="font-mono text-[10px] font-bold uppercase text-muted-foreground">
-                      Open Issues
+                    <span className="font-mono text-xs font-bold uppercase text-muted-foreground">
+                      Cluster Availability
                     </span>
-                    <Badge variant="warning" className="font-mono text-[9px] py-0">
-                      ATTENTION
+                    <Badge variant="outline" className="font-mono text-[10px] text-success border-success">
+                      6 NODES ONLINE
                     </Badge>
                   </div>
                   <div className="flex items-baseline gap-2">
-                    <span className="font-mono text-3xl font-bold tracking-tight text-foreground">
-                      03
-                    </span>
-                    <span className="font-mono text-xs text-muted-foreground">open</span>
-                  </div>
-                  <Progress value={20} className="h-1.5" />
-                  <p className="font-mono text-[10px] text-muted-foreground pt-1">
-                    1 blocker · 2 non-critical UI items
-                  </p>
-                </Card>
-
-                {/* KPI 4 */}
-                <Card className="border border-border bg-surface p-4 space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="font-mono text-[10px] font-bold uppercase text-muted-foreground">
-                      Node Telemetry
-                    </span>
-                    <Badge variant="outline" className="font-mono text-[9px] text-success border-success">
-                      NOMINAL
-                    </Badge>
-                  </div>
-                  <div className="flex items-baseline gap-2">
-                    <span className="font-mono text-3xl font-bold tracking-tight text-foreground">
+                    <span className="font-mono text-4xl font-bold tracking-tight text-foreground">
                       99.98%
                     </span>
+                    <span className="font-mono text-sm text-muted-foreground">uptime 30d</span>
                   </div>
-                  <Progress value={100} className="h-1.5" />
-                  <p className="font-mono text-[10px] text-muted-foreground pt-1">
-                    Zero downtime across 6 edge nodes
+                  <p className="font-mono text-xs text-muted-foreground leading-relaxed pt-1">
+                    Zero unplanned downtime across North America and Europe edge clusters.
                   </p>
                 </Card>
               </div>
 
-              {/* 4. Tabbed Content Views */}
-              <Tabs defaultValue="overview" className="w-full space-y-6">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border pb-2">
-                  <TabsList className="font-mono text-xs">
-                    <TabsTrigger value="overview">Overview</TabsTrigger>
-                    <TabsTrigger value="queue">
-                      Work Queue ({tasks.length})
-                    </TabsTrigger>
-                    <TabsTrigger value="telemetry">System Telemetry</TabsTrigger>
-                  </TabsList>
+              {/* 4. Main Workflow: Active Sprint Tasks Panel */}
+              <Panel className="border border-border bg-surface">
+                <PanelHeader className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5">
+                  <div className="space-y-1">
+                    <PanelTitle className="font-mono text-sm font-bold uppercase tracking-wider">
+                      Active Sprint Tasks
+                    </PanelTitle>
+                    <PanelDescription className="font-mono text-xs text-muted-foreground">
+                      Showing {filteredTasks.length} engineering work items
+                    </PanelDescription>
+                  </div>
 
                   {/* Filter Pills */}
                   <div className="flex items-center gap-1.5 font-mono text-xs">
@@ -459,7 +382,7 @@ export function DashboardExampleClient() {
                       type="button"
                       onClick={() => setTaskFilter("all")}
                       className={cn(
-                        "px-2 py-0.5 text-[11px] font-bold transition-all",
+                        "px-2.5 py-1 text-xs font-bold transition-all",
                         taskFilter === "all"
                           ? "bevel-inset bg-muted text-primary"
                           : "bevel-raised text-muted-foreground hover:text-foreground",
@@ -471,19 +394,19 @@ export function DashboardExampleClient() {
                       type="button"
                       onClick={() => setTaskFilter("in-progress")}
                       className={cn(
-                        "px-2 py-0.5 text-[11px] font-bold transition-all",
+                        "px-2.5 py-1 text-xs font-bold transition-all",
                         taskFilter === "in-progress"
                           ? "bevel-inset bg-muted text-primary"
                           : "bevel-raised text-muted-foreground hover:text-foreground",
                       )}
                     >
-                      Active
+                      In Progress
                     </button>
                     <button
                       type="button"
                       onClick={() => setTaskFilter("high")}
                       className={cn(
-                        "px-2 py-0.5 text-[11px] font-bold transition-all",
+                        "px-2.5 py-1 text-xs font-bold transition-all",
                         taskFilter === "high"
                           ? "bevel-inset bg-muted text-primary"
                           : "bevel-raised text-muted-foreground hover:text-foreground",
@@ -492,362 +415,155 @@ export function DashboardExampleClient() {
                       High Priority
                     </button>
                   </div>
-                </div>
+                </PanelHeader>
 
-                {/* Tab 1: Overview (Responsive 2-Column Split) */}
-                <TabsContent value="overview" className="space-y-6">
-                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                    {/* Left Column (8 cols): Tasks Table & Activity */}
-                    <div className="lg:col-span-8 space-y-6">
-                      {/* Active Tasks Panel */}
-                      <Panel className="border border-border bg-surface">
-                        <PanelHeader className="flex items-center justify-between">
-                          <div>
-                            <PanelTitle className="font-mono text-sm font-bold uppercase tracking-wider">
-                              Active Sprint Tasks
-                            </PanelTitle>
-                            <PanelDescription className="font-mono text-xs text-muted-foreground">
-                              Showing {filteredTasks.length} engineering work items
-                            </PanelDescription>
-                          </div>
-                          <Badge variant="outline" className="font-mono text-[10px]">
-                            SPRINT 24
-                          </Badge>
-                        </PanelHeader>
-
-                        <PanelContent className="p-0">
-                          <div className="w-full overflow-x-auto">
-                            <Table className="w-full font-mono text-xs">
-                              <TableHeader>
-                                <TableRow className="border-b border-border bg-muted/30">
-                                  <TableHead className="w-20 font-bold">ID</TableHead>
-                                  <TableHead className="font-bold">Task Name</TableHead>
-                                  <TableHead className="w-24 font-bold">Priority</TableHead>
-                                  <TableHead className="w-28 font-bold">Assignee</TableHead>
-                                  <TableHead className="w-28 font-bold">Status</TableHead>
-                                  <TableHead className="w-20 text-right font-bold">Action</TableHead>
-                                </TableRow>
-                              </TableHeader>
-                              <TableBody>
-                                {filteredTasks.map((task) => (
-                                  <TableRow key={task.id} className="border-b border-border/60 hover:bg-muted/40 transition-colors">
-                                    <TableCell className="font-bold text-muted-foreground">
-                                      {task.id}
-                                    </TableCell>
-                                    <TableCell className="font-medium text-foreground">
-                                      <div className="flex flex-col">
-                                        <span>{task.title}</span>
-                                        <span className="text-[10px] text-muted-foreground">
-                                          {task.category}
-                                        </span>
-                                      </div>
-                                    </TableCell>
-                                    <TableCell>
-                                      {task.priority === "high" && (
-                                        <Badge variant="destructive" className="text-[9px] py-0">
-                                          HIGH
-                                        </Badge>
-                                      )}
-                                      {task.priority === "medium" && (
-                                        <Badge variant="warning" className="text-[9px] py-0">
-                                          MEDIUM
-                                        </Badge>
-                                      )}
-                                      {task.priority === "low" && (
-                                        <Badge variant="secondary" className="text-[9px] py-0 font-normal">
-                                          LOW
-                                        </Badge>
-                                      )}
-                                    </TableCell>
-                                    <TableCell>
-                                      <div className="flex items-center gap-1.5">
-                                        <Avatar size="sm">
-                                          <AvatarFallback className="text-[9px] font-bold">
-                                            {task.assignee.initials}
-                                          </AvatarFallback>
-                                        </Avatar>
-                                        <span className="text-xs truncate max-w-[80px]">
-                                          {task.assignee.name}
-                                        </span>
-                                      </div>
-                                    </TableCell>
-                                    <TableCell>
-                                      {task.status === "in-progress" && (
-                                        <Badge variant="outline" className="text-[9px] font-bold text-primary border-primary">
-                                          IN PROGRESS
-                                        </Badge>
-                                      )}
-                                      {task.status === "review" && (
-                                        <Badge variant="outline" className="text-[9px] font-bold text-info border-info">
-                                          REVIEW
-                                        </Badge>
-                                      )}
-                                      {task.status === "done" && (
-                                        <Badge variant="outline" className="text-[9px] font-bold text-success border-success">
-                                          COMPLETE
-                                        </Badge>
-                                      )}
-                                      {task.status === "planned" && (
-                                        <Badge variant="outline" className="text-[9px] font-bold text-muted-foreground border-border">
-                                          QUEUED
-                                        </Badge>
-                                      )}
-                                    </TableCell>
-                                    <TableCell className="text-right">
-                                      <Button
-                                        size="sm"
-                                        variant="outline"
-                                        className="h-7 px-2 font-mono text-[10px] uppercase font-bold"
-                                        onClick={() => handleTaskAction(task.id)}
-                                      >
-                                        Sync
-                                      </Button>
-                                    </TableCell>
-                                  </TableRow>
-                                ))}
-                              </TableBody>
-                            </Table>
-                          </div>
-                        </PanelContent>
-                      </Panel>
-
-                      {/* Recent Activity Stream */}
-                      <Panel className="border border-border bg-surface">
-                        <PanelHeader>
-                          <PanelTitle className="font-mono text-sm font-bold uppercase tracking-wider">
-                            Deployment &amp; Operational Log
-                          </PanelTitle>
-                          <PanelDescription className="font-mono text-xs text-muted-foreground">
-                            Verified automated logs from continuous delivery pipelines
-                          </PanelDescription>
-                        </PanelHeader>
-
-                        <PanelContent>
-                          <DescriptionList layout="horizontal" className="font-mono text-xs space-y-3">
-                            <DescriptionItem>
-                              <DescriptionTerm className="text-muted-foreground text-[11px] w-28 shrink-0">
-                                14:32:08 UTC
-                              </DescriptionTerm>
-                              <DescriptionDetails className="text-foreground">
-                                <span className="font-bold text-primary mr-1">COMMIT ec70acd:</span>
-                                Sidebar rail overflow resolved symmetrically across desktop &amp; mobile viewports.
-                              </DescriptionDetails>
-                            </DescriptionItem>
-                            <DescriptionItem>
-                              <DescriptionTerm className="text-muted-foreground text-[11px] w-28 shrink-0">
-                                13:10:45 UTC
-                              </DescriptionTerm>
-                              <DescriptionDetails className="text-foreground">
-                                <span className="font-bold text-success mr-1">BUILD prod-9812:</span>
-                                113 routes pre-rendered successfully via Next.js Turbopack engine in 1,509ms.
-                              </DescriptionDetails>
-                            </DescriptionItem>
-                            <DescriptionItem>
-                              <DescriptionTerm className="text-muted-foreground text-[11px] w-28 shrink-0">
-                                11:45:19 UTC
-                              </DescriptionTerm>
-                              <DescriptionDetails className="text-foreground">
-                                <span className="font-bold text-info mr-1">TELEMETRY:</span>
-                                Edge cache warm hit ratio 99.4%; zero packet drops across 6 distributed cluster nodes.
-                              </DescriptionDetails>
-                            </DescriptionItem>
-                            <DescriptionItem>
-                              <DescriptionTerm className="text-muted-foreground text-[11px] w-28 shrink-0">
-                                09:20:00 UTC
-                              </DescriptionTerm>
-                              <DescriptionDetails className="text-foreground">
-                                <span className="font-bold text-muted-foreground mr-1">MAINTENANCE:</span>
-                                Daily automated token registry compaction and dependency tree verification complete.
-                              </DescriptionDetails>
-                            </DescriptionItem>
-                          </DescriptionList>
-                        </PanelContent>
-                      </Panel>
-                    </div>
-
-                    {/* Right Column (4 cols): Milestones, Notices, Node Specs */}
-                    <div className="lg:col-span-4 space-y-6">
-                      {/* Project Milestones */}
-                      <Panel className="border border-border bg-surface">
-                        <PanelHeader>
-                          <PanelTitle className="font-mono text-sm font-bold uppercase tracking-wider">
-                            Sprint Milestones
-                          </PanelTitle>
-                          <PanelDescription className="font-mono text-xs text-muted-foreground">
-                            Target deliverables for milestone v0.1.0
-                          </PanelDescription>
-                        </PanelHeader>
-
-                        <PanelContent className="space-y-4">
-                          <div className="space-y-1.5 font-mono">
-                            <div className="flex justify-between text-xs">
-                              <span className="font-bold text-foreground">Ditherweb Core v1.0</span>
-                              <span className="text-primary font-bold">92%</span>
-                            </div>
-                            <Progress value={92} className="h-1.5" />
-                          </div>
-
-                          <div className="space-y-1.5 font-mono">
-                            <div className="flex justify-between text-xs">
-                              <span className="font-bold text-foreground">Shader &amp; Texture Pipeline</span>
-                              <span className="text-primary font-bold">68%</span>
-                            </div>
-                            <Progress value={68} className="h-1.5" />
-                          </div>
-
-                          <div className="space-y-1.5 font-mono">
-                            <div className="flex justify-between text-xs">
-                              <span className="font-bold text-foreground">A11y / WCAG 2.1 AA Audit</span>
-                              <span className="text-success font-bold">100%</span>
-                            </div>
-                            <Progress value={100} className="h-1.5" />
-                          </div>
-
-                          <div className="space-y-1.5 font-mono">
-                            <div className="flex justify-between text-xs">
-                              <span className="font-bold text-foreground">Admin &amp; Console Templates</span>
-                              <span className="text-muted-foreground font-bold">35%</span>
-                            </div>
-                            <Progress value={35} className="h-1.5" />
-                          </div>
-                        </PanelContent>
-                      </Panel>
-
-                      {/* Studio Notice */}
-                      <Alert variant="default" className="border border-border bg-surface">
-                        <AlertTitle className="font-mono text-xs font-bold uppercase text-foreground">
-                          Operational Directive
-                        </AlertTitle>
-                        <AlertDescription className="font-mono text-xs text-muted-foreground mt-1 leading-relaxed">
-                          Scheduled pipeline calibration window tonight at 02:00 UTC.
-                          Secondary failover standby is verified active.
-                        </AlertDescription>
-                      </Alert>
-
-                      {/* System Environment */}
-                      <Well className="p-4 space-y-2.5 font-mono text-xs">
-                        <div className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground border-b border-border/50 pb-1">
-                          Node Environment
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-muted-foreground">Cluster Host:</span>
-                          <span className="font-bold text-foreground">edge-node-04.dal</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-muted-foreground">Engine:</span>
-                          <span className="font-bold text-foreground">Next.js 16.4.0</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-muted-foreground">Runtime:</span>
-                          <span className="font-bold text-foreground">React 19.3 / TS 5</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-muted-foreground">Allocated RAM:</span>
-                          <span className="font-bold text-foreground">142 MB / 512 MB</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-muted-foreground">UI Primitives:</span>
-                          <span className="font-bold text-success">97 Verified</span>
-                        </div>
-                      </Well>
-                    </div>
-                  </div>
-                </TabsContent>
-
-                {/* Tab 2: Work Queue Full View */}
-                <TabsContent value="queue">
-                  <Card className="border border-border bg-surface p-6 font-mono space-y-4">
-                    <h3 className="text-sm font-bold uppercase text-foreground">
-                      Full Engineering Work Queue
-                    </h3>
-                    <p className="text-xs text-muted-foreground">
-                      14 total sprint items categorized across graphics engine, component system, and accessibility tracks.
-                    </p>
-                    <div className="w-full overflow-x-auto">
-                      <Table className="w-full text-xs">
-                        <TableHeader>
-                          <TableRow className="border-b border-border bg-muted/40">
-                            <TableHead className="font-bold">ID</TableHead>
-                            <TableHead className="font-bold">Title</TableHead>
-                            <TableHead className="font-bold">Category</TableHead>
-                            <TableHead className="font-bold">Status</TableHead>
-                          </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                          {tasks.map((t) => (
-                            <TableRow key={t.id} className="border-b border-border/60">
-                              <TableCell className="font-bold text-muted-foreground">{t.id}</TableCell>
-                              <TableCell className="font-medium text-foreground">{t.title}</TableCell>
-                              <TableCell className="text-muted-foreground">{t.category}</TableCell>
-                              <TableCell>
-                                <Badge variant="outline" className="text-[9px] py-0">
-                                  {t.status}
+                <PanelContent className="p-0">
+                  <div className="w-full overflow-x-auto">
+                    <Table className="w-full font-mono text-xs">
+                      <TableHeader>
+                        <TableRow className="border-b border-border bg-muted/30">
+                          <TableHead className="w-24 font-bold py-3 pl-5">ID</TableHead>
+                          <TableHead className="font-bold py-3">Task Name</TableHead>
+                          <TableHead className="w-28 font-bold py-3">Priority</TableHead>
+                          <TableHead className="w-36 font-bold py-3">Assignee</TableHead>
+                          <TableHead className="w-32 font-bold py-3">Status</TableHead>
+                          <TableHead className="w-24 text-right font-bold py-3 pr-5">Action</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {filteredTasks.map((task) => (
+                          <TableRow
+                            key={task.id}
+                            className="border-b border-border/60 hover:bg-muted/40 transition-colors"
+                          >
+                            <TableCell className="font-bold text-muted-foreground py-3 pl-5">
+                              {task.id}
+                            </TableCell>
+                            <TableCell className="font-medium text-foreground py-3">
+                              <div className="flex flex-col">
+                                <span className="text-xs">{task.title}</span>
+                                <span className="text-[10px] text-muted-foreground">
+                                  {task.category}
+                                </span>
+                              </div>
+                            </TableCell>
+                            <TableCell className="py-3">
+                              {task.priority === "high" && (
+                                <Badge variant="destructive" className="text-[9px] py-0">
+                                  HIGH
                                 </Badge>
-                              </TableCell>
-                            </TableRow>
-                          ))}
-                        </TableBody>
-                      </Table>
-                    </div>
-                  </Card>
-                </TabsContent>
+                              )}
+                              {task.priority === "medium" && (
+                                <Badge variant="warning" className="text-[9px] py-0">
+                                  MEDIUM
+                                </Badge>
+                              )}
+                              {task.priority === "low" && (
+                                <Badge variant="secondary" className="text-[9px] py-0 font-normal">
+                                  LOW
+                                </Badge>
+                              )}
+                            </TableCell>
+                            <TableCell className="py-3">
+                              <div className="flex items-center gap-2">
+                                <Avatar size="sm">
+                                  <AvatarFallback className="text-[9px] font-bold">
+                                    {task.assignee.initials}
+                                  </AvatarFallback>
+                                </Avatar>
+                                <span className="text-xs truncate max-w-[90px]">
+                                  {task.assignee.name}
+                                </span>
+                              </div>
+                            </TableCell>
+                            <TableCell className="py-3">
+                              {task.status === "in-progress" && (
+                                <Badge variant="outline" className="text-[9px] font-bold text-primary border-primary">
+                                  IN PROGRESS
+                                </Badge>
+                              )}
+                              {task.status === "review" && (
+                                <Badge variant="outline" className="text-[9px] font-bold text-info border-info">
+                                  REVIEW
+                                </Badge>
+                              )}
+                              {task.status === "done" && (
+                                <Badge variant="outline" className="text-[9px] font-bold text-success border-success">
+                                  COMPLETE
+                                </Badge>
+                              )}
+                              {task.status === "planned" && (
+                                <Badge variant="outline" className="text-[9px] font-bold text-muted-foreground border-border">
+                                  QUEUED
+                                </Badge>
+                              )}
+                            </TableCell>
+                            <TableCell className="text-right py-3 pr-5">
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                className="h-7 px-2 font-mono text-[10px] uppercase font-bold"
+                                onClick={() => handleTaskAction(task.id)}
+                              >
+                                {task.status === "done" ? "Synced" : "Sync"}
+                              </Button>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+                </PanelContent>
+              </Panel>
 
-                {/* Tab 3: System Telemetry Log View */}
-                <TabsContent value="telemetry">
-                  <Card className="border border-border bg-surface p-6 font-mono space-y-4">
+              {/* 5. Editorial Sprint Highlights Card */}
+              <Card className="border border-border bg-surface p-6 space-y-4 font-mono">
+                <div className="flex items-center justify-between border-b border-border/60 pb-3">
+                  <div>
                     <h3 className="text-sm font-bold uppercase text-foreground">
-                      Continuous Service Telemetry
+                      Sprint 24 Release Dispatch
                     </h3>
-                    <p className="text-xs text-muted-foreground">
-                      Live cluster diagnostics reported by edge monitoring daemons.
+                    <p className="text-xs text-muted-foreground mt-0.5">
+                      Verified architectural milestones ready for deployment
                     </p>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 pt-2">
-                      <div className="bevel-inset bg-background p-3 space-y-1">
-                        <div className="text-[10px] text-muted-foreground">CPU LOAD</div>
-                        <div className="text-xl font-bold text-foreground">12.4%</div>
-                        <div className="text-[9px] text-success">NORMAL RANGE</div>
-                      </div>
-                      <div className="bevel-inset bg-background p-3 space-y-1">
-                        <div className="text-[10px] text-muted-foreground">HEAP USAGE</div>
-                        <div className="text-xl font-bold text-foreground">142 MB</div>
-                        <div className="text-[9px] text-success">28% CAPACITY</div>
-                      </div>
-                      <div className="bevel-inset bg-background p-3 space-y-1">
-                        <div className="text-[10px] text-muted-foreground">EDGE LATENCY</div>
-                        <div className="text-xl font-bold text-foreground">14 ms</div>
-                        <div className="text-[9px] text-success">P95 MEASUREMENT</div>
-                      </div>
-                      <div className="bevel-inset bg-background p-3 space-y-1">
-                        <div className="text-[10px] text-muted-foreground">ERROR RATE</div>
-                        <div className="text-xl font-bold text-foreground">0.00%</div>
-                        <div className="text-[9px] text-success">ZERO ANOMALIES</div>
-                      </div>
-                    </div>
-                  </Card>
-                </TabsContent>
-              </Tabs>
+                  </div>
+                  <Badge variant="outline" className="text-[10px]">
+                    v0.1.0-RC3
+                  </Badge>
+                </div>
 
-              {/* 5. Bottom Telemetry Bar */}
-              <div className="bevel-inset bg-surface/80 p-3 font-mono text-[11px] text-muted-foreground flex flex-wrap items-center justify-between gap-3 border border-border">
-                <div className="flex flex-wrap items-center gap-4">
-                  <span className="flex items-center gap-1.5">
-                    <span className="h-2 w-2 bg-success inline-block" />
-                    <span className="font-bold text-foreground">STATUS:</span> OPERATIONAL
-                  </span>
-                  <span>
-                    <span className="font-bold text-foreground">NODES:</span> 6/6 SYNCED
-                  </span>
-                  <span>
-                    <span className="font-bold text-foreground">MEMORY:</span> 142 MB
-                  </span>
-                  <span>
-                    <span className="font-bold text-foreground">CACHE HIT:</span> 99.4%
-                  </span>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-1 text-xs">
+                  <div className="space-y-1.5">
+                    <div className="font-bold text-foreground flex items-center gap-1.5">
+                      <span className="text-success">✓</span>
+                      <span>Bayer Shader Engine</span>
+                    </div>
+                    <p className="text-muted-foreground leading-relaxed text-[11px]">
+                      Optimized 4x4 matrix ordered dithering pipeline with steady 60fps canvas rasterization.
+                    </p>
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <div className="font-bold text-foreground flex items-center gap-1.5">
+                      <span className="text-success">✓</span>
+                      <span>Next.js Static Pages</span>
+                    </div>
+                    <p className="text-muted-foreground leading-relaxed text-[11px]">
+                      Pre-rendered 118 catalog and documentation routes in under 2.5s with zero hydration mismatch.
+                    </p>
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <div className="font-bold text-foreground flex items-center gap-1.5">
+                      <span className="text-success">✓</span>
+                      <span>High-Contrast Focus</span>
+                    </div>
+                    <p className="text-muted-foreground leading-relaxed text-[11px]">
+                      Certified WCAG 2.1 AA focus rings and tactile keyboard cyclic arrow navigation across overlays.
+                    </p>
+                  </div>
                 </div>
-                <div className="text-[10px] text-muted-foreground">
-                  BYTEBASE OPS · DITHERWEB DOGFOODING REF
-                </div>
-              </div>
+              </Card>
             </div>
           </div>
         </div>

@@ -41,7 +41,6 @@ import {
   CardHeader,
   CardTitle,
   CardDescription,
-  CardContent,
   CardFooter,
   Badge,
   Button,
@@ -443,6 +442,23 @@ export function ClassicWebClient() {
                     <span>56k V.90 Dialup</span>
                   </div>
                 </div>
+
+                <Separator />
+
+                <div className="space-y-1 text-[11px] text-muted-foreground pt-0.5">
+                  <div className="font-bold text-foreground text-[10px] uppercase tracking-wider mb-1">
+                    TRANSMISSION LOG
+                  </div>
+                  <div>
+                    <strong className="text-foreground">Listening:</strong> Daft Punk – Homework
+                  </div>
+                  <div>
+                    <strong className="text-foreground">Reading:</strong> Neuromancer (W. Gibson)
+                  </div>
+                  <div>
+                    <strong className="text-foreground">Status:</strong> Sipping chai &amp; dithering
+                  </div>
+                </div>
               </PanelContent>
             </Panel>
 
@@ -470,96 +486,6 @@ export function ClassicWebClient() {
                 </Button>
               </div>
             </Well>
-
-            {/* Quick Section Shortcuts */}
-            <Panel variant="raised" className="bg-surface shadow-hard-sm">
-              <PanelHeader className="bg-muted/30 border-b border-border py-1.5 px-3">
-                <PanelTitle className="text-xs uppercase">
-                  SITE DIRECTORY INDEX
-                </PanelTitle>
-              </PanelHeader>
-              <PanelContent className="p-2 space-y-1 text-xs">
-                {(
-                  [
-                    { id: "home", label: "» Welcome Desk & Manifesto" },
-                    { id: "about", label: "» Webmaster Hardware & Specs" },
-                    { id: "projects", label: "» Personal Software Experiments" },
-                    { id: "links", label: "» Curated World Wide Links" },
-                    { id: "guestbook", label: "» Public Visitor Guestbook" },
-                    { id: "webring", label: "» Retro Ring Directory Hub" },
-                  ] as const
-                ).map((sec) => (
-                  <button
-                    key={sec.id}
-                    type="button"
-                    onClick={() => setActiveSection(sec.id)}
-                    className={cn(
-                      "w-full text-left px-2 py-1 transition-colors select-none",
-                      activeSection === sec.id
-                        ? "bg-primary text-primary-foreground font-bold"
-                        : "hover:bg-muted text-foreground"
-                    )}
-                  >
-                    {sec.label}
-                  </button>
-                ))}
-              </PanelContent>
-            </Panel>
-
-            {/* Under Construction Notice */}
-            <UnderConstruction variant="stripes">
-              <div className="flex flex-col items-center text-center space-y-2">
-                <UnderConstructionIcon size="md" />
-                <UnderConstructionTitle>MIDI JUKEBOX v2.1</UnderConstructionTitle>
-                <UnderConstructionMessage>
-                  Constructing embedded synthetic background audio stream. Pardon our virtual dust!
-                </UnderConstructionMessage>
-                <UnderConstructionEstimatedDate date="SUMMER 2000" />
-              </div>
-            </UnderConstruction>
-
-            {/* Currently... Well */}
-            <Well variant="sunken" className="p-3 text-xs space-y-2">
-              <div className="font-bold text-foreground text-[11px] uppercase border-b border-border/50 pb-1 flex items-center gap-1.5">
-                <span>📻</span>
-                <span>TRANSMISSION STATUS</span>
-              </div>
-              <div className="space-y-1 text-[11px] text-muted-foreground">
-                <div>
-                  <strong className="text-foreground">Listening:</strong> Daft Punk - Homework (1997)
-                </div>
-                <div>
-                  <strong className="text-foreground">Reading:</strong> Neuromancer by W. Gibson
-                </div>
-                <div>
-                  <strong className="text-foreground">Status:</strong> Sipping chai &amp; dithering pixels
-                </div>
-              </div>
-            </Well>
-
-            {/* Compact WebRing Widget */}
-            <div className="w-full flex justify-center">
-              <WebRing
-                variant="vintage"
-                className="w-full text-center"
-              >
-                <div className="flex flex-col items-center gap-1.5 text-center text-xs">
-                  <WebRingTitle>RETRO WEB DEVELOPERS RING</WebRingTitle>
-                  <WebRingSite name={currentRingMember.name} memberIndex={currentRingMember.id} totalMembers={WEBRING_MEMBERS.length} />
-                  <WebRingNavigation>
-                    <WebRingLink direction="prev" href="#prev" onClick={handlePrevRing}>
-                      [« Prev]
-                    </WebRingLink>
-                    <WebRingLink direction="random" href="#random" onClick={handleRandomRing}>
-                      [? Rnd]
-                    </WebRingLink>
-                    <WebRingLink direction="next" href="#next" onClick={handleNextRing}>
-                      [Next »]
-                    </WebRingLink>
-                  </WebRingNavigation>
-                </div>
-              </WebRing>
-            </div>
           </aside>
 
           {/* Right / Main Content Column */}
@@ -668,35 +594,6 @@ export function ClassicWebClient() {
                     </Table>
                   </PanelContent>
                 </Panel>
-
-                {/* Featured Project Teaser */}
-                <Card className="bevel-raised bg-surface">
-                  <CardHeader className="pb-2">
-                    <div className="flex items-center justify-between">
-                      <Badge variant="default" className="text-[10px]">FEATURED CREATION</Badge>
-                      <span className="text-[10px] text-muted-foreground font-mono">v0.9 BETA</span>
-                    </div>
-                    <CardTitle className="text-sm font-bold uppercase mt-1">
-                      DitherCanvas: Realtime Floyd-Steinberg Dithering Engine
-                    </CardTitle>
-                    <CardDescription className="text-xs">
-                      A lightweight algorithmic canvas script converting truecolor bitmaps into 1-bit Bayer and error-diffusion patterns.
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="text-xs text-muted-foreground">
-                    Runs directly in your browser without plugins. Implements Floyd-Steinberg, Atkinson, and ordered 4×4 Bayer matrix kernels.
-                  </CardContent>
-                  <CardFooter className="pt-2 border-t border-border flex justify-between items-center">
-                    <button
-                      type="button"
-                      onClick={() => setActiveSection("projects")}
-                      className="bevel-raised active:bevel-pressed bg-primary text-primary-foreground px-3 py-1 text-xs font-bold uppercase"
-                    >
-                      View All Projects →
-                    </button>
-                    <span className="text-[10px] text-muted-foreground">Pure Vanilla JavaScript</span>
-                  </CardFooter>
-                </Card>
               </div>
             )}
 
@@ -870,6 +767,18 @@ export function ClassicWebClient() {
                     </div>
                   </PanelContent>
                 </Panel>
+
+                {/* Upcoming Project Under Construction Notice */}
+                <UnderConstruction variant="stripes">
+                  <div className="flex flex-col items-center text-center space-y-2">
+                    <UnderConstructionIcon size="md" />
+                    <UnderConstructionTitle>UPCOMING: MIDI JUKEBOX v2.1</UnderConstructionTitle>
+                    <UnderConstructionMessage>
+                      Constructing embedded synthetic background audio stream. Pardon our virtual dust!
+                    </UnderConstructionMessage>
+                    <UnderConstructionEstimatedDate date="SUMMER 2000" />
+                  </div>
+                </UnderConstruction>
               </div>
             )}
 
@@ -1072,6 +981,33 @@ export function ClassicWebClient() {
                         </WebDirectoryCategory>
                       </WebDirectoryGrid>
                     </WebDirectory>
+                  </PanelContent>
+                </Panel>
+
+                {/* 88×31 Button Showcase & Affiliates */}
+                <Panel variant="raised" className="bg-surface shadow-hard-sm">
+                  <PanelHeader className="bg-muted/30 border-b border-border py-1.5 px-3 flex items-center justify-between">
+                    <PanelTitle className="text-xs uppercase font-bold flex items-center gap-1.5">
+                      <span>🎖</span>
+                      <span>88×31 BUTTON SHOWCASE &amp; WEB STANDARDS</span>
+                    </PanelTitle>
+                    <span className="text-[10px] text-muted-foreground">8 BADGES</span>
+                  </PanelHeader>
+                  <PanelContent className="p-3 space-y-3">
+                    <div className="flex flex-wrap items-center justify-center gap-2">
+                      <Button88x31 label="BEST VIEWED" value="800×600" />
+                      <Button88x31 label="HAND" value="CODED" />
+                      <Button88x31 label="HTML" value="4.01" />
+                      <Button88x31 label="CSS" value="VALID" />
+                      <Button88x31 label="OPEN" value="WEB" />
+                      <Button88x31 label="ZERO" value="TRACKING" />
+                      <Button88x31 label="NEOCITIES" value="HOSTED" />
+                      <Button88x31 label="CAFFEINE" value="POWERED" />
+                    </div>
+
+                    <div className="text-[10px] text-center text-muted-foreground">
+                      Feel free to copy our 88×31 button and hotlink it to your own personal links page!
+                    </div>
                   </PanelContent>
                 </Panel>
               </div>
@@ -1320,33 +1256,6 @@ export function ClassicWebClient() {
                 </Panel>
               </div>
             )}
-
-            {/* 88×31 Badges & Web Awards Strip */}
-            <Panel variant="raised" className="bg-surface shadow-hard-sm">
-              <PanelHeader className="bg-muted/30 border-b border-border py-1.5 px-3 flex items-center justify-between">
-                <PanelTitle className="text-xs uppercase font-bold flex items-center gap-1.5">
-                  <span>🎖</span>
-                  <span>88×31 BUTTON SHOWCASE &amp; WEB STANDARDS</span>
-                </PanelTitle>
-                <span className="text-[10px] text-muted-foreground">8 BADGES</span>
-              </PanelHeader>
-              <PanelContent className="p-3 space-y-3">
-                <div className="flex flex-wrap items-center justify-center gap-2">
-                  <Button88x31 label="BEST VIEWED" value="800×600" />
-                  <Button88x31 label="HAND" value="CODED" />
-                  <Button88x31 label="HTML" value="4.01" />
-                  <Button88x31 label="CSS" value="VALID" />
-                  <Button88x31 label="OPEN" value="WEB" />
-                  <Button88x31 label="ZERO" value="TRACKING" />
-                  <Button88x31 label="NEOCITIES" value="HOSTED" />
-                  <Button88x31 label="CAFFEINE" value="POWERED" />
-                </div>
-
-                <div className="text-[10px] text-center text-muted-foreground">
-                  Feel free to copy our 88×31 button and hotlink it to your own personal links page!
-                </div>
-              </PanelContent>
-            </Panel>
           </section>
         </div>
 

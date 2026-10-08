@@ -50,7 +50,6 @@ import {
   PanelTitle,
   PanelDescription,
   PanelContent,
-  Card,
   DescriptionList,
   DescriptionItem,
   DescriptionTerm,
@@ -83,13 +82,6 @@ export interface DirectoryUser {
   team: string;
   status: UserStatus;
   lastActive: string;
-}
-
-export interface AuditEvent {
-  id: string;
-  timestamp: string;
-  actor: string;
-  action: string;
 }
 
 const INITIAL_USERS: DirectoryUser[] = [
@@ -192,33 +184,6 @@ const INITIAL_USERS: DirectoryUser[] = [
     team: "DevOps",
     status: "active",
     lastActive: "30 mins ago",
-  },
-];
-
-const INITIAL_AUDIT_LOG: AuditEvent[] = [
-  {
-    id: "AUD-101",
-    timestamp: "14:32:10 UTC",
-    actor: "sys_admin",
-    action: "Assigned Marcus Klein role Senior Engineer",
-  },
-  {
-    id: "AUD-102",
-    timestamp: "13:48:02 UTC",
-    actor: "sys_admin",
-    action: "Account suspended for Sarah Taylor (Design Systems)",
-  },
-  {
-    id: "AUD-103",
-    timestamp: "12:10:45 UTC",
-    actor: "sys_admin",
-    action: "Provisioned pending invitation for Maya Patel",
-  },
-  {
-    id: "AUD-104",
-    timestamp: "09:42:18 UTC",
-    actor: "sys_admin",
-    action: "Verified MFA policy for David Chen (Infrastructure)",
   },
 ];
 
@@ -345,7 +310,6 @@ function AdminSidebar({
 export function AdminExampleClient() {
   const [activeNav, setActiveNav] = React.useState("users");
   const [users, setUsers] = React.useState<DirectoryUser[]>(INITIAL_USERS);
-  const [auditLog, setAuditLog] = React.useState<AuditEvent[]>(INITIAL_AUDIT_LOG);
 
   // Selection & Inspector State
   const [selectedUserId, setSelectedUserId] = React.useState<string>("USR-001");
@@ -454,18 +418,6 @@ export function AdminExampleClient() {
     setUsers((prev) => [newUser, ...prev]);
     setSelectedUserId(newId);
 
-    // Append to audit
-    const nowTime = new Date().toISOString().substring(11, 19) + " UTC";
-    setAuditLog((prev) => [
-      {
-        id: `AUD-${Math.floor(100 + Math.random() * 900)}`,
-        timestamp: nowTime,
-        actor: "sys_admin",
-        action: `Provisioned new account for ${newUser.name} (${newUser.role})`,
-      },
-      ...prev,
-    ]);
-
     setIsAddOpen(false);
     setAddFormName("");
     setAddFormEmail("");
@@ -481,17 +433,6 @@ export function AdminExampleClient() {
     setUsers((prev) =>
       prev.map((u) => (u.id === editingUser.id ? editingUser : u)),
     );
-
-    const nowTime = new Date().toISOString().substring(11, 19) + " UTC";
-    setAuditLog((prev) => [
-      {
-        id: `AUD-${Math.floor(100 + Math.random() * 900)}`,
-        timestamp: nowTime,
-        actor: "sys_admin",
-        action: `Updated profile & role assignments for ${editingUser.name}`,
-      },
-      ...prev,
-    ]);
 
     setIsEditOpen(false);
     announce(`Account details updated for ${editingUser.name}.`);
@@ -509,17 +450,6 @@ export function AdminExampleClient() {
       nextStatus === "suspended"
         ? `Suspended account access for ${user.name}`
         : `Reactivated account privileges for ${user.name}`;
-
-    const nowTime = new Date().toISOString().substring(11, 19) + " UTC";
-    setAuditLog((prev) => [
-      {
-        id: `AUD-${Math.floor(100 + Math.random() * 900)}`,
-        timestamp: nowTime,
-        actor: "sys_admin",
-        action: actionText,
-      },
-      ...prev,
-    ]);
 
     announce(actionText);
   };
@@ -539,17 +469,6 @@ export function AdminExampleClient() {
       const remaining = users.filter((u) => u.id !== deletingUser.id);
       if (remaining[0]) setSelectedUserId(remaining[0].id);
     }
-
-    const nowTime = new Date().toISOString().substring(11, 19) + " UTC";
-    setAuditLog((prev) => [
-      {
-        id: `AUD-${Math.floor(100 + Math.random() * 900)}`,
-        timestamp: nowTime,
-        actor: "sys_admin",
-        action: `Permanently removed ${deletingUser.name} from directory`,
-      },
-      ...prev,
-    ]);
 
     setIsDeleteOpen(false);
     announce(`User account for ${deletingUser.name} was permanently removed.`);
@@ -611,20 +530,20 @@ export function AdminExampleClient() {
             </div>
 
             {/* Content Container */}
-            <div className="mx-auto max-w-7xl w-full px-4 py-6 sm:px-6 lg:px-8 space-y-6 flex-1 min-w-0">
+            <div className="mx-auto max-w-5xl w-full px-4 py-8 sm:px-8 space-y-8 flex-1 min-w-0">
               {/* Page Title & Top Actions */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border pb-4">
-                <div>
-                  <div className="flex items-center gap-2">
-                    <h1 className="font-mono text-xl sm:text-2xl font-bold uppercase tracking-tight text-foreground">
-                      Users
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border pb-6">
+                <div className="space-y-1">
+                  <div className="flex items-center gap-3">
+                    <h1 className="font-mono text-2xl font-bold uppercase tracking-tight text-foreground">
+                      Directory Accounts
                     </h1>
-                    <Badge variant="outline" className="hidden sm:inline-flex text-success border-success font-mono text-[10px] font-bold">
-                      ● SYSTEM OPERATIONAL
+                    <Badge variant="outline" className="text-success border-success font-mono text-[10px] font-bold">
+                      ● {users.length} SEATS MANAGED
                     </Badge>
                   </div>
-                  <p className="font-mono text-xs text-muted-foreground mt-1">
-                    Manage directory accounts, access assignments, and organizational teams.
+                  <p className="font-mono text-xs text-muted-foreground">
+                    Manage organizational identities, role assignments, and access policies.
                   </p>
                 </div>
 
@@ -658,56 +577,7 @@ export function AdminExampleClient() {
                 </Alert>
               )}
 
-              {/* Summary Strip (4 KPI Panels) */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                <Card className="border border-border bg-surface p-3 space-y-1">
-                  <div className="font-mono text-[10px] font-bold uppercase text-muted-foreground">
-                    Total Users
-                  </div>
-                  <div className="font-mono text-2xl font-bold text-foreground">
-                    {users.length}
-                  </div>
-                  <div className="font-mono text-[10px] text-muted-foreground">
-                    All managed seats
-                  </div>
-                </Card>
 
-                <Card className="border border-border bg-surface p-3 space-y-1">
-                  <div className="font-mono text-[10px] font-bold uppercase text-muted-foreground">
-                    Active
-                  </div>
-                  <div className="font-mono text-2xl font-bold text-foreground">
-                    {activeCount}
-                  </div>
-                  <div className="font-mono text-[10px] text-success">
-                    ● Granted access
-                  </div>
-                </Card>
-
-                <Card className="border border-border bg-surface p-3 space-y-1">
-                  <div className="font-mono text-[10px] font-bold uppercase text-muted-foreground">
-                    Pending
-                  </div>
-                  <div className="font-mono text-2xl font-bold text-foreground">
-                    {pendingCount}
-                  </div>
-                  <div className="font-mono text-[10px] text-warning">
-                    ▲ Awaiting sign-on
-                  </div>
-                </Card>
-
-                <Card className="border border-border bg-surface p-3 space-y-1">
-                  <div className="font-mono text-[10px] font-bold uppercase text-muted-foreground">
-                    Suspended
-                  </div>
-                  <div className="font-mono text-2xl font-bold text-foreground">
-                    {suspendedCount}
-                  </div>
-                  <div className="font-mono text-[10px] text-destructive">
-                    ✕ Locked accounts
-                  </div>
-                </Card>
-              </div>
 
               {/* Filters & Search Toolbar */}
               <div className="border border-border bg-surface p-3 space-y-3 font-mono text-xs">
@@ -1030,170 +900,110 @@ export function AdminExampleClient() {
                 </PanelContent>
               </Panel>
 
-              {/* 3. Bottom Columns: Permissions Inspector + Audit Log */}
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                {/* Permissions & Profile Inspector (7 cols) */}
-                <div className="lg:col-span-7">
-                  <Panel className="border border-border bg-surface h-full flex flex-col justify-between">
-                    <PanelHeader>
-                      <PanelTitle className="font-mono text-sm font-bold uppercase tracking-wider">
-                        Access Profile &amp; Permission Matrix
-                      </PanelTitle>
-                      <PanelDescription className="font-mono text-xs text-muted-foreground">
-                        Selected directory identity security policy inspection
-                      </PanelDescription>
-                    </PanelHeader>
+              {/* 3. Selected User Profile & Permission Matrix */}
+              <Panel className="border border-border bg-surface">
+                <PanelHeader className="p-5">
+                  <PanelTitle className="font-mono text-sm font-bold uppercase tracking-wider">
+                    Access Profile &amp; Permission Matrix
+                  </PanelTitle>
+                  <PanelDescription className="font-mono text-xs text-muted-foreground mt-0.5">
+                    Selected directory identity security policy inspection
+                  </PanelDescription>
+                </PanelHeader>
 
-                    <PanelContent className="space-y-4">
-                      {selectedUser ? (
-                        <>
-                          <div className="bevel-inset bg-background/50 p-3 flex items-center justify-between gap-3 font-mono">
-                            <div className="flex items-center gap-2.5">
-                              <Avatar size="md">
-                                <AvatarFallback className="font-bold text-xs">
-                                  {selectedUser.initials}
-                                </AvatarFallback>
-                              </Avatar>
-                              <div>
-                                <div className="text-xs font-bold text-foreground">
-                                  {selectedUser.name} ({selectedUser.id})
-                                </div>
-                                <div className="text-[11px] text-muted-foreground">
-                                  {selectedUser.email} · {selectedUser.team}
-                                </div>
-                              </div>
+                <PanelContent className="p-5 space-y-5">
+                  {selectedUser ? (
+                    <>
+                      <div className="bevel-inset bg-background/50 p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 font-mono">
+                        <div className="flex items-center gap-3">
+                          <Avatar size="md">
+                            <AvatarFallback className="font-bold text-xs">
+                              {selectedUser.initials}
+                            </AvatarFallback>
+                          </Avatar>
+                          <div>
+                            <div className="text-sm font-bold text-foreground">
+                              {selectedUser.name} ({selectedUser.id})
                             </div>
-                            <Badge variant="outline" className="text-[10px] py-0">
-                              {selectedUser.role}
-                            </Badge>
-                          </div>
-
-                          <DescriptionList layout="horizontal" className="font-mono text-xs space-y-2.5">
-                            <DescriptionItem>
-                              <DescriptionTerm className="text-muted-foreground w-40 shrink-0">
-                                Repository Code:
-                              </DescriptionTerm>
-                              <DescriptionDetails className="text-foreground">
-                                <Badge variant="success" className="text-[10px] py-0 mr-1.5">
-                                  READ / WRITE
-                                </Badge>
-                                Full branch push and PR creation
-                              </DescriptionDetails>
-                            </DescriptionItem>
-
-                            <DescriptionItem>
-                              <DescriptionTerm className="text-muted-foreground w-40 shrink-0">
-                                Production Deploys:
-                              </DescriptionTerm>
-                              <DescriptionDetails className="text-foreground">
-                                {selectedUser.role === "Administrator" || selectedUser.role === "Senior Engineer" ? (
-                                  <Badge variant="success" className="text-[10px] py-0 mr-1.5">
-                                    AUTHORIZED
-                                  </Badge>
-                                ) : (
-                                  <Badge variant="secondary" className="text-[10px] py-0 mr-1.5">
-                                    RESTRICTED
-                                  </Badge>
-                                )}
-                                Stage gate pipeline execution
-                              </DescriptionDetails>
-                            </DescriptionItem>
-
-                            <DescriptionItem>
-                              <DescriptionTerm className="text-muted-foreground w-40 shrink-0">
-                                Directory Admin:
-                              </DescriptionTerm>
-                              <DescriptionDetails className="text-foreground">
-                                {selectedUser.role === "Administrator" ? (
-                                  <Badge variant="success" className="text-[10px] py-0 mr-1.5">
-                                    FULL ACCESS
-                                  </Badge>
-                                ) : (
-                                  <Badge variant="secondary" className="text-[10px] py-0 mr-1.5">
-                                    NO ACCESS
-                                  </Badge>
-                                )}
-                                User provisioning &amp; role assignment
-                              </DescriptionDetails>
-                            </DescriptionItem>
-
-                            <DescriptionItem>
-                              <DescriptionTerm className="text-muted-foreground w-40 shrink-0">
-                                Governance Audits:
-                              </DescriptionTerm>
-                              <DescriptionDetails className="text-foreground">
-                                <Badge variant="info" className="text-[10px] py-0 mr-1.5">
-                                  AUDIT LOGGED
-                                </Badge>
-                                Read &amp; export security logs
-                              </DescriptionDetails>
-                            </DescriptionItem>
-                          </DescriptionList>
-                        </>
-                      ) : (
-                        <p className="font-mono text-xs text-muted-foreground">
-                          Select a user row above to inspect security policies.
-                        </p>
-                      )}
-                    </PanelContent>
-                  </Panel>
-                </div>
-
-                {/* Audit Log Stream (5 cols) */}
-                <div className="lg:col-span-5">
-                  <Panel className="border border-border bg-surface h-full flex flex-col justify-between">
-                    <PanelHeader>
-                      <PanelTitle className="font-mono text-sm font-bold uppercase tracking-wider">
-                        Administrative Audit Trail
-                      </PanelTitle>
-                      <PanelDescription className="font-mono text-xs text-muted-foreground">
-                        Recent privileged directory events
-                      </PanelDescription>
-                    </PanelHeader>
-
-                    <PanelContent className="space-y-3">
-                      <div className="space-y-2.5 font-mono text-xs">
-                        {auditLog.slice(0, 5).map((log) => (
-                          <div
-                            key={log.id}
-                            className="border-b border-border/50 pb-2 flex flex-col gap-0.5"
-                          >
-                            <div className="flex items-center justify-between text-[10px] text-muted-foreground">
-                              <span>{log.timestamp}</span>
-                              <span className="font-bold text-primary">{log.actor}</span>
-                            </div>
-                            <div className="text-foreground text-[11px] leading-tight">
-                              {log.action}
+                            <div className="text-xs text-muted-foreground mt-0.5">
+                              {selectedUser.email} · {selectedUser.team}
                             </div>
                           </div>
-                        ))}
+                        </div>
+                        <Badge variant="outline" className="text-xs py-0.5 self-start sm:self-auto">
+                          {selectedUser.role}
+                        </Badge>
                       </div>
-                    </PanelContent>
-                  </Panel>
-                </div>
-              </div>
 
-              {/* 4. Bottom System Status Strip */}
-              <div className="bevel-inset bg-surface/80 p-3 font-mono text-[11px] text-muted-foreground flex flex-wrap items-center justify-between gap-3 border border-border">
-                <div className="flex flex-wrap items-center gap-4">
-                  <span className="flex items-center gap-1.5">
-                    <span className="h-2 w-2 bg-success inline-block" />
-                    <span className="font-bold text-foreground">DIRECTORY:</span> ONLINE
-                  </span>
-                  <span>
-                    <span className="font-bold text-foreground">SEATS:</span> {users.length} / 50 ASSIGNED
-                  </span>
-                  <span>
-                    <span className="font-bold text-foreground">MFA POLICY:</span> ENFORCED (100%)
-                  </span>
-                  <span>
-                    <span className="font-bold text-foreground">ENCRYPTION:</span> AES-256-GCM
-                  </span>
-                </div>
-                <div className="text-[10px] text-muted-foreground">
-                  USER DIRECTORY · DITHERWEB DOGFOODING REF
-                </div>
-              </div>
+                      <DescriptionList layout="horizontal" className="font-mono text-xs space-y-3 pt-2">
+                        <DescriptionItem>
+                          <DescriptionTerm className="text-muted-foreground w-44 shrink-0 font-bold">
+                            Repository Code:
+                          </DescriptionTerm>
+                          <DescriptionDetails className="text-foreground flex items-center">
+                            <Badge variant="success" className="text-[10px] py-0 mr-2">
+                              READ / WRITE
+                            </Badge>
+                            <span>Full branch push and pull request creation</span>
+                          </DescriptionDetails>
+                        </DescriptionItem>
+
+                        <DescriptionItem>
+                          <DescriptionTerm className="text-muted-foreground w-44 shrink-0 font-bold">
+                            Production Deploys:
+                          </DescriptionTerm>
+                          <DescriptionDetails className="text-foreground flex items-center">
+                            {selectedUser.role === "Administrator" || selectedUser.role === "Senior Engineer" ? (
+                              <Badge variant="success" className="text-[10px] py-0 mr-2">
+                                AUTHORIZED
+                              </Badge>
+                            ) : (
+                              <Badge variant="secondary" className="text-[10px] py-0 mr-2">
+                                RESTRICTED
+                              </Badge>
+                            )}
+                            <span>Stage gate pipeline and canary execution</span>
+                          </DescriptionDetails>
+                        </DescriptionItem>
+
+                        <DescriptionItem>
+                          <DescriptionTerm className="text-muted-foreground w-44 shrink-0 font-bold">
+                            Directory Admin:
+                          </DescriptionTerm>
+                          <DescriptionDetails className="text-foreground flex items-center">
+                            {selectedUser.role === "Administrator" ? (
+                              <Badge variant="success" className="text-[10px] py-0 mr-2">
+                                FULL ACCESS
+                              </Badge>
+                            ) : (
+                              <Badge variant="secondary" className="text-[10px] py-0 mr-2">
+                                NO ACCESS
+                              </Badge>
+                            )}
+                            <span>User provisioning, role modification, and seat assignment</span>
+                          </DescriptionDetails>
+                        </DescriptionItem>
+
+                        <DescriptionItem>
+                          <DescriptionTerm className="text-muted-foreground w-44 shrink-0 font-bold">
+                            Governance Audits:
+                          </DescriptionTerm>
+                          <DescriptionDetails className="text-foreground flex items-center">
+                            <Badge variant="info" className="text-[10px] py-0 mr-2">
+                              AUDIT LOGGED
+                            </Badge>
+                            <span>Read and export privileged security audit trails</span>
+                          </DescriptionDetails>
+                        </DescriptionItem>
+                      </DescriptionList>
+                    </>
+                  ) : (
+                    <p className="font-mono text-xs text-muted-foreground">
+                      Select a user row above to inspect security policies.
+                    </p>
+                  )}
+                </PanelContent>
+              </Panel>
             </div>
           </div>
         </div>
