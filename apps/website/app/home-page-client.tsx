@@ -48,7 +48,7 @@ export default function RetroPanel() {
   return (
     <div className="flex flex-col space-y-16 pb-16">
       {/* 1. Hero Section */}
-      <section className="w-full border-b border-border bg-background dark:bg-black text-foreground dark:text-white relative overflow-hidden pt-12 sm:pt-16 pb-12 sm:pb-16 lg:py-16">
+      <section className="w-full border-b border-border bg-background dark:bg-black text-foreground dark:text-white relative overflow-hidden min-h-[calc(100dvh-3.5rem)] flex items-center py-12 sm:py-16 lg:py-0">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full">
           <div className="grid grid-cols-1 items-center gap-10 lg:gap-8 xl:gap-12 lg:grid-cols-12">
             {/* Left Column: Headlines & CTAs */}
@@ -89,29 +89,26 @@ export default function RetroPanel() {
             </div>
 
             {/* Right Column: Atmospheric Ditherweb Artwork */}
-            <div className="relative lg:static flex items-center justify-center lg:justify-end lg:col-span-6 xl:col-span-6 w-full">
-              <div className="relative w-full lg:absolute lg:bottom-0 lg:right-0 lg:w-[48%] xl:w-[50%] 2xl:w-[48%] flex items-end justify-center lg:justify-end pointer-events-none overflow-hidden">
-                <div className="relative w-full flex items-end justify-center lg:justify-end">
-                  <Image
-                    src="/images/hero-artwork.jpg"
-                    alt="Retro desktop workstation at night with a dithered CRT monitor displaying Ditherweb, mechanical keyboard, programming books, and a moonlit city skyline outside the window"
-                    width={1024}
-                    height={576}
-                    priority
-                    sizes="(min-width: 1280px) 50vw, (min-width: 1024px) 48vw, 100vw"
-                    className="w-full h-auto lg:h-auto lg:max-h-[460px] xl:max-h-[500px] 2xl:max-h-[540px] lg:w-auto object-contain object-right-bottom block select-none transition-[filter] duration-200"
-                    style={{
-                      filter: "var(--hero-artwork-filter)",
-                      maskImage: "linear-gradient(to right, transparent 0%, black 18%, black 100%)",
-                      WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 18%, black 100%)",
-                    }}
-                  />
-                  {/* Complementary subtle gradient overlay on the left edge for cross-browser dissolve */}
-                  <div
-                    className="pointer-events-none absolute inset-y-0 left-0 w-16 sm:w-24 lg:w-32 bg-gradient-to-r from-background via-background/85 to-transparent dark:from-black dark:via-black/85 dark:to-transparent"
-                    aria-hidden="true"
-                  />
-                </div>
+            <div className="hidden lg:block lg:absolute lg:inset-y-0 lg:right-0 lg:w-[48%] xl:w-[50%] 2xl:w-[48%] pointer-events-none overflow-hidden select-none">
+              <div className="relative w-full h-full">
+                <Image
+                  src="/images/hero-artwork.jpg"
+                  alt="Retro desktop workstation at night with a dithered CRT monitor displaying Ditherweb, mechanical keyboard, programming books, and a moonlit city skyline outside the window"
+                  fill
+                  priority
+                  sizes="(min-width: 1280px) 50vw, 48vw"
+                  className="object-cover object-right block select-none transition-[filter] duration-200"
+                  style={{
+                    filter: "var(--hero-artwork-filter)",
+                    maskImage: "linear-gradient(to right, transparent 0%, black 18%, black 100%)",
+                    WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 18%, black 100%)",
+                  }}
+                />
+                {/* Complementary subtle gradient overlay on the left edge for cross-browser dissolve */}
+                <div
+                  className="pointer-events-none absolute inset-y-0 left-0 w-16 sm:w-24 lg:w-32 bg-gradient-to-r from-background via-background/85 to-transparent dark:from-black dark:via-black/85 dark:to-transparent"
+                  aria-hidden="true"
+                />
               </div>
             </div>
           </div>
