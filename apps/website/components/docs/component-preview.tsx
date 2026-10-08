@@ -115,6 +115,20 @@ import {
   AspectRatio,
   ScrollArea,
   type ScrollAreaOrientation,
+  Textarea,
+  PasswordInput,
+  SearchInput,
+  NumberInput,
+  Select,
+  Combobox,
+  type ComboboxOption,
+  Toggle,
+  ToggleGroup,
+  ToggleGroupItem,
+  Field,
+  FieldLabel,
+  FieldDescription,
+  FieldError,
 } from "@ditherweb/ui";
 
 export interface ComponentPreviewProps {
@@ -208,6 +222,66 @@ interface PreviewState {
   setScrollAreaOrientation: (o: ScrollAreaOrientation) => void;
   spacerSize: SpacerSize;
   setSpacerSize: (s: SpacerSize) => void;
+
+  // Forms & Selection states
+  textareaVal: string;
+  setTextareaVal: (v: string) => void;
+  textareaRows: number;
+  setTextareaRows: (r: number) => void;
+  textareaInvalid: boolean;
+  setTextareaInvalid: (i: boolean) => void;
+  textareaDisabled: boolean;
+  setTextareaDisabled: (d: boolean) => void;
+  pwdVal: string;
+  setPwdVal: (v: string) => void;
+  pwdInvalid: boolean;
+  setPwdInvalid: (i: boolean) => void;
+  pwdDisabled: boolean;
+  setPwdDisabled: (d: boolean) => void;
+  searchVal: string;
+  setSearchVal: (v: string) => void;
+  searchDisabled: boolean;
+  setSearchDisabled: (d: boolean) => void;
+  numberVal: number;
+  setNumberVal: (v: number) => void;
+  numberStep: number;
+  setNumberStep: (s: number) => void;
+  numberInvalid: boolean;
+  setNumberInvalid: (i: boolean) => void;
+  numberDisabled: boolean;
+  setNumberDisabled: (d: boolean) => void;
+  selectVal: string;
+  setSelectVal: (v: string) => void;
+  selectInvalid: boolean;
+  setSelectInvalid: (i: boolean) => void;
+  selectDisabled: boolean;
+  setSelectDisabled: (d: boolean) => void;
+  comboboxVal: string;
+  setComboboxVal: (v: string) => void;
+  comboboxInvalid: boolean;
+  setComboboxInvalid: (i: boolean) => void;
+  comboboxDisabled: boolean;
+  setComboboxDisabled: (d: boolean) => void;
+  togglePressed: boolean;
+  setTogglePressed: (p: boolean) => void;
+  toggleSize: "sm" | "md" | "lg";
+  setToggleSize: (s: "sm" | "md" | "lg") => void;
+  toggleDisabled: boolean;
+  setToggleDisabled: (d: boolean) => void;
+  toggleGroupSingleVal: string;
+  setToggleGroupSingleVal: (v: string) => void;
+  toggleGroupMultiVal: string[];
+  setToggleGroupMultiVal: (v: string[]) => void;
+  toggleGroupMode: "single" | "multiple";
+  setToggleGroupMode: (m: "single" | "multiple") => void;
+  fieldRequired: boolean;
+  setFieldRequired: (r: boolean) => void;
+  fieldHasError: boolean;
+  setFieldHasError: (e: boolean) => void;
+  fieldVal: string;
+  setFieldVal: (v: string) => void;
+  fieldDisabled: boolean;
+  setFieldDisabled: (d: boolean) => void;
 }
 
 export function ComponentPreview({ slug }: ComponentPreviewProps) {
@@ -257,6 +331,37 @@ export function ComponentPreview({ slug }: ComponentPreviewProps) {
   const [aspectRatioRatio, setAspectRatioRatio] = useState<number>(16 / 9);
   const [scrollAreaOrientation, setScrollAreaOrientation] = useState<ScrollAreaOrientation>("vertical");
   const [spacerSize, setSpacerSize] = useState<SpacerSize>("md");
+
+  // Forms & Selection interactive state
+  const [textareaVal, setTextareaVal] = useState("CONFIG.SYS buffer loaded successfully.\nFILES=40\nBUFFERS=30");
+  const [textareaRows, setTextareaRows] = useState(4);
+  const [textareaInvalid, setTextareaInvalid] = useState(false);
+  const [textareaDisabled, setTextareaDisabled] = useState(false);
+  const [pwdVal, setPwdVal] = useState("RetroKernel_1995");
+  const [pwdInvalid, setPwdInvalid] = useState(false);
+  const [pwdDisabled, setPwdDisabled] = useState(false);
+  const [searchVal, setSearchVal] = useState("CONFIG");
+  const [searchDisabled, setSearchDisabled] = useState(false);
+  const [numberVal, setNumberVal] = useState(2400);
+  const [numberStep, setNumberStep] = useState(300);
+  const [numberInvalid, setNumberInvalid] = useState(false);
+  const [numberDisabled, setNumberDisabled] = useState(false);
+  const [selectVal, setSelectVal] = useState("vga");
+  const [selectInvalid, setSelectInvalid] = useState(false);
+  const [selectDisabled, setSelectDisabled] = useState(false);
+  const [comboboxVal, setComboboxVal] = useState("vga");
+  const [comboboxInvalid, setComboboxInvalid] = useState(false);
+  const [comboboxDisabled, setComboboxDisabled] = useState(false);
+  const [togglePressed, setTogglePressed] = useState(true);
+  const [toggleSize, setToggleSize] = useState<"sm" | "md" | "lg">("md");
+  const [toggleDisabled, setToggleDisabled] = useState(false);
+  const [toggleGroupSingleVal, setToggleGroupSingleVal] = useState("center");
+  const [toggleGroupMultiVal, setToggleGroupMultiVal] = useState<string[]>(["bold"]);
+  const [toggleGroupMode, setToggleGroupMode] = useState<"single" | "multiple">("single");
+  const [fieldRequired, setFieldRequired] = useState(true);
+  const [fieldHasError, setFieldHasError] = useState(false);
+  const [fieldVal, setFieldVal] = useState("N0CALL/GATEWAY-1");
+  const [fieldDisabled, setFieldDisabled] = useState(false);
 
   return (
     <div className="bevel-raised bg-surface p-6 font-mono text-xs border border-border space-y-4">
@@ -351,6 +456,64 @@ export function ComponentPreview({ slug }: ComponentPreviewProps) {
           setScrollAreaOrientation,
           spacerSize,
           setSpacerSize,
+          textareaVal,
+          setTextareaVal,
+          textareaRows,
+          setTextareaRows,
+          textareaInvalid,
+          setTextareaInvalid,
+          textareaDisabled,
+          setTextareaDisabled,
+          pwdVal,
+          setPwdVal,
+          pwdInvalid,
+          setPwdInvalid,
+          pwdDisabled,
+          setPwdDisabled,
+          searchVal,
+          setSearchVal,
+          searchDisabled,
+          setSearchDisabled,
+          numberVal,
+          setNumberVal,
+          numberStep,
+          setNumberStep,
+          numberInvalid,
+          setNumberInvalid,
+          numberDisabled,
+          setNumberDisabled,
+          selectVal,
+          setSelectVal,
+          selectInvalid,
+          setSelectInvalid,
+          selectDisabled,
+          setSelectDisabled,
+          comboboxVal,
+          setComboboxVal,
+          comboboxInvalid,
+          setComboboxInvalid,
+          comboboxDisabled,
+          setComboboxDisabled,
+          togglePressed,
+          setTogglePressed,
+          toggleSize,
+          setToggleSize,
+          toggleDisabled,
+          setToggleDisabled,
+          toggleGroupSingleVal,
+          setToggleGroupSingleVal,
+          toggleGroupMultiVal,
+          setToggleGroupMultiVal,
+          toggleGroupMode,
+          setToggleGroupMode,
+          fieldRequired,
+          setFieldRequired,
+          fieldHasError,
+          setFieldHasError,
+          fieldVal,
+          setFieldVal,
+          fieldDisabled,
+          setFieldDisabled,
         })}
       </div>
     </div>
@@ -998,17 +1161,43 @@ function renderPreviewContent(slug: string, state: PreviewState) {
 
     case "slider":
       return (
-        <div className="w-full max-w-sm space-y-2">
-          <div className="flex justify-between text-xs">
-            <span>DAC Output Voltage:</span>
-            <span className="font-bold text-primary">{state.sliderVal}%</span>
+        <div className="flex flex-col items-center gap-5 w-full max-w-sm">
+          <div className="w-full bevel-raised bg-surface p-6 space-y-3">
+            <div className="flex justify-between text-xs">
+              <Label htmlFor="demo-slider">DSP Master Output Level:</Label>
+              <span className="font-bold text-primary">{state.sliderVal}%</span>
+            </div>
+            <Slider
+              id="demo-slider"
+              min={0}
+              max={100}
+              value={state.sliderVal}
+              onChange={(e) => state.setSliderVal(Number(e.target.value))}
+            />
+            <div className="flex justify-between text-[10px] text-muted-foreground font-mono">
+              <span>0% (Mute)</span>
+              <span>50% (Line Level)</span>
+              <span>100% (Overdrive)</span>
+            </div>
           </div>
-          <Slider
-            min={0}
-            max={100}
-            value={state.sliderVal}
-            onChange={(e) => state.setSliderVal(Number(e.target.value))}
-          />
+
+          <div className="flex flex-wrap items-center justify-center gap-2">
+            {[
+              { label: "Mute", val: 0 },
+              { label: "50%", val: 50 },
+              { label: "75%", val: 75 },
+              { label: "Max", val: 100 },
+            ].map((p) => (
+              <Button
+                key={p.label}
+                size="sm"
+                variant={state.sliderVal === p.val ? "primary" : "outline"}
+                onClick={() => state.setSliderVal(p.val)}
+              >
+                {p.label}
+              </Button>
+            ))}
+          </div>
         </div>
       );
 
@@ -1846,6 +2035,520 @@ function renderPreviewContent(slug: string, state: PreviewState) {
                 {sz}
               </Button>
             ))}
+          </div>
+        </div>
+      );
+
+    // =========================================================================
+    // FORMS & SELECTION PRIMITIVES
+    // =========================================================================
+
+    case "textarea":
+      return (
+        <div className="flex flex-col items-center gap-5 w-full max-w-lg">
+          <div className="w-full bevel-raised bg-surface p-6 space-y-3">
+            <div className="flex items-center justify-between text-xs">
+              <Label htmlFor="demo-textarea">Configuration Buffer ({state.textareaRows} Rows)</Label>
+              <span className="text-[11px] text-muted-foreground font-mono">
+                {state.textareaVal.length} chars
+              </span>
+            </div>
+            <Textarea
+              id="demo-textarea"
+              value={state.textareaVal}
+              onChange={(e) => state.setTextareaVal(e.target.value)}
+              rows={state.textareaRows}
+              invalid={state.textareaInvalid}
+              disabled={state.textareaDisabled}
+              placeholder="Enter configuration script..."
+            />
+            <div className="flex items-center justify-between text-[10px] text-muted-foreground border-t border-border/50 pt-2 font-mono">
+              <span>Sunken bevel: <code className="bg-surface-sunken px-1">bevel-inset</code></span>
+              {state.textareaInvalid && (
+                <span className="text-destructive font-bold uppercase">Invalid State</span>
+              )}
+              {state.textareaDisabled && (
+                <span className="text-muted-foreground font-bold uppercase">Disabled State</span>
+              )}
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-center gap-2">
+            <div className="flex items-center gap-1">
+              <span className="text-[11px] text-muted-foreground uppercase font-bold mr-1">Rows:</span>
+              {([2, 4, 6] as const).map((r) => (
+                <Button
+                  key={r}
+                  size="sm"
+                  variant={state.textareaRows === r ? "primary" : "outline"}
+                  onClick={() => state.setTextareaRows(r)}
+                >
+                  {r}
+                </Button>
+              ))}
+            </div>
+            <Button
+              size="sm"
+              variant={state.textareaInvalid ? "destructive" : "outline"}
+              onClick={() => state.setTextareaInvalid(!state.textareaInvalid)}
+            >
+              {state.textareaInvalid ? "Invalid: ON" : "Invalid: OFF"}
+            </Button>
+            <Button
+              size="sm"
+              variant={state.textareaDisabled ? "primary" : "outline"}
+              onClick={() => state.setTextareaDisabled(!state.textareaDisabled)}
+            >
+              {state.textareaDisabled ? "Disabled: ON" : "Disabled: OFF"}
+            </Button>
+          </div>
+        </div>
+      );
+
+    case "password-input":
+      return (
+        <div className="flex flex-col items-center gap-5 w-full max-w-md">
+          <div className="w-full bevel-raised bg-surface p-6 space-y-3">
+            <div className="flex items-center justify-between text-xs">
+              <Label htmlFor="demo-pwd">Terminal Passkey</Label>
+              <span className="text-[10px] text-muted-foreground font-mono">
+                Focus-Preserving Toggle
+              </span>
+            </div>
+            <PasswordInput
+              id="demo-pwd"
+              value={state.pwdVal}
+              onChange={(e) => state.setPwdVal(e.target.value)}
+              invalid={state.pwdInvalid}
+              disabled={state.pwdDisabled}
+              placeholder="Enter passkey..."
+            />
+            <div className="flex items-center justify-between text-[11px] text-muted-foreground border-t border-border/50 pt-2 font-mono">
+              <span>Length: {state.pwdVal.length} chars</span>
+              <span className={state.pwdVal.length >= 10 ? "text-primary font-bold" : "text-muted-foreground"}>
+                Strength: {state.pwdVal.length >= 10 ? "SECURE" : state.pwdVal.length >= 6 ? "MEDIUM" : "WEAK"}
+              </span>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-center gap-2">
+            <Button
+              size="sm"
+              variant={state.pwdInvalid ? "destructive" : "outline"}
+              onClick={() => state.setPwdInvalid(!state.pwdInvalid)}
+            >
+              {state.pwdInvalid ? "Invalid: ON" : "Invalid: OFF"}
+            </Button>
+            <Button
+              size="sm"
+              variant={state.pwdDisabled ? "primary" : "outline"}
+              onClick={() => state.setPwdDisabled(!state.pwdDisabled)}
+            >
+              {state.pwdDisabled ? "Disabled: ON" : "Disabled: OFF"}
+            </Button>
+          </div>
+        </div>
+      );
+
+    case "search-input": {
+      const files = [
+        "CONFIG.SYS",
+        "AUTOEXEC.BAT",
+        "COMMAND.COM",
+        "HIMEM.SYS",
+        "EMM386.EXE",
+        "MOUSE.COM",
+        "MSCDEX.EXE",
+      ];
+      const matchedFiles = files.filter((f) =>
+        f.toLowerCase().includes(state.searchVal.toLowerCase())
+      );
+
+      return (
+        <div className="flex flex-col items-center gap-5 w-full max-w-md">
+          <div className="w-full bevel-raised bg-surface p-6 space-y-4">
+            <div className="space-y-1.5">
+              <Label htmlFor="demo-search">Disk Catalog Index</Label>
+              <SearchInput
+                id="demo-search"
+                value={state.searchVal}
+                onChange={(e) => state.setSearchVal(e.target.value)}
+                onClear={() => state.setSearchVal("")}
+                disabled={state.searchDisabled}
+                placeholder="Search system catalog..."
+              />
+            </div>
+
+            <div className="bevel-inset bg-surface-sunken p-3 space-y-1 text-xs">
+              <div className="text-[10px] text-muted-foreground uppercase font-bold border-b border-border/50 pb-1">
+                Matching Files ({matchedFiles.length})
+              </div>
+              {matchedFiles.length === 0 ? (
+                <div className="text-muted-foreground italic text-[11px] py-1">
+                  No files matching &quot;{state.searchVal}&quot;
+                </div>
+              ) : (
+                matchedFiles.map((file) => (
+                  <div key={file} className="flex items-center justify-between text-foreground font-mono">
+                    <span>{file}</span>
+                    <span className="text-[10px] text-primary">DOS BIN</span>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-center gap-2">
+            <Button
+              size="sm"
+              variant={state.searchDisabled ? "primary" : "outline"}
+              onClick={() => state.setSearchDisabled(!state.searchDisabled)}
+            >
+              {state.searchDisabled ? "Disabled: ON" : "Disabled: OFF"}
+            </Button>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => state.setSearchVal("")}
+              disabled={!state.searchVal}
+            >
+              Clear Query
+            </Button>
+          </div>
+        </div>
+      );
+    }
+
+    case "number-input":
+      return (
+        <div className="flex flex-col items-center gap-5 w-full max-w-sm">
+          <div className="w-full bevel-raised bg-surface p-6 space-y-3">
+            <div className="flex items-center justify-between text-xs">
+              <Label htmlFor="demo-num">Serial Baud Multiplier</Label>
+              <span className="text-[10px] text-primary font-bold">
+                Step: {state.numberStep}
+              </span>
+            </div>
+            <NumberInput
+              id="demo-num"
+              value={state.numberVal}
+              onChange={(e) => state.setNumberVal(Number(e.target.value))}
+              step={state.numberStep}
+              min={300}
+              max={115200}
+              invalid={state.numberInvalid}
+              disabled={state.numberDisabled}
+            />
+            <div className="flex items-center justify-between text-[11px] text-muted-foreground border-t border-border/50 pt-2 font-mono">
+              <span>Effective Rate:</span>
+              <span className="text-primary font-bold">{state.numberVal} bps</span>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-center gap-2">
+            <div className="flex items-center gap-1">
+              <span className="text-[11px] text-muted-foreground uppercase font-bold mr-1">Step:</span>
+              {([300, 1200, 9600] as const).map((s) => (
+                <Button
+                  key={s}
+                  size="sm"
+                  variant={state.numberStep === s ? "primary" : "outline"}
+                  onClick={() => state.setNumberStep(s)}
+                >
+                  {s}
+                </Button>
+              ))}
+            </div>
+            <Button
+              size="sm"
+              variant={state.numberInvalid ? "destructive" : "outline"}
+              onClick={() => state.setNumberInvalid(!state.numberInvalid)}
+            >
+              {state.numberInvalid ? "Invalid: ON" : "Invalid: OFF"}
+            </Button>
+            <Button
+              size="sm"
+              variant={state.numberDisabled ? "primary" : "outline"}
+              onClick={() => state.setNumberDisabled(!state.numberDisabled)}
+            >
+              {state.numberDisabled ? "Disabled: ON" : "Disabled: OFF"}
+            </Button>
+          </div>
+        </div>
+      );
+
+    case "select":
+      return (
+        <div className="flex flex-col items-center gap-5 w-full max-w-sm">
+          <div className="w-full bevel-raised bg-surface p-6 space-y-3">
+            <div className="flex items-center justify-between text-xs">
+              <Label htmlFor="demo-select">Display Controller</Label>
+              <span className="text-[10px] text-primary uppercase font-bold">
+                Selected: {state.selectVal}
+              </span>
+            </div>
+            <Select
+              id="demo-select"
+              value={state.selectVal}
+              onChange={(e) => state.setSelectVal(e.target.value)}
+              invalid={state.selectInvalid}
+              disabled={state.selectDisabled}
+            >
+              <option value="cga">CGA 4-Color (320 × 200)</option>
+              <option value="ega">EGA 16-Color (640 × 350)</option>
+              <option value="vga">VGA 256-Color (640 × 480)</option>
+              <option value="svga">Super VGA (800 × 600)</option>
+              <option value="xga">Extended Graphics (1024 × 768)</option>
+            </Select>
+            <div className="text-[11px] text-muted-foreground border-t border-border/50 pt-2 font-mono">
+              Hardware adapter standard: <span className="text-foreground uppercase font-bold">{state.selectVal}</span>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-center gap-2">
+            <Button
+              size="sm"
+              variant={state.selectInvalid ? "destructive" : "outline"}
+              onClick={() => state.setSelectInvalid(!state.selectInvalid)}
+            >
+              {state.selectInvalid ? "Invalid: ON" : "Invalid: OFF"}
+            </Button>
+            <Button
+              size="sm"
+              variant={state.selectDisabled ? "primary" : "outline"}
+              onClick={() => state.setSelectDisabled(!state.selectDisabled)}
+            >
+              {state.selectDisabled ? "Disabled: ON" : "Disabled: OFF"}
+            </Button>
+          </div>
+        </div>
+      );
+
+    case "combobox": {
+      const options: ComboboxOption[] = [
+        { value: "mda", label: "MDA Monochrome (720 × 350)" },
+        { value: "cga", label: "CGA 4-Color (320 × 200)" },
+        { value: "ega", label: "EGA 16-Color (640 × 350)" },
+        { value: "vga", label: "VGA 256-Color (640 × 480)" },
+        { value: "svga", label: "SVGA High-Color (800 × 600)" },
+        { value: "xga", label: "XGA True-Color (1024 × 768)" },
+        { value: "locked", label: "SXGA 1280 × 1024 (Locked)", disabled: true },
+      ];
+
+      return (
+        <div className="flex flex-col items-center gap-5 w-full max-w-sm">
+          <div className="w-full bevel-raised bg-surface p-6 space-y-3">
+            <div className="flex items-center justify-between text-xs">
+              <Label htmlFor="demo-combobox">Graphic Adapter (Filter / Search)</Label>
+            </div>
+            <Combobox
+              id="demo-combobox"
+              options={options}
+              value={state.comboboxVal}
+              onValueChange={state.setComboboxVal}
+              invalid={state.comboboxInvalid}
+              disabled={state.comboboxDisabled}
+              placeholder="Type to filter adapters..."
+              emptyMessage="No hardware devices detected."
+            />
+            <div className="flex items-center justify-between text-[11px] text-muted-foreground border-t border-border/50 pt-2 font-mono">
+              <span>Active Value:</span>
+              <span className="text-primary font-bold uppercase">{state.comboboxVal}</span>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-center gap-2">
+            <Button
+              size="sm"
+              variant={state.comboboxInvalid ? "destructive" : "outline"}
+              onClick={() => state.setComboboxInvalid(!state.comboboxInvalid)}
+            >
+              {state.comboboxInvalid ? "Invalid: ON" : "Invalid: OFF"}
+            </Button>
+            <Button
+              size="sm"
+              variant={state.comboboxDisabled ? "primary" : "outline"}
+              onClick={() => state.setComboboxDisabled(!state.comboboxDisabled)}
+            >
+              {state.comboboxDisabled ? "Disabled: ON" : "Disabled: OFF"}
+            </Button>
+          </div>
+
+          <div className="text-center text-[10px] text-muted-foreground">
+            Accessible WAI-ARIA combobox with keyboard arrow navigation, active-descendant, and filtering.
+          </div>
+        </div>
+      );
+    }
+
+    case "toggle":
+      return (
+        <div className="flex flex-col items-center gap-5 w-full max-w-sm">
+          <div className="w-full bevel-raised bg-surface p-6 flex flex-col items-center justify-center gap-4 text-center">
+            <div className="text-xs text-muted-foreground uppercase font-bold">
+              Two-State Toggle Button
+            </div>
+
+            <Toggle
+              pressed={state.togglePressed}
+              onPressedChange={state.setTogglePressed}
+              size={state.toggleSize}
+              disabled={state.toggleDisabled}
+            >
+              BOLD [B]
+            </Toggle>
+
+            <div className="bevel-inset bg-surface-sunken px-3 py-1.5 text-xs font-mono">
+              State:{" "}
+              <span className="font-bold text-primary uppercase">
+                {state.togglePressed ? "ACTIVE (PRESSED / SUNKEN)" : "INACTIVE (RAISED)"}
+              </span>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-center gap-2">
+            <div className="flex items-center gap-1">
+              <span className="text-[11px] text-muted-foreground uppercase font-bold mr-1">Size:</span>
+              {(["sm", "md", "lg"] as const).map((sz) => (
+                <Button
+                  key={sz}
+                  size="sm"
+                  variant={state.toggleSize === sz ? "primary" : "outline"}
+                  onClick={() => state.setToggleSize(sz)}
+                >
+                  {sz}
+                </Button>
+              ))}
+            </div>
+            <Button
+              size="sm"
+              variant={state.toggleDisabled ? "primary" : "outline"}
+              onClick={() => state.setToggleDisabled(!state.toggleDisabled)}
+            >
+              {state.toggleDisabled ? "Disabled: ON" : "Disabled: OFF"}
+            </Button>
+          </div>
+        </div>
+      );
+
+    case "toggle-group":
+      return (
+        <div className="flex flex-col items-center gap-5 w-full max-w-md">
+          <div className="w-full bevel-raised bg-surface p-6 space-y-4">
+            {state.toggleGroupMode === "single" ? (
+              <div className="space-y-2">
+                <Label>Single Selection Mode (Text Alignment)</Label>
+                <ToggleGroup
+                  type="single"
+                  value={state.toggleGroupSingleVal}
+                  onValueChange={state.setToggleGroupSingleVal}
+                >
+                  <ToggleGroupItem value="left">LEFT</ToggleGroupItem>
+                  <ToggleGroupItem value="center">CENTER</ToggleGroupItem>
+                  <ToggleGroupItem value="right">RIGHT</ToggleGroupItem>
+                  <ToggleGroupItem value="justify" disabled>JUSTIFY</ToggleGroupItem>
+                </ToggleGroup>
+                <div className="text-[11px] text-muted-foreground font-mono">
+                  Active Value: <span className="text-primary font-bold uppercase">{state.toggleGroupSingleVal || "NONE"}</span>
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-2">
+                <Label>Multiple Selection Mode (Text Formatting)</Label>
+                <ToggleGroup
+                  type="multiple"
+                  value={state.toggleGroupMultiVal}
+                  onValueChange={state.setToggleGroupMultiVal}
+                >
+                  <ToggleGroupItem value="bold">B</ToggleGroupItem>
+                  <ToggleGroupItem value="italic">I</ToggleGroupItem>
+                  <ToggleGroupItem value="underline">U</ToggleGroupItem>
+                  <ToggleGroupItem value="strike">S</ToggleGroupItem>
+                </ToggleGroup>
+                <div className="text-[11px] text-muted-foreground font-mono">
+                  Active Flags: <span className="text-primary font-bold uppercase">{state.toggleGroupMultiVal.join(", ") || "NONE"}</span>
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div className="flex flex-wrap items-center justify-center gap-2">
+            <span className="text-[11px] text-muted-foreground uppercase font-bold mr-1">Selection Mode:</span>
+            <Button
+              size="sm"
+              variant={state.toggleGroupMode === "single" ? "primary" : "outline"}
+              onClick={() => state.setToggleGroupMode("single")}
+            >
+              Single Mode
+            </Button>
+            <Button
+              size="sm"
+              variant={state.toggleGroupMode === "multiple" ? "primary" : "outline"}
+              onClick={() => state.setToggleGroupMode("multiple")}
+            >
+              Multiple Mode
+            </Button>
+          </div>
+        </div>
+      );
+
+    case "field":
+      return (
+        <div className="flex flex-col items-center gap-5 w-full max-w-md">
+          <div className="w-full bevel-raised bg-surface p-6 space-y-3">
+            <Field
+              id="demo-field"
+              required={state.fieldRequired}
+              invalid={state.fieldHasError}
+              disabled={state.fieldDisabled}
+            >
+              <FieldLabel>Subscriber Call Sign</FieldLabel>
+              <Input
+                id="demo-field-input"
+                value={state.fieldVal}
+                onChange={(e) => state.setFieldVal(e.target.value)}
+                placeholder="e.g. N0CALL / BBS-NODE"
+                invalid={state.fieldHasError}
+                disabled={state.fieldDisabled}
+              />
+              {!state.fieldHasError ? (
+                <FieldDescription>
+                  Assigned AX.25 packet radio call sign. Must be uppercase.
+                </FieldDescription>
+              ) : (
+                <FieldError>
+                  Baud rate parity mismatch: 8N1 required
+                </FieldError>
+              )}
+            </Field>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-center gap-2">
+            <Button
+              size="sm"
+              variant={state.fieldRequired ? "primary" : "outline"}
+              onClick={() => state.setFieldRequired(!state.fieldRequired)}
+            >
+              {state.fieldRequired ? "Required: ON" : "Required: OFF"}
+            </Button>
+            <Button
+              size="sm"
+              variant={state.fieldHasError ? "destructive" : "outline"}
+              onClick={() => state.setFieldHasError(!state.fieldHasError)}
+            >
+              {state.fieldHasError ? "Simulate Error: ON" : "Simulate Error: OFF"}
+            </Button>
+            <Button
+              size="sm"
+              variant={state.fieldDisabled ? "primary" : "outline"}
+              onClick={() => state.setFieldDisabled(!state.fieldDisabled)}
+            >
+              {state.fieldDisabled ? "Disabled: ON" : "Disabled: OFF"}
+            </Button>
+          </div>
+
+          <div className="text-center text-[10px] text-muted-foreground">
+            Field automatically wires aria-labelledby, aria-describedby, and aria-invalid between label, input, description, and error.
           </div>
         </div>
       );
