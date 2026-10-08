@@ -176,6 +176,50 @@ import {
   Portal,
   type OverlaySide,
   type OverlayAlign,
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+  BreadcrumbEllipsis,
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationPrevious,
+  PaginationNext,
+  PaginationEllipsis,
+  NavigationMenu,
+  NavigationMenuList,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuTrigger,
+  NavigationMenuContent,
+  Menubar,
+  MenubarMenu,
+  MenubarTrigger,
+  MenubarContent,
+  MenubarItem,
+  MenubarSeparator,
+  MenubarShortcut,
+  MenubarCheckboxItem,
+  DataTable,
+  type DataTableColumn,
+  DescriptionList,
+  DescriptionItem,
+  DescriptionTerm,
+  DescriptionDetails,
+  type DescriptionListLayout,
+  Tree,
+  type TreeNodeData,
+  Avatar,
+  AvatarImage,
+  AvatarFallback,
+  AvatarBadge,
+  type AvatarSize,
+  type AvatarShape,
+  type AvatarStatus,
 } from "@ditherweb/ui";
 
 export interface ComponentPreviewProps {
@@ -385,6 +429,46 @@ interface PreviewState {
   setPortalDisabled: (d: boolean) => void;
   portalPanelOpen: boolean;
   setPortalPanelOpen: (o: boolean) => void;
+
+  // Navigation & Data states
+  breadcrumbSeparator: string;
+  setBreadcrumbSeparator: (s: string) => void;
+  breadcrumbDepth: number;
+  setBreadcrumbDepth: (d: number) => void;
+  breadcrumbClicked: string;
+  setBreadcrumbClicked: (c: string) => void;
+  paginationPage: number;
+  setPaginationPage: (p: number) => void;
+  menubarLastAction: string;
+  setMenubarLastAction: (a: string) => void;
+  menubarScanlines: boolean;
+  setMenubarScanlines: (s: boolean) => void;
+  menubarSpeaker: boolean;
+  setMenubarSpeaker: (s: boolean) => void;
+  dataTableLoading: boolean;
+  setDataTableLoading: (l: boolean) => void;
+  dataTableEmpty: boolean;
+  setDataTableEmpty: (e: boolean) => void;
+  dataTableSelectedCount: number;
+  setDataTableSelectedCount: (c: number) => void;
+  descListLayout: DescriptionListLayout;
+  setDescListLayout: (l: DescriptionListLayout) => void;
+  descListDense: boolean;
+  setDescListDense: (d: boolean) => void;
+  descListDivided: boolean;
+  setDescListDivided: (d: boolean) => void;
+  treeSelected: string;
+  setTreeSelected: (s: string) => void;
+  treeGuides: boolean;
+  setTreeGuides: (g: boolean) => void;
+  avatarSize: AvatarSize;
+  setAvatarSize: (s: AvatarSize) => void;
+  avatarShape: AvatarShape;
+  setAvatarShape: (s: AvatarShape) => void;
+  avatarStatus: AvatarStatus;
+  setAvatarStatus: (s: AvatarStatus) => void;
+  avatarShowFallback: boolean;
+  setAvatarShowFallback: (f: boolean) => void;
 }
 
 export function ComponentPreview({ slug }: ComponentPreviewProps) {
@@ -494,6 +578,27 @@ export function ComponentPreview({ slug }: ComponentPreviewProps) {
   const [overlayCloseOnOutside, setOverlayCloseOnOutside] = useState(true);
   const [portalDisabled, setPortalDisabled] = useState(false);
   const [portalPanelOpen, setPortalPanelOpen] = useState(true);
+
+  // Navigation & Data interactive state
+  const [breadcrumbSeparator, setBreadcrumbSeparator] = useState("\\");
+  const [breadcrumbDepth, setBreadcrumbDepth] = useState(4);
+  const [breadcrumbClicked, setBreadcrumbClicked] = useState("SOUND.SYS");
+  const [paginationPage, setPaginationPage] = useState(2);
+  const [menubarLastAction, setMenubarLastAction] = useState("NONE");
+  const [menubarScanlines, setMenubarScanlines] = useState(true);
+  const [menubarSpeaker, setMenubarSpeaker] = useState(true);
+  const [dataTableLoading, setDataTableLoading] = useState(false);
+  const [dataTableEmpty, setDataTableEmpty] = useState(false);
+  const [dataTableSelectedCount, setDataTableSelectedCount] = useState(0);
+  const [descListLayout, setDescListLayout] = useState<DescriptionListLayout>("horizontal");
+  const [descListDense, setDescListDense] = useState(false);
+  const [descListDivided, setDescListDivided] = useState(true);
+  const [treeSelected, setTreeSelected] = useState("doom-exe");
+  const [treeGuides, setTreeGuides] = useState(true);
+  const [avatarSize, setAvatarSize] = useState<AvatarSize>("lg");
+  const [avatarShape, setAvatarShape] = useState<AvatarShape>("square");
+  const [avatarStatus, setAvatarStatus] = useState<AvatarStatus>("online");
+  const [avatarShowFallback, setAvatarShowFallback] = useState(true);
 
   return (
     <div className="bevel-raised bg-surface p-6 font-mono text-xs border border-border space-y-4">
@@ -700,6 +805,44 @@ export function ComponentPreview({ slug }: ComponentPreviewProps) {
           setPortalDisabled,
           portalPanelOpen,
           setPortalPanelOpen,
+          breadcrumbSeparator,
+          setBreadcrumbSeparator,
+          breadcrumbDepth,
+          setBreadcrumbDepth,
+          breadcrumbClicked,
+          setBreadcrumbClicked,
+          paginationPage,
+          setPaginationPage,
+          menubarLastAction,
+          setMenubarLastAction,
+          menubarScanlines,
+          setMenubarScanlines,
+          menubarSpeaker,
+          setMenubarSpeaker,
+          dataTableLoading,
+          setDataTableLoading,
+          dataTableEmpty,
+          setDataTableEmpty,
+          dataTableSelectedCount,
+          setDataTableSelectedCount,
+          descListLayout,
+          setDescListLayout,
+          descListDense,
+          setDescListDense,
+          descListDivided,
+          setDescListDivided,
+          treeSelected,
+          setTreeSelected,
+          treeGuides,
+          setTreeGuides,
+          avatarSize,
+          setAvatarSize,
+          avatarShape,
+          setAvatarShape,
+          avatarStatus,
+          setAvatarStatus,
+          avatarShowFallback,
+          setAvatarShowFallback,
         })}
       </div>
     </div>
@@ -3479,6 +3622,601 @@ function renderPreviewContent(slug: string, state: PreviewState) {
 
           <span className="text-[10px] text-muted-foreground text-center">
             SSR-safe React Portal targeting document.body with automatic portal root container lifecycle.
+          </span>
+        </div>
+      );
+
+    case "breadcrumb":
+      return (
+        <div className="flex flex-col items-center gap-5 w-full max-w-md">
+          <div className="bevel-raised bg-surface p-4 w-full flex flex-col items-center gap-3">
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem>
+                  <BreadcrumbLink
+                    className="cursor-pointer"
+                    onClick={() => state.setBreadcrumbClicked("C:\\")}
+                  >
+                    C:
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator>{state.breadcrumbSeparator}</BreadcrumbSeparator>
+
+                <BreadcrumbItem>
+                  <BreadcrumbLink
+                    className="cursor-pointer"
+                    onClick={() => state.setBreadcrumbClicked("DOS")}
+                  >
+                    DOS
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                {state.breadcrumbDepth === 2 && (
+                  <>
+                    <BreadcrumbItem>
+                      <BreadcrumbEllipsis />
+                    </BreadcrumbItem>
+                    <BreadcrumbSeparator>{state.breadcrumbSeparator}</BreadcrumbSeparator>
+                  </>
+                )}
+
+                {state.breadcrumbDepth >= 3 && (
+                  <>
+                    <BreadcrumbItem>
+                      <BreadcrumbLink
+                        className="cursor-pointer"
+                        onClick={() => state.setBreadcrumbClicked("SYSTEM")}
+                      >
+                        SYSTEM
+                      </BreadcrumbLink>
+                    </BreadcrumbItem>
+                    <BreadcrumbSeparator>{state.breadcrumbSeparator}</BreadcrumbSeparator>
+                  </>
+                )}
+
+                {state.breadcrumbDepth >= 4 && (
+                  <>
+                    <BreadcrumbItem>
+                      <BreadcrumbLink
+                        className="cursor-pointer"
+                        onClick={() => state.setBreadcrumbClicked("DRIVERS")}
+                      >
+                        DRIVERS
+                      </BreadcrumbLink>
+                    </BreadcrumbItem>
+                    <BreadcrumbSeparator>{state.breadcrumbSeparator}</BreadcrumbSeparator>
+                  </>
+                )}
+
+                <BreadcrumbItem>
+                  <BreadcrumbPage>SOUND.SYS</BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
+
+            <div className="text-[10px] text-muted-foreground font-mono">
+              ACTIVE NODE: <span className="font-bold text-foreground">{state.breadcrumbClicked}</span>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-border w-full justify-center text-[11px]">
+            <span className="text-muted-foreground">Separator:</span>
+            {(["\\", "/", ">", "»"] as const).map((sep) => (
+              <button
+                key={sep}
+                type="button"
+                onClick={() => state.setBreadcrumbSeparator(sep)}
+                className={`px-2 py-0.5 ${
+                  state.breadcrumbSeparator === sep ? "bevel-inset bg-primary text-primary-foreground font-bold" : "bevel-raised"
+                }`}
+              >
+                {sep}
+              </button>
+            ))}
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2 w-full justify-center text-[11px]">
+            <span className="text-muted-foreground">Path Depth:</span>
+            {[2, 3, 4].map((d) => (
+              <button
+                key={d}
+                type="button"
+                onClick={() => state.setBreadcrumbDepth(d)}
+                className={`px-2 py-0.5 ${
+                  state.breadcrumbDepth === d ? "bevel-inset bg-primary text-primary-foreground font-bold" : "bevel-raised"
+                }`}
+              >
+                {d} Levels
+              </button>
+            ))}
+          </div>
+
+          <span className="text-[10px] text-muted-foreground text-center">
+            Semantic breadcrumb navigation conforming to WAI-ARIA breadcrumb pattern.
+          </span>
+        </div>
+      );
+
+    case "pagination":
+      return (
+        <div className="flex flex-col items-center gap-5 w-full max-w-md">
+          <div className="bevel-raised bg-surface p-4 w-full flex flex-col items-center gap-3">
+            <Pagination>
+              <PaginationContent>
+                <PaginationItem>
+                  <PaginationPrevious
+                    disabled={state.paginationPage <= 1}
+                    onClick={() => state.setPaginationPage(Math.max(1, state.paginationPage - 1))}
+                  />
+                </PaginationItem>
+
+                {[1, 2, 3].map((p) => (
+                  <PaginationItem key={p}>
+                    <PaginationLink
+                      isActive={state.paginationPage === p}
+                      onClick={() => state.setPaginationPage(p)}
+                    >
+                      {p}
+                    </PaginationLink>
+                  </PaginationItem>
+                ))}
+
+                <PaginationItem>
+                  <PaginationEllipsis />
+                </PaginationItem>
+
+                <PaginationItem>
+                  <PaginationLink
+                    isActive={state.paginationPage === 8}
+                    onClick={() => state.setPaginationPage(8)}
+                  >
+                    8
+                  </PaginationLink>
+                </PaginationItem>
+
+                <PaginationItem>
+                  <PaginationNext
+                    disabled={state.paginationPage >= 8}
+                    onClick={() => state.setPaginationPage(Math.min(8, state.paginationPage + 1))}
+                  />
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
+
+            <div className="bevel-inset bg-background p-2 text-center text-[10px] text-muted-foreground font-mono w-full">
+              DISPLAYING SECTORS {((state.paginationPage - 1) * 16) + 1}–{state.paginationPage * 16} OF 128 {"//"} TRACK 0{state.paginationPage}
+            </div>
+          </div>
+
+          <span className="text-[10px] text-muted-foreground text-center">
+            Accessible pagination stepper with tactile raised/inset button states and keyboard focus navigation.
+          </span>
+        </div>
+      );
+
+    case "navigation-menu":
+      return (
+        <div className="flex flex-col items-center gap-5 w-full max-w-md">
+          <div className="bevel-raised bg-surface p-4 w-full flex flex-col items-center">
+            <NavigationMenu>
+              <NavigationMenuList className="flex items-center gap-2 font-mono text-xs">
+                <NavigationMenuItem value="system">
+                  <NavigationMenuTrigger className="px-3 py-1.5 bevel-raised bg-bevel-face text-xs uppercase font-bold">
+                    SYSTEM [▼]
+                  </NavigationMenuTrigger>
+                  <NavigationMenuContent className="p-3 w-56 font-mono text-xs space-y-2">
+                    <div className="font-bold border-b border-border pb-1 text-foreground">KERNEL SUBSYSTEMS</div>
+                    <div className="space-y-1 text-muted-foreground">
+                      <div className="hover:text-foreground hover:underline cursor-pointer">▪ IRQ / DMA Manager</div>
+                      <div className="hover:text-foreground hover:underline cursor-pointer">▪ Conventional 640KB Map</div>
+                      <div className="hover:text-foreground hover:underline cursor-pointer">▪ EMS Page Frame (0xE000)</div>
+                    </div>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+
+                <NavigationMenuItem value="drives">
+                  <NavigationMenuTrigger className="px-3 py-1.5 bevel-raised bg-bevel-face text-xs uppercase font-bold">
+                    DRIVES [▼]
+                  </NavigationMenuTrigger>
+                  <NavigationMenuContent className="p-3 w-56 font-mono text-xs space-y-2">
+                    <div className="font-bold border-b border-border pb-1 text-foreground">MOUNTED VOLUMES</div>
+                    <div className="space-y-1 text-muted-foreground">
+                      <div className="hover:text-foreground hover:underline cursor-pointer">💾 Drive A: [1.44MB Floppy]</div>
+                      <div className="hover:text-foreground hover:underline cursor-pointer">💽 Drive C: [540MB Quantum]</div>
+                      <div className="hover:text-foreground hover:underline cursor-pointer">💿 Drive D: [4X CD-ROM]</div>
+                    </div>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+
+                <NavigationMenuItem value="about">
+                  <NavigationMenuLink
+                    href="#docs"
+                    className="px-3 py-1.5 bevel-raised bg-bevel-face text-xs uppercase font-bold hover:bg-muted"
+                  >
+                    STATUS
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+              </NavigationMenuList>
+            </NavigationMenu>
+          </div>
+
+          <span className="text-[10px] text-muted-foreground text-center">
+            Section navigation menu with interactive dropdown disclosure and outside click detection.
+          </span>
+        </div>
+      );
+
+    case "menubar":
+      return (
+        <div className="flex flex-col items-center gap-4 w-full max-w-md">
+          <div className="w-full">
+            <Menubar>
+              <MenubarMenu value="file">
+                <MenubarTrigger className="px-2.5 py-1 font-mono text-xs font-bold uppercase cursor-pointer hover:bg-muted">
+                  File
+                </MenubarTrigger>
+                <MenubarContent className="min-w-44 p-1 font-mono text-xs">
+                  <MenubarItem onClick={() => state.setMenubarLastAction("File > New")}>
+                    New Buffer <MenubarShortcut>Ctrl+N</MenubarShortcut>
+                  </MenubarItem>
+                  <MenubarItem onClick={() => state.setMenubarLastAction("File > Open")}>
+                    Open File... <MenubarShortcut>Ctrl+O</MenubarShortcut>
+                  </MenubarItem>
+                  <MenubarItem onClick={() => state.setMenubarLastAction("File > Save")}>
+                    Save To Disk <MenubarShortcut>Ctrl+S</MenubarShortcut>
+                  </MenubarItem>
+                  <MenubarSeparator />
+                  <MenubarItem onClick={() => state.setMenubarLastAction("File > Exit")}>
+                    Exit To DOS <MenubarShortcut>Alt+F4</MenubarShortcut>
+                  </MenubarItem>
+                </MenubarContent>
+              </MenubarMenu>
+
+              <MenubarMenu value="edit">
+                <MenubarTrigger className="px-2.5 py-1 font-mono text-xs font-bold uppercase cursor-pointer hover:bg-muted">
+                  Edit
+                </MenubarTrigger>
+                <MenubarContent className="min-w-44 p-1 font-mono text-xs">
+                  <MenubarItem onClick={() => state.setMenubarLastAction("Edit > Cut")}>
+                    Cut <MenubarShortcut>Ctrl+X</MenubarShortcut>
+                  </MenubarItem>
+                  <MenubarItem onClick={() => state.setMenubarLastAction("Edit > Copy")}>
+                    Copy <MenubarShortcut>Ctrl+C</MenubarShortcut>
+                  </MenubarItem>
+                  <MenubarItem onClick={() => state.setMenubarLastAction("Edit > Paste")}>
+                    Paste <MenubarShortcut>Ctrl+V</MenubarShortcut>
+                  </MenubarItem>
+                </MenubarContent>
+              </MenubarMenu>
+
+              <MenubarMenu value="options">
+                <MenubarTrigger className="px-2.5 py-1 font-mono text-xs font-bold uppercase cursor-pointer hover:bg-muted">
+                  Options
+                </MenubarTrigger>
+                <MenubarContent className="min-w-48 p-1 font-mono text-xs">
+                  <MenubarCheckboxItem
+                    checked={state.menubarScanlines}
+                    onClick={() => {
+                      const next = !state.menubarScanlines;
+                      state.setMenubarScanlines(next);
+                      state.setMenubarLastAction(`Scanlines: ${next ? "ON" : "OFF"}`);
+                    }}
+                  >
+                    Simulate CRT Scanlines
+                  </MenubarCheckboxItem>
+                  <MenubarCheckboxItem
+                    checked={state.menubarSpeaker}
+                    onClick={() => {
+                      const next = !state.menubarSpeaker;
+                      state.setMenubarSpeaker(next);
+                      state.setMenubarLastAction(`PC Speaker: ${next ? "ON" : "OFF"}`);
+                    }}
+                  >
+                    PC Speaker Tone
+                  </MenubarCheckboxItem>
+                </MenubarContent>
+              </MenubarMenu>
+            </Menubar>
+          </div>
+
+          <div className="bevel-inset bg-surface p-2.5 text-center text-xs font-mono w-full">
+            <span className="text-muted-foreground">LAST ACTION: </span>
+            <span className="font-bold text-foreground">{state.menubarLastAction}</span>
+          </div>
+
+          <span className="text-[10px] text-muted-foreground text-center">
+            Classic desktop horizontal menu bar with nested items, keyboard shortcuts, and checkbox toggles.
+          </span>
+        </div>
+      );
+
+    case "data-table": {
+      const sampleFiles = [
+        { id: "1", name: "CONFIG.SYS", size: "512 B", type: "System Config", status: "Active" },
+        { id: "2", name: "AUTOEXEC.BAT", size: "1,024 B", type: "Batch Script", status: "Active" },
+        { id: "3", name: "HIMEM.SYS", size: "32,768 B", type: "Memory Mgr", status: "Resident" },
+        { id: "4", name: "COMMAND.COM", size: "94,295 B", type: "Shell Exec", status: "Core" },
+      ];
+
+      const columns: DataTableColumn<typeof sampleFiles[0]>[] = [
+        {
+          id: "name",
+          header: "Filename",
+          cell: ({ row }) => <span className="font-bold text-foreground">{row.name}</span>,
+          sortable: true,
+        },
+        {
+          id: "size",
+          header: "Size",
+          cell: ({ row }) => <span className="text-muted-foreground">{row.size}</span>,
+          sortable: true,
+        },
+        {
+          id: "type",
+          header: "Type",
+          cell: ({ row }) => <span>{row.type}</span>,
+        },
+        {
+          id: "status",
+          header: "Status",
+          cell: ({ row }) => (
+            <Badge variant={row.status === "Core" ? "primary" : "outline"}>
+              {row.status}
+            </Badge>
+          ),
+        },
+      ];
+
+      return (
+        <div className="flex flex-col items-center gap-4 w-full max-w-lg">
+          <div className="w-full">
+            <DataTable
+              data={state.dataTableEmpty ? [] : sampleFiles}
+              columns={columns}
+              selectable
+              onSelectionChange={(_keys, rows) => state.setDataTableSelectedCount(rows.length)}
+              loading={state.dataTableLoading}
+              emptyText="NO FILES FOUND IN C:\SYSTEM"
+              caption="SYSTEM BOOT DIRECTORY LISTING"
+            />
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-border w-full justify-center text-[11px]">
+            <Button
+              size="sm"
+              variant={state.dataTableLoading ? "primary" : "outline"}
+              onClick={() => state.setDataTableLoading(!state.dataTableLoading)}
+            >
+              {state.dataTableLoading ? "Loading: ON" : "Loading: OFF"}
+            </Button>
+            <Button
+              size="sm"
+              variant={state.dataTableEmpty ? "primary" : "outline"}
+              onClick={() => state.setDataTableEmpty(!state.dataTableEmpty)}
+            >
+              {state.dataTableEmpty ? "Empty State: ON" : "Empty State: OFF"}
+            </Button>
+          </div>
+
+          <div className="text-[10px] text-muted-foreground text-center font-mono">
+            SELECTED ROWS: <span className="font-bold text-foreground">{state.dataTableSelectedCount}</span> {"//"} Supports column sorting, multi-row selection, and empty/loading states.
+          </div>
+        </div>
+      );
+    }
+
+    case "description-list":
+      return (
+        <div className="flex flex-col items-center gap-4 w-full max-w-md">
+          <div className="w-full bevel-raised bg-surface p-4">
+            <DescriptionList
+              layout={state.descListLayout}
+              dense={state.descListDense}
+              divided={state.descListDivided}
+            >
+              <DescriptionItem>
+                <DescriptionTerm>PROCESSOR:</DescriptionTerm>
+                <DescriptionDetails>Intel i486DX2 @ 66 MHz</DescriptionDetails>
+              </DescriptionItem>
+              <DescriptionItem>
+                <DescriptionTerm>CONVENTIONAL RAM:</DescriptionTerm>
+                <DescriptionDetails>640 KB Base Memory</DescriptionDetails>
+              </DescriptionItem>
+              <DescriptionItem>
+                <DescriptionTerm>EXTENDED MEMORY:</DescriptionTerm>
+                <DescriptionDetails>16,384 KB (16 MB) XMS</DescriptionDetails>
+              </DescriptionItem>
+              <DescriptionItem>
+                <DescriptionTerm>GRAPHICS CARD:</DescriptionTerm>
+                <DescriptionDetails>Tseng Labs ET4000/W32 (1 MB VRAM)</DescriptionDetails>
+              </DescriptionItem>
+              <DescriptionItem>
+                <DescriptionTerm>SOUND CONTROLLER:</DescriptionTerm>
+                <DescriptionDetails>Creative Sound Blaster 16 ASP</DescriptionDetails>
+              </DescriptionItem>
+            </DescriptionList>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-border w-full justify-center text-[11px]">
+            <span className="text-muted-foreground">Layout:</span>
+            {(["horizontal", "stacked"] as const).map((l) => (
+              <button
+                key={l}
+                type="button"
+                onClick={() => state.setDescListLayout(l)}
+                className={`px-2 py-0.5 uppercase ${
+                  state.descListLayout === l ? "bevel-inset bg-primary text-primary-foreground font-bold" : "bevel-raised"
+                }`}
+              >
+                {l}
+              </button>
+            ))}
+            <Button
+              size="sm"
+              variant={state.descListDense ? "primary" : "outline"}
+              onClick={() => state.setDescListDense(!state.descListDense)}
+            >
+              {state.descListDense ? "Dense: ON" : "Dense: OFF"}
+            </Button>
+            <Button
+              size="sm"
+              variant={state.descListDivided ? "primary" : "outline"}
+              onClick={() => state.setDescListDivided(!state.descListDivided)}
+            >
+              {state.descListDivided ? "Divided: ON" : "Divided: OFF"}
+            </Button>
+          </div>
+
+          <span className="text-[10px] text-muted-foreground text-center">
+            Semantic description list mapping DL, DT, and DD elements for hardware specifications and key-value records.
+          </span>
+        </div>
+      );
+
+    case "tree": {
+      const treeData: TreeNodeData[] = [
+        {
+          id: "root",
+          label: "C:\\ [ROOT DIRECTORY]",
+          children: [
+            {
+              id: "dos",
+              label: "DOS",
+              children: [
+                { id: "command", label: "COMMAND.COM" },
+                { id: "format", label: "FORMAT.COM" },
+              ],
+            },
+            {
+              id: "games",
+              label: "GAMES",
+              children: [
+                {
+                  id: "doom",
+                  label: "DOOM",
+                  children: [
+                    { id: "doom-exe", label: "DOOM.EXE" },
+                    { id: "doom-wad", label: "DOOM1.WAD" },
+                  ],
+                },
+              ],
+            },
+            { id: "autoexec", label: "AUTOEXEC.BAT" },
+            { id: "config", label: "CONFIG.SYS" },
+          ],
+        },
+      ];
+
+      return (
+        <div className="flex flex-col items-center gap-4 w-full max-w-md">
+          <div className="w-full bevel-inset bg-surface p-4 font-mono text-xs">
+            <Tree
+              data={treeData}
+              selectedId={state.treeSelected}
+              onSelect={(id) => state.setTreeSelected(id)}
+              showGuides={state.treeGuides}
+              expandedIds={["root", "dos", "games", "doom"]}
+            />
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-border w-full justify-center text-[11px]">
+            <Button
+              size="sm"
+              variant={state.treeGuides ? "primary" : "outline"}
+              onClick={() => state.setTreeGuides(!state.treeGuides)}
+            >
+              {state.treeGuides ? "ASCII Guides: ON" : "ASCII Guides: OFF"}
+            </Button>
+          </div>
+
+          <div className="text-[10px] text-muted-foreground text-center font-mono">
+            SELECTED NODE: <span className="font-bold text-foreground uppercase">{state.treeSelected}</span>
+          </div>
+        </div>
+      );
+    }
+
+    case "avatar":
+      return (
+        <div className="flex flex-col items-center gap-5 w-full max-w-md">
+          <div className="bevel-raised bg-surface p-6 flex flex-col items-center gap-4 w-full">
+            <div className="flex items-center justify-center gap-6">
+              <Avatar size={state.avatarSize} shape={state.avatarShape}>
+                {!state.avatarShowFallback && (
+                  <AvatarImage src="/icon.png" alt="SysOp Avatar" />
+                )}
+                <AvatarFallback>SY</AvatarFallback>
+                <AvatarBadge status={state.avatarStatus} />
+              </Avatar>
+
+              <div className="text-left font-mono space-y-0.5">
+                <div className="font-bold text-foreground text-xs">SYSOP {"//"} NODE 01</div>
+                <div className="text-[10px] text-muted-foreground">USRobotics Courier 56K</div>
+                <div className="text-[10px] text-primary uppercase font-bold">STATUS: {state.avatarStatus}</div>
+              </div>
+            </div>
+
+            {/* Side-by-side sizes showcase */}
+            <div className="pt-2 border-t border-border w-full flex items-center justify-center gap-3">
+              {(["sm", "md", "lg", "xl"] as const).map((s) => (
+                <div key={s} className="flex flex-col items-center gap-1">
+                  <Avatar size={s} shape={state.avatarShape}>
+                    <AvatarFallback>{s.toUpperCase()}</AvatarFallback>
+                    <AvatarBadge status={s === "sm" ? "offline" : s === "md" ? "away" : s === "lg" ? "busy" : "online"} />
+                  </Avatar>
+                  <span className="text-[9px] text-muted-foreground font-mono">{s}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-border w-full justify-center text-[11px]">
+            <span className="text-muted-foreground">Size:</span>
+            {(["sm", "md", "lg", "xl"] as const).map((s) => (
+              <button
+                key={s}
+                type="button"
+                onClick={() => state.setAvatarSize(s)}
+                className={`px-2 py-0.5 uppercase ${
+                  state.avatarSize === s ? "bevel-inset bg-primary text-primary-foreground font-bold" : "bevel-raised"
+                }`}
+              >
+                {s}
+              </button>
+            ))}
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2 w-full justify-center text-[11px]">
+            <span className="text-muted-foreground">Shape:</span>
+            {(["square", "circle"] as const).map((sh) => (
+              <button
+                key={sh}
+                type="button"
+                onClick={() => state.setAvatarShape(sh)}
+                className={`px-2 py-0.5 uppercase ${
+                  state.avatarShape === sh ? "bevel-inset bg-primary text-primary-foreground font-bold" : "bevel-raised"
+                }`}
+              >
+                {sh}
+              </button>
+            ))}
+
+            <span className="text-muted-foreground ml-2">Status:</span>
+            {(["online", "busy", "away", "offline"] as const).map((st) => (
+              <button
+                key={st}
+                type="button"
+                onClick={() => state.setAvatarStatus(st)}
+                className={`px-2 py-0.5 uppercase ${
+                  state.avatarStatus === st ? "bevel-inset bg-primary text-primary-foreground font-bold" : "bevel-raised"
+                }`}
+              >
+                {st}
+              </button>
+            ))}
+          </div>
+
+          <span className="text-[10px] text-muted-foreground text-center">
+            Entity avatar with initials fallback and presence indicator dot.
           </span>
         </div>
       );
