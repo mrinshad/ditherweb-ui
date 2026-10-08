@@ -760,5 +760,158 @@ input[type="reset"].bevel-raised:active {
   box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.7);
 }
 
+/* ============================================================================
+   Phase 4 — Classic Web Utilities & Animations
+   ============================================================================ */
+
+/* 1. Marquee Keyframes & Utilities */
+@keyframes retro-marquee-left {
+  0% { transform: translate3d(0%, 0, 0); }
+  100% { transform: translate3d(-50%, 0, 0); }
+}
+
+@keyframes retro-marquee-right {
+  0% { transform: translate3d(-50%, 0, 0); }
+  100% { transform: translate3d(0%, 0, 0); }
+}
+
+.retro-marquee-track-left {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  animation: retro-marquee-left linear infinite;
+}
+
+.retro-marquee-track-right {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  animation: retro-marquee-right linear infinite;
+}
+
+.retro-marquee-pause-hover:hover {
+  animation-play-state: paused;
+}
+
+.retro-marquee-pause-focus:focus-within {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .retro-marquee-track-left,
+  .retro-marquee-track-right {
+    animation: none !important;
+    transform: none !important;
+    width: auto !important;
+    display: inline-block !important;
+  }
+}
+
+/* 2. Blink Keyframes & Utilities */
+@keyframes retro-blink {
+  0%, 49.9% {
+    opacity: 1;
+    visibility: visible;
+  }
+  50%, 100% {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+.retro-blink-animate {
+  animation: retro-blink 1s step-end infinite;
+}
+
+.retro-blink-slow {
+  animation-duration: 1.6s;
+}
+
+.retro-blink-fast {
+  animation-duration: 0.6s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .retro-blink-animate {
+    animation: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+}
+
+/* 3. Under Construction Hazard Pattern */
+.retro-hazard-stripes {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    #eab308,
+    #eab308 12px,
+    #171717 12px,
+    #171717 24px
+  );
+}
+
+.retro-hazard-stripes-sm {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    #eab308,
+    #eab308 6px,
+    #171717 6px,
+    #171717 12px
+  );
+}
+
+/* 4. Pixelated Bitmap Rendering */
+.image-rendering-pixelated {
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -webkit-crisp-edges;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+/* 5. Visitor Counter Digits */
+.retro-odometer-digit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  font-family: var(--font-retro, monospace);
+  font-weight: 900;
+  border-right: 1px solid rgba(0, 0, 0, 0.4);
+  background: linear-gradient(180deg, #18181b 0%, #09090b 50%, #18181b 100%);
+  color: #f4f4f5;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.15), inset 0 -1px 1px rgba(0, 0, 0, 0.5);
+}
+
+.retro-odometer-digit:last-child {
+  border-right: none;
+}
+
+.retro-counter-led {
+  background-color: #051405;
+  color: #22c55e;
+  text-shadow: 0 0 3px rgba(34, 197, 94, 0.7);
+  font-family: var(--font-retro, monospace);
+}
+
+.dark .retro-counter-led {
+  background-color: #030a03;
+  color: #4ade80;
+  text-shadow: 0 0 4px rgba(74, 222, 128, 0.8);
+}
+
+.retro-counter-lcd {
+  background-color: #a3a89e;
+  color: #1a1e16;
+  font-family: var(--font-retro, monospace);
+}
+
+.dark .retro-counter-lcd {
+  background-color: #2e332a;
+  color: #8fa382;
+  font-family: var(--font-retro, monospace);
+}
+
+
 
 

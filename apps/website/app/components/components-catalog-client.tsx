@@ -177,9 +177,47 @@ import {
   Avatar,
   AvatarImage,
   AvatarFallback,
+  WebRing,
+  WebRingHeader,
+  WebRingTitle,
+  WebRingSite,
+  WebRingNavigation,
+  WebRingLink,
+  Guestbook,
+  GuestbookHeader,
+  GuestbookTitle,
+  GuestbookEntryList,
+  GuestbookEntry,
+  GuestbookEmpty,
+  GuestbookFooter,
+  VisitorCounter,
+  UnderConstruction,
+  UnderConstructionIcon,
+  UnderConstructionTitle,
+  UnderConstructionMessage,
+  UnderConstructionEstimatedDate,
+  UnderConstructionAction,
+  Marquee,
+  Blink,
+  Button88x31,
+  RetroBanner,
+  RetroBannerTitle,
+  RetroBannerSubtitle,
+  RetroBannerAction,
+  PixelImage,
+  WebDirectory,
+  WebDirectoryHeader,
+  WebDirectoryGrid,
+  WebDirectoryCategory,
+  WebDirectoryTitle,
+  WebDirectoryList,
+  WebDirectoryItem,
+  WebDirectoryLink,
+  WebDirectoryDescription,
+  WebDirectorySubcategories,
 } from "@ditherweb/ui";
 
-type Category = "all" | "navigation" | "overlays" | "surfaces" | "forms" | "typography" | "layout" | "input" | "feedback";
+type Category = "all" | "classic" | "navigation" | "overlays" | "surfaces" | "forms" | "typography" | "layout" | "input" | "feedback";
 
 type ProcessItem = {
   id: string;
@@ -368,6 +406,60 @@ export default function ComponentsPage() {
   const [menubarViewMode, setMenubarViewMode] = useState("detail");
   const [selectedTableKeys, setSelectedTableKeys] = useState<(string | number)[]>(["proc-1"]);
 
+  // Phase 4: Classic Web interactive states
+  const [visitorCount, setVisitorCount] = useState(12847);
+  const [blinkActive, setBlinkActive] = useState(true);
+  const [webringSiteIndex, setWebringSiteIndex] = useState(1);
+  const webringSites = [
+    { name: "PixelStation 95", index: 1, total: 4 },
+    { name: "RetroWave BBS", index: 2, total: 4 },
+    { name: "CyberDeck 64", index: 3, total: 4 },
+    { name: "DitherArchive", index: 4, total: 4 },
+  ];
+  const [gbAuthor, setGbAuthor] = useState("");
+  const [gbMsg, setGbMsg] = useState("");
+  const [gbEmptyToggle, setGbEmptyToggle] = useState(false);
+  const [gbEntries, setGbEntries] = useState([
+    {
+      id: "gb-1",
+      entryNumber: 124,
+      author: "pixel_surfer",
+      location: "Portland, OR",
+      date: "OCT 08, 1997",
+      websiteUrl: "https://ditherweb.org",
+      websiteName: "PixelCave",
+      message: "Found your ring from GeoCities SiliconValley! Awesome palette choices, keep it up!",
+    },
+    {
+      id: "gb-2",
+      entryNumber: 123,
+      author: "dialup_queen",
+      location: "Austin, TX",
+      date: "OCT 07, 1997",
+      websiteUrl: "https://ditherweb.org",
+      websiteName: "BBS Archive",
+      message: "Greetings from the Austin 512 area code! Bookmarking this home page.",
+    },
+  ]);
+
+  const handleAddGuestbook = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!gbAuthor.trim() || !gbMsg.trim()) return;
+    const newEntry = {
+      id: `gb-${Date.now()}`,
+      entryNumber: gbEntries.length + 123,
+      author: gbAuthor.trim(),
+      location: "Cyberspace",
+      date: "TODAY",
+      websiteUrl: "https://ditherweb.org",
+      websiteName: "Visitor Web",
+      message: gbMsg.trim(),
+    };
+    setGbEntries([newEntry, ...gbEntries]);
+    setGbAuthor("");
+    setGbMsg("");
+  };
+
   const [openCodes, setOpenCodes] = useState<Record<string, boolean>>({});
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
@@ -408,7 +500,7 @@ export default function ComponentsPage() {
         <div className="flex items-center gap-2">
           <Badge variant="primary">Navigation & Data</Badge>
           <span className="font-mono text-xs text-muted-foreground">
-            66 Production Primitives
+            76 Production Primitives
           </span>
         </div>
         <h1 className="font-mono text-3xl font-bold uppercase tracking-tight text-foreground sm:text-4xl">
@@ -427,7 +519,16 @@ export default function ComponentsPage() {
               category === "all" ? "bevel-inset bg-muted text-primary" : "bevel-raised"
             }`}
           >
-            All Primitives (66)
+            All Primitives (76)
+          </button>
+          <button
+            type="button"
+            onClick={() => setCategory("classic")}
+            className={`px-3 py-1 font-bold ${
+              category === "classic" ? "bevel-inset bg-muted text-primary" : "bevel-raised"
+            }`}
+          >
+            Classic Web (10)
           </button>
           <button
             type="button"
@@ -3999,6 +4100,694 @@ export default function ComponentsPage() {
 
             <ComponentCodePanel sectionId="demo-avatar-section" />
           </section>
+          </>
+        )}
+
+        {/* ==================================================================
+            PHASE 4: CLASSIC WEB PRIMITIVES
+            ================================================================== */}
+        {(category === "all" || category === "classic") && (
+          <>
+            {/* SECTION 1: WEBRING */}
+            <section id="demo-web-ring" className="space-y-4">
+              <div className="flex items-center justify-between border-b border-border pb-2">
+                <div className="flex items-center gap-2">
+                  <Badge variant="primary">01</Badge>
+                  <h2 className="font-mono text-lg font-bold uppercase tracking-tight text-foreground">
+                    WebRing
+                  </h2>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="font-mono text-xs text-muted-foreground hidden sm:inline">
+                    Circular collection navigation • Prev / Next / Random / Hub
+                  </span>
+                  <ComponentActions sectionId="demo-web-ring" />
+                </div>
+              </div>
+              <p className="font-mono text-xs text-muted-foreground">
+                Authentic WebRing collection navigation box linking related themed homepages with accessible controls.
+              </p>
+
+              <div className="p-4 bevel-raised bg-surface space-y-6">
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
+                  {/* Interactive Default WebRing */}
+                  <WebRing variant="default" className="w-full max-w-md">
+                    <WebRingHeader>
+                      <WebRingTitle>Vintage Computing WebRing</WebRingTitle>
+                      <span className="text-[10px] text-muted-foreground">Hub #042</span>
+                    </WebRingHeader>
+                    <div className="text-center py-1">
+                      <WebRingSite
+                        name={webringSites[webringSiteIndex - 1].name}
+                        memberIndex={webringSites[webringSiteIndex - 1].index}
+                        totalMembers={webringSites[webringSiteIndex - 1].total}
+                      />
+                    </div>
+                    <WebRingNavigation>
+                      <button
+                        type="button"
+                        onClick={() => setWebringSiteIndex((i) => (i === 1 ? webringSites.length : i - 1))}
+                        className="text-primary hover:underline font-bold text-xs px-1"
+                        aria-label="Previous site in ring"
+                      >
+                        [« Previous]
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setWebringSiteIndex(Math.floor(Math.random() * webringSites.length) + 1)}
+                        className="text-primary hover:underline font-bold text-xs px-1"
+                        aria-label="Random site in ring"
+                      >
+                        [? Random]
+                      </button>
+                      <WebRingLink direction="hub" href="#">[Ring Hub]</WebRingLink>
+                      <button
+                        type="button"
+                        onClick={() => setWebringSiteIndex((i) => (i === webringSites.length ? 1 : i + 1))}
+                        className="text-primary hover:underline font-bold text-xs px-1"
+                        aria-label="Next site in ring"
+                      >
+                        [Next »]
+                      </button>
+                    </WebRingNavigation>
+                  </WebRing>
+
+                  {/* Vintage Dashed Variant */}
+                  <WebRing
+                    variant="vintage"
+                    ringName="Retro Developers Ring"
+                    currentSite="SiliconGraphics.dev"
+                    prevUrl="#prev"
+                    nextUrl="#next"
+                    hubUrl="#hub"
+                    randomUrl="#rand"
+                    className="w-full max-w-sm"
+                  />
+                </div>
+              </div>
+
+              <ComponentCodePanel sectionId="demo-web-ring" />
+            </section>
+
+            {/* SECTION 2: GUESTBOOK */}
+            <section id="demo-guestbook" className="space-y-4">
+              <div className="flex items-center justify-between border-b border-border pb-2">
+                <div className="flex items-center gap-2">
+                  <Badge variant="primary">02</Badge>
+                  <h2 className="font-mono text-lg font-bold uppercase tracking-tight text-foreground">
+                    Guestbook
+                  </h2>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="font-mono text-xs text-muted-foreground hidden sm:inline">
+                    Visitor logs • Signatures • Composable entry stream
+                  </span>
+                  <ComponentActions sectionId="demo-guestbook" />
+                </div>
+              </div>
+              <p className="font-mono text-xs text-muted-foreground">
+                Classic personal-homepage guestbook presentation with authors, timestamps, homepage links, and empty states.
+              </p>
+
+              <div className="p-4 bevel-raised bg-surface space-y-6">
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-xs font-bold uppercase text-muted-foreground">
+                    Live Guestbook Showcase
+                  </span>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => setGbEmptyToggle(!gbEmptyToggle)}
+                  >
+                    {gbEmptyToggle ? "Show Populated State" : "Show Empty State"}
+                  </Button>
+                </div>
+
+                {gbEmptyToggle ? (
+                  <Guestbook>
+                    <GuestbookHeader>
+                      <GuestbookTitle>Dave&apos;s Digital Guestbook</GuestbookTitle>
+                      <span className="text-xs text-muted-foreground">0 Signatures</span>
+                    </GuestbookHeader>
+                    <GuestbookEmpty />
+                  </Guestbook>
+                ) : (
+                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div className="lg:col-span-2 space-y-4">
+                      <Guestbook>
+                        <GuestbookHeader>
+                          <GuestbookTitle>Dave&apos;s Digital Guestbook</GuestbookTitle>
+                          <span className="text-xs text-muted-foreground">{gbEntries.length} Total Signatures</span>
+                        </GuestbookHeader>
+                        <GuestbookEntryList>
+                          {gbEntries.map((entry) => (
+                            <GuestbookEntry
+                              key={entry.id}
+                              entryNumber={entry.entryNumber}
+                              author={entry.author}
+                              location={entry.location}
+                              date={entry.date}
+                              websiteUrl={entry.websiteUrl}
+                              websiteName={entry.websiteName}
+                              message={entry.message}
+                            />
+                          ))}
+                        </GuestbookEntryList>
+                        <GuestbookFooter>
+                          <span>Showing {gbEntries.length} entries</span>
+                          <span>Page 1 of 1</span>
+                        </GuestbookFooter>
+                      </Guestbook>
+                    </div>
+
+                    {/* Quick Sign Guestbook form demonstrating Phase 3 composition */}
+                    <div className="bevel-inset bg-background p-4 space-y-3">
+                      <div className="font-bold text-xs uppercase text-foreground border-b border-border pb-1">
+                        Sign This Guestbook
+                      </div>
+                      <form onSubmit={handleAddGuestbook} className="space-y-3">
+                        <Field required>
+                          <FieldLabel>Handle / Name</FieldLabel>
+                          <Input
+                            value={gbAuthor}
+                            onChange={(e) => setGbAuthor(e.target.value)}
+                            placeholder="e.g. modem_surfer"
+                            required
+                          />
+                        </Field>
+                        <Field required>
+                          <FieldLabel>Message</FieldLabel>
+                          <Textarea
+                            rows={3}
+                            value={gbMsg}
+                            onChange={(e) => setGbMsg(e.target.value)}
+                            placeholder="Greetings from 1997!"
+                            required
+                          />
+                        </Field>
+                        <Button type="submit" size="sm" variant="primary" className="w-full">
+                          Submit Signature
+                        </Button>
+                      </form>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <ComponentCodePanel sectionId="demo-guestbook" />
+            </section>
+
+            {/* SECTION 3: VISITOR COUNTER */}
+            <section id="demo-visitor-counter" className="space-y-4">
+              <div className="flex items-center justify-between border-b border-border pb-2">
+                <div className="flex items-center gap-2">
+                  <Badge variant="primary">03</Badge>
+                  <h2 className="font-mono text-lg font-bold uppercase tracking-tight text-foreground">
+                    VisitorCounter
+                  </h2>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="font-mono text-xs text-muted-foreground hidden sm:inline">
+                    Rolling odometer • Phosphor LED • LCD • Zero tracking
+                  </span>
+                  <ComponentActions sectionId="demo-visitor-counter" />
+                </div>
+              </div>
+              <p className="font-mono text-xs text-muted-foreground">
+                Classic mechanical odometer and digital readout counter supporting leading zeroes, labels, and accessible text alternatives.
+              </p>
+
+              <div className="p-4 bevel-raised bg-surface space-y-6">
+                <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border pb-3">
+                  <div className="font-mono text-xs text-muted-foreground">
+                    Interactive Controls:
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Button size="sm" onClick={() => setVisitorCount((c) => c + 1)}>
+                      +1 Hit
+                    </Button>
+                    <Button size="sm" onClick={() => setVisitorCount((c) => c + 100)}>
+                      +100 Hits
+                    </Button>
+                    <Button size="sm" variant="secondary" onClick={() => setVisitorCount(12847)}>
+                      Reset Value
+                    </Button>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-center justify-items-center py-2">
+                  <div className="flex flex-col items-center gap-2 text-center">
+                    <span className="text-[11px] font-bold uppercase text-muted-foreground">Odometer (Mechanical)</span>
+                    <VisitorCounter value={visitorCount} minDigits={6} variant="odometer" label="VISITORS" size="lg" />
+                  </div>
+
+                  <div className="flex flex-col items-center gap-2 text-center">
+                    <span className="text-[11px] font-bold uppercase text-muted-foreground">Green LED Phosphor</span>
+                    <VisitorCounter value={visitorCount} minDigits={6} variant="led" label="TOTAL HITS" size="md" />
+                  </div>
+
+                  <div className="flex flex-col items-center gap-2 text-center">
+                    <span className="text-[11px] font-bold uppercase text-muted-foreground">Gray Matrix LCD</span>
+                    <VisitorCounter value={visitorCount} minDigits={6} variant="lcd" label="PAGE VIEWS" size="md" />
+                  </div>
+
+                  <div className="flex flex-col items-center gap-2 text-center">
+                    <span className="text-[11px] font-bold uppercase text-muted-foreground">Classic Sunken Bevel</span>
+                    <VisitorCounter value={visitorCount} minDigits={6} variant="classic" label="LOGGED ACCESS" size="md" />
+                  </div>
+                </div>
+              </div>
+
+              <ComponentCodePanel sectionId="demo-visitor-counter" />
+            </section>
+
+            {/* SECTION 4: UNDER CONSTRUCTION */}
+            <section id="demo-under-construction" className="space-y-4">
+              <div className="flex items-center justify-between border-b border-border pb-2">
+                <div className="flex items-center gap-2">
+                  <Badge variant="primary">04</Badge>
+                  <h2 className="font-mono text-lg font-bold uppercase tracking-tight text-foreground">
+                    UnderConstruction
+                  </h2>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="font-mono text-xs text-muted-foreground hidden sm:inline">
+                    Vintage maintenance notice • Hazard stripes • Non-obnoxious
+                  </span>
+                  <ComponentActions sectionId="demo-under-construction" />
+                </div>
+              </div>
+              <p className="font-mono text-xs text-muted-foreground">
+                Authentic 90s site construction and maintenance indicator with hazard borders and accessible alternatives. Zero flashing.
+              </p>
+
+              <div className="p-4 bevel-raised bg-surface space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Stripes Variant */}
+                  <UnderConstruction variant="stripes">
+                    <div className="flex flex-col items-center text-center space-y-2">
+                      <UnderConstructionIcon size="md" />
+                      <UnderConstructionTitle>CYBERSITE UNDER CONSTRUCTION</UnderConstructionTitle>
+                      <UnderConstructionMessage>
+                        Please excuse our virtual dust! Netscape Navigator 3.0 frames and tables are currently being optimized.
+                      </UnderConstructionMessage>
+                      <UnderConstructionEstimatedDate date="NOVEMBER 1997" />
+                      <UnderConstructionAction>
+                        <Button size="sm" variant="outline">Return to Home Portal</Button>
+                      </UnderConstructionAction>
+                    </div>
+                  </UnderConstruction>
+
+                  {/* Bevel Variant with Progress integration */}
+                  <UnderConstruction variant="bevel">
+                    <div className="flex flex-col items-center text-center space-y-2">
+                      <UnderConstructionIcon size="sm" />
+                      <UnderConstructionTitle>BBS FILE REPOSITORY REBUILD</UnderConstructionTitle>
+                      <UnderConstructionMessage>
+                        Re-indexing sector clusters and downloading CD-ROM shareware volumes.
+                      </UnderConstructionMessage>
+                      <div className="w-full max-w-xs pt-1 space-y-1">
+                        <div className="flex justify-between text-[10px] text-muted-foreground">
+                          <span>Sector Defrag</span>
+                          <span>68%</span>
+                        </div>
+                        <Progress value={68} max={100} variant="stepped" className="w-full" />
+                      </div>
+                      <UnderConstructionEstimatedDate date="Q4 1997" />
+                    </div>
+                  </UnderConstruction>
+                </div>
+              </div>
+
+              <ComponentCodePanel sectionId="demo-under-construction" />
+            </section>
+
+            {/* SECTION 5: MARQUEE */}
+            <section id="demo-marquee" className="space-y-4">
+              <div className="flex items-center justify-between border-b border-border pb-2">
+                <div className="flex items-center gap-2">
+                  <Badge variant="primary">05</Badge>
+                  <h2 className="font-mono text-lg font-bold uppercase tracking-tight text-foreground">
+                    Marquee
+                  </h2>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="font-mono text-xs text-muted-foreground hidden sm:inline">
+                    Modern CSS ticker • Pause-on-hover • Reduced-motion safe
+                  </span>
+                  <ComponentActions sectionId="demo-marquee" />
+                </div>
+              </div>
+              <p className="font-mono text-xs text-muted-foreground">
+                Recreates the classic scrolling-text ticker using modern CSS transforms with hover/focus pause and guaranteed reduced-motion static fallback.
+              </p>
+
+              <div className="p-4 bevel-raised bg-surface space-y-4">
+                <div className="space-y-3">
+                  {/* Left Scrolling Marquee */}
+                  <div>
+                    <span className="text-[11px] font-bold uppercase text-muted-foreground mb-1 block">
+                      Normal Speed (Scrolls Left • Hover or Focus to Pause)
+                    </span>
+                    <Marquee speed="normal" direction="left" pauseOnHover pauseOnFocus>
+                      <span className="text-primary font-bold">★ WELCOME TO DITHERWEB ★</span>
+                      <span>DIALUP NODE #4 CONNECTED AT 57,600 BAUD</span>
+                      <span className="text-accent font-bold">OPTIMIZED FOR 800x600 IN 16-BIT COLOR</span>
+                      <span>NEW 88x31 BUTTONS ADDED TO VAULT</span>
+                    </Marquee>
+                  </div>
+
+                  {/* Fast Right Scrolling Marquee */}
+                  <div>
+                    <span className="text-[11px] font-bold uppercase text-muted-foreground mb-1 block">
+                      Fast Speed (Scrolls Right • Compact Ticker)
+                    </span>
+                    <Marquee speed="fast" direction="right" pauseOnHover>
+                      <span className="text-destructive font-bold">● SYSTEM ALERT:</span>
+                      <span>HIMEM.SYS LOADED 640KB BASE RAM NOMINAL</span>
+                      <span>VGA BIOS INITIALIZED</span>
+                    </Marquee>
+                  </div>
+                </div>
+              </div>
+
+              <ComponentCodePanel sectionId="demo-marquee" />
+            </section>
+
+            {/* SECTION 6: BLINK */}
+            <section id="demo-blink" className="space-y-4">
+              <div className="flex items-center justify-between border-b border-border pb-2">
+                <div className="flex items-center gap-2">
+                  <Badge variant="primary">06</Badge>
+                  <h2 className="font-mono text-lg font-bold uppercase tracking-tight text-foreground">
+                    Blink
+                  </h2>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="font-mono text-xs text-muted-foreground hidden sm:inline">
+                    Opt-in text emphasis • Step animation • Zero hazard
+                  </span>
+                  <ComponentActions sectionId="demo-blink" />
+                </div>
+              </div>
+              <p className="font-mono text-xs text-muted-foreground">
+                Classic blinking text primitive. Blinking is strictly opt-in (disabled by default) and automatically becomes static when reduced motion is preferred.
+              </p>
+
+              <div className="p-4 bevel-raised bg-surface space-y-4">
+                <div className="flex items-center justify-between pb-2 border-b border-border">
+                  <span className="text-xs text-muted-foreground">
+                    Interactive Toggle (Blink is opt-in only):
+                  </span>
+                  <Button
+                    size="sm"
+                    variant={blinkActive ? "primary" : "outline"}
+                    onClick={() => setBlinkActive(!blinkActive)}
+                  >
+                    {blinkActive ? "Blink Animation: ON" : "Blink Animation: OFF"}
+                  </Button>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center py-2">
+                  <div className="bevel-inset bg-background p-4 space-y-1">
+                    <span className="text-[10px] text-muted-foreground block uppercase">Normal Speed (1.0s)</span>
+                    <Blink enabled={blinkActive} speed="normal" className="bg-amber-400 text-black px-1.5 py-0.5 text-xs font-bold uppercase">
+                      ★ NEW UPDATE ★
+                    </Blink>
+                  </div>
+
+                  <div className="bevel-inset bg-background p-4 space-y-1">
+                    <span className="text-[10px] text-muted-foreground block uppercase">Slow Speed (1.6s)</span>
+                    <Blink enabled={blinkActive} speed="slow" className="text-destructive font-black text-sm">
+                      [HOT LINKS]
+                    </Blink>
+                  </div>
+
+                  <div className="bevel-inset bg-background p-4 space-y-1">
+                    <span className="text-[10px] text-muted-foreground block uppercase">Fast Speed (0.6s)</span>
+                    <Blink enabled={blinkActive} speed="fast" className="text-primary font-bold text-xs underline">
+                      SIGN GUESTBOOK!
+                    </Blink>
+                  </div>
+                </div>
+              </div>
+
+              <ComponentCodePanel sectionId="demo-blink" />
+            </section>
+
+            {/* SECTION 7: BUTTON 88x31 */}
+            <section id="demo-button-88x31" className="space-y-4">
+              <div className="flex items-center justify-between border-b border-border pb-2">
+                <div className="flex items-center gap-2">
+                  <Badge variant="primary">07</Badge>
+                  <h2 className="font-mono text-lg font-bold uppercase tracking-tight text-foreground">
+                    Button88x31
+                  </h2>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="font-mono text-xs text-muted-foreground hidden sm:inline">
+                    Exact 88×31 geometry • Micro-badges • Pixelated
+                  </span>
+                  <ComponentActions sectionId="demo-button-88x31" />
+                </div>
+              </div>
+              <p className="font-mono text-xs text-muted-foreground">
+                Iconic 88×31 early-web micro-badge format with exact pixel dimensions, two-tone text splits, and image support.
+              </p>
+
+              <div className="p-4 bevel-raised bg-surface space-y-4">
+                <div className="text-[11px] font-bold uppercase text-muted-foreground">
+                  Classic 88×31 Micro-Badge Collection
+                </div>
+
+                <div className="flex flex-wrap items-center gap-4 py-2">
+                  <Button88x31 label="NETSCAPE" value="NOW!" href="#" />
+                  <Button88x31 label="HTML 4.0" value="VALID" href="#" />
+                  <Button88x31 label="NOTEPAD" value="MADE" variant="flat" href="#" />
+                  <Button88x31 label="BEST AT" value="800x600" href="#" />
+                  <Button88x31 variant="bevel" href="#">DITHERWEB</Button88x31>
+                  <Button88x31 variant="outline" href="#">WEB RING</Button88x31>
+                  <Button88x31 label="BBS NODE" value="56K" href="#" />
+                  <Button88x31 label="VGA 256" value="COLOR" href="#" />
+                </div>
+              </div>
+
+              <ComponentCodePanel sectionId="demo-button-88x31" />
+            </section>
+
+            {/* SECTION 8: RETRO BANNER */}
+            <section id="demo-retro-banner" className="space-y-4">
+              <div className="flex items-center justify-between border-b border-border pb-2">
+                <div className="flex items-center gap-2">
+                  <Badge variant="primary">08</Badge>
+                  <h2 className="font-mono text-lg font-bold uppercase tracking-tight text-foreground">
+                    RetroBanner
+                  </h2>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="font-mono text-xs text-muted-foreground hidden sm:inline">
+                    Early web horizontal ad/header banner • Dither substrate
+                  </span>
+                  <ComponentActions sectionId="demo-retro-banner" />
+                </div>
+              </div>
+              <p className="font-mono text-xs text-muted-foreground">
+                Standard 468×60 early-web site header and promotional banner featuring dither textures and pixel typography.
+              </p>
+
+              <div className="p-4 bevel-raised bg-surface space-y-4">
+                <div className="flex flex-col items-center gap-4 py-2">
+                  {/* Standard 468x60 Dither Banner */}
+                  <RetroBanner format="standard" variant="dither" href="#">
+                    <div className="space-y-0.5">
+                      <RetroBannerTitle>CYBERNET BBS • DIAL (555) 019-2831</RetroBannerTitle>
+                      <RetroBannerSubtitle>56K V.90 High Speed Nodes • ANSI Graphics</RetroBannerSubtitle>
+                    </div>
+                    <RetroBannerAction>
+                      <Button size="sm">CONNECT</Button>
+                    </RetroBannerAction>
+                  </RetroBanner>
+
+                  {/* Compact Bevel Banner */}
+                  <RetroBanner format="compact" variant="bevel" href="#">
+                    <div className="space-y-0.5">
+                      <RetroBannerTitle>DITHER ART ENGINE</RetroBannerTitle>
+                      <RetroBannerSubtitle>Floyd-Steinberg 16-Color Kernel</RetroBannerSubtitle>
+                    </div>
+                    <RetroBannerAction>
+                      <Badge variant="primary">v1.0</Badge>
+                    </RetroBannerAction>
+                  </RetroBanner>
+                </div>
+              </div>
+
+              <ComponentCodePanel sectionId="demo-retro-banner" />
+            </section>
+
+            {/* SECTION 9: PIXEL IMAGE */}
+            <section id="demo-pixel-image" className="space-y-4">
+              <div className="flex items-center justify-between border-b border-border pb-2">
+                <div className="flex items-center gap-2">
+                  <Badge variant="primary">09</Badge>
+                  <h2 className="font-mono text-lg font-bold uppercase tracking-tight text-foreground">
+                    PixelImage
+                  </h2>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="font-mono text-xs text-muted-foreground hidden sm:inline">
+                    Nearest-neighbor scaling • Vintage frames • Figcaption
+                  </span>
+                  <ComponentActions sectionId="demo-pixel-image" />
+                </div>
+              </div>
+              <p className="font-mono text-xs text-muted-foreground">
+                Bitmap and pixel-art image wrapper guaranteeing crisp pixelated scaling with classic beveled and dithered frames.
+              </p>
+
+              <div className="p-4 bevel-raised bg-surface space-y-4">
+                <div className="flex flex-wrap items-center justify-center gap-8 py-2">
+                  {/* Bevel Frame */}
+                  <PixelImage
+                    src="/artwork/ditherweb_hero.png"
+                    alt="Ditherweb Hero Art"
+                    width={180}
+                    height={135}
+                    frame="bevel"
+                    caption="Fig 1. ISA Controller (Bevel Frame)"
+                  />
+
+                  {/* Dither Frame */}
+                  <PixelImage
+                    src="/artwork/ditherweb_hero.png"
+                    alt="Ditherweb Hero Art Dither Frame"
+                    width={180}
+                    height={135}
+                    frame="dither"
+                    caption="Fig 2. Dither Substrate Frame"
+                  />
+
+                  {/* Inset Frame */}
+                  <PixelImage
+                    src="/artwork/ditherweb_hero.png"
+                    alt="Ditherweb Hero Art Inset Frame"
+                    width={180}
+                    height={135}
+                    frame="inset"
+                    caption="Fig 3. Sunken Inset Frame"
+                  />
+                </div>
+              </div>
+
+              <ComponentCodePanel sectionId="demo-pixel-image" />
+            </section>
+
+            {/* SECTION 10: WEB DIRECTORY */}
+            <section id="demo-web-directory" className="space-y-4">
+              <div className="flex items-center justify-between border-b border-border pb-2">
+                <div className="flex items-center gap-2">
+                  <Badge variant="primary">10</Badge>
+                  <h2 className="font-mono text-lg font-bold uppercase tracking-tight text-foreground">
+                    WebDirectory
+                  </h2>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="font-mono text-xs text-muted-foreground hidden sm:inline">
+                    Early web curated link index • Yahoo! / DMOZ pattern
+                  </span>
+                  <ComponentActions sectionId="demo-web-directory" />
+                </div>
+              </div>
+              <p className="font-mono text-xs text-muted-foreground">
+                Hierarchical categorized web portal directory with tree bullets, counts, new badges, and responsive multi-column layout.
+              </p>
+
+              <div className="p-4 bevel-raised bg-surface space-y-4">
+                <WebDirectory>
+                  <WebDirectoryHeader>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h3 className="font-bold text-sm uppercase text-foreground">
+                          DITHERWEB PORTAL DIRECTORY
+                        </h3>
+                        <p className="text-xs text-muted-foreground">
+                          Human-curated index of the retro Web • 3 Categories Active
+                        </p>
+                      </div>
+                      <Badge variant="outline">PORTAL INDEX</Badge>
+                    </div>
+                  </WebDirectoryHeader>
+
+                  <WebDirectoryGrid cols={3}>
+                    {/* Category 1 */}
+                    <WebDirectoryCategory>
+                      <WebDirectoryTitle count={3} icon="🌐">
+                        COMMUNITY &amp; HOMEPAGES
+                      </WebDirectoryTitle>
+                      <WebDirectoryList>
+                        <WebDirectoryItem>
+                          <WebDirectoryLink href="#" isNew>WebRings</WebDirectoryLink>
+                          <WebDirectoryDescription>Themed circular website collection navigation</WebDirectoryDescription>
+                        </WebDirectoryItem>
+                        <WebDirectoryItem>
+                          <WebDirectoryLink href="#">Guestbooks</WebDirectoryLink>
+                          <WebDirectoryDescription>Personal homepage visitor signature streams</WebDirectoryDescription>
+                        </WebDirectoryItem>
+                        <WebDirectoryItem>
+                          <WebDirectoryLink href="#">88x31 Vault</WebDirectoryLink>
+                          <WebDirectoryDescription>Curated directory of micro-badges</WebDirectoryDescription>
+                        </WebDirectoryItem>
+                      </WebDirectoryList>
+                      <WebDirectorySubcategories>
+                        <span>Subcategories:</span>
+                        <a href="#" className="underline">Personal Sites</a>
+                        <span>•</span>
+                        <a href="#" className="underline">Hubs</a>
+                      </WebDirectorySubcategories>
+                    </WebDirectoryCategory>
+
+                    {/* Category 2 */}
+                    <WebDirectoryCategory>
+                      <WebDirectoryTitle count={3} icon="💾">
+                        RETRO HARDWARE
+                      </WebDirectoryTitle>
+                      <WebDirectoryList>
+                        <WebDirectoryItem>
+                          <WebDirectoryLink href="#">VGA Controllers</WebDirectoryLink>
+                          <WebDirectoryDescription>Standard Mode 13h (320x200 256 colors)</WebDirectoryDescription>
+                        </WebDirectoryItem>
+                        <WebDirectoryItem>
+                          <WebDirectoryLink href="#" isNew>Sound Blaster 16</WebDirectoryLink>
+                          <WebDirectoryDescription>FM synthesis and DSP registers</WebDirectoryDescription>
+                        </WebDirectoryItem>
+                        <WebDirectoryItem>
+                          <WebDirectoryLink href="#">ISA Bus Architecture</WebDirectoryLink>
+                          <WebDirectoryDescription>Interrupt vector arbitration</WebDirectoryDescription>
+                        </WebDirectoryItem>
+                      </WebDirectoryList>
+                    </WebDirectoryCategory>
+
+                    {/* Category 3 */}
+                    <WebDirectoryCategory>
+                      <WebDirectoryTitle count={2} icon="📁">
+                        SOFTWARE &amp; PROTOCOLS
+                      </WebDirectoryTitle>
+                      <WebDirectoryList>
+                        <WebDirectoryItem>
+                          <WebDirectoryLink href="#">ZMODEM Transfers</WebDirectoryLink>
+                          <WebDirectoryDescription>Batch file protocol with CRC checksum</WebDirectoryDescription>
+                        </WebDirectoryItem>
+                        <WebDirectoryItem>
+                          <WebDirectoryLink href="#">Telnet &amp; BBS</WebDirectoryLink>
+                          <WebDirectoryDescription>Terminal access and ANSI art galleries</WebDirectoryDescription>
+                        </WebDirectoryItem>
+                      </WebDirectoryList>
+                    </WebDirectoryCategory>
+                  </WebDirectoryGrid>
+                </WebDirectory>
+              </div>
+
+              <ComponentCodePanel sectionId="demo-web-directory" />
+            </section>
           </>
         )}
       </div>

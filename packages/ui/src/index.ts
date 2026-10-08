@@ -467,6 +467,113 @@ export {
   type AvatarStatus,
 } from "./components/avatar";
 
+// --- Phase 4: Classic Web Primitives ---
+export {
+  WebRing,
+  WebRingHeader,
+  WebRingTitle,
+  WebRingSite,
+  WebRingNavigation,
+  WebRingLink,
+  type WebRingProps,
+  type WebRingHeaderProps,
+  type WebRingTitleProps,
+  type WebRingSiteProps,
+  type WebRingNavigationProps,
+  type WebRingLinkProps,
+} from "./components/web-ring";
+
+export {
+  Guestbook,
+  GuestbookHeader,
+  GuestbookTitle,
+  GuestbookEntryList,
+  GuestbookEntry,
+  GuestbookEmpty,
+  GuestbookFooter,
+  type GuestbookProps,
+  type GuestbookHeaderProps,
+  type GuestbookTitleProps,
+  type GuestbookEntryListProps,
+  type GuestbookEntryProps,
+  type GuestbookEmptyProps,
+  type GuestbookFooterProps,
+} from "./components/guestbook";
+
+export {
+  VisitorCounter,
+  type VisitorCounterProps,
+} from "./components/visitor-counter";
+
+export {
+  UnderConstruction,
+  UnderConstructionIcon,
+  UnderConstructionTitle,
+  UnderConstructionMessage,
+  UnderConstructionEstimatedDate,
+  UnderConstructionAction,
+  type UnderConstructionProps,
+  type UnderConstructionIconProps,
+  type UnderConstructionTitleProps,
+  type UnderConstructionMessageProps,
+  type UnderConstructionEstimatedDateProps,
+  type UnderConstructionActionProps,
+} from "./components/under-construction";
+
+export {
+  Marquee,
+  type MarqueeProps,
+} from "./components/marquee";
+
+export {
+  Blink,
+  type BlinkProps,
+} from "./components/blink";
+
+export {
+  Button88x31,
+  type Button88x31Props,
+} from "./components/button-88x31";
+
+export {
+  RetroBanner,
+  RetroBannerTitle,
+  RetroBannerSubtitle,
+  RetroBannerAction,
+  type RetroBannerProps,
+  type RetroBannerTitleProps,
+  type RetroBannerSubtitleProps,
+  type RetroBannerActionProps,
+} from "./components/retro-banner";
+
+export {
+  PixelImage,
+  type PixelImageProps,
+} from "./components/pixel-image";
+
+export {
+  WebDirectory,
+  WebDirectoryHeader,
+  WebDirectoryGrid,
+  WebDirectoryCategory,
+  WebDirectoryTitle,
+  WebDirectoryList,
+  WebDirectoryItem,
+  WebDirectoryLink,
+  WebDirectoryDescription,
+  WebDirectorySubcategories,
+  type WebDirectoryProps,
+  type WebDirectoryHeaderProps,
+  type WebDirectoryGridProps,
+  type WebDirectoryCategoryProps,
+  type WebDirectoryTitleProps,
+  type WebDirectoryListProps,
+  type WebDirectoryItemProps,
+  type WebDirectoryLinkProps,
+  type WebDirectoryDescriptionProps,
+  type WebDirectorySubcategoriesProps,
+} from "./components/web-directory";
+
 // --- Shared Utilities ---
 export { cn } from "./lib/utils";
 export {
@@ -477,6 +584,7 @@ export {
   type OverlaySide,
   type OverlayAlign,
 } from "./lib/overlay-utils";
+
 
 
 

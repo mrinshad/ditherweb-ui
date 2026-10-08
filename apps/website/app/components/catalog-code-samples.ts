@@ -734,4 +734,201 @@ const treeData: TreeNodeData[] = [
   <AvatarFallback>OP</AvatarFallback>
 </Avatar>`,
   },
+  "demo-web-ring": {
+    badge: "@ditherweb/ui/web-ring",
+    code: `import {
+  WebRing,
+  WebRingHeader,
+  WebRingTitle,
+  WebRingSite,
+  WebRingNavigation,
+  WebRingLink,
+} from "@ditherweb/ui";
+
+<WebRing variant="default">
+  <WebRingHeader>
+    <WebRingTitle>Vintage Computing WebRing</WebRingTitle>
+    <WebRingSite name="RetroStation" memberIndex={4} totalMembers={18} />
+  </WebRingHeader>
+  <WebRingNavigation>
+    <WebRingLink direction="prev" href="#prev">[« Previous]</WebRingLink>
+    <WebRingLink direction="random" href="#random">[? Random]</WebRingLink>
+    <WebRingLink direction="hub" href="#hub">[Ring Hub]</WebRingLink>
+    <WebRingLink direction="next" href="#next">[Next »]</WebRingLink>
+  </WebRingNavigation>
+</WebRing>`,
+  },
+  "demo-guestbook": {
+    badge: "@ditherweb/ui/guestbook",
+    code: `import {
+  Guestbook,
+  GuestbookHeader,
+  GuestbookTitle,
+  GuestbookEntryList,
+  GuestbookEntry,
+  GuestbookFooter,
+} from "@ditherweb/ui";
+
+<Guestbook>
+  <GuestbookHeader>
+    <GuestbookTitle>Dave's Digital Guestbook</GuestbookTitle>
+    <span>124 Total Signatures</span>
+  </GuestbookHeader>
+  <GuestbookEntryList>
+    <GuestbookEntry
+      entryNumber={124}
+      author="pixel_surfer"
+      location="Portland, OR"
+      date="OCT 08, 1997"
+      websiteUrl="https://example.com"
+      websiteName="PixelCave"
+      message="Found your ring from GeoCities SiliconValley! Awesome palette choices, keep it up!"
+    />
+  </GuestbookEntryList>
+  <GuestbookFooter>
+    <span>Showing page 1 of 12</span>
+  </GuestbookFooter>
+</Guestbook>`,
+  },
+  "demo-visitor-counter": {
+    badge: "@ditherweb/ui/visitor-counter",
+    code: `import { VisitorCounter } from "@ditherweb/ui";
+
+// Classic mechanical rolling odometer
+<VisitorCounter value={12847} minDigits={6} variant="odometer" label="VISITORS" />
+
+// Green LED & gray LCD variants
+<VisitorCounter value={42069} minDigits={6} variant="led" label="HITS" />
+<VisitorCounter value={8921} minDigits={6} variant="lcd" label="PAGE VIEWS" />`,
+  },
+  "demo-under-construction": {
+    badge: "@ditherweb/ui/under-construction",
+    code: `import {
+  UnderConstruction,
+  UnderConstructionIcon,
+  UnderConstructionTitle,
+  UnderConstructionMessage,
+  UnderConstructionEstimatedDate,
+  UnderConstructionAction,
+  Button,
+} from "@ditherweb/ui";
+
+<UnderConstruction variant="stripes">
+  <div className="flex flex-col items-center text-center space-y-2">
+    <UnderConstructionIcon size="md" />
+    <UnderConstructionTitle>CYBER DECK UNDER CONSTRUCTION</UnderConstructionTitle>
+    <UnderConstructionMessage>
+      Pardon our virtual dust! Netscape 3.0 optimized graphics currently being calibrated.
+    </UnderConstructionMessage>
+    <UnderConstructionEstimatedDate date="NOVEMBER 1997" />
+    <UnderConstructionAction>
+      <Button size="sm" variant="outline">Return to Portal</Button>
+    </UnderConstructionAction>
+  </div>
+</UnderConstruction>`,
+  },
+  "demo-marquee": {
+    badge: "@ditherweb/ui/marquee",
+    code: `import { Marquee } from "@ditherweb/ui";
+
+// Modern CSS marquee with pause-on-hover & reduced-motion fallback
+<Marquee speed="normal" direction="left" pauseOnHover>
+  <span>★ WELCOME TO DITHERWEB ★</span>
+  <span>BEST VIEWED AT 800x600 IN 16-BIT COLOR</span>
+  <span>LATEST DISK IMAGE DOWNLOADED (2.88MB)</span>
+</Marquee>`,
+  },
+  "demo-blink": {
+    badge: "@ditherweb/ui/blink",
+    code: `import { Blink } from "@ditherweb/ui";
+
+// Opt-in blinking animation with calm 1s cycle and reduced-motion safety
+<Blink enabled speed="normal" className="bg-amber-400 text-black px-1 font-bold">
+  NEW!
+</Blink>`,
+  },
+  "demo-button-88x31": {
+    badge: "@ditherweb/ui/button-88x31",
+    code: `import { Button88x31 } from "@ditherweb/ui";
+
+// Strict 88x31 micro-badges: image-based or two-tone retro text
+<Button88x31 href="https://ditherweb.org" external>
+  DITHERWEB
+</Button88x31>
+
+<Button88x31 label="NETSCAPE" value="NOW!" href="#" />
+<Button88x31 label="HTML 4.0" value="VALID" variant="flat" href="#" />`,
+  },
+  "demo-retro-banner": {
+    badge: "@ditherweb/ui/retro-banner",
+    code: `import {
+  RetroBanner,
+  RetroBannerTitle,
+  RetroBannerSubtitle,
+  RetroBannerAction,
+  Button,
+} from "@ditherweb/ui";
+
+<RetroBanner format="standard" variant="dither" href="#">
+  <div className="space-y-0.5">
+    <RetroBannerTitle>CYBERNET BBS • DIAL (555) 019-2831</RetroBannerTitle>
+    <RetroBannerSubtitle>56K V.90 High Speed Nodes • ANSI Graphics</RetroBannerSubtitle>
+  </div>
+  <RetroBannerAction>
+    <Button size="sm">CONNECT</Button>
+  </RetroBannerAction>
+</RetroBanner>`,
+  },
+  "demo-pixel-image": {
+    badge: "@ditherweb/ui/pixel-image",
+    code: `import { PixelImage } from "@ditherweb/ui";
+
+// Nearest-neighbor bitmap scaling with vintage beveled or dithered frames
+<PixelImage
+  src="/artwork/ditherweb_hero.png"
+  alt="Retro Artwork"
+  width={160}
+  height={120}
+  frame="bevel"
+  caption="Fig 1. ISA Graphics Controller (160x120px)"
+/>`,
+  },
+  "demo-web-directory": {
+    badge: "@ditherweb/ui/web-directory",
+    code: `import {
+  WebDirectory,
+  WebDirectoryHeader,
+  WebDirectoryGrid,
+  WebDirectoryCategory,
+  WebDirectoryTitle,
+  WebDirectoryList,
+  WebDirectoryItem,
+  WebDirectoryLink,
+  WebDirectoryDescription,
+  WebDirectorySubcategories,
+} from "@ditherweb/ui";
+
+<WebDirectory>
+  <WebDirectoryHeader>
+    <h3 className="font-bold text-sm uppercase">Early Web Portal Index</h3>
+    <p className="text-xs text-muted-foreground">Human-curated directory hierarchy</p>
+  </WebDirectoryHeader>
+  <WebDirectoryGrid cols={3}>
+    <WebDirectoryCategory>
+      <WebDirectoryTitle count={3}>COMMUNITY</WebDirectoryTitle>
+      <WebDirectoryList>
+        <WebDirectoryItem>
+          <WebDirectoryLink href="#" isNew>WebRings</WebDirectoryLink>
+          <WebDirectoryDescription>Themed circular website collection</WebDirectoryDescription>
+        </WebDirectoryItem>
+        <WebDirectoryItem>
+          <WebDirectoryLink href="#">Guestbooks</WebDirectoryLink>
+          <WebDirectoryDescription>Visitor signature logs</WebDirectoryDescription>
+        </WebDirectoryItem>
+      </WebDirectoryList>
+    </WebDirectoryCategory>
+  </WebDirectoryGrid>
+</WebDirectory>`,
+  },
 };
+
