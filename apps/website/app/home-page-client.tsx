@@ -49,7 +49,29 @@ export default function RetroPanel() {
     <div className="flex flex-col space-y-16 pb-16">
       {/* 1. Hero Section */}
       <section className="w-full border-b border-border bg-background dark:bg-black text-foreground dark:text-white relative overflow-hidden min-h-[calc(100dvh-3.5rem)] flex items-center py-12 sm:py-16 lg:py-0">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full">
+        {/* Full Hero Artwork Background (Light & Dark, No Feathering) */}
+        <div className="hidden lg:block absolute inset-0 pointer-events-none select-none overflow-hidden">
+          {/* Light Mode Artwork */}
+          <Image
+            src="/images/hero-artwork-light.jpg"
+            alt="Ditherweb retro workstation in daylight"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-left block dark:hidden select-none"
+          />
+          {/* Dark Mode Artwork */}
+          <Image
+            src="/images/hero-artwork-dark.jpg"
+            alt="Ditherweb retro workstation at night"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-left hidden dark:block select-none"
+          />
+        </div>
+
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full relative z-10">
           <div className="grid grid-cols-1 items-center gap-10 lg:gap-8 xl:gap-12 lg:grid-cols-12">
             {/* Left Column: Headlines & CTAs */}
             <div className="space-y-6 lg:col-span-6 xl:col-span-6 z-10">
@@ -81,34 +103,10 @@ export default function RetroPanel() {
                   </Button>
                 </Link>
                 <Link href="/playground">
-                  <Button variant="outline" size="lg" className="border-border text-foreground hover:bg-muted dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-900">
+                  <Button variant="outline" size="lg" className="border-border text-foreground hover:bg-muted dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-900 bg-surface/80 backdrop-blur-sm">
                     Interactive Playground
                   </Button>
                 </Link>
-              </div>
-            </div>
-
-            {/* Right Column: Atmospheric Ditherweb Artwork */}
-            <div className="hidden lg:block lg:absolute lg:inset-y-0 lg:right-0 lg:w-[48%] xl:w-[50%] 2xl:w-[48%] pointer-events-none overflow-hidden select-none">
-              <div className="relative w-full h-full">
-                <Image
-                  src="/images/hero-artwork.jpg"
-                  alt="Retro desktop workstation at night with a dithered CRT monitor displaying Ditherweb, mechanical keyboard, programming books, and a moonlit city skyline outside the window"
-                  fill
-                  priority
-                  sizes="(min-width: 1280px) 50vw, 48vw"
-                  className="object-cover object-right block select-none transition-[filter] duration-200"
-                  style={{
-                    filter: "var(--hero-artwork-filter)",
-                    maskImage: "linear-gradient(to right, transparent 0%, black 18%, black 100%)",
-                    WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 18%, black 100%)",
-                  }}
-                />
-                {/* Complementary subtle gradient overlay on the left edge for cross-browser dissolve */}
-                <div
-                  className="pointer-events-none absolute inset-y-0 left-0 w-16 sm:w-24 lg:w-32 bg-gradient-to-r from-background via-background/85 to-transparent dark:from-black dark:via-black/85 dark:to-transparent"
-                  aria-hidden="true"
-                />
               </div>
             </div>
           </div>
