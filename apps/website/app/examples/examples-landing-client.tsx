@@ -23,9 +23,9 @@ export function ExamplesLandingClient() {
       {/* Hero Header */}
       <div className="space-y-4 max-w-3xl">
         <div className="flex items-center gap-2">
-          <span className="bevel-inset bg-primary px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wider text-primary-foreground">
+          <Badge variant="primary" className="text-[10px] py-0 font-bold uppercase tracking-wider">
             PHASE 8
-          </span>
+          </Badge>
           <span className="font-mono text-xs uppercase tracking-wider text-muted-foreground">
             Templates &amp; Compositions
           </span>
@@ -65,9 +65,9 @@ export function ExamplesLandingClient() {
               <div className="lg:col-span-7 p-6 sm:p-8 flex flex-col justify-between space-y-6">
                 <div className="space-y-4">
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className="bevel-inset bg-accent px-1.5 py-0.5 font-mono text-[9px] font-bold text-accent-foreground uppercase">
+                    <Badge variant="secondary" className="font-mono text-[9px] py-0 font-bold uppercase">
                       {featured.category}
-                    </span>
+                    </Badge>
                     <Badge variant="outline" className="font-mono text-[10px] uppercase">
                       {featured.badge}
                     </Badge>
@@ -233,9 +233,9 @@ export function ExamplesLandingClient() {
             >
               <CardHeader className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <span className="bevel-inset bg-muted px-1.5 py-0.5 font-mono text-[9px] font-bold text-muted-foreground uppercase">
+                  <Badge variant="secondary" className="font-mono text-[9px] py-0 font-bold uppercase">
                     {example.category}
-                  </span>
+                  </Badge>
                   <Badge variant="outline" className="font-mono text-[9px] uppercase opacity-75">
                     {example.badge}
                   </Badge>
@@ -262,12 +262,13 @@ export function ExamplesLandingClient() {
                   </span>
                   <div className="flex flex-wrap gap-1">
                     {example.tags.map((tag) => (
-                      <span
+                      <Badge
                         key={tag}
-                        className="bevel-inset px-1.5 py-0.5 font-mono text-[9px] text-muted-foreground uppercase"
+                        variant="outline"
+                        className="font-mono text-[9px] py-0 text-muted-foreground uppercase"
                       >
                         {tag}
-                      </span>
+                      </Badge>
                     ))}
                   </div>
                 </div>
@@ -291,9 +292,9 @@ export function ExamplesLandingClient() {
                     <span className="font-mono text-[11px] text-muted-foreground italic">
                       In Design Phase
                     </span>
-                    <span className="bevel-inset px-2 py-0.5 font-mono text-[10px] text-muted-foreground uppercase select-none">
+                    <Badge variant="outline" className="font-mono text-[10px] py-0 text-muted-foreground uppercase select-none">
                       Coming Next
-                    </span>
+                    </Badge>
                   </>
                 )}
               </CardFooter>

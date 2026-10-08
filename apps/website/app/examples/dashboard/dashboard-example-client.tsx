@@ -119,9 +119,9 @@ function DashboardSidebar({
         >
           {state === "expanded" && (
             <div className="flex items-center gap-2 min-w-0">
-              <span className="bevel-inset bg-primary px-1.5 py-0.5 text-[9px] font-bold text-primary-foreground uppercase shrink-0">
+              <Badge variant="primary" className="text-[9px] py-0 px-1.5 shrink-0">
                 BYTEBASE
-              </span>
+              </Badge>
               <span className="font-bold text-foreground truncate text-xs">
                 OPS DESK
               </span>
@@ -253,16 +253,16 @@ export function DashboardExampleClient() {
             <span className="font-bold text-foreground uppercase tracking-wide">
               BYTEBASE Operations
             </span>
-            <span className="bevel-inset bg-primary px-1.5 py-0.2 text-[9px] font-bold text-primary-foreground uppercase hidden md:inline-block">
+            <Badge variant="primary" className="text-[9px] py-0 hidden md:inline-flex">
               REFERENCE IMPLEMENTATION
-            </span>
+            </Badge>
           </div>
 
           <div className="flex items-center gap-2 font-mono text-[11px] text-muted-foreground">
             <span className="hidden sm:inline">Composed 100% from @ditherweb/ui primitives</span>
-            <span className="bevel-raised px-1.5 py-0.5 text-[10px] text-foreground font-bold select-none">
+            <Badge variant="outline" className="text-[10px] py-0">
               DOGFOODING
-            </span>
+            </Badge>
           </div>
         </div>
       </div>
@@ -357,9 +357,9 @@ export function DashboardExampleClient() {
                     <span className="font-mono text-[10px] font-bold uppercase text-muted-foreground">
                       Active Projects
                     </span>
-                    <span className="bevel-inset px-1.5 py-0.5 font-mono text-[9px] font-bold text-primary uppercase">
+                    <Badge variant="outline" className="font-mono text-[9px] py-0">
                       Q4 TARGET
-                    </span>
+                    </Badge>
                   </div>
                   <div className="flex items-baseline gap-2">
                     <span className="font-mono text-3xl font-bold tracking-tight text-foreground">
@@ -401,9 +401,9 @@ export function DashboardExampleClient() {
                     <span className="font-mono text-[10px] font-bold uppercase text-muted-foreground">
                       Open Issues
                     </span>
-                    <span className="bevel-inset bg-warning/20 text-warning px-1.5 py-0.5 font-mono text-[9px] font-bold uppercase">
+                    <Badge variant="warning" className="font-mono text-[9px] py-0">
                       ATTENTION
-                    </span>
+                    </Badge>
                   </div>
                   <div className="flex items-baseline gap-2">
                     <span className="font-mono text-3xl font-bold tracking-tight text-foreground">
@@ -544,19 +544,19 @@ export function DashboardExampleClient() {
                                     </TableCell>
                                     <TableCell>
                                       {task.priority === "high" && (
-                                        <span className="bevel-inset bg-destructive/15 text-destructive px-1.5 py-0.5 text-[9px] font-bold uppercase">
+                                        <Badge variant="destructive" className="text-[9px] py-0">
                                           HIGH
-                                        </span>
+                                        </Badge>
                                       )}
                                       {task.priority === "medium" && (
-                                        <span className="bevel-inset bg-warning/20 text-warning px-1.5 py-0.5 text-[9px] font-bold uppercase">
+                                        <Badge variant="warning" className="text-[9px] py-0">
                                           MEDIUM
-                                        </span>
+                                        </Badge>
                                       )}
                                       {task.priority === "low" && (
-                                        <span className="bevel-inset bg-muted text-muted-foreground px-1.5 py-0.5 text-[9px] font-bold uppercase">
+                                        <Badge variant="secondary" className="text-[9px] py-0 font-normal">
                                           LOW
-                                        </span>
+                                        </Badge>
                                       )}
                                     </TableCell>
                                     <TableCell>
@@ -780,9 +780,9 @@ export function DashboardExampleClient() {
                               <TableCell className="font-medium text-foreground">{t.title}</TableCell>
                               <TableCell className="text-muted-foreground">{t.category}</TableCell>
                               <TableCell>
-                                <span className="bevel-inset px-1.5 py-0.5 text-[9px] font-bold uppercase text-primary">
+                                <Badge variant="outline" className="text-[9px] py-0">
                                   {t.status}
-                                </span>
+                                </Badge>
                               </TableCell>
                             </TableRow>
                           ))}

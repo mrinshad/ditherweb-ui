@@ -22,6 +22,7 @@ export interface MenuProps {
   open?: boolean;
   defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
+  className?: string;
   children: React.ReactNode;
 }
 
@@ -29,6 +30,7 @@ export const Menu: React.FC<MenuProps> = ({
   open: controlledOpen,
   defaultOpen = false,
   onOpenChange,
+  className,
   children,
 }) => {
   const [uncontrolledOpen, setUncontrolledOpen] = React.useState(defaultOpen);
@@ -50,7 +52,7 @@ export const Menu: React.FC<MenuProps> = ({
 
   return (
     <MenuContext.Provider value={{ isOpen, setIsOpen, triggerRef, contentRef }}>
-      <div className="relative inline-block text-left">{children}</div>
+      <div className={cn("relative inline-block text-left", className)}>{children}</div>
     </MenuContext.Provider>
   );
 };
@@ -168,7 +170,7 @@ export const MenuContent = React.forwardRef<HTMLDivElement, MenuContentProps>(
       if (!isOpen || !contentRef.current) return;
       const timer = setTimeout(() => {
         const first = contentRef.current?.querySelector<HTMLElement>(
-          '[role="menuitem"]:not([aria-disabled="true"])'
+          '[role="menuitem"]:not([aria-disabled="true"]), [role="menuitemcheckbox"]:not([aria-disabled="true"]), [role="menuitemradio"]:not([aria-disabled="true"])'
         );
         first?.focus();
       }, 30);
@@ -200,7 +202,7 @@ export const MenuContent = React.forwardRef<HTMLDivElement, MenuContentProps>(
 
       const items = Array.from(
         contentRef.current?.querySelectorAll<HTMLElement>(
-          '[role="menuitem"]:not([aria-disabled="true"])'
+          '[role="menuitem"]:not([aria-disabled="true"]), [role="menuitemcheckbox"]:not([aria-disabled="true"]), [role="menuitemradio"]:not([aria-disabled="true"])'
         ) || []
       );
       const currentIndex = items.indexOf(document.activeElement as HTMLElement);
@@ -229,8 +231,8 @@ export const MenuContent = React.forwardRef<HTMLDivElement, MenuContentProps>(
         aria-orientation="vertical"
         onKeyDown={handleKeyDown}
         className={cn(
-          "absolute z-50 mt-1 min-w-[170px] select-none font-mono text-xs",
-          "bevel-raised bg-surface text-foreground shadow-hard-md border border-border p-1",
+          "absolute z-50 mt-1 min-w-[180px] select-none font-mono text-xs rounded-none",
+          "bg-surface text-foreground shadow-hard-md border-2 border-border-strong p-1",
           align === "start" ? "left-0" : "right-0",
           className
         )}
@@ -243,15 +245,48 @@ export const MenuContent = React.forwardRef<HTMLDivElement, MenuContentProps>(
 );
 MenuContent.displayName = "MenuContent";
 
+export type MenuLabelProps = React.HTMLAttributes<HTMLDivElement>;
+
+export const MenuLabel = React.forwardRef<HTMLDivElement, MenuLabelProps>(
+  ({ className, ...props }, ref) => {
+    return (
+      <div
+        ref={ref}
+        role="presentation"
+        className={cn(
+          "px-2 py-1 font-mono text-[10px] font-bold uppercase tracking-wider text-muted-foreground bg-muted/40 border-b border-border/60 mb-0.5 select-none",
+          className
+        )}
+        {...props}
+      />
+    );
+  }
+);
+MenuLabel.displayName = "MenuLabel";
+
 export interface MenuItemProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   shortcut?: string;
   icon?: React.ReactNode;
   disabled?: boolean;
+  selected?: boolean;
   onSelect?: () => void;
 }
 
 export const MenuItem = React.forwardRef<HTMLButtonElement, MenuItemProps>(
-  ({ className, shortcut, icon, disabled = false, onSelect, onClick, children, ...props }, ref) => {
+  (
+    {
+      className,
+      shortcut,
+      icon,
+      disabled = false,
+      selected = false,
+      onSelect,
+      onClick,
+      children,
+      ...props
+    },
+    ref
+  ) => {
     const context = React.useContext(MenuContext);
 
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -280,22 +315,33 @@ export const MenuItem = React.forwardRef<HTMLButtonElement, MenuItemProps>(
         role="menuitem"
         disabled={disabled}
         aria-disabled={disabled}
+        aria-selected={selected || undefined}
         onClick={handleClick}
         onKeyDown={handleKeyDown}
         className={cn(
-          "flex w-full items-center justify-between gap-3 px-2 py-1 text-left font-mono text-xs leading-none select-none",
-          "focus-visible:outline-none focus:bg-primary focus:text-primary-foreground hover:bg-primary hover:text-primary-foreground",
-          "disabled:opacity-50 disabled:pointer-events-none disabled:hover:bg-transparent disabled:hover:text-foreground",
+          "group flex w-full items-center justify-between gap-2.5 px-2 py-1.5 text-left font-mono text-xs leading-none select-none rounded-none transition-colors",
+          "focus-visible:outline-none",
+          "hover:bg-foreground hover:text-background focus:bg-foreground focus:text-background",
+          selected && "font-bold bg-muted/70 text-foreground border-l-2 border-foreground pl-1.5",
+          disabled && "opacity-40 cursor-not-allowed pointer-events-none hover:bg-transparent hover:text-foreground",
           className
         )}
         {...props}
       >
-        <span className="flex items-center gap-2 truncate">
-          {icon && <span className="h-3.5 w-3.5 flex-shrink-0" aria-hidden="true">{icon}</span>}
-          <span>{children}</span>
+        <span className="flex items-center gap-2 truncate min-w-0">
+          {icon ? (
+            <span className="h-3.5 w-3.5 flex-shrink-0 flex items-center justify-center" aria-hidden="true">
+              {icon}
+            </span>
+          ) : selected ? (
+            <span className="w-3 text-center font-bold text-[11px]" aria-hidden="true">
+              ▌
+            </span>
+          ) : null}
+          <span className="truncate">{children}</span>
         </span>
         {shortcut && (
-          <span className="text-[10px] text-muted-foreground group-hover:text-primary-foreground tracking-wider font-mono uppercase">
+          <span className="text-[10px] text-muted-foreground group-hover:text-background group-focus:text-background tracking-wider font-mono uppercase ml-auto pl-2">
             {shortcut}
           </span>
         )}
@@ -305,6 +351,64 @@ export const MenuItem = React.forwardRef<HTMLButtonElement, MenuItemProps>(
 );
 MenuItem.displayName = "MenuItem";
 
+export interface MenuCheckboxItemProps extends Omit<MenuItemProps, "role"> {
+  checked?: boolean;
+}
+
+export const MenuCheckboxItem = React.forwardRef<HTMLButtonElement, MenuCheckboxItemProps>(
+  ({ className, checked = false, children, ...props }, ref) => {
+    return (
+      <MenuItem
+        ref={ref}
+        role="menuitemcheckbox"
+        aria-checked={checked}
+        className={cn(checked && "font-bold", className)}
+        {...props}
+      >
+        <span className="flex items-center gap-2 truncate">
+          <span
+            aria-hidden="true"
+            className="w-4 shrink-0 text-center font-mono text-xs font-bold"
+          >
+            {checked ? "[✓]" : "[ ]"}
+          </span>
+          <span>{children}</span>
+        </span>
+      </MenuItem>
+    );
+  }
+);
+MenuCheckboxItem.displayName = "MenuCheckboxItem";
+
+export interface MenuRadioItemProps extends Omit<MenuItemProps, "role"> {
+  checked?: boolean;
+}
+
+export const MenuRadioItem = React.forwardRef<HTMLButtonElement, MenuRadioItemProps>(
+  ({ className, checked = false, children, ...props }, ref) => {
+    return (
+      <MenuItem
+        ref={ref}
+        role="menuitemradio"
+        aria-checked={checked}
+        className={cn(checked && "font-bold", className)}
+        {...props}
+      >
+        <span className="flex items-center gap-2 truncate">
+          <span
+            aria-hidden="true"
+            className="w-4 shrink-0 text-center font-mono text-xs font-bold"
+          >
+            {checked ? "●" : "○"}
+          </span>
+          <span>{children}</span>
+        </span>
+      </MenuItem>
+    );
+  }
+);
+MenuRadioItem.displayName = "MenuRadioItem";
+
 export type MenuSeparatorProps = React.HTMLAttributes<HTMLDivElement>;
 
 export const MenuSeparator = React.forwardRef<HTMLDivElement, MenuSeparatorProps>(
@@ -313,7 +417,7 @@ export const MenuSeparator = React.forwardRef<HTMLDivElement, MenuSeparatorProps
       <div
         ref={ref}
         role="separator"
-        className={cn("my-1 h-[1px] border-b border-border bg-border/50", className)}
+        className={cn("my-1 h-[1px] border-b border-border bg-border/60", className)}
         {...props}
       />
     );
@@ -394,8 +498,8 @@ export const SubMenuTrigger = React.forwardRef<HTMLButtonElement, SubMenuTrigger
         aria-expanded={subContext?.isSubOpen}
         onKeyDown={handleKeyDown}
         className={cn(
-          "flex w-full items-center justify-between gap-3 px-2 py-1 text-left font-mono text-xs leading-none select-none",
-          "focus-visible:outline-none focus:bg-primary focus:text-primary-foreground hover:bg-primary hover:text-primary-foreground",
+          "flex w-full items-center justify-between gap-2.5 px-2 py-1.5 text-left font-mono text-xs leading-none select-none rounded-none transition-colors",
+          "focus-visible:outline-none hover:bg-foreground hover:text-background focus:bg-foreground focus:text-background",
           className
         )}
         {...props}
@@ -454,8 +558,8 @@ export const SubMenuContent = React.forwardRef<HTMLDivElement, SubMenuContentPro
         aria-orientation="vertical"
         onKeyDown={handleKeyDown}
         className={cn(
-          "absolute left-full top-0 z-50 ml-0.5 min-w-[150px] select-none font-mono text-xs",
-          "bevel-raised bg-surface text-foreground shadow-hard-md border border-border p-1",
+          "absolute left-full top-0 z-50 ml-0.5 min-w-[160px] select-none font-mono text-xs rounded-none",
+          "bg-surface text-foreground shadow-hard-md border-2 border-border-strong p-1",
           className
         )}
         {...props}

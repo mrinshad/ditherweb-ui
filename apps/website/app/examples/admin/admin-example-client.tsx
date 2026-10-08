@@ -58,6 +58,11 @@ import {
   Alert,
   AlertTitle,
   AlertDescription,
+  Menu,
+  MenuTrigger,
+  MenuContent,
+  MenuLabel,
+  MenuRadioItem,
   cn,
 } from "@ditherweb/ui";
 
@@ -240,9 +245,9 @@ function AdminSidebar({
         >
           {state === "expanded" && (
             <div className="flex items-center gap-2 min-w-0">
-              <span className="bevel-inset bg-primary px-1.5 py-0.5 text-[9px] font-bold text-primary-foreground uppercase shrink-0">
+              <Badge variant="primary" className="text-[9px] py-0 px-1.5 shrink-0">
                 USER DIR
-              </span>
+              </Badge>
               <span className="font-bold text-foreground truncate text-xs">
                 SYS_ADMIN
               </span>
@@ -568,16 +573,16 @@ export function AdminExampleClient() {
             <span className="font-bold text-foreground uppercase tracking-wide">
               USER DIRECTORY
             </span>
-            <span className="bevel-inset bg-primary px-1.5 py-0.2 text-[9px] font-bold text-primary-foreground uppercase hidden md:inline-block">
+            <Badge variant="primary" className="text-[9px] py-0 hidden md:inline-flex">
               REFERENCE IMPLEMENTATION
-            </span>
+            </Badge>
           </div>
 
           <div className="flex items-center gap-2 font-mono text-[11px] text-muted-foreground">
             <span className="hidden sm:inline">Composed 100% from @ditherweb/ui primitives</span>
-            <span className="bevel-raised px-1.5 py-0.5 text-[10px] text-foreground font-bold select-none">
+            <Badge variant="outline" className="text-[10px] py-0">
               DOGFOODING
-            </span>
+            </Badge>
           </div>
         </div>
       </div>
@@ -606,7 +611,7 @@ export function AdminExampleClient() {
             </div>
 
             {/* Content Container */}
-            <div className="mx-auto max-w-7xl w-full px-4 py-6 sm:px-6 lg:px-8 space-y-6 flex-1">
+            <div className="mx-auto max-w-7xl w-full px-4 py-6 sm:px-6 lg:px-8 space-y-6 flex-1 min-w-0">
               {/* Page Title & Top Actions */}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border pb-4">
                 <div>
@@ -706,9 +711,9 @@ export function AdminExampleClient() {
 
               {/* Filters & Search Toolbar */}
               <div className="border border-border bg-surface p-3 space-y-3 font-mono text-xs">
-                <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 items-center">
                   {/* Search Input */}
-                  <div className="sm:col-span-6">
+                  <div className="lg:col-span-6 min-w-0">
                     <label htmlFor="user-directory-search" className="sr-only">
                       Search accounts
                     </label>
@@ -722,38 +727,99 @@ export function AdminExampleClient() {
                   </div>
 
                   {/* Role Select Filter */}
-                  <div className="sm:col-span-3">
+                  <div className="lg:col-span-3 min-w-0">
                     <label htmlFor="filter-role-select" className="sr-only">
                       Filter by role
                     </label>
-                    <Select
-                      id="filter-role-select"
-                      value={roleFilter}
-                      onChange={(e) => setRoleFilter(e.target.value)}
-                    >
-                      <option value="ALL">All Roles ({users.length})</option>
-                      <option value="Administrator">Administrator</option>
-                      <option value="Senior Engineer">Senior Engineer</option>
-                      <option value="Product Designer">Product Designer</option>
-                      <option value="Security Auditor">Security Auditor</option>
-                    </Select>
+                    <Menu className="w-full min-w-0">
+                      <MenuTrigger
+                        id="filter-role-select"
+                        className="h-8 px-2.5 py-1 text-xs font-mono bevel-raised bg-bevel-face text-foreground flex items-center justify-between w-full min-w-0 select-none"
+                      >
+                        <span className="truncate">
+                          Role: {roleFilter === "ALL" ? `All Roles (${users.length})` : roleFilter}
+                        </span>
+                        <span className="text-[10px] ml-1 shrink-0" aria-hidden="true">▾</span>
+                      </MenuTrigger>
+                      <MenuContent className="w-56 font-mono text-xs">
+                        <MenuLabel>Filter by Role</MenuLabel>
+                        <MenuRadioItem
+                          checked={roleFilter === "ALL"}
+                          onSelect={() => setRoleFilter("ALL")}
+                        >
+                          All Roles ({users.length})
+                        </MenuRadioItem>
+                        <MenuRadioItem
+                          checked={roleFilter === "Administrator"}
+                          onSelect={() => setRoleFilter("Administrator")}
+                        >
+                          Administrator
+                        </MenuRadioItem>
+                        <MenuRadioItem
+                          checked={roleFilter === "Senior Engineer"}
+                          onSelect={() => setRoleFilter("Senior Engineer")}
+                        >
+                          Senior Engineer
+                        </MenuRadioItem>
+                        <MenuRadioItem
+                          checked={roleFilter === "Product Designer"}
+                          onSelect={() => setRoleFilter("Product Designer")}
+                        >
+                          Product Designer
+                        </MenuRadioItem>
+                        <MenuRadioItem
+                          checked={roleFilter === "Security Auditor"}
+                          onSelect={() => setRoleFilter("Security Auditor")}
+                        >
+                          Security Auditor
+                        </MenuRadioItem>
+                      </MenuContent>
+                    </Menu>
                   </div>
 
                   {/* Status Select Filter */}
-                  <div className="sm:col-span-3">
+                  <div className="lg:col-span-3 min-w-0">
                     <label htmlFor="filter-status-select" className="sr-only">
                       Filter by status
                     </label>
-                    <Select
-                      id="filter-status-select"
-                      value={statusFilter}
-                      onChange={(e) => setStatusFilter(e.target.value)}
-                    >
-                      <option value="ALL">All Statuses ({users.length})</option>
-                      <option value="active">Active ({activeCount})</option>
-                      <option value="pending">Pending ({pendingCount})</option>
-                      <option value="suspended">Suspended ({suspendedCount})</option>
-                    </Select>
+                    <Menu className="w-full min-w-0">
+                      <MenuTrigger
+                        id="filter-status-select"
+                        className="h-8 px-2.5 py-1 text-xs font-mono bevel-raised bg-bevel-face text-foreground flex items-center justify-between w-full min-w-0 select-none"
+                      >
+                        <span className="truncate">
+                          Status: {statusFilter === "ALL" ? `All Statuses (${users.length})` : statusFilter.toUpperCase()}
+                        </span>
+                        <span className="text-[10px] ml-1 shrink-0" aria-hidden="true">▾</span>
+                      </MenuTrigger>
+                      <MenuContent className="w-52 font-mono text-xs">
+                        <MenuLabel>Filter by Status</MenuLabel>
+                        <MenuRadioItem
+                          checked={statusFilter === "ALL"}
+                          onSelect={() => setStatusFilter("ALL")}
+                        >
+                          All Statuses ({users.length})
+                        </MenuRadioItem>
+                        <MenuRadioItem
+                          checked={statusFilter === "active"}
+                          onSelect={() => setStatusFilter("active")}
+                        >
+                          Active ({activeCount})
+                        </MenuRadioItem>
+                        <MenuRadioItem
+                          checked={statusFilter === "pending"}
+                          onSelect={() => setStatusFilter("pending")}
+                        >
+                          Pending ({pendingCount})
+                        </MenuRadioItem>
+                        <MenuRadioItem
+                          checked={statusFilter === "suspended"}
+                          onSelect={() => setStatusFilter("suspended")}
+                        >
+                          Suspended ({suspendedCount})
+                        </MenuRadioItem>
+                      </MenuContent>
+                    </Menu>
                   </div>
                 </div>
 
@@ -888,9 +954,9 @@ export function AdminExampleClient() {
                                   </div>
                                 </TableCell>
                                 <TableCell>
-                                  <span className="bevel-inset bg-muted px-1.5 py-0.5 text-[10px] font-bold text-foreground">
+                                  <Badge variant="secondary" className="text-[10px] py-0 px-1.5 font-normal">
                                     {user.role}
-                                  </span>
+                                  </Badge>
                                 </TableCell>
                                 <TableCell className="text-muted-foreground">
                                   {user.team}
@@ -997,9 +1063,9 @@ export function AdminExampleClient() {
                                 </div>
                               </div>
                             </div>
-                            <span className="bevel-inset px-2 py-0.5 text-[10px] font-bold uppercase text-primary">
+                            <Badge variant="outline" className="text-[10px] py-0">
                               {selectedUser.role}
-                            </span>
+                            </Badge>
                           </div>
 
                           <DescriptionList layout="horizontal" className="font-mono text-xs space-y-2.5">
@@ -1008,9 +1074,9 @@ export function AdminExampleClient() {
                                 Repository Code:
                               </DescriptionTerm>
                               <DescriptionDetails className="text-foreground">
-                                <span className="bevel-raised px-1.5 py-0.2 text-[10px] font-bold text-success mr-1">
+                                <Badge variant="success" className="text-[10px] py-0 mr-1.5">
                                   READ / WRITE
-                                </span>
+                                </Badge>
                                 Full branch push and PR creation
                               </DescriptionDetails>
                             </DescriptionItem>
@@ -1021,13 +1087,13 @@ export function AdminExampleClient() {
                               </DescriptionTerm>
                               <DescriptionDetails className="text-foreground">
                                 {selectedUser.role === "Administrator" || selectedUser.role === "Senior Engineer" ? (
-                                  <span className="bevel-raised px-1.5 py-0.2 text-[10px] font-bold text-success mr-1">
+                                  <Badge variant="success" className="text-[10px] py-0 mr-1.5">
                                     AUTHORIZED
-                                  </span>
+                                  </Badge>
                                 ) : (
-                                  <span className="bevel-inset px-1.5 py-0.2 text-[10px] font-bold text-muted-foreground mr-1">
+                                  <Badge variant="secondary" className="text-[10px] py-0 mr-1.5">
                                     RESTRICTED
-                                  </span>
+                                  </Badge>
                                 )}
                                 Stage gate pipeline execution
                               </DescriptionDetails>
@@ -1039,13 +1105,13 @@ export function AdminExampleClient() {
                               </DescriptionTerm>
                               <DescriptionDetails className="text-foreground">
                                 {selectedUser.role === "Administrator" ? (
-                                  <span className="bevel-raised px-1.5 py-0.2 text-[10px] font-bold text-success mr-1">
+                                  <Badge variant="success" className="text-[10px] py-0 mr-1.5">
                                     FULL ACCESS
-                                  </span>
+                                  </Badge>
                                 ) : (
-                                  <span className="bevel-inset px-1.5 py-0.2 text-[10px] font-bold text-muted-foreground mr-1">
+                                  <Badge variant="secondary" className="text-[10px] py-0 mr-1.5">
                                     NO ACCESS
-                                  </span>
+                                  </Badge>
                                 )}
                                 User provisioning &amp; role assignment
                               </DescriptionDetails>
@@ -1056,9 +1122,9 @@ export function AdminExampleClient() {
                                 Governance Audits:
                               </DescriptionTerm>
                               <DescriptionDetails className="text-foreground">
-                                <span className="bevel-raised px-1.5 py-0.2 text-[10px] font-bold text-info mr-1">
+                                <Badge variant="info" className="text-[10px] py-0 mr-1.5">
                                   AUDIT LOGGED
-                                </span>
+                                </Badge>
                                 Read &amp; export security logs
                               </DescriptionDetails>
                             </DescriptionItem>
@@ -1150,9 +1216,9 @@ export function AdminExampleClient() {
 
             <DialogBody className="p-4 space-y-4 text-xs">
               {addFormError && (
-                <div className="bevel-inset bg-destructive/15 text-destructive p-2 font-bold text-[11px]">
-                  {addFormError}
-                </div>
+                <Alert variant="destructive" className="py-2 text-xs">
+                  <AlertDescription>{addFormError}</AlertDescription>
+                </Alert>
               )}
 
               <div className="space-y-1">

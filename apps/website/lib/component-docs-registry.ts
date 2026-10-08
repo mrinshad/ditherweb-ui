@@ -1526,16 +1526,81 @@ export function TaskbarDemo() {
     name: "Menu",
     category: "Desktop & Pixel",
     description:
-      "Dropdown flyout menu with keyboard arrow navigation, shortcuts, and separators.",
+      "A retro-styled workstation dropdown flyout menu featuring hard borders, stepped shadow, keyboard arrow navigation, fixed-width indicator gutters, and monochrome inverted video highlights.",
     status: "stable",
-    importStatement: `import { Menu } from "@ditherweb/ui";`,
-    usageSnippet: `import { Menu } from "@ditherweb/ui";
+    importStatement: `import {
+  Menu,
+  MenuTrigger,
+  MenuContent,
+  MenuItem,
+  MenuLabel,
+  MenuCheckboxItem,
+  MenuRadioItem,
+  MenuSeparator,
+  SubMenu,
+  SubMenuTrigger,
+  SubMenuContent,
+} from "@ditherweb/ui";`,
+    usageSnippet: `import {
+  Menu,
+  MenuTrigger,
+  MenuContent,
+  MenuItem,
+  MenuLabel,
+  MenuCheckboxItem,
+  MenuRadioItem,
+  MenuSeparator,
+} from "@ditherweb/ui";
+import { useState } from "react";
 
 export function MenuDemo() {
-  return <Menu />;
+  const [showGrid, setShowGrid] = useState(true);
+  const [resolution, setResolution] = useState("VGA");
+
+  return (
+    <Menu>
+      <MenuTrigger className="h-8 px-3 text-xs bevel-raised">
+        Options Menu ▾
+      </MenuTrigger>
+      <MenuContent className="w-56">
+        <MenuLabel>Display &amp; View</MenuLabel>
+        <MenuCheckboxItem checked={showGrid} onSelect={() => setShowGrid(!showGrid)}>
+          Show Grid Lines
+        </MenuCheckboxItem>
+        <MenuSeparator />
+        <MenuLabel>Resolution</MenuLabel>
+        <MenuRadioItem checked={resolution === "VGA"} onSelect={() => setResolution("VGA")}>
+          640 × 480 VGA
+        </MenuRadioItem>
+        <MenuRadioItem checked={resolution === "SVGA"} onSelect={() => setResolution("SVGA")}>
+          800 × 600 SVGA
+        </MenuRadioItem>
+        <MenuSeparator />
+        <MenuItem shortcut="Ctrl+S">Save Preset</MenuItem>
+        <MenuItem disabled>System Reboot (Locked)</MenuItem>
+      </MenuContent>
+    </Menu>
+  );
 }`,
-    props: [],
-    accessibilityNotes: ["Carries role='menu' with menuitem children."],
+    props: [
+      {
+        name: "align",
+        type: '"start" | "end"',
+        default: '"start"',
+        description: "Alignment edge of the menu content relative to the trigger button.",
+      },
+    ],
+    accessibilityNotes: [
+      "Carries role='menu' with role='menuitem', role='menuitemcheckbox', and role='menuitemradio' children.",
+      "Supports ArrowDown and ArrowUp keyboard navigation with cyclic wrapping.",
+      "Supports Escape key to dismiss menu and restores focus to trigger button.",
+      "First enabled item receives auto-focus upon opening.",
+    ],
+    compositionNotes: [
+      "Use MenuTrigger inside headers, taskbars, or filter controls.",
+      "Use MenuLabel to organize long command palettes into distinct retro-styled sections.",
+      "Compose with SubMenu for cascading workstation utility trees.",
+    ],
   },
 
   "context-menu": {
@@ -1543,26 +1608,54 @@ export function MenuDemo() {
     name: "ContextMenu",
     category: "Desktop & Pixel",
     description:
-      "Right-click contextual desktop menu positioned at cursor coordinates.",
+      "A right-click contextual desktop popup menu with cursor coordinate positioning, viewport collision clamping, and retro styling.",
     status: "stable",
-    importStatement: `import { ContextMenu, ContextMenuTrigger, ContextMenuContent, ContextMenuItem } from "@ditherweb/ui";`,
-    usageSnippet: `import { ContextMenu, ContextMenuTrigger, ContextMenuContent, ContextMenuItem } from "@ditherweb/ui";
+    importStatement: `import {
+  ContextMenu,
+  ContextMenuTrigger,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuLabel,
+  ContextMenuSeparator,
+} from "@ditherweb/ui";`,
+    usageSnippet: `import {
+  ContextMenu,
+  ContextMenuTrigger,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuLabel,
+  ContextMenuSeparator,
+} from "@ditherweb/ui";
 
 export function ContextMenuDemo() {
   return (
     <ContextMenu>
-      <ContextMenuTrigger className="p-8 border border-border">
-        Right click this area
+      <ContextMenuTrigger className="w-full h-32 border-2 border-dashed border-border flex items-center justify-center">
+        Right-click this canvas
       </ContextMenuTrigger>
-      <ContextMenuContent>
-        <ContextMenuItem>View Properties</ContextMenuItem>
-        <ContextMenuItem>Refresh Desktop</ContextMenuItem>
+      <ContextMenuContent className="w-48">
+        <ContextMenuLabel>Canvas Actions</ContextMenuLabel>
+        <ContextMenuItem shortcut="Ctrl+R">Refresh Buffer</ContextMenuItem>
+        <ContextMenuItem>Invert Palette</ContextMenuItem>
+        <ContextMenuSeparator />
+        <ContextMenuItem disabled>Lock Workspace</ContextMenuItem>
       </ContextMenuContent>
     </ContextMenu>
   );
 }`,
-    props: [],
-    accessibilityNotes: ["Triggered via onContextMenu or keyboard Shift+F10."],
+    props: [
+      {
+        name: "disabled",
+        type: "boolean",
+        default: "false",
+        description: "Disables context menu interception and preserves default browser menu.",
+      },
+    ],
+    accessibilityNotes: [
+      "Triggered via onContextMenu or keyboard Shift+F10 / ContextMenu key on focused trigger.",
+      "Supports ArrowDown and ArrowUp keyboard navigation with cyclic wrapping.",
+      "Supports Escape key to dismiss context menu and restores focus to trigger element.",
+    ],
   },
 
   desktop: {

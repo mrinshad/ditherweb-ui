@@ -64,6 +64,23 @@ import {
   SidebarItem,
   SidebarFooter,
   SidebarTrigger,
+  Menu,
+  MenuTrigger,
+  MenuContent,
+  MenuItem,
+  MenuLabel,
+  MenuCheckboxItem,
+  MenuRadioItem,
+  MenuSeparator,
+  SubMenu,
+  SubMenuTrigger,
+  SubMenuContent,
+  ContextMenu,
+  ContextMenuTrigger,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuLabel,
+  ContextMenuSeparator,
 } from "@ditherweb/ui";
 
 export interface ComponentPreviewProps {
@@ -543,6 +560,63 @@ function renderPreviewContent(slug: string, state: PreviewState) {
             </div>
           </div>
         </SidebarProvider>
+      );
+
+    case "menu":
+      return (
+        <div className="flex flex-col items-center justify-center p-8 gap-4 min-h-[300px]">
+          <Menu>
+            <MenuTrigger id="demo-menu-trigger" className="h-8 px-3 text-xs bevel-raised">
+              Options Menu ▾
+            </MenuTrigger>
+            <MenuContent id="demo-menu-content" className="w-56" align="start">
+              <MenuLabel>Display &amp; View</MenuLabel>
+              <MenuCheckboxItem id="menu-check-grid" checked={true}>Show Grid Lines</MenuCheckboxItem>
+              <MenuCheckboxItem id="menu-check-crt" checked={false}>Monochrome CRT</MenuCheckboxItem>
+              <MenuSeparator />
+              <MenuLabel>Resolution</MenuLabel>
+              <MenuRadioItem id="menu-radio-vga" checked={true}>640 × 480 VGA</MenuRadioItem>
+              <MenuRadioItem id="menu-radio-svga" checked={false}>800 × 600 SVGA</MenuRadioItem>
+              <MenuSeparator />
+              <MenuItem id="menu-item-save" shortcut="Ctrl+S">Save Preset</MenuItem>
+              <SubMenu>
+                <SubMenuTrigger id="menu-item-submenu">More Utilities</SubMenuTrigger>
+                <SubMenuContent id="demo-submenu-content">
+                  <MenuItem>Calibrate Phosphor</MenuItem>
+                  <MenuItem>Dither Palette Map</MenuItem>
+                  <MenuItem disabled>Hardware Accelerate</MenuItem>
+                </SubMenuContent>
+              </SubMenu>
+              <MenuSeparator />
+              <MenuItem id="menu-item-disabled" disabled>System Reboot (Locked)</MenuItem>
+            </MenuContent>
+          </Menu>
+          <span className="text-xs text-muted-foreground font-mono">
+            Click trigger or press Enter/Space to open Ditherweb Menu dropdown
+          </span>
+        </div>
+      );
+
+    case "context-menu":
+      return (
+        <div className="flex flex-col items-center justify-center p-6 gap-2">
+          <ContextMenu>
+            <ContextMenuTrigger
+              id="demo-context-trigger"
+              className="w-full max-w-sm h-32 border-2 border-dashed border-border bg-surface flex flex-col items-center justify-center p-4 text-center cursor-context-menu select-none"
+            >
+              <span className="font-bold text-xs uppercase text-foreground">Workstation Canvas</span>
+              <span className="text-[11px] text-muted-foreground mt-1">Right-click anywhere inside this box</span>
+            </ContextMenuTrigger>
+            <ContextMenuContent id="demo-context-content" className="w-48">
+              <ContextMenuLabel>Canvas Actions</ContextMenuLabel>
+              <ContextMenuItem shortcut="Ctrl+R">Refresh Buffer</ContextMenuItem>
+              <ContextMenuItem>Invert Palette</ContextMenuItem>
+              <ContextMenuSeparator />
+              <ContextMenuItem disabled>Lock Workspace</ContextMenuItem>
+            </ContextMenuContent>
+          </ContextMenu>
+        </div>
       );
 
     default:

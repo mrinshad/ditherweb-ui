@@ -412,16 +412,16 @@ export function TerminalExampleClient() {
             <span className="font-bold text-foreground uppercase tracking-wide">
               BYTEWORKS WORKSTATION
             </span>
-            <span className="bevel-inset bg-primary px-1.5 py-0.2 text-[9px] font-bold text-primary-foreground uppercase hidden md:inline-block">
+            <Badge variant="primary" className="text-[9px] py-0 hidden md:inline-flex">
               CLASSIC WORKSTATION
-            </span>
+            </Badge>
           </div>
 
           <div className="flex items-center gap-2 font-mono text-[11px] text-muted-foreground">
             <span className="hidden sm:inline">Composed 100% from @ditherweb/ui primitives</span>
-            <span className="bevel-raised px-1.5 py-0.5 text-[10px] text-foreground font-bold select-none">
+            <Badge variant="outline" className="text-[10px] py-0">
               DOGFOODING
-            </span>
+            </Badge>
           </div>
         </div>
       </div>
