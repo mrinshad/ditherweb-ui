@@ -59,6 +59,21 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
+  const exampleRoutes: MetadataRoute.Sitemap = [
+    {
+      url: `${baseUrl}/examples`,
+      lastModified,
+      changeFrequency: "weekly",
+      priority: 0.85,
+    },
+    {
+      url: `${baseUrl}/examples/dashboard`,
+      lastModified,
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
+  ];
+
   const componentRoutes: MetadataRoute.Sitemap = Object.keys(COMPONENT_DOCS_REGISTRY).map(
     (slug) => ({
       url: `${baseUrl}/components/${slug}`,
@@ -68,6 +83,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }),
   );
 
-  return [...coreRoutes, ...guideRoutes, ...componentRoutes];
+  return [...coreRoutes, ...guideRoutes, ...exampleRoutes, ...componentRoutes];
 }
 
