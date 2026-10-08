@@ -28,7 +28,7 @@ export default function DocsPage() {
         <div className="space-y-4">
           <div className="flex flex-wrap items-center gap-2">
             <Badge variant="primary">Documentation</Badge>
-            <span className="text-xs text-muted-foreground">Version 0.1.0-alpha • 96 Production Primitives</span>
+            <span className="text-xs text-muted-foreground">Version 0.1.0-alpha • 97 Production Primitives</span>
           </div>
           <h1 className="text-3xl sm:text-4xl font-bold uppercase tracking-tight text-foreground">
             Documentation

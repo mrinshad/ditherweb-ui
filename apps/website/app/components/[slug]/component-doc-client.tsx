@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Badge, Card, CardHeader, CardTitle, CardContent, Separator } from "@ditherweb/ui";
-import { DocsLayout } from "@/components/docs/docs-layout";
+import { ComponentsLayout } from "@/components/docs/components-layout";
 import { CodeBlock } from "@/components/docs/code-block";
 import { ApiTable } from "@/components/docs/api-table";
 import { ComponentPreview } from "@/components/docs/component-preview";
@@ -14,9 +14,8 @@ export interface ComponentDocClientProps {
 
 export function ComponentDocClient({ entry }: ComponentDocClientProps) {
   return (
-    <DocsLayout
+    <ComponentsLayout
       breadcrumbs={[
-        { label: "Components", href: "/components" },
         { label: entry.category },
         { label: entry.name },
       ]}
@@ -165,6 +164,6 @@ export function ComponentDocClient({ entry }: ComponentDocClientProps) {
           </Link>
         </div>
       </div>
-    </DocsLayout>
+    </ComponentsLayout>
   );
 }

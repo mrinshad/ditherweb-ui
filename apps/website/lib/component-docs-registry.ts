@@ -908,6 +908,90 @@ export function MenubarDemo() {
     ],
   },
 
+  sidebar: {
+    slug: "sidebar",
+    name: "Sidebar",
+    category: "Navigation",
+    description:
+      "A composable, accessible application sidebar navigation system supporting expanded desktop, collapsed rail, and mobile drawer modes.",
+    status: "stable",
+    importStatement: `import {
+  SidebarProvider,
+  Sidebar,
+  SidebarHeader,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupLabel,
+  SidebarItem,
+  SidebarFooter,
+  SidebarRail,
+  SidebarTrigger,
+} from "@ditherweb/ui";`,
+    usageSnippet: `import {
+  SidebarProvider,
+  Sidebar,
+  SidebarHeader,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupLabel,
+  SidebarItem,
+  SidebarFooter,
+  SidebarRail,
+  SidebarTrigger,
+} from "@ditherweb/ui";
+
+export function SidebarDemo() {
+  return (
+    <SidebarProvider defaultOpen>
+      <div className="flex h-96 w-full border border-border bg-background">
+        <Sidebar>
+          <SidebarHeader>
+            <div className="flex items-center justify-between">
+              <span className="font-bold">DitherApp</span>
+              <SidebarTrigger />
+            </div>
+          </SidebarHeader>
+          <SidebarContent>
+            <SidebarGroup>
+              <SidebarGroupLabel>Workspace</SidebarGroupLabel>
+              <SidebarItem href="#dashboard" active>Dashboard</SidebarItem>
+              <SidebarItem href="#projects" badge="4">Projects</SidebarItem>
+              <SidebarItem href="#settings">Settings</SidebarItem>
+            </SidebarGroup>
+          </SidebarContent>
+          <SidebarFooter>
+            <span className="text-muted-foreground">v0.1.0</span>
+          </SidebarFooter>
+          <SidebarRail />
+        </Sidebar>
+        <main className="flex-1 p-6 font-mono text-xs text-muted-foreground">
+          Workspace Main Surface
+        </main>
+      </div>
+    </SidebarProvider>
+  );
+}`,
+    props: [
+      {
+        name: "collapsible",
+        type: '"icon" | "offcanvas" | "none"',
+        default: '"icon"',
+        description: "Desktop collapsing strategy.",
+      },
+      {
+        name: "side",
+        type: '"left" | "right"',
+        default: '"left"',
+        description: "Docking edge of the viewport.",
+      },
+    ],
+    accessibilityNotes: [
+      "W3C Landmark: Renders semantic <aside aria-label='Sidebar navigation'>.",
+      "Mobile drawer manages focus trap, body scroll-lock, and Escape dismissal.",
+      "Collapsed rail retains accessible names via assistive labels and tooltips.",
+    ],
+  },
+
   // =========================================================================
   // DATA & CONTENT PRIMITIVES
   // =========================================================================
@@ -1817,7 +1901,7 @@ export function ScanlineDemo() {
   "pixel-text": {
     slug: "pixel-text",
     name: "PixelText",
-    category: "Typography",
+    category: "Effects & Polish",
     description:
       "A bitmap-style pixel font presentation component with drop shadow emboss effects.",
     status: "stable",
@@ -1863,23 +1947,6 @@ export function BlinkCursorDemo() {
 }`,
     props: [],
     accessibilityNotes: ["Aria-hidden decorative cursor."],
-  },
-
-  "matrix-rain": {
-    slug: "matrix-rain",
-    name: "MatrixRain",
-    category: "Effects & Polish",
-    description:
-      "A falling green digital rain canvas animation inspired by classic sci-fi screensavers.",
-    status: "stable",
-    importStatement: `import { MatrixRain } from "@ditherweb/ui";`,
-    usageSnippet: `import { MatrixRain } from "@ditherweb/ui";
-
-export function MatrixRainDemo() {
-  return <MatrixRain className="h-48 w-full" />;
-}`,
-    props: [],
-    accessibilityNotes: ["Canvas carries role='img' and aria-label."],
   },
 
   // =========================================================================

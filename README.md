@@ -34,7 +34,7 @@ Ditherweb is structured as an npm workspace monorepo with strict architectural s
 ditherweb/
 ├── packages/
 │   └── ui/                  → Reusable Ditherweb UI library (@ditherweb/ui)
-│       ├── src/components/  → 96 primitives (10 Core, 8 Typography, 8 Layout, 10 Forms/Selection, 10 Surfaces/Feedback, 10 Overlays, 10 Navigation/Data, 10 Classic Web, 10 Desktop/Pixel, 10 Advanced Effects/Polish)
+│       ├── src/components/  → 97 primitives (10 Core, 8 Typography, 8 Layout, 10 Forms/Selection, 10 Surfaces/Feedback, 10 Overlays, 11 Navigation/Data, 10 Classic Web, 10 Desktop/Pixel, 10 Advanced Effects/Polish)
 │       ├── src/styles/      → Design tokens, bevels, procedural dither patterns
 │       ├── src/lib/utils.ts → Utility helpers (cn)
 │       └── src/index.ts     → Public library entrypoint

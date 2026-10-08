@@ -55,6 +55,15 @@ import {
   Dither,
   type DitherPattern,
   CRT,
+  SidebarProvider,
+  Sidebar,
+  SidebarHeader,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupLabel,
+  SidebarItem,
+  SidebarFooter,
+  SidebarTrigger,
 } from "@ditherweb/ui";
 
 export interface ComponentPreviewProps {
@@ -505,6 +514,35 @@ function renderPreviewContent(slug: string, state: PreviewState) {
             <p className="text-muted-foreground">Conventional Memory: 640 KB Base + 15,360 KB Extended.</p>
           </WindowContent>
         </Window>
+      );
+
+    case "sidebar":
+      return (
+        <SidebarProvider defaultOpen>
+          <div className="flex h-56 w-full max-w-md border border-border bg-background">
+            <Sidebar className="h-full static">
+              <SidebarHeader>
+                <div className="flex items-center justify-between">
+                  <span className="font-bold">App</span>
+                  <SidebarTrigger />
+                </div>
+              </SidebarHeader>
+              <SidebarContent>
+                <SidebarGroup>
+                  <SidebarGroupLabel>Menu</SidebarGroupLabel>
+                  <SidebarItem href="#overview" active icon={<span>⌂</span>}>Overview</SidebarItem>
+                  <SidebarItem href="#items" badge="3" icon={<span>▣</span>}>Items</SidebarItem>
+                </SidebarGroup>
+              </SidebarContent>
+              <SidebarFooter>
+                <span className="text-[10px] text-muted-foreground">Status: OK</span>
+              </SidebarFooter>
+            </Sidebar>
+            <div className="flex-1 p-4 flex items-center justify-center text-xs text-muted-foreground">
+              Main Canvas
+            </div>
+          </div>
+        </SidebarProvider>
       );
 
     default:
