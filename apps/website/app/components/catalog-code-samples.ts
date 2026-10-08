@@ -930,5 +930,258 @@ const treeData: TreeNodeData[] = [
   </WebDirectoryGrid>
 </WebDirectory>`,
   },
+  "demo-window": {
+    badge: "@ditherweb/ui/window",
+    code: `import {
+  Window,
+  WindowTitleBar,
+  WindowTitle,
+  WindowControls,
+  WindowContent,
+  WindowFooter,
+  WindowStatusBar,
+  WindowStatusItem,
+  Button,
+} from "@ditherweb/ui";
+
+<Window active size="md">
+  <WindowTitleBar active>
+    <WindowTitle>DIALUP_MANAGER.EXE</WindowTitle>
+    <WindowControls onMinimize={() => {}} onMaximize={() => {}} onClose={() => {}} />
+  </WindowTitleBar>
+  <WindowContent>
+    <p>Network adapter initialized on COM3 (57600 baud).</p>
+  </WindowContent>
+  <WindowFooter>
+    <Button variant="primary" size="sm">Connect</Button>
+  </WindowFooter>
+  <WindowStatusBar>
+    <WindowStatusItem sunken>READY</WindowStatusItem>
+    <WindowStatusItem sunken>LINE 1</WindowStatusItem>
+  </WindowStatusBar>
+</Window>`,
+  },
+  "demo-window-titlebar": {
+    badge: "@ditherweb/ui/window-titlebar",
+    code: `import { WindowTitleBar, WindowTitle, WindowIcon, WindowControls } from "@ditherweb/ui";
+
+// Active titlebar with high-contrast background
+<WindowTitleBar active>
+  <WindowIcon />
+  <WindowTitle>CONFIG.SYS [ACTIVE]</WindowTitle>
+  <WindowControls />
+</WindowTitleBar>
+
+// Inactive titlebar with muted sunken contrast
+<WindowTitleBar active={false}>
+  <WindowIcon />
+  <WindowTitle>AUTOEXEC.BAT [INACTIVE]</WindowTitle>
+  <WindowControls disabled />
+</WindowTitleBar>`,
+  },
+  "demo-window-controls": {
+    badge: "@ditherweb/ui/window-controls",
+    code: `import { WindowControls } from "@ditherweb/ui";
+
+<WindowControls
+  isMaximized={false}
+  onMinimize={() => console.log("Minimized")}
+  onMaximize={() => console.log("Maximized")}
+  onClose={() => console.log("Closed")}
+/>`,
+  },
+  "demo-taskbar": {
+    badge: "@ditherweb/ui/taskbar",
+    code: `import {
+  Taskbar,
+  TaskbarStart,
+  TaskbarTasks,
+  TaskbarTask,
+  TaskbarStatus,
+  TaskbarClock,
+} from "@ditherweb/ui";
+
+<Taskbar>
+  <TaskbarStart active={false}>START</TaskbarStart>
+  <TaskbarTasks>
+    <TaskbarTask active>TERMINAL.EXE</TaskbarTask>
+    <TaskbarTask active={false}>PAINT.BMP</TaskbarTask>
+    <TaskbarTask active={false}>BROWSER.HTM</TaskbarTask>
+  </TaskbarTasks>
+  <TaskbarStatus>
+    <span>100% DISK</span>
+    <TaskbarClock />
+  </TaskbarStatus>
+</Taskbar>`,
+  },
+  "demo-menu": {
+    badge: "@ditherweb/ui/menu",
+    code: `import {
+  MenuBar,
+  Menu,
+  MenuTrigger,
+  MenuContent,
+  MenuItem,
+  MenuSeparator,
+} from "@ditherweb/ui";
+
+<MenuBar>
+  <Menu>
+    <MenuTrigger>File</MenuTrigger>
+    <MenuContent>
+      <MenuItem shortcut="Ctrl+N">New Project</MenuItem>
+      <MenuItem shortcut="Ctrl+O">Open Sector...</MenuItem>
+      <MenuSeparator />
+      <MenuItem shortcut="Ctrl+S">Save Binary</MenuItem>
+      <MenuItem disabled>Export to Tape</MenuItem>
+      <MenuSeparator />
+      <MenuItem shortcut="Alt+F4">Exit</MenuItem>
+    </MenuContent>
+  </Menu>
+  <Menu>
+    <MenuTrigger>Edit</MenuTrigger>
+    <MenuContent>
+      <MenuItem shortcut="Ctrl+Z">Undo</MenuItem>
+      <MenuItem shortcut="Ctrl+Y">Redo</MenuItem>
+    </MenuContent>
+  </Menu>
+</MenuBar>`,
+  },
+  "demo-context-menu": {
+    badge: "@ditherweb/ui/context-menu",
+    code: `import {
+  ContextMenu,
+  ContextMenuTrigger,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuSeparator,
+  ContextMenuLabel,
+} from "@ditherweb/ui";
+
+<ContextMenu>
+  <ContextMenuTrigger className="p-6 border border-dashed border-border text-center">
+    Right click or press Shift+F10 anywhere in this area
+  </ContextMenuTrigger>
+  <ContextMenuContent>
+    <ContextMenuLabel>Desktop Actions</ContextMenuLabel>
+    <ContextMenuItem shortcut="Ctrl+R">Refresh Canvas</ContextMenuItem>
+    <ContextMenuItem>Arrange Icons</ContextMenuItem>
+    <ContextMenuSeparator />
+    <ContextMenuItem>Create Shortcut</ContextMenuItem>
+    <ContextMenuItem disabled>Delete Sector</ContextMenuItem>
+    <ContextMenuSeparator />
+    <ContextMenuItem>Properties</ContextMenuItem>
+  </ContextMenuContent>
+</ContextMenu>`,
+  },
+  "demo-desktop": {
+    badge: "@ditherweb/ui/desktop",
+    code: `import {
+  Desktop,
+  DesktopIconGrid,
+  DesktopIcon,
+  Window,
+  WindowTitleBar,
+  WindowTitle,
+  WindowControls,
+  WindowContent,
+  Taskbar,
+  TaskbarStart,
+  TaskbarTasks,
+  TaskbarTask,
+  TaskbarStatus,
+  TaskbarClock,
+} from "@ditherweb/ui";
+
+<Desktop wallpaper="dither" className="min-h-[400px]">
+  <div className="flex-1 flex gap-4 p-3">
+    <DesktopIconGrid>
+      <DesktopIcon label="Hard Drive" selected />
+      <DesktopIcon label="Network" />
+      <DesktopIcon label="Recycle Bin" />
+    </DesktopIconGrid>
+    <Window size="sm" className="self-start">
+      <WindowTitleBar>
+        <WindowTitle>System Monitor</WindowTitle>
+        <WindowControls />
+      </WindowTitleBar>
+      <WindowContent>
+        <p className="text-xs">CPU: 486 DX2-66 MHz</p>
+        <p className="text-xs">RAM: 16,384 KB</p>
+      </WindowContent>
+    </Window>
+  </div>
+  <Taskbar>
+    <TaskbarStart>START</TaskbarStart>
+    <TaskbarTasks>
+      <TaskbarTask active>System Monitor</TaskbarTask>
+    </TaskbarTasks>
+    <TaskbarStatus>
+      <TaskbarClock />
+    </TaskbarStatus>
+  </Taskbar>
+</Desktop>`,
+  },
+  "demo-terminal": {
+    badge: "@ditherweb/ui/terminal",
+    code: `import {
+  Terminal,
+  TerminalHeader,
+  TerminalBody,
+  TerminalLine,
+  TerminalPrompt,
+  TerminalCommand,
+  TerminalOutput,
+  TerminalCursor,
+} from "@ditherweb/ui";
+
+<Terminal variant="matrix">
+  <TerminalHeader title="VT-100 SHELL" />
+  <TerminalBody>
+    <TerminalLine>
+      <TerminalPrompt>admin@station:~$</TerminalPrompt>
+      <TerminalCommand>ditherweb --status</TerminalCommand>
+    </TerminalLine>
+    <TerminalOutput>
+      [OK] ISA Bus Initialized
+      [OK] VGA DAC 256-color palette ready
+      [OK] 86 Production Primitives loaded
+    </TerminalOutput>
+    <TerminalLine>
+      <TerminalPrompt>admin@station:~$</TerminalPrompt>
+      <TerminalCursor />
+    </TerminalLine>
+  </TerminalBody>
+</Terminal>`,
+  },
+  "demo-pixel-art": {
+    badge: "@ditherweb/ui/pixel-art",
+    code: `import { PixelArt } from "@ditherweb/ui";
+
+<PixelArt
+  src="/images/pixel-sprite.png"
+  alt="16-bit retro computer sprite"
+  scale={3}
+  frame="pixel"
+  ditherOverlay
+  caption="Sprite: 16x16 scaled 3x with crisp nearest-neighbor rendering"
+/>`,
+  },
+  "demo-bitmap-canvas": {
+    badge: "@ditherweb/ui/bitmap-canvas",
+    code: `import { BitmapCanvas, DEFAULT_RETRO_PALETTE } from "@ditherweb/ui";
+
+<BitmapCanvas
+  width={16}
+  height={16}
+  pixelSize={14}
+  grid
+  interactive
+  palette={DEFAULT_RETRO_PALETTE}
+  alt="Interactive 16x16 pixel editor matrix"
+  onChange={(grid) => console.log("Grid updated", grid)}
+/>`,
+  },
 };
+
 

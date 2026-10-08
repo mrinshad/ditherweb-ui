@@ -574,6 +574,126 @@ export {
   type WebDirectorySubcategoriesProps,
 } from "./components/web-directory";
 
+// --- Phase 5: Desktop & Pixel Primitives ---
+export {
+  Window,
+  WindowContent,
+  WindowFooter,
+  WindowStatusBar,
+  WindowStatusItem,
+  type WindowProps,
+  type WindowContentProps,
+  type WindowFooterProps,
+  type WindowStatusBarProps,
+  type WindowStatusItemProps,
+} from "./components/window";
+
+export {
+  WindowTitleBar,
+  WindowTitle,
+  WindowIcon,
+  type WindowTitleBarProps,
+  type WindowTitleProps,
+  type WindowIconProps,
+} from "./components/window-titlebar";
+
+export {
+  WindowControls,
+  WindowControl,
+  type WindowControlsProps,
+  type WindowControlProps,
+} from "./components/window-controls";
+
+export {
+  Taskbar,
+  TaskbarStart,
+  TaskbarTasks,
+  TaskbarTask,
+  TaskbarStatus,
+  TaskbarClock,
+  type TaskbarProps,
+  type TaskbarStartProps,
+  type TaskbarTasksProps,
+  type TaskbarTaskProps,
+  type TaskbarStatusProps,
+  type TaskbarClockProps,
+} from "./components/taskbar";
+
+export {
+  Menu,
+  MenuBar,
+  MenuTrigger,
+  MenuContent,
+  MenuItem,
+  MenuSeparator,
+  SubMenu,
+  SubMenuTrigger,
+  SubMenuContent,
+  type MenuProps,
+  type MenuBarProps,
+  type MenuTriggerProps,
+  type MenuContentProps,
+  type MenuItemProps,
+  type MenuSeparatorProps,
+  type SubMenuProps,
+  type SubMenuTriggerProps,
+  type SubMenuContentProps,
+} from "./components/menu";
+
+export {
+  ContextMenu,
+  ContextMenuTrigger,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuSeparator,
+  ContextMenuLabel,
+  type ContextMenuProps,
+  type ContextMenuTriggerProps,
+  type ContextMenuContentProps,
+  type ContextMenuItemProps,
+  type ContextMenuSeparatorProps,
+  type ContextMenuLabelProps,
+} from "./components/context-menu";
+
+export {
+  Desktop,
+  DesktopIconGrid,
+  DesktopIcon,
+  type DesktopProps,
+  type DesktopIconGridProps,
+  type DesktopIconProps,
+} from "./components/desktop";
+
+export {
+  Terminal,
+  TerminalHeader,
+  TerminalBody,
+  TerminalLine,
+  TerminalPrompt,
+  TerminalCommand,
+  TerminalOutput,
+  TerminalCursor,
+  type TerminalProps,
+  type TerminalHeaderProps,
+  type TerminalBodyProps,
+  type TerminalLineProps,
+  type TerminalPromptProps,
+  type TerminalCommandProps,
+  type TerminalOutputProps,
+  type TerminalCursorProps,
+} from "./components/terminal";
+
+export {
+  PixelArt,
+  type PixelArtProps,
+} from "./components/pixel-art";
+
+export {
+  BitmapCanvas,
+  DEFAULT_RETRO_PALETTE,
+  type BitmapCanvasProps,
+} from "./components/bitmap-canvas";
+
 // --- Shared Utilities ---
 export { cn } from "./lib/utils";
 export {
@@ -584,7 +704,3 @@ export {
   type OverlaySide,
   type OverlayAlign,
 } from "./lib/overlay-utils";
-
-
-
-

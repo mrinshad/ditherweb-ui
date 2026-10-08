@@ -260,31 +260,47 @@ import "@ditherweb/ui/styles";`}</code>
             <Badge variant="success">COMPLETE</Badge>
           </div>
           <div className="bevel-raised p-3 bg-surface flex items-center justify-between">
-            <span className="font-bold">Phase 2: First 10 Core Components</span>
+            <span className="font-bold">Phase 2: First 10 Core Primitives</span>
             <Badge variant="success">COMPLETE</Badge>
           </div>
           <div className="bevel-raised p-3 bg-surface flex items-center justify-between">
             <span className="font-bold">Phase 2.5: Product Website & Showcase Architecture</span>
             <Badge variant="success">COMPLETE</Badge>
           </div>
+          <div className="bevel-raised p-3 bg-surface flex items-center justify-between">
+            <span className="font-bold">Phase 2.75: Architecture Separation & Visual QA</span>
+            <Badge variant="success">COMPLETE</Badge>
+          </div>
+          <div className="bevel-raised p-3 bg-surface flex items-center justify-between">
+            <span className="font-bold">Phase 3A: Typography & Layout Primitives (16)</span>
+            <Badge variant="success">COMPLETE</Badge>
+          </div>
+          <div className="bevel-raised p-3 bg-surface flex items-center justify-between">
+            <span className="font-bold">Phase 3B: Forms & Selection Primitives (10)</span>
+            <Badge variant="success">COMPLETE</Badge>
+          </div>
+          <div className="bevel-raised p-3 bg-surface flex items-center justify-between">
+            <span className="font-bold">Phase 3C: Surfaces & Feedback Primitives (10)</span>
+            <Badge variant="success">COMPLETE</Badge>
+          </div>
+          <div className="bevel-raised p-3 bg-surface flex items-center justify-between">
+            <span className="font-bold">Phase 3D: Overlays & Layered Interaction (10)</span>
+            <Badge variant="success">COMPLETE</Badge>
+          </div>
+          <div className="bevel-raised p-3 bg-surface flex items-center justify-between">
+            <span className="font-bold">Phase 3E: Navigation & Data Primitives (10)</span>
+            <Badge variant="success">COMPLETE</Badge>
+          </div>
+          <div className="bevel-raised p-3 bg-surface flex items-center justify-between">
+            <span className="font-bold">Phase 4: Classic Web Primitives (10)</span>
+            <Badge variant="success">COMPLETE</Badge>
+          </div>
           <div className="bevel-raised p-3 bg-surface flex items-center justify-between border-2 border-primary">
-            <span className="font-bold text-primary">Phase 2.75: Architecture Separation & Visual QA</span>
+            <span className="font-bold text-primary">Phase 5: Desktop & Pixel Components (10)</span>
             <Badge variant="primary">COMPLETE</Badge>
           </div>
           <div className="bevel-raised p-3 bg-surface flex items-center justify-between opacity-70">
-            <span>Phase 3: Interactive Overlays & Navigation (Dialog, Tabs, Select, Tooltip...)</span>
-            <Badge variant="outline">PENDING</Badge>
-          </div>
-          <div className="bevel-raised p-3 bg-surface flex items-center justify-between opacity-70">
-            <span>Phase 4: Extended Library & Layout Archetypes</span>
-            <Badge variant="outline">PENDING</Badge>
-          </div>
-          <div className="bevel-raised p-3 bg-surface flex items-center justify-between opacity-70">
-            <span>Phase 5: Production Hardening, Cross-Browser & Performance</span>
-            <Badge variant="outline">PENDING</Badge>
-          </div>
-          <div className="bevel-raised p-3 bg-surface flex items-center justify-between opacity-70">
-            <span>Phase 6: Documentation, Ecosystem & Packaging</span>
+            <span>Phase 6: Advanced Effects, Ecosystem & Packaging</span>
             <Badge variant="outline">PENDING</Badge>
           </div>
         </div>

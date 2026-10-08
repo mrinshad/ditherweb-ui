@@ -34,7 +34,7 @@ Ditherweb is structured as an npm workspace monorepo with strict architectural s
 ditherweb/
 ├── packages/
 │   └── ui/                  → Reusable Ditherweb UI library (@ditherweb/ui)
-│       ├── src/components/  → 56 primitives (10 Core, 8 Typography, 8 Layout, 10 Forms/Selection, 10 Surfaces/Feedback, 10 Overlays/Layered Interaction)
+│       ├── src/components/  → 86 primitives (10 Core, 8 Typography, 8 Layout, 10 Forms/Selection, 10 Surfaces/Feedback, 10 Overlays, 10 Navigation/Data, 10 Classic Web, 10 Desktop/Pixel)
 │       ├── src/styles/      → Design tokens, bevels, procedural dither patterns
 │       ├── src/lib/utils.ts → Utility helpers (cn)
 │       └── src/index.ts     → Public library entrypoint
@@ -272,6 +272,60 @@ Phase 3D implemented 10 zero-dependency overlay and layered interaction componen
 
 ---
 
+## Phase 3E: Navigation & Data Components
+
+Phase 3E added 10 zero-dependency navigation and structured data primitives to `@ditherweb/ui`:
+
+### 1. Navigation Primitives (5)
+1. **Tabs** (`packages/ui/src/components/tabs.tsx`) — Accessible tabbed interface with keyboard navigation (ArrowLeft/Right, Home, End) and classic raised/sunken tabs.
+2. **Breadcrumb** (`packages/ui/src/components/breadcrumb.tsx`) — Semantic hierarchy path with customizable retro delimiters (`/`, `>`, `■`).
+3. **Pagination** (`packages/ui/src/components/pagination.tsx`) — Stepped page navigation with page buttons, ellipses, and next/prev controls.
+4. **Steps** (`packages/ui/src/components/steps.tsx`) — Step-by-step progress indicator with completed, active, and pending states.
+5. **Tree** (`packages/ui/src/components/tree.tsx`) — Hierarchical file-tree directory viewer with expandable nodes, line guides, and keyboard interaction.
+
+### 2. Data Display Primitives (5)
+6. **Table** (`packages/ui/src/components/table.tsx`) — Semantic HTML table with retro bevel borders, hover highlight, and dense options.
+7. **DataTable** (`packages/ui/src/components/data-table.tsx`) — Feature-rich data grid with column sorting, filtering, selection, and pagination.
+8. **DescriptionList** (`packages/ui/src/components/description-list.tsx`) — Key-value pair inspector surface using semantic `<dl>`, `<dt>`, and `<dd>`.
+9. **Timeline** (`packages/ui/src/components/timeline.tsx`) — Chronological sequence view with vertical guide rail and milestone badges.
+10. **Avatar** (`packages/ui/src/components/avatar.tsx`) — Pixel-framed user icon with initials fallback and status badge.
+
+---
+
+## Phase 4: Classic Web Components
+
+Phase 4 introduced 10 authentic components inspired by the visual vocabulary and interaction models of the early World Wide Web:
+
+1. **WebRing** (`packages/ui/src/components/web-ring.tsx`) — Classic community web ring navigation widget with prev, random, and next controls.
+2. **Guestbook** (`packages/ui/src/components/guestbook.tsx`) — Interactive signature entry and submission system with timestamped entries.
+3. **VisitorCounter** (`packages/ui/src/components/visitor-counter.tsx`) — Skeuomorphic mechanical odometer counter with 7-segment / mechanical roll styling.
+4. **UnderConstruction** (`packages/ui/src/components/under-construction.tsx`) — Classic warning badge with hazard stripes, animated GIF-inspired cones, and retro warning text.
+5. **Marquee** (`packages/ui/src/components/marquee.tsx`) — Pure CSS horizontal ticker scroll with pause-on-hover and reduced-motion compliance.
+6. **Blink** (`packages/ui/src/components/blink.tsx`) — Nostalgic blinking text presentation honoring the historic `<blink>` tag, fully disabling under prefers-reduced-motion.
+7. **Button88x31** (`packages/ui/src/components/button-88x31.tsx`) — Historic standard 88×31 micro-banner button with crisp pixel borders and tactile bevels.
+8. **RetroBanner** (`packages/ui/src/components/retro-banner.tsx`) — Portal-style announcement banner with checkered dither accent.
+9. **PixelImage** (`packages/ui/src/components/pixel-image.tsx`) — Retro image presentation wrapper with pixel scaling, dither overlay, and classic caption.
+10. **WebDirectory** (`packages/ui/src/components/web-directory.tsx`) — Yahoo-style categorized web directory index with counts and hierarchical listings.
+
+---
+
+## Phase 5: Desktop & Pixel Components
+
+Phase 5 introduces classic computer, desktop, terminal, and bitmap primitives as modern, accessible React components with zero external dependencies:
+
+1. **Window** (`packages/ui/src/components/window.tsx`) — Composable desktop/application window surface with active/inactive contrast, bevel edges, status bar, and dialog accessibility integration.
+2. **WindowTitleBar** (`packages/ui/src/components/window-titlebar.tsx`) — Classic title strip with semantic heading, optional icon, active/inactive contrast, and controls slot.
+3. **WindowControls** (`packages/ui/src/components/window-controls.tsx`) — Real keyboard-accessible minimize, maximize/restore, and close buttons using crisp CSS/SVG pixel glyphs without external icon dependencies.
+4. **Taskbar** (`packages/ui/src/components/taskbar.tsx`) — Desktop taskbar abstraction with launcher trigger area (`TaskbarStart`), task buttons (`TaskbarTasks`, `TaskbarTask`), and system clock (`TaskbarStatus`, `TaskbarClock`).
+5. **Menu** (`packages/ui/src/components/menu.tsx`) — Classic application menu bar (`MenuBar`) with cascading dropdowns, nested submenus (`SubMenu`), separators, and full WAI-ARIA keyboard navigation (Arrows, Enter, Space, Escape).
+6. **ContextMenu** (`packages/ui/src/components/context-menu.tsx`) — Right-click contextual action menu with automatic viewport collision detection, keyboard shortcut fallback, Escape dismissal, and outside-click capture.
+7. **Desktop** (`packages/ui/src/components/desktop.tsx`) — Composable desktop workspace surface supporting dither backgrounds, desktop icon grids (`DesktopIconGrid`, `DesktopIcon`), windows, and taskbar integration.
+8. **Terminal** (`packages/ui/src/components/terminal.tsx`) — Presentation-only command-line interface with customizable prompt (`TerminalPrompt`), command line (`TerminalCommand`), scrollable output (`TerminalOutput`), and reduced-motion-safe blinking cursor (`TerminalCursor`).
+9. **PixelArt** (`packages/ui/src/components/pixel-art.tsx`) — Presentation component for pixel-art imagery with integer-scaling (`scale`), nearest-neighbor rendering, dither overlay, and pixel frame styling.
+10. **BitmapCanvas** (`packages/ui/src/components/bitmap-canvas.tsx`) — Lightweight canvas-oriented visual surface for bitmap/pixel-grid editing and demonstration with retro palette selection, pointer draw/erase, keyboard accessibility, and accessible text alternatives.
+
+---
+
 ## Status
 
 - **Phase 0** — Architecture & Environment Setup (Complete & Validated ✅)
@@ -283,12 +337,13 @@ Phase 3D implemented 10 zero-dependency overlay and layered interaction componen
 - **Phase 3B** — Forms & Selection Primitives (Complete & Validated ✅)
 - **Phase 3C** — Surfaces & Feedback Primitives (Complete & Validated ✅)
 - **Phase 3D** — Overlays & Layered Interaction (Complete & Validated ✅)
-- **Phase 3E** — Navigation & Menus (Pending)
-- **Phase 4** — Retro Web Components (Pending)
-- **Phase 5** — Desktop / Pixel Components (Pending)
+- **Phase 3E** — Navigation & Data Primitives (Complete & Validated ✅)
+- **Phase 4** — Classic Web Primitives (Complete & Validated ✅)
+- **Phase 5** — Desktop & Pixel Components (Complete & Validated ✅)
 - **Phase 6** — Advanced Effects & Packaging (Pending)
 
 ## License
 
 MIT
+
 

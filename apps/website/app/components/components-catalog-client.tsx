@@ -215,9 +215,53 @@ import {
   WebDirectoryLink,
   WebDirectoryDescription,
   WebDirectorySubcategories,
+  Window,
+  WindowContent,
+  WindowFooter,
+  WindowStatusBar,
+  WindowStatusItem,
+  WindowTitleBar,
+  WindowTitle,
+  WindowIcon,
+  WindowControls,
+  Taskbar,
+  TaskbarStart,
+  TaskbarTasks,
+  TaskbarTask,
+  TaskbarStatus,
+  TaskbarClock,
+  Menu,
+  MenuBar,
+  MenuTrigger,
+  MenuContent,
+  MenuItem,
+  MenuSeparator,
+  SubMenu,
+  SubMenuTrigger,
+  SubMenuContent,
+  ContextMenu,
+  ContextMenuTrigger,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuSeparator,
+  ContextMenuLabel,
+  Desktop,
+  DesktopIconGrid,
+  DesktopIcon,
+  Terminal,
+  TerminalHeader,
+  TerminalBody,
+  TerminalLine,
+  TerminalPrompt,
+  TerminalCommand,
+  TerminalOutput,
+  TerminalCursor,
+  PixelArt,
+  BitmapCanvas,
+  DEFAULT_RETRO_PALETTE,
 } from "@ditherweb/ui";
 
-type Category = "all" | "classic" | "navigation" | "overlays" | "surfaces" | "forms" | "typography" | "layout" | "input" | "feedback";
+type Category = "all" | "desktop" | "classic" | "navigation" | "overlays" | "surfaces" | "forms" | "typography" | "layout" | "input" | "feedback";
 
 type ProcessItem = {
   id: string;
@@ -481,6 +525,28 @@ export default function ComponentsPage() {
 
 
 
+  // Phase 5: Desktop & Pixel states
+  const [windowActive, setWindowActive] = useState(true);
+  const [windowMaximized, setWindowMaximized] = useState(false);
+  const [windowLog, setWindowLog] = useState("Window status: Normal");
+  const [taskbarActiveTask, setTaskbarActiveTask] = useState<string>("terminal");
+  const [taskbarStartActive, setTaskbarStartActive] = useState(false);
+  const [menuStatusLog, setMenuStatusLog] = useState("Ready");
+  const [contextStatusLog, setContextStatusLog] = useState("Right-click or press Shift+F10 on target");
+  const [desktopIconSelected, setDesktopIconSelected] = useState<string>("terminal");
+  const [desktopOpenApp, setDesktopOpenApp] = useState<string>("DIALUP_CONFIG.EXE");
+  const [canvasActiveColor, setCanvasActiveColor] = useState<string>("#008080");
+  const [canvasMatrix, setCanvasMatrix] = useState<string[][]>([
+    ["#000000", "#000000", "#008080", "#008080", "#008080", "#008080", "#000000", "#000000"],
+    ["#000000", "#008080", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#008080", "#000000"],
+    ["#008080", "#ffffff", "#000000", "#ffffff", "#ffffff", "#000000", "#ffffff", "#008080"],
+    ["#008080", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#008080"],
+    ["#008080", "#ffffff", "#008080", "#008080", "#008080", "#008080", "#ffffff", "#008080"],
+    ["#008080", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#008080"],
+    ["#000000", "#008080", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#008080", "#000000"],
+    ["#000000", "#000000", "#008080", "#008080", "#008080", "#008080", "#000000", "#000000"],
+  ]);
+
   useEffect(() => {
     if (!backdropPreviewVariant) return;
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -498,16 +564,16 @@ export default function ComponentsPage() {
       {/* Page Header */}
       <div className="space-y-4">
         <div className="flex items-center gap-2">
-          <Badge variant="primary">Navigation & Data</Badge>
+          <Badge variant="primary">Desktop &amp; Pixel</Badge>
           <span className="font-mono text-xs text-muted-foreground">
-            76 Production Primitives
+            86 Production Primitives
           </span>
         </div>
         <h1 className="font-mono text-3xl font-bold uppercase tracking-tight text-foreground sm:text-4xl">
           Ditherweb Component Catalog
         </h1>
         <p className="font-mono text-sm text-muted-foreground max-w-2xl leading-relaxed">
-          Explore Ditherweb&apos;s complete retro React UI component library. Every primitive is built with native accessibility semantics, typed props, and calibrated retro CSS tokens. Inspect interactive states across navigation, data display, overlays, buttons, inputs, dialogs, cards, surfaces, and feedback components.
+          Explore Ditherweb&apos;s complete retro React UI component library. Every primitive is built with native accessibility semantics, typed props, and calibrated retro CSS tokens. Inspect interactive states across desktop windows, taskbars, menus, context actions, terminals, pixel art, classic web elements, overlays, and forms.
         </p>
 
         {/* Filter Tabs */}
@@ -519,7 +585,16 @@ export default function ComponentsPage() {
               category === "all" ? "bevel-inset bg-muted text-primary" : "bevel-raised"
             }`}
           >
-            All Primitives (76)
+            All Primitives (86)
+          </button>
+          <button
+            type="button"
+            onClick={() => setCategory("desktop")}
+            className={`px-3 py-1 font-bold ${
+              category === "desktop" ? "bevel-inset bg-muted text-primary" : "bevel-raised"
+            }`}
+          >
+            Desktop &amp; Pixel (10)
           </button>
           <button
             type="button"
@@ -4787,6 +4862,790 @@ export default function ComponentsPage() {
               </div>
 
               <ComponentCodePanel sectionId="demo-web-directory" />
+            </section>
+          </>
+        )}
+
+        {/* ==================================================================== */}
+        {/* PHASE 5: DESKTOP & PIXEL PRIMITIVES (10)                             */}
+        {/* ==================================================================== */}
+        {(category === "all" || category === "desktop") && (
+          <>
+            {/* SECTION 1: WINDOW */}
+            <section id="window" className="space-y-4 pt-6 border-t border-border">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <span className="bevel-raised inline-flex h-6 w-6 items-center justify-center bg-primary text-xs font-bold text-primary-foreground">
+                    01
+                  </span>
+                  <h2 className="font-mono text-xl font-bold uppercase tracking-tight text-foreground">
+                    Window
+                  </h2>
+                </div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <Badge variant="outline" className="font-mono text-[10px]">
+                    @ditherweb/ui/window
+                  </Badge>
+                  <Badge variant="primary" className="font-mono text-[10px]">
+                    Phase 5 Primitive
+                  </Badge>
+                </div>
+              </div>
+
+              <p className="font-mono text-xs text-muted-foreground max-w-3xl leading-relaxed">
+                Semantic classic application window surface container featuring authentic 3D raised bevels, integrated titlebar, content body, footer action tray, and sunken status panels.
+              </p>
+
+              <div className="flex flex-wrap items-center gap-2 pb-2">
+                <Button
+                  size="sm"
+                  variant={windowActive ? "primary" : "outline"}
+                  onClick={() => setWindowActive(!windowActive)}
+                >
+                  Toggle Window Active: {windowActive ? "ACTIVE" : "INACTIVE"}
+                </Button>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => setWindowLog(`Active reset at ${new Date().toLocaleTimeString()}`)}
+                >
+                  Ping Window
+                </Button>
+              </div>
+
+              <div className="p-4 sm:p-6 bevel-inset bg-muted/20 flex flex-col items-center justify-center">
+                <Window
+                  active={windowActive}
+                  size="md"
+                  className="w-full max-w-lg transition-colors"
+                >
+                  <WindowTitleBar active={windowActive}>
+                    <div className="flex items-center gap-1.5 min-w-0">
+                      <WindowIcon />
+                      <WindowTitle>DIALUP_CONFIG.EXE</WindowTitle>
+                    </div>
+                    <WindowControls
+                      onMinimize={() => setWindowLog("Event: Window Minimized")}
+                      onMaximize={() => setWindowLog("Event: Window Maximized")}
+                      onClose={() => setWindowLog("Event: Window Close Requested")}
+                    />
+                  </WindowTitleBar>
+                  <WindowContent className="space-y-3">
+                    <div className="flex justify-between items-center text-xs">
+                      <span className="text-muted-foreground">Network Interface:</span>
+                      <span className="font-bold">PPP / SLIP COM3</span>
+                    </div>
+                    <div className="flex justify-between items-center text-xs">
+                      <span className="text-muted-foreground">Baud Rate:</span>
+                      <span className="font-bold">57,600 bps</span>
+                    </div>
+                    <div className="p-2 bevel-inset bg-muted/30 text-xs text-muted-foreground">
+                      Status Log: {windowLog}
+                    </div>
+                  </WindowContent>
+                  <WindowFooter>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => setWindowLog("Settings reverted")}
+                    >
+                      Defaults
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="primary"
+                      onClick={() => setWindowLog("Configuration saved to CMOS")}
+                    >
+                      Save Configuration
+                    </Button>
+                  </WindowFooter>
+                  <WindowStatusBar>
+                    <WindowStatusItem sunken>READY</WindowStatusItem>
+                    <WindowStatusItem sunken>COM3: OK</WindowStatusItem>
+                    <WindowStatusItem sunken>86 PRIMITIVES</WindowStatusItem>
+                  </WindowStatusBar>
+                </Window>
+              </div>
+
+              <ComponentCodePanel sectionId="demo-window" />
+            </section>
+
+            {/* SECTION 2: WINDOW TITLE BAR */}
+            <section id="window-titlebar" className="space-y-4 pt-6 border-t border-border">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <span className="bevel-raised inline-flex h-6 w-6 items-center justify-center bg-primary text-xs font-bold text-primary-foreground">
+                    02
+                  </span>
+                  <h2 className="font-mono text-xl font-bold uppercase tracking-tight text-foreground">
+                    WindowTitleBar
+                  </h2>
+                </div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <Badge variant="outline" className="font-mono text-[10px]">
+                    @ditherweb/ui/window-titlebar
+                  </Badge>
+                  <Badge variant="primary" className="font-mono text-[10px]">
+                    Phase 5 Primitive
+                  </Badge>
+                </div>
+              </div>
+
+              <p className="font-mono text-xs text-muted-foreground max-w-3xl leading-relaxed">
+                Classic application title bar strip with high-contrast active vs. inactive visual styling, icon support, semantic title text, and window controls. Works inside Window or independently.
+              </p>
+
+              <div className="p-4 sm:p-6 bevel-inset bg-muted/20 space-y-4">
+                <div className="space-y-1">
+                  <div className="text-[11px] font-mono text-muted-foreground uppercase font-bold">
+                    Active Titlebar (Focused Window)
+                  </div>
+                  <div className="bevel-raised border border-border">
+                    <WindowTitleBar active={true}>
+                      <div className="flex items-center gap-1.5">
+                        <WindowIcon />
+                        <WindowTitle>TERMINAL_SESSION_01 [ACTIVE]</WindowTitle>
+                      </div>
+                      <WindowControls />
+                    </WindowTitleBar>
+                  </div>
+                </div>
+
+                <div className="space-y-1">
+                  <div className="text-[11px] font-mono text-muted-foreground uppercase font-bold">
+                    Inactive Titlebar (Background Window)
+                  </div>
+                  <div className="bevel-raised border border-border">
+                    <WindowTitleBar active={false}>
+                      <div className="flex items-center gap-1.5">
+                        <WindowIcon />
+                        <WindowTitle>BACKGROUND_TASK [INACTIVE]</WindowTitle>
+                      </div>
+                      <WindowControls disabled />
+                    </WindowTitleBar>
+                  </div>
+                </div>
+              </div>
+
+              <ComponentCodePanel sectionId="demo-window-titlebar" />
+            </section>
+
+            {/* SECTION 3: WINDOW CONTROLS */}
+            <section id="window-controls" className="space-y-4 pt-6 border-t border-border">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <span className="bevel-raised inline-flex h-6 w-6 items-center justify-center bg-primary text-xs font-bold text-primary-foreground">
+                    03
+                  </span>
+                  <h2 className="font-mono text-xl font-bold uppercase tracking-tight text-foreground">
+                    WindowControls
+                  </h2>
+                </div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <Badge variant="outline" className="font-mono text-[10px]">
+                    @ditherweb/ui/window-controls
+                  </Badge>
+                  <Badge variant="primary" className="font-mono text-[10px]">
+                    Phase 5 Primitive
+                  </Badge>
+                </div>
+              </div>
+
+              <p className="font-mono text-xs text-muted-foreground max-w-3xl leading-relaxed">
+                Classic triad of window management buttons (Minimize, Maximize/Restore, Close) built with native button elements, accessible labels, tactile pressed states, and clean pixel SVGs.
+              </p>
+
+              <div className="p-4 sm:p-6 bevel-inset bg-muted/20 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div className="flex items-center gap-4">
+                  <span className="text-xs font-bold font-mono">Live Interactive Controls:</span>
+                  <WindowControls
+                    isMaximized={windowMaximized}
+                    showHelp
+                    onHelp={() => setWindowLog("Help: Window controls clicked")}
+                    onMinimize={() => setWindowLog("Minimize action triggered")}
+                    onMaximize={() => {
+                      setWindowMaximized(!windowMaximized);
+                      setWindowLog(`Maximize/Restore toggled: ${!windowMaximized}`);
+                    }}
+                    onClose={() => setWindowLog("Close action triggered")}
+                  />
+                </div>
+                <div className="text-xs font-mono text-muted-foreground bevel-inset p-2 bg-surface">
+                  Action Feedback: {windowLog}
+                </div>
+              </div>
+
+              <ComponentCodePanel sectionId="demo-window-controls" />
+            </section>
+
+            {/* SECTION 4: TASKBAR */}
+            <section id="taskbar" className="space-y-4 pt-6 border-t border-border">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <span className="bevel-raised inline-flex h-6 w-6 items-center justify-center bg-primary text-xs font-bold text-primary-foreground">
+                    04
+                  </span>
+                  <h2 className="font-mono text-xl font-bold uppercase tracking-tight text-foreground">
+                    Taskbar
+                  </h2>
+                </div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <Badge variant="outline" className="font-mono text-[10px]">
+                    @ditherweb/ui/taskbar
+                  </Badge>
+                  <Badge variant="primary" className="font-mono text-[10px]">
+                    Phase 5 Primitive
+                  </Badge>
+                </div>
+              </div>
+
+              <p className="font-mono text-xs text-muted-foreground max-w-3xl leading-relaxed">
+                Classic desktop taskbar abstraction with start launcher button, active application task buttons, and system status tray with a live clock. Zero fake OS branding, fully composable and accessible.
+              </p>
+
+              <div className="p-4 sm:p-6 bevel-inset bg-muted/20 space-y-3">
+                <div className="text-xs text-muted-foreground font-mono">
+                  Active Task: <span className="font-bold text-foreground uppercase">{taskbarActiveTask}</span>
+                </div>
+                <Taskbar position="relative">
+                  <TaskbarStart
+                    active={taskbarStartActive}
+                    onClick={() => setTaskbarStartActive(!taskbarStartActive)}
+                  >
+                    START
+                  </TaskbarStart>
+                  <TaskbarTasks>
+                    <TaskbarTask
+                      active={taskbarActiveTask === "terminal"}
+                      onClick={() => setTaskbarActiveTask("terminal")}
+                    >
+                      TERMINAL.EXE
+                    </TaskbarTask>
+                    <TaskbarTask
+                      active={taskbarActiveTask === "dialup"}
+                      onClick={() => setTaskbarActiveTask("dialup")}
+                    >
+                      DIALUP_CONFIG.EXE
+                    </TaskbarTask>
+                    <TaskbarTask
+                      active={taskbarActiveTask === "paint"}
+                      onClick={() => setTaskbarActiveTask("paint")}
+                    >
+                      BITMAP_EDITOR
+                    </TaskbarTask>
+                  </TaskbarTasks>
+                  <TaskbarStatus>
+                    <span className="hidden sm:inline">100% DISK</span>
+                    <TaskbarClock />
+                  </TaskbarStatus>
+                </Taskbar>
+              </div>
+
+              <ComponentCodePanel sectionId="demo-taskbar" />
+            </section>
+
+            {/* SECTION 5: MENU */}
+            <section id="menu" className="space-y-4 pt-6 border-t border-border">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <span className="bevel-raised inline-flex h-6 w-6 items-center justify-center bg-primary text-xs font-bold text-primary-foreground">
+                    05
+                  </span>
+                  <h2 className="font-mono text-xl font-bold uppercase tracking-tight text-foreground">
+                    Menu
+                  </h2>
+                </div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <Badge variant="outline" className="font-mono text-[10px]">
+                    @ditherweb/ui/menu
+                  </Badge>
+                  <Badge variant="primary" className="font-mono text-[10px]">
+                    Phase 5 Primitive
+                  </Badge>
+                </div>
+              </div>
+
+              <p className="font-mono text-xs text-muted-foreground max-w-3xl leading-relaxed">
+                Classic desktop application menu bar (File, Edit, View, Help) with dropdown panels, keyboard navigation (Arrow keys, Enter, Space, Escape), accelerators, separators, and submenu support. Zero external dependencies.
+              </p>
+
+              <div className="p-4 sm:p-6 bevel-inset bg-muted/20 space-y-4">
+                <div className="text-xs font-mono text-muted-foreground">
+                  Last Menu Action: <span className="font-bold text-foreground">{menuStatusLog}</span>
+                </div>
+                <MenuBar>
+                  <Menu>
+                    <MenuTrigger>File</MenuTrigger>
+                    <MenuContent>
+                      <MenuItem shortcut="Ctrl+N" onSelect={() => setMenuStatusLog("File -> New Session")}>
+                        New Session
+                      </MenuItem>
+                      <MenuItem shortcut="Ctrl+O" onSelect={() => setMenuStatusLog("File -> Open Binary...")}>
+                        Open Binary...
+                      </MenuItem>
+                      <MenuSeparator />
+                      <MenuItem shortcut="Ctrl+S" onSelect={() => setMenuStatusLog("File -> Save Config")}>
+                        Save Config
+                      </MenuItem>
+                      <MenuItem disabled shortcut="Ctrl+P">
+                        Print to LPT1 (Disabled)
+                      </MenuItem>
+                      <MenuSeparator />
+                      <MenuItem shortcut="Alt+F4" onSelect={() => setMenuStatusLog("File -> Exit Application")}>
+                        Exit Application
+                      </MenuItem>
+                    </MenuContent>
+                  </Menu>
+
+                  <Menu>
+                    <MenuTrigger>Edit</MenuTrigger>
+                    <MenuContent>
+                      <MenuItem shortcut="Ctrl+Z" onSelect={() => setMenuStatusLog("Edit -> Undo Action")}>
+                        Undo
+                      </MenuItem>
+                      <MenuItem shortcut="Ctrl+Y" onSelect={() => setMenuStatusLog("Edit -> Redo Action")}>
+                        Redo
+                      </MenuItem>
+                      <MenuSeparator />
+                      <MenuItem shortcut="Ctrl+X" onSelect={() => setMenuStatusLog("Edit -> Cut")}>
+                        Cut
+                      </MenuItem>
+                      <MenuItem shortcut="Ctrl+C" onSelect={() => setMenuStatusLog("Edit -> Copy")}>
+                        Copy
+                      </MenuItem>
+                      <MenuItem shortcut="Ctrl+V" onSelect={() => setMenuStatusLog("Edit -> Paste")}>
+                        Paste
+                      </MenuItem>
+                    </MenuContent>
+                  </Menu>
+
+                  <Menu>
+                    <MenuTrigger>View</MenuTrigger>
+                    <MenuContent>
+                      <MenuItem onSelect={() => setMenuStatusLog("View -> Dither Overlay Toggled")}>
+                        Toggle Dither Pattern
+                      </MenuItem>
+                      <MenuItem onSelect={() => setMenuStatusLog("View -> Mode 13h 320x200")}>
+                        VGA Mode 13h
+                      </MenuItem>
+                      <SubMenu>
+                        <SubMenuTrigger>Zoom Scale</SubMenuTrigger>
+                        <SubMenuContent>
+                          <MenuItem onSelect={() => setMenuStatusLog("Zoom -> 100%")}>100% Native</MenuItem>
+                          <MenuItem onSelect={() => setMenuStatusLog("Zoom -> 200%")}>200% Integer</MenuItem>
+                          <MenuItem onSelect={() => setMenuStatusLog("Zoom -> 400%")}>400% Pixelated</MenuItem>
+                        </SubMenuContent>
+                      </SubMenu>
+                    </MenuContent>
+                  </Menu>
+
+                  <Menu>
+                    <MenuTrigger>Help</MenuTrigger>
+                    <MenuContent>
+                      <MenuItem onSelect={() => setMenuStatusLog("Help -> Documentation Opened")}>
+                        Ditherweb Documentation
+                      </MenuItem>
+                      <MenuItem onSelect={() => setMenuStatusLog("Help -> About Dialog Opened")}>
+                        About Ditherweb v0.1.0
+                      </MenuItem>
+                    </MenuContent>
+                  </Menu>
+                </MenuBar>
+              </div>
+
+              <ComponentCodePanel sectionId="demo-menu" />
+            </section>
+
+            {/* SECTION 6: CONTEXT MENU */}
+            <section id="context-menu" className="space-y-4 pt-6 border-t border-border">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <span className="bevel-raised inline-flex h-6 w-6 items-center justify-center bg-primary text-xs font-bold text-primary-foreground">
+                    06
+                  </span>
+                  <h2 className="font-mono text-xl font-bold uppercase tracking-tight text-foreground">
+                    ContextMenu
+                  </h2>
+                </div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <Badge variant="outline" className="font-mono text-[10px]">
+                    @ditherweb/ui/context-menu
+                  </Badge>
+                  <Badge variant="primary" className="font-mono text-[10px]">
+                    Phase 5 Primitive
+                  </Badge>
+                </div>
+              </div>
+
+              <p className="font-mono text-xs text-muted-foreground max-w-3xl leading-relaxed">
+                Right-click and keyboard-accessible (Shift+F10) context action menu with coordinate positioning, viewport boundary clamping to eliminate horizontal and vertical overflow, Escape dismissal, and outside click capture.
+              </p>
+
+              <div className="p-4 sm:p-6 bevel-inset bg-muted/20 space-y-3">
+                <div className="text-xs font-mono text-muted-foreground">
+                  Status: <span className="font-bold text-foreground">{contextStatusLog}</span>
+                </div>
+                <ContextMenu>
+                  <ContextMenuTrigger className="p-8 sm:p-12 border-2 border-dashed border-border bg-surface text-center cursor-context-menu hover:bg-muted/40 transition-colors">
+                    <div className="space-y-1">
+                      <div className="font-bold text-sm uppercase">Right-Click Zone</div>
+                      <div className="text-xs text-muted-foreground">
+                        Right-click anywhere here or select this box and press <Kbd>Shift</Kbd> + <Kbd>F10</Kbd>
+                      </div>
+                    </div>
+                  </ContextMenuTrigger>
+                  <ContextMenuContent>
+                    <ContextMenuLabel>Desktop Actions</ContextMenuLabel>
+                    <ContextMenuItem
+                      shortcut="Ctrl+R"
+                      onSelect={() => setContextStatusLog("Action: Refresh Workspace executed")}
+                    >
+                      Refresh Workspace
+                    </ContextMenuItem>
+                    <ContextMenuItem
+                      onSelect={() => setContextStatusLog("Action: Arrange by Name executed")}
+                    >
+                      Arrange Icons by Name
+                    </ContextMenuItem>
+                    <ContextMenuSeparator />
+                    <ContextMenuItem
+                      shortcut="Ctrl+N"
+                      onSelect={() => setContextStatusLog("Action: New Folder created")}
+                    >
+                      New Folder
+                    </ContextMenuItem>
+                    <ContextMenuItem
+                      onSelect={() => setContextStatusLog("Action: Create Shortcut executed")}
+                    >
+                      Create Shortcut
+                    </ContextMenuItem>
+                    <ContextMenuItem disabled>
+                      Format Drive A: (Disabled)
+                    </ContextMenuItem>
+                    <ContextMenuSeparator />
+                    <ContextMenuItem
+                      onSelect={() => setContextStatusLog("Action: Workspace Properties opened")}
+                    >
+                      Properties
+                    </ContextMenuItem>
+                  </ContextMenuContent>
+                </ContextMenu>
+              </div>
+
+              <ComponentCodePanel sectionId="demo-context-menu" />
+            </section>
+
+            {/* SECTION 7: DESKTOP */}
+            <section id="desktop" className="space-y-4 pt-6 border-t border-border">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <span className="bevel-raised inline-flex h-6 w-6 items-center justify-center bg-primary text-xs font-bold text-primary-foreground">
+                    07
+                  </span>
+                  <h2 className="font-mono text-xl font-bold uppercase tracking-tight text-foreground">
+                    Desktop
+                  </h2>
+                </div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <Badge variant="outline" className="font-mono text-[10px]">
+                    @ditherweb/ui/desktop
+                  </Badge>
+                  <Badge variant="primary" className="font-mono text-[10px]">
+                    Phase 5 Primitive
+                  </Badge>
+                </div>
+              </div>
+
+              <p className="font-mono text-xs text-muted-foreground max-w-3xl leading-relaxed">
+                Composable desktop workspace canvas supporting authentic classic wallpapers (procedural dither stipple, teal, solid, grid), desktop shortcut icons, and window / taskbar arrangement. Layout primitive with zero OS simulation bloat.
+              </p>
+
+              <div className="p-4 sm:p-6 bevel-inset bg-muted/20 space-y-4">
+                <div className="text-xs font-mono text-muted-foreground">
+                  Active Desktop App: <span className="font-bold text-foreground">{desktopOpenApp}</span>
+                </div>
+                <Desktop wallpaper="dither" className="min-h-[380px] sm:min-h-[420px]">
+                  <div className="flex-1 flex flex-col sm:flex-row gap-4 p-3 overflow-hidden">
+                    <DesktopIconGrid>
+                      <DesktopIcon
+                        label="Terminal"
+                        selected={desktopIconSelected === "terminal"}
+                        onClick={() => setDesktopIconSelected("terminal")}
+                        onOpen={() => setDesktopOpenApp("VT-100 TERMINAL")}
+                      />
+                      <DesktopIcon
+                        label="Hard Drive"
+                        selected={desktopIconSelected === "drive"}
+                        onClick={() => setDesktopIconSelected("drive")}
+                        onOpen={() => setDesktopOpenApp("DISK_C (540 MB)")}
+                      />
+                      <DesktopIcon
+                        label="Dial-Up"
+                        selected={desktopIconSelected === "dialup"}
+                        onClick={() => setDesktopIconSelected("dialup")}
+                        onOpen={() => setDesktopOpenApp("DIALUP_CONFIG.EXE")}
+                      />
+                      <DesktopIcon
+                        label="Trash"
+                        selected={desktopIconSelected === "trash"}
+                        onClick={() => setDesktopIconSelected("trash")}
+                        onOpen={() => setDesktopOpenApp("RECYCLE_BIN")}
+                      />
+                    </DesktopIconGrid>
+
+                    <Window size="sm" className="self-start max-w-xs shadow-hard-lg">
+                      <WindowTitleBar active>
+                        <div className="flex items-center gap-1">
+                          <WindowIcon />
+                          <WindowTitle>{desktopOpenApp}</WindowTitle>
+                        </div>
+                        <WindowControls />
+                      </WindowTitleBar>
+                      <WindowContent className="text-xs space-y-1">
+                        <div>CPU: 486DX2 @ 66 MHz</div>
+                        <div>RAM: 16,384 KB Extended</div>
+                        <div className="text-muted-foreground">Double-click or press Enter on an icon to switch.</div>
+                      </WindowContent>
+                    </Window>
+                  </div>
+
+                  <Taskbar position="relative">
+                    <TaskbarStart>START</TaskbarStart>
+                    <TaskbarTasks>
+                      <TaskbarTask active>{desktopOpenApp}</TaskbarTask>
+                    </TaskbarTasks>
+                    <TaskbarStatus>
+                      <TaskbarClock />
+                    </TaskbarStatus>
+                  </Taskbar>
+                </Desktop>
+              </div>
+
+              <ComponentCodePanel sectionId="demo-desktop" />
+            </section>
+
+            {/* SECTION 8: TERMINAL */}
+            <section id="terminal" className="space-y-4 pt-6 border-t border-border">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <span className="bevel-raised inline-flex h-6 w-6 items-center justify-center bg-primary text-xs font-bold text-primary-foreground">
+                    08
+                  </span>
+                  <h2 className="font-mono text-xl font-bold uppercase tracking-tight text-foreground">
+                    Terminal
+                  </h2>
+                </div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <Badge variant="outline" className="font-mono text-[10px]">
+                    @ditherweb/ui/terminal
+                  </Badge>
+                  <Badge variant="primary" className="font-mono text-[10px]">
+                    Phase 5 Primitive
+                  </Badge>
+                </div>
+              </div>
+
+              <p className="font-mono text-xs text-muted-foreground max-w-3xl leading-relaxed">
+                Classic monospaced command-line presentation component with prompt, command echo, stream logs, phosphor palette variations, and a reduced-motion-safe blinking cursor. Strictly presentation-only.
+              </p>
+
+              <div className="p-4 sm:p-6 bevel-inset bg-muted/20 space-y-4">
+                <Terminal variant="matrix">
+                  <TerminalHeader title="VT-100 CONSOLE — 80x25">
+                    <span className="text-[10px] text-zinc-500 font-mono">COM1: 9600-8-N-1</span>
+                  </TerminalHeader>
+                  <TerminalBody>
+                    <TerminalLine>
+                      <TerminalPrompt>root@ditherweb:~$</TerminalPrompt>
+                      <TerminalCommand>npx @ditherweb/ui --verify-phase5</TerminalCommand>
+                    </TerminalLine>
+                    <TerminalOutput>
+                      [INIT] Loading 86 production primitives...
+                      [CORE] 10 Core Foundational Primitives Verified
+                      [TYPO] 8 Typography Primitives Verified
+                      [LAYT] 8 Layout Primitives Verified
+                      [FORM] 10 Forms &amp; Selection Primitives Verified
+                      [SURF] 10 Surfaces &amp; Feedback Primitives Verified
+                      [OVRL] 10 Overlays &amp; Layered Interaction Verified
+                      [NAVG] 10 Navigation &amp; Structured Data Verified
+                      [CLSC] 10 Classic Web Historical Primitives Verified
+                      [DSKT] 10 Desktop &amp; Pixel Primitives Verified
+                      [STATUS] All 86 primitives operational with 0 runtime dependencies.
+                    </TerminalOutput>
+                    <TerminalLine>
+                      <TerminalPrompt>root@ditherweb:~$</TerminalPrompt>
+                      <TerminalCursor />
+                    </TerminalLine>
+                  </TerminalBody>
+                </Terminal>
+              </div>
+
+              <ComponentCodePanel sectionId="demo-terminal" />
+            </section>
+
+            {/* SECTION 9: PIXEL ART */}
+            <section id="pixel-art" className="space-y-4 pt-6 border-t border-border">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <span className="bevel-raised inline-flex h-6 w-6 items-center justify-center bg-primary text-xs font-bold text-primary-foreground">
+                    09
+                  </span>
+                  <h2 className="font-mono text-xl font-bold uppercase tracking-tight text-foreground">
+                    PixelArt
+                  </h2>
+                </div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <Badge variant="outline" className="font-mono text-[10px]">
+                    @ditherweb/ui/pixel-art
+                  </Badge>
+                  <Badge variant="primary" className="font-mono text-[10px]">
+                    Phase 5 Primitive
+                  </Badge>
+                </div>
+              </div>
+
+              <p className="font-mono text-xs text-muted-foreground max-w-3xl leading-relaxed">
+                Presentation component for pixel-art graphics and sprites enforcing integer scaling, crisp nearest-neighbor rendering (image-rendering: pixelated), retro pixel frames, and optional dither texture.
+              </p>
+
+              <div className="p-4 sm:p-6 bevel-inset bg-muted/20 flex flex-wrap items-center justify-around gap-6">
+                <PixelArt
+                  alt="Ditherweb 16-bit Floppy Disk"
+                  frame="pixel"
+                  ditherOverlay
+                  caption="Floppy Disk (Bevel Inset Frame)"
+                >
+                  <div className="w-16 h-16 bg-[#1a365d] border-2 border-[#2b6cb0] p-1 flex flex-col justify-between">
+                    <div className="w-8 h-5 bg-[#c0c0c0] border border-black self-end" />
+                    <div className="w-12 h-6 bg-[#ffffff] self-center border border-black text-[8px] font-mono text-black font-bold text-center">
+                      BOOT.SYS
+                    </div>
+                  </div>
+                </PixelArt>
+
+                <PixelArt
+                  alt="Retro CRT Computer Sprite"
+                  frame="bevel"
+                  caption="Workstation Monitor (3D Raised Frame)"
+                >
+                  <div className="w-20 h-20 bg-muted border-2 border-border p-2 flex flex-col items-center justify-between">
+                    <div className="w-14 h-11 bg-black border border-border flex items-center justify-center">
+                      <span className="text-[10px] text-green-400 font-mono font-bold animate-pulse">C:&gt;_</span>
+                    </div>
+                    <div className="w-8 h-1.5 bg-border self-center" />
+                  </div>
+                </PixelArt>
+
+                <PixelArt
+                  alt="Double Border Pixel Frame"
+                  frame="double"
+                  caption="Sprite (Double Border Frame)"
+                >
+                  <div className="w-16 h-16 bg-[#008080] flex items-center justify-center font-mono font-bold text-white text-xs">
+                    VGA
+                  </div>
+                </PixelArt>
+              </div>
+
+              <ComponentCodePanel sectionId="demo-pixel-art" />
+            </section>
+
+            {/* SECTION 10: BITMAP CANVAS */}
+            <section id="bitmap-canvas" className="space-y-4 pt-6 border-t border-border">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <span className="bevel-raised inline-flex h-6 w-6 items-center justify-center bg-primary text-xs font-bold text-primary-foreground">
+                    10
+                  </span>
+                  <h2 className="font-mono text-xl font-bold uppercase tracking-tight text-foreground">
+                    BitmapCanvas
+                  </h2>
+                </div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <Badge variant="outline" className="font-mono text-[10px]">
+                    @ditherweb/ui/bitmap-canvas
+                  </Badge>
+                  <Badge variant="primary" className="font-mono text-[10px]">
+                    Phase 5 Primitive
+                  </Badge>
+                </div>
+              </div>
+
+              <p className="font-mono text-xs text-muted-foreground max-w-3xl leading-relaxed">
+                Lightweight pixel-grid canvas surface for displaying and interacting with 8-bit bitmap matrices, retro palettes, and dither textures. Accessible gridcells with keyboard support.
+              </p>
+
+              <div className="p-4 sm:p-6 bevel-inset bg-muted/20 flex flex-col sm:flex-row items-center justify-around gap-6">
+                <div className="flex flex-col items-center gap-3">
+                  <div className="text-xs font-mono font-bold">Interactive 8x8 Bitmap Surface:</div>
+                  <BitmapCanvas
+                    width={8}
+                    height={8}
+                    pixelSize={24}
+                    grid
+                    interactive
+                    activeColor={canvasActiveColor}
+                    value={canvasMatrix}
+                    onChange={(newGrid) => setCanvasMatrix(newGrid)}
+                    alt="Interactive 8x8 pixel bitmap grid"
+                  />
+                  <div className="text-[11px] font-mono text-muted-foreground">
+                    Click or drag pixels to paint with selected palette color
+                  </div>
+                </div>
+
+                <div className="space-y-3 font-mono text-xs">
+                  <div className="font-bold">Palette Swatches:</div>
+                  <div className="flex flex-wrap gap-2 max-w-[200px]">
+                    {DEFAULT_RETRO_PALETTE.map((color) => (
+                      <button
+                        key={color}
+                        type="button"
+                        aria-label={`Select color ${color}`}
+                        onClick={() => setCanvasActiveColor(color)}
+                        style={{ backgroundColor: color }}
+                        className={`w-6 h-6 bevel-raised active:bevel-pressed ${
+                          canvasActiveColor === color ? "ring-2 ring-primary ring-offset-1" : ""
+                        }`}
+                      />
+                    ))}
+                  </div>
+
+                  <div className="pt-2 flex flex-col gap-2">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() =>
+                        setCanvasMatrix(
+                          Array.from({ length: 8 }, () => Array.from({ length: 8 }, () => "#000000"))
+                        )
+                      }
+                    >
+                      Clear Canvas
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="primary"
+                      onClick={() =>
+                        setCanvasMatrix([
+                          ["#000000", "#000000", "#008080", "#008080", "#008080", "#008080", "#000000", "#000000"],
+                          ["#000000", "#008080", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#008080", "#000000"],
+                          ["#008080", "#ffffff", "#000000", "#ffffff", "#ffffff", "#000000", "#ffffff", "#008080"],
+                          ["#008080", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#008080"],
+                          ["#008080", "#ffffff", "#008080", "#008080", "#008080", "#008080", "#ffffff", "#008080"],
+                          ["#008080", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#008080"],
+                          ["#000000", "#008080", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#008080", "#000000"],
+                          ["#000000", "#000000", "#008080", "#008080", "#008080", "#008080", "#000000", "#000000"],
+                        ])
+                      }
+                    >
+                      Reset Floppy Disk Icon
+                    </Button>
+                  </div>
+                </div>
+              </div>
+
+              <ComponentCodePanel sectionId="demo-bitmap-canvas" />
             </section>
           </>
         )}
