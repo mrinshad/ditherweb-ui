@@ -72,8 +72,14 @@ try {
 
   // Verify package metadata in packed artifact
   const tarballPkgJson = JSON.parse(fs.readFileSync(path.join(pkgDir, "package.json"), "utf8"));
-  if (tarballPkgJson.private !== true) {
-    throw new Error("Packed package.json is missing private: true protection!");
+  if (tarballPkgJson.name !== "@ditherweb/ui") {
+    throw new Error(`Packed package.json has incorrect package name: ${tarballPkgJson.name}`);
+  }
+  if (tarballPkgJson.publishConfig?.access !== "public") {
+    throw new Error("Packed package.json is missing publishConfig.access: 'public' configuration!");
+  }
+  if (tarballPkgJson.private === true) {
+    throw new Error("Packed package.json unexpectedly retains private: true property!");
   }
   if (tarballPkgJson.license !== "MIT") {
     throw new Error(`Packed package.json has incorrect license: ${tarballPkgJson.license}`);
@@ -84,7 +90,7 @@ try {
   if (!tarballPkgJson.peerDependencies?.react || !tarballPkgJson.peerDependencies?.["react-dom"]) {
     throw new Error("Packed package.json is missing React peerDependencies!");
   }
-  console.log("✓ Verified package metadata: private-package protection, MIT license, exports, and peerDependencies confirmed.");
+  console.log("✓ Verified package metadata: public-package invariants, MIT license, exports, and peerDependencies confirmed.");
 
   // Verify inlined source maps in both .js.map and .d.ts.map
   const buttonJsMap = JSON.parse(
