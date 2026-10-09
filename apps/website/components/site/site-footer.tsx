@@ -1,10 +1,27 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
-import { Separator } from "@ditherweb/ui";
+import { usePathname } from "next/navigation";
+import { Badge, Separator, cn } from "@ditherweb/ui";
 
-export function SiteFooter() {
+export function SiteFooter({
+  className,
+  isRoot = false,
+}: {
+  className?: string;
+  isRoot?: boolean;
+} = {}) {
+  const pathname = usePathname();
+  const isProductRoute = pathname?.startsWith("/docs") || pathname?.startsWith("/components");
+
+  // On product documentation routes, SiteFooter is rendered inside ProductLayout's shared content shell
+  if (isRoot && isProductRoute) {
+    return null;
+  }
+
   return (
-    <footer className="border-t border-border bg-surface text-foreground transition-colors">
+    <footer className={cn("border-t border-border bg-surface text-foreground transition-colors", className)}>
       <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           {/* Brand & Manifesto */}
@@ -147,18 +164,18 @@ export function SiteFooter() {
         <div className="flex flex-col items-center justify-between gap-4 font-mono text-xs text-muted-foreground sm:flex-row">
           <p>© 2026 Ditherweb Project. Built with Next.js & TypeScript.</p>
           <div className="flex flex-wrap items-center gap-2">
-            <span className="bevel-raised px-2 py-0.5 text-[10px] font-bold text-foreground bg-surface select-none">
-              [ REACT 19 ]
-            </span>
-            <span className="bevel-raised px-2 py-0.5 text-[10px] font-bold text-foreground bg-surface select-none">
-              [ NEXT.JS ]
-            </span>
-            <span className="bevel-raised px-2 py-0.5 text-[10px] font-bold text-foreground bg-surface select-none">
-              [ TAILWIND CSS ]
-            </span>
-            <span className="bevel-raised px-2 py-0.5 text-[10px] font-bold text-foreground bg-surface select-none">
-              [ W3C A11Y ]
-            </span>
+            <Badge variant="flat" className="text-[10px] px-2 py-0.5">
+              REACT 19
+            </Badge>
+            <Badge variant="flat" className="text-[10px] px-2 py-0.5">
+              NEXT.JS
+            </Badge>
+            <Badge variant="flat" className="text-[10px] px-2 py-0.5">
+              TAILWIND CSS
+            </Badge>
+            <Badge variant="flat" className="text-[10px] px-2 py-0.5">
+              W3C A11Y
+            </Badge>
           </div>
         </div>
       </div>

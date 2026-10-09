@@ -312,6 +312,15 @@ import {
   ResultAction,
   type ResultVariant,
   Loading,
+  type ButtonVariant,
+  type ButtonSize,
+  type InputVariant,
+  type InputSize,
+  type BadgeVariant,
+  type CardVariant,
+  type AvatarVariant,
+  type SkeletonVariant,
+  type SkeletonPattern,
 } from "@ditherweb/ui";
 
 export interface ComponentPreviewProps {
@@ -328,12 +337,20 @@ interface GuestbookEntryItem {
 }
 
 interface PreviewState {
-  btnVariant: "primary" | "secondary" | "outline" | "destructive";
-  setBtnVariant: (v: "primary" | "secondary" | "outline" | "destructive") => void;
-  btnSize: "sm" | "md" | "lg";
-  setBtnSize: (s: "sm" | "md" | "lg") => void;
+  btnVariant: ButtonVariant;
+  setBtnVariant: (v: ButtonVariant) => void;
+  btnSize: ButtonSize;
+  setBtnSize: (s: ButtonSize) => void;
+  btnLoading: boolean;
+  setBtnLoading: (l: boolean) => void;
+  btnDisabled: boolean;
+  setBtnDisabled: (d: boolean) => void;
   inputValue: string;
   setInputValue: (v: string) => void;
+  inputVariant: InputVariant;
+  setInputVariant: (v: InputVariant) => void;
+  inputSize: InputSize;
+  setInputSize: (s: InputSize) => void;
   switchChecked: boolean;
   setSwitchChecked: (v: boolean) => void;
   chkChecked: boolean;
@@ -354,8 +371,10 @@ interface PreviewState {
   setInputDisabled: (v: boolean) => void;
   alertVariant: "default" | "info" | "warning" | "destructive" | "success";
   setAlertVariant: (v: "default" | "info" | "warning" | "destructive" | "success") => void;
-  badgeVariant: "default" | "primary" | "secondary" | "success" | "warning" | "destructive" | "outline";
-  setBadgeVariant: (v: "default" | "primary" | "secondary" | "success" | "warning" | "destructive" | "outline") => void;
+  badgeVariant: BadgeVariant;
+  setBadgeVariant: (v: BadgeVariant) => void;
+  cardVariant: CardVariant;
+  setCardVariant: (v: CardVariant) => void;
   sepOrientation: "both" | "horizontal" | "vertical";
   setSepOrientation: (v: "both" | "horizontal" | "vertical") => void;
 
@@ -568,6 +587,8 @@ interface PreviewState {
   setAvatarShape: (s: AvatarShape) => void;
   avatarStatus: AvatarStatus;
   setAvatarStatus: (s: AvatarStatus) => void;
+  avatarVariant: AvatarVariant;
+  setAvatarVariant: (v: AvatarVariant) => void;
   avatarShowFallback: boolean;
   setAvatarShowFallback: (f: boolean) => void;
 
@@ -718,6 +739,10 @@ interface PreviewState {
   setSpinnerSize: (s: "sm" | "md" | "lg") => void;
   skeletonAnimate: boolean;
   setSkeletonAnimate: (a: boolean) => void;
+  skeletonVariant: SkeletonVariant;
+  setSkeletonVariant: (v: SkeletonVariant) => void;
+  skeletonPattern: SkeletonPattern;
+  setSkeletonPattern: (p: SkeletonPattern) => void;
   emptyStateVariant: "default" | "card" | "dashed";
   setEmptyStateVariant: (v: "default" | "card" | "dashed") => void;
   resultVariant: ResultVariant;
@@ -730,9 +755,13 @@ interface PreviewState {
 
 export function ComponentPreview({ slug }: ComponentPreviewProps) {
   // State for interactive demos
-  const [btnVariant, setBtnVariant] = useState<"primary" | "secondary" | "outline" | "destructive">("primary");
-  const [btnSize, setBtnSize] = useState<"sm" | "md" | "lg">("md");
+  const [btnVariant, setBtnVariant] = useState<ButtonVariant>("retro");
+  const [btnSize, setBtnSize] = useState<ButtonSize>("md");
+  const [btnLoading, setBtnLoading] = useState(false);
+  const [btnDisabled, setBtnDisabled] = useState(false);
   const [inputValue, setInputValue] = useState("admin@gateway.local");
+  const [inputVariant, setInputVariant] = useState<InputVariant>("default");
+  const [inputSize, setInputSize] = useState<InputSize>("md");
   const [switchChecked, setSwitchChecked] = useState(true);
   const [chkChecked, setChkChecked] = useState(true);
   const [radioVal, setRadioVal] = useState("vga");
@@ -743,7 +772,8 @@ export function ComponentPreview({ slug }: ComponentPreviewProps) {
   const [inputInvalid, setInputInvalid] = useState(false);
   const [inputDisabled, setInputDisabled] = useState(false);
   const [alertVariant, setAlertVariant] = useState<"default" | "info" | "warning" | "destructive" | "success">("warning");
-  const [badgeVariant, setBadgeVariant] = useState<"default" | "primary" | "secondary" | "success" | "warning" | "destructive" | "outline">("primary");
+  const [badgeVariant, setBadgeVariant] = useState<BadgeVariant>("retro");
+  const [cardVariant, setCardVariant] = useState<CardVariant>("raised");
   const [sepOrientation, setSepOrientation] = useState<"both" | "horizontal" | "vertical">("both");
 
   // Typography interactive state
@@ -855,6 +885,7 @@ export function ComponentPreview({ slug }: ComponentPreviewProps) {
   const [avatarSize, setAvatarSize] = useState<AvatarSize>("lg");
   const [avatarShape, setAvatarShape] = useState<AvatarShape>("square");
   const [avatarStatus, setAvatarStatus] = useState<AvatarStatus>("online");
+  const [avatarVariant, setAvatarVariant] = useState<AvatarVariant>("default");
   const [avatarShowFallback, setAvatarShowFallback] = useState(true);
 
   // Classic Web states
@@ -952,6 +983,8 @@ export function ComponentPreview({ slug }: ComponentPreviewProps) {
   const [progressIndeterminate, setProgressIndeterminate] = useState(false);
   const [spinnerSize, setSpinnerSize] = useState<"sm" | "md" | "lg">("md");
   const [skeletonAnimate, setSkeletonAnimate] = useState(true);
+  const [skeletonVariant, setSkeletonVariant] = useState<SkeletonVariant>("default");
+  const [skeletonPattern, setSkeletonPattern] = useState<SkeletonPattern>("bayer");
   const [emptyStateVariant, setEmptyStateVariant] = useState<"default" | "card" | "dashed">("card");
   const [resultVariant, setResultVariant] = useState<ResultVariant>("success");
   const [loadingSize, setLoadingSize] = useState<"sm" | "md" | "lg">("md");
@@ -972,8 +1005,16 @@ export function ComponentPreview({ slug }: ComponentPreviewProps) {
           setBtnVariant,
           btnSize,
           setBtnSize,
+          btnLoading,
+          setBtnLoading,
+          btnDisabled,
+          setBtnDisabled,
           inputValue,
           setInputValue,
+          inputVariant,
+          setInputVariant,
+          inputSize,
+          setInputSize,
           switchChecked,
           setSwitchChecked,
           chkChecked,
@@ -996,6 +1037,8 @@ export function ComponentPreview({ slug }: ComponentPreviewProps) {
           setAlertVariant,
           badgeVariant,
           setBadgeVariant,
+          cardVariant,
+          setCardVariant,
           sepOrientation,
           setSepOrientation,
           headingLevel,
@@ -1198,6 +1241,8 @@ export function ComponentPreview({ slug }: ComponentPreviewProps) {
           setAvatarShape,
           avatarStatus,
           setAvatarStatus,
+          avatarVariant,
+          setAvatarVariant,
           avatarShowFallback,
           setAvatarShowFallback,
           guestbookEmpty,
@@ -1342,6 +1387,10 @@ export function ComponentPreview({ slug }: ComponentPreviewProps) {
           setSpinnerSize,
           skeletonAnimate,
           setSkeletonAnimate,
+          skeletonVariant,
+          setSkeletonVariant,
+          skeletonPattern,
+          setSkeletonPattern,
           emptyStateVariant,
           setEmptyStateVariant,
           resultVariant,
@@ -1762,36 +1811,54 @@ function renderPreviewContent(slug: string, state: PreviewState) {
 
     case "card":
       return (
-        <Card className="w-full max-w-sm bevel-raised bg-surface">
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <Badge variant="primary" className="text-[9px]">HARDWARE NODE</Badge>
-              <span className="text-[10px] text-muted-foreground font-mono">NODE #04</span>
-            </div>
-            <CardTitle className="text-sm font-bold uppercase mt-1">Telemetry Sensor Monitor</CardTitle>
-            <CardDescription className="text-xs">
-              Live thermodynamic bus readings from primary workstation rack.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-2 text-xs">
-            <div className="flex justify-between border-b border-border/50 pb-1">
-              <span className="text-muted-foreground">CPU Core Temp:</span>
-              <span className="font-bold text-foreground">38.4°C</span>
-            </div>
-            <div className="flex justify-between border-b border-border/50 pb-1">
-              <span className="text-muted-foreground">VRAM Alloc:</span>
-              <span className="font-bold text-foreground">128 MB / 256 MB</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">Bus Latency:</span>
-              <span className="font-bold text-success">● 14ms (Optimal)</span>
-            </div>
-          </CardContent>
-          <CardFooter className="pt-2 border-t border-border flex justify-between items-center">
-            <span className="text-[10px] text-muted-foreground">Status: Nominal</span>
-            <Button variant="primary" size="sm">Acknowledge</Button>
-          </CardFooter>
-        </Card>
+        <div className="w-full max-w-sm space-y-4">
+          <Card variant={state.cardVariant} className="w-full">
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <Badge variant="primary" className="text-[9px]">HARDWARE NODE</Badge>
+                <span className="text-[10px] text-muted-foreground font-mono">NODE #04</span>
+              </div>
+              <CardTitle className="text-sm font-bold uppercase mt-1">Telemetry Sensor Monitor</CardTitle>
+              <CardDescription className="text-xs">
+                Live thermodynamic bus readings from primary workstation rack.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-2 text-xs">
+              <div className="flex justify-between border-b border-border/50 pb-1">
+                <span className="text-muted-foreground">CPU Core Temp:</span>
+                <span className="font-bold text-foreground">38.4°C</span>
+              </div>
+              <div className="flex justify-between border-b border-border/50 pb-1">
+                <span className="text-muted-foreground">VRAM Alloc:</span>
+                <span className="font-bold text-foreground">128 MB / 256 MB</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Bus Latency:</span>
+                <span className="font-bold text-success">● 14ms (Optimal)</span>
+              </div>
+            </CardContent>
+            <CardFooter className="pt-2 border-t border-border flex justify-between items-center">
+              <span className="text-[10px] text-muted-foreground">Status: Nominal</span>
+              <Button variant="primary" size="sm">Acknowledge</Button>
+            </CardFooter>
+          </Card>
+
+          <div className="flex flex-wrap items-center justify-center gap-2 pt-2 border-t border-border text-[11px]">
+            <span className="text-muted-foreground">Variant:</span>
+            {(["default", "raised", "inset", "flat"] as const).map((v) => (
+              <button
+                key={v}
+                type="button"
+                onClick={() => state.setCardVariant(v)}
+                className={`px-2 py-0.5 uppercase ${
+                  state.cardVariant === v ? "bevel-inset bg-primary text-primary-foreground font-bold" : "bevel-raised"
+                }`}
+              >
+                {v}
+              </button>
+            ))}
+          </div>
+        </div>
       );
 
     case "badge":
@@ -1819,7 +1886,7 @@ function renderPreviewContent(slug: string, state: PreviewState) {
           </div>
 
           <div className="flex flex-wrap items-center justify-center gap-1.5 text-[10px]">
-            {(["default", "primary", "secondary", "success", "warning", "destructive", "outline"] as const).map((v) => (
+            {(["default", "primary", "secondary", "success", "warning", "destructive", "outline", "flat"] as const).map((v) => (
               <button
                 key={v}
                 type="button"
@@ -4694,7 +4761,7 @@ function renderPreviewContent(slug: string, state: PreviewState) {
         <div className="flex flex-col items-center gap-5 w-full max-w-md">
           <div className="bevel-raised bg-surface p-6 flex flex-col items-center gap-4 w-full">
             <div className="flex items-center justify-center gap-6">
-              <Avatar size={state.avatarSize} shape={state.avatarShape}>
+              <Avatar size={state.avatarSize} shape={state.avatarShape} variant={state.avatarVariant}>
                 {!state.avatarShowFallback && (
                   <AvatarImage src="/icon.png" alt="SysOp Avatar" />
                 )}
@@ -4713,7 +4780,7 @@ function renderPreviewContent(slug: string, state: PreviewState) {
             <div className="pt-2 border-t border-border w-full flex items-center justify-center gap-3">
               {(["sm", "md", "lg", "xl"] as const).map((s) => (
                 <div key={s} className="flex flex-col items-center gap-1">
-                  <Avatar size={s} shape={state.avatarShape}>
+                  <Avatar size={s} shape={state.avatarShape} variant={state.avatarVariant}>
                     <AvatarFallback>{s.toUpperCase()}</AvatarFallback>
                     <AvatarBadge status={s === "sm" ? "offline" : s === "md" ? "away" : s === "lg" ? "busy" : "online"} />
                   </Avatar>
@@ -4724,6 +4791,22 @@ function renderPreviewContent(slug: string, state: PreviewState) {
           </div>
 
           <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-border w-full justify-center text-[11px]">
+            <span className="text-muted-foreground">Variant:</span>
+            {(["default", "bevel", "pixel", "dither"] as const).map((v) => (
+              <button
+                key={v}
+                type="button"
+                onClick={() => state.setAvatarVariant(v)}
+                className={`px-2 py-0.5 uppercase ${
+                  state.avatarVariant === v ? "bevel-inset bg-primary text-primary-foreground font-bold" : "bevel-raised"
+                }`}
+              >
+                {v}
+              </button>
+            ))}
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2 w-full justify-center text-[11px]">
             <span className="text-muted-foreground">Size:</span>
             {(["sm", "md", "lg", "xl"] as const).map((s) => (
               <button
@@ -7030,21 +7113,41 @@ function renderPreviewContent(slug: string, state: PreviewState) {
             </div>
 
             <div className="flex items-start gap-4">
-              <Skeleton animate={state.skeletonAnimate} className="w-14 h-14 shrink-0" />
+              <Skeleton animate={state.skeletonAnimate} pattern={state.skeletonPattern} className="w-14 h-14 shrink-0" />
               <div className="space-y-2 flex-1">
-                <Skeleton animate={state.skeletonAnimate} className="h-4 w-3/4" />
-                <Skeleton animate={state.skeletonAnimate} className="h-3 w-full" />
-                <Skeleton animate={state.skeletonAnimate} className="h-3 w-1/2" />
+                <Skeleton animate={state.skeletonAnimate} pattern={state.skeletonPattern} className="h-4 w-3/4" />
+                <Skeleton animate={state.skeletonAnimate} pattern={state.skeletonPattern} className="h-3 w-full" />
+                <Skeleton animate={state.skeletonAnimate} pattern={state.skeletonPattern} className="h-3 w-1/2" />
               </div>
             </div>
 
             <div className="pt-2 border-t border-border/40 flex justify-end gap-2">
-              <Skeleton animate={state.skeletonAnimate} className="h-7 w-20" />
-              <Skeleton animate={state.skeletonAnimate} className="h-7 w-24" />
+              <Skeleton animate={state.skeletonAnimate} pattern={state.skeletonPattern} className="h-7 w-20" />
+              <Skeleton animate={state.skeletonAnimate} pattern={state.skeletonPattern} className="h-7 w-24" />
             </div>
           </div>
 
           <div className="flex flex-col gap-2 pt-2 border-t border-border w-full text-[11px] font-mono">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <span className="text-muted-foreground uppercase text-[10px]">Pattern:</span>
+              <div className="flex gap-1">
+                {(["bayer", "checker", "fine", "dense"] as const).map((p) => (
+                  <button
+                    key={p}
+                    type="button"
+                    onClick={() => state.setSkeletonPattern(p)}
+                    className={`px-2 py-0.5 uppercase ${
+                      state.skeletonPattern === p
+                        ? "bevel-inset bg-primary text-primary-foreground font-bold"
+                        : "bevel-raised"
+                    }`}
+                  >
+                    {p}
+                  </button>
+                ))}
+              </div>
+            </div>
+
             <div className="flex flex-wrap items-center justify-between gap-2">
               <span className="text-muted-foreground uppercase text-[10px]">Animation:</span>
               <Button
