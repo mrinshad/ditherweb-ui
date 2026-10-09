@@ -1,10 +1,27 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
-import { Badge, Separator } from "@ditherweb/ui";
+import { usePathname } from "next/navigation";
+import { Badge, Separator, cn } from "@ditherweb/ui";
 
-export function SiteFooter() {
+export function SiteFooter({
+  className,
+  isRoot = false,
+}: {
+  className?: string;
+  isRoot?: boolean;
+} = {}) {
+  const pathname = usePathname();
+  const isProductRoute = pathname?.startsWith("/docs") || pathname?.startsWith("/components");
+
+  // On product documentation routes, SiteFooter is rendered inside ProductLayout's shared content shell
+  if (isRoot && isProductRoute) {
+    return null;
+  }
+
   return (
-    <footer className="border-t border-border bg-surface text-foreground transition-colors">
+    <footer className={cn("border-t border-border bg-surface text-foreground transition-colors", className)}>
       <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           {/* Brand & Manifesto */}

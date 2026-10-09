@@ -154,7 +154,7 @@ export default function RootLayout({
       <body className="min-h-dvh flex flex-col antialiased bg-background text-foreground">
         <SiteHeader />
         <main className="flex-1 w-full">{children}</main>
-        <SiteFooter />
+        <SiteFooter isRoot />
       </body>
     </html>
   );

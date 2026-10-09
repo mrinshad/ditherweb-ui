@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { SidebarProvider, SidebarTrigger, useSidebar, cn } from "@ditherweb/ui";
 import { DocsSidebar } from "@/components/docs/docs-sidebar";
 import { ComponentsSidebar } from "@/components/docs/components-sidebar";
+import { SiteFooter } from "@/components/site/site-footer";
 
 function ProductShell({
   isDocs,
@@ -26,11 +27,11 @@ function ProductShell({
         <ComponentsSidebar className="lg:fixed lg:top-14 lg:left-0 lg:z-30 lg:h-[calc(100vh-3.5rem)]" />
       )}
 
-      {/* Main Content Area */}
+      {/* Main Content & Footer Shell: offset to the right of the fixed sidebar */}
       <div
         className={cn(
-          "flex-1 min-w-0 max-w-full flex flex-col transition-[padding] duration-200 ease-in-out",
-          isCollapsed ? "lg:pl-14" : "lg:pl-64",
+          "flex-1 min-w-0 max-w-full flex flex-col transition-[margin] duration-200 ease-in-out",
+          isCollapsed ? "lg:ml-14" : "lg:ml-64",
         )}
       >
         {/* Mobile Top Navigation Bar */}
@@ -49,9 +50,13 @@ function ProductShell({
           </Link>
         </div>
 
+        {/* Documentation Content Area */}
         <div className="mx-auto max-w-7xl w-full px-4 py-8 sm:px-6 lg:px-8 space-y-8 flex-1">
-          <main className="min-w-0">{children}</main>
+          <div className="min-w-0">{children}</div>
         </div>
+
+        {/* Site Footer within content shell */}
+        <SiteFooter />
       </div>
     </div>
   );
