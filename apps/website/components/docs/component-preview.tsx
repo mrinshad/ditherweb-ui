@@ -1886,7 +1886,7 @@ function renderPreviewContent(slug: string, state: PreviewState) {
           </div>
 
           <div className="flex flex-wrap items-center justify-center gap-1.5 text-[10px]">
-            {(["default", "primary", "secondary", "success", "warning", "destructive", "outline"] as const).map((v) => (
+            {(["default", "primary", "secondary", "success", "warning", "destructive", "outline", "flat"] as const).map((v) => (
               <button
                 key={v}
                 type="button"

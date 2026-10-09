@@ -11,7 +11,8 @@ export type BadgeVariant =
   | "info"
   | "outline"
   | "retro"
-  | "dot";
+  | "dot"
+  | "flat";
 
 export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
   variant?: BadgeVariant;
@@ -28,6 +29,7 @@ const variantStyles: Record<BadgeVariant, string> = {
   outline: "border-2 border-border-strong text-foreground bg-transparent",
   retro: "bevel-inset bg-surface-sunken text-foreground border-none",
   dot: "border border-border bg-surface text-surface-foreground gap-1.5",
+  flat: "border border-border/60 bg-muted/30 text-muted-foreground font-normal tracking-normal",
 };
 
 const Badge = forwardRef<HTMLSpanElement, BadgeProps>(

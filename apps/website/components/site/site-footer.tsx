@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Separator } from "@ditherweb/ui";
+import { Badge, Separator } from "@ditherweb/ui";
 
 export function SiteFooter() {
   return (
@@ -147,18 +147,18 @@ export function SiteFooter() {
         <div className="flex flex-col items-center justify-between gap-4 font-mono text-xs text-muted-foreground sm:flex-row">
           <p>© 2026 Ditherweb Project. Built with Next.js & TypeScript.</p>
           <div className="flex flex-wrap items-center gap-2">
-            <span className="bevel-raised px-2 py-0.5 text-[10px] font-bold text-foreground bg-surface select-none">
-              [ REACT 19 ]
-            </span>
-            <span className="bevel-raised px-2 py-0.5 text-[10px] font-bold text-foreground bg-surface select-none">
-              [ NEXT.JS ]
-            </span>
-            <span className="bevel-raised px-2 py-0.5 text-[10px] font-bold text-foreground bg-surface select-none">
-              [ TAILWIND CSS ]
-            </span>
-            <span className="bevel-raised px-2 py-0.5 text-[10px] font-bold text-foreground bg-surface select-none">
-              [ W3C A11Y ]
-            </span>
+            <Badge variant="flat" className="text-[10px] px-2 py-0.5">
+              REACT 19
+            </Badge>
+            <Badge variant="flat" className="text-[10px] px-2 py-0.5">
+              NEXT.JS
+            </Badge>
+            <Badge variant="flat" className="text-[10px] px-2 py-0.5">
+              TAILWIND CSS
+            </Badge>
+            <Badge variant="flat" className="text-[10px] px-2 py-0.5">
+              W3C A11Y
+            </Badge>
           </div>
         </div>
       </div>
