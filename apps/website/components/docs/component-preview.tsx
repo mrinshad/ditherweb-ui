@@ -288,6 +288,30 @@ import {
   type TypewriterSpeed,
   BlinkCursor,
   type BlinkCursorVariant,
+  Panel,
+  PanelHeader,
+  PanelTitle,
+  PanelDescription,
+  PanelContent,
+  PanelFooter,
+  GroupBox,
+  GroupBoxLegend,
+  Well,
+  Inset,
+  Progress,
+  Spinner,
+  Skeleton,
+  EmptyState,
+  EmptyStateIcon,
+  EmptyStateTitle,
+  EmptyStateDescription,
+  EmptyStateAction,
+  Result,
+  ResultTitle,
+  ResultDescription,
+  ResultAction,
+  type ResultVariant,
+  Loading,
 } from "@ditherweb/ui";
 
 export interface ComponentPreviewProps {
@@ -674,6 +698,34 @@ interface PreviewState {
   setBlinkCursorBlink: (b: boolean) => void;
   blinkCursorChar: string;
   setBlinkCursorChar: (c: string) => void;
+  panelVariant: "default" | "raised" | "inset" | "flat";
+  setPanelVariant: (v: "default" | "raised" | "inset" | "flat") => void;
+  groupBoxVariant: "default" | "groove" | "raised";
+  setGroupBoxVariant: (v: "default" | "groove" | "raised") => void;
+  groupBoxDisabled: boolean;
+  setGroupBoxDisabled: (d: boolean) => void;
+  wellVariant: "default" | "sunken" | "code";
+  setWellVariant: (v: "default" | "sunken" | "code") => void;
+  insetDeep: boolean;
+  setInsetDeep: (d: boolean) => void;
+  progressVal: number;
+  setProgressVal: React.Dispatch<React.SetStateAction<number>>;
+  progressVariant: "default" | "stepped" | "success" | "warning" | "destructive";
+  setProgressVariant: (v: "default" | "stepped" | "success" | "warning" | "destructive") => void;
+  progressIndeterminate: boolean;
+  setProgressIndeterminate: (i: boolean) => void;
+  spinnerSize: "sm" | "md" | "lg";
+  setSpinnerSize: (s: "sm" | "md" | "lg") => void;
+  skeletonAnimate: boolean;
+  setSkeletonAnimate: (a: boolean) => void;
+  emptyStateVariant: "default" | "card" | "dashed";
+  setEmptyStateVariant: (v: "default" | "card" | "dashed") => void;
+  resultVariant: ResultVariant;
+  setResultVariant: (v: ResultVariant) => void;
+  loadingSize: "sm" | "md" | "lg";
+  setLoadingSize: (s: "sm" | "md" | "lg") => void;
+  loadingInline: boolean;
+  setLoadingInline: (i: boolean) => void;
 }
 
 export function ComponentPreview({ slug }: ComponentPreviewProps) {
@@ -888,6 +940,22 @@ export function ComponentPreview({ slug }: ComponentPreviewProps) {
   const [blinkCursorVariant, setBlinkCursorVariant] = useState<BlinkCursorVariant>("block");
   const [blinkCursorBlink, setBlinkCursorBlink] = useState(true);
   const [blinkCursorChar, setBlinkCursorChar] = useState("");
+
+  // Surfaces & Feedback states
+  const [panelVariant, setPanelVariant] = useState<"default" | "raised" | "inset" | "flat">("raised");
+  const [groupBoxVariant, setGroupBoxVariant] = useState<"default" | "groove" | "raised">("default");
+  const [groupBoxDisabled, setGroupBoxDisabled] = useState(false);
+  const [wellVariant, setWellVariant] = useState<"default" | "sunken" | "code">("default");
+  const [insetDeep, setInsetDeep] = useState(false);
+  const [progressVal, setProgressVal] = useState(65);
+  const [progressVariant, setProgressVariant] = useState<"default" | "stepped" | "success" | "warning" | "destructive">("stepped");
+  const [progressIndeterminate, setProgressIndeterminate] = useState(false);
+  const [spinnerSize, setSpinnerSize] = useState<"sm" | "md" | "lg">("md");
+  const [skeletonAnimate, setSkeletonAnimate] = useState(true);
+  const [emptyStateVariant, setEmptyStateVariant] = useState<"default" | "card" | "dashed">("card");
+  const [resultVariant, setResultVariant] = useState<ResultVariant>("success");
+  const [loadingSize, setLoadingSize] = useState<"sm" | "md" | "lg">("md");
+  const [loadingInline, setLoadingInline] = useState(false);
 
   return (
     <div className="bevel-raised bg-surface p-6 font-mono text-xs border border-border space-y-4">
@@ -1254,6 +1322,34 @@ export function ComponentPreview({ slug }: ComponentPreviewProps) {
           setBlinkCursorBlink,
           blinkCursorChar,
           setBlinkCursorChar,
+          panelVariant,
+          setPanelVariant,
+          groupBoxVariant,
+          setGroupBoxVariant,
+          groupBoxDisabled,
+          setGroupBoxDisabled,
+          wellVariant,
+          setWellVariant,
+          insetDeep,
+          setInsetDeep,
+          progressVal,
+          setProgressVal,
+          progressVariant,
+          setProgressVariant,
+          progressIndeterminate,
+          setProgressIndeterminate,
+          spinnerSize,
+          setSpinnerSize,
+          skeletonAnimate,
+          setSkeletonAnimate,
+          emptyStateVariant,
+          setEmptyStateVariant,
+          resultVariant,
+          setResultVariant,
+          loadingSize,
+          setLoadingSize,
+          loadingInline,
+          setLoadingInline,
         })}
       </div>
     </div>
@@ -6568,6 +6664,538 @@ function renderPreviewContent(slug: string, state: PreviewState) {
                 onClick={() => state.setBlinkCursorBlink(!state.blinkCursorBlink)}
               >
                 {state.blinkCursorBlink ? "Blink: ON" : "Blink: OFF"}
+              </Button>
+            </div>
+          </div>
+        </div>
+      );
+
+    case "panel":
+      return (
+        <div className="flex flex-col items-center gap-4 w-full max-w-md">
+          <Panel variant={state.panelVariant} className="w-full">
+            <PanelHeader>
+              <div className="flex items-center justify-between">
+                <PanelTitle>HARDWARE TELEMETRY {"//"} NODE 04</PanelTitle>
+                <Badge variant="primary">LIVE</Badge>
+              </div>
+              <PanelDescription>
+                Real-time memory bus and coprocessor throughput
+              </PanelDescription>
+            </PanelHeader>
+            <PanelContent className="space-y-2 text-xs">
+              <div className="flex items-center justify-between border-b border-border/40 pb-1">
+                <span className="text-muted-foreground">CPU Core Clock:</span>
+                <span className="font-bold text-foreground">66.67 MHz (i486DX2)</span>
+              </div>
+              <div className="flex items-center justify-between border-b border-border/40 pb-1">
+                <span className="text-muted-foreground">RAM Expansion:</span>
+                <span className="font-bold text-foreground">16,384 KB EDO</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-muted-foreground">Bus Arbiter:</span>
+                <span className="font-bold text-primary">0x03F8 (IRQ 4 OK)</span>
+              </div>
+            </PanelContent>
+            <PanelFooter className="flex items-center justify-between">
+              <span className="text-[10px] text-muted-foreground uppercase">
+                SURFACE VARIANT: {state.panelVariant.toUpperCase()}
+              </span>
+              <Button size="sm" variant="outline">
+                Probe Bus
+              </Button>
+            </PanelFooter>
+          </Panel>
+
+          <div className="flex flex-col gap-2 pt-2 border-t border-border w-full text-[11px] font-mono">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <span className="text-muted-foreground uppercase text-[10px]">Panel Variant:</span>
+              <div className="flex flex-wrap gap-1">
+                {(["raised", "inset", "default", "flat"] as const).map((v) => (
+                  <Button
+                    key={v}
+                    size="sm"
+                    variant={state.panelVariant === v ? "primary" : "outline"}
+                    onClick={() => state.setPanelVariant(v)}
+                  >
+                    {v}
+                  </Button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+
+    case "group-box":
+      return (
+        <div className="flex flex-col items-center gap-4 w-full max-w-md">
+          <GroupBox
+            variant={state.groupBoxVariant}
+            disabled={state.groupBoxDisabled}
+            className="w-full space-y-3"
+          >
+            <GroupBoxLegend>MODEM HARDWARE CONFIGURATION</GroupBoxLegend>
+            <div className="flex items-center justify-between text-xs">
+              <span className="text-muted-foreground">Port Address:</span>
+              <span className="font-bold text-foreground">COM2 (0x02F8 / IRQ3)</span>
+            </div>
+            <div className="flex items-center justify-between text-xs">
+              <span className="text-muted-foreground">Baud Rate:</span>
+              <span className="font-bold text-primary">14,400 BPS (V.32BIS)</span>
+            </div>
+            <div className="pt-2 border-t border-border/40 space-y-2 text-xs">
+              <div className="flex items-center gap-2">
+                <Checkbox id="groupbox-chk-1" defaultChecked disabled={state.groupBoxDisabled} />
+                <Label htmlFor="groupbox-chk-1">Hardware Flow Control (RTS/CTS)</Label>
+              </div>
+              <div className="flex items-center gap-2">
+                <Checkbox id="groupbox-chk-2" defaultChecked disabled={state.groupBoxDisabled} />
+                <Label htmlFor="groupbox-chk-2">Auto-Answer Incoming Rings</Label>
+              </div>
+            </div>
+          </GroupBox>
+
+          <div className="flex flex-col gap-2 pt-2 border-t border-border w-full text-[11px] font-mono">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <span className="text-muted-foreground uppercase text-[10px]">Border Variant:</span>
+              <div className="flex flex-wrap gap-1">
+                {(["default", "groove", "raised"] as const).map((v) => (
+                  <Button
+                    key={v}
+                    size="sm"
+                    variant={state.groupBoxVariant === v ? "primary" : "outline"}
+                    onClick={() => state.setGroupBoxVariant(v)}
+                  >
+                    {v}
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <span className="text-muted-foreground uppercase text-[10px]">Container State:</span>
+              <Button
+                size="sm"
+                variant={state.groupBoxDisabled ? "destructive" : "outline"}
+                onClick={() => state.setGroupBoxDisabled(!state.groupBoxDisabled)}
+              >
+                {state.groupBoxDisabled ? "Disabled: ON" : "Disabled: OFF"}
+              </Button>
+            </div>
+          </div>
+        </div>
+      );
+
+    case "well":
+      return (
+        <div className="flex flex-col items-center gap-4 w-full max-w-md">
+          <div className="w-full bevel-raised bg-surface p-4 space-y-3">
+            <div className="flex items-center justify-between text-[11px] text-muted-foreground uppercase font-mono">
+              <span className="font-bold text-foreground">SYSTEM LOG WELL</span>
+              <span className="bevel-inset bg-muted/40 px-1.5 py-0.5 text-primary text-[10px]">
+                {state.wellVariant.toUpperCase()}
+              </span>
+            </div>
+
+            <Well variant={state.wellVariant} className="space-y-1.5 text-xs max-h-48 overflow-y-auto">
+              <div className="text-primary font-bold">[00:00:01] BIOS SHADOW RAM COPIED AT 0x000E0000</div>
+              <div className="text-foreground">[00:00:02] PCI BUS INITIALIZED: 4 BRIDGES FOUND</div>
+              <div className="text-foreground">[00:00:03] DMA CHANNEL 2 ASSIGNED TO FLOPPY FDC</div>
+              <div className="text-muted-foreground">[00:00:04] BUFFER CACHE ALLOCATED: 512 KB SRAM</div>
+              <div className="text-success font-bold">[00:00:05] SUBSYSTEM READY {"//"} TTY1 ATTACHED</div>
+            </Well>
+
+            <div className="text-[11px] text-muted-foreground flex items-center justify-between">
+              <span>Recessed Substrate Container</span>
+              <span className="font-bold text-foreground">5 Event Records</span>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-2 pt-2 border-t border-border w-full text-[11px] font-mono">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <span className="text-muted-foreground uppercase text-[10px]">Well Variant:</span>
+              <div className="flex flex-wrap gap-1">
+                {(["default", "sunken", "code"] as const).map((v) => (
+                  <Button
+                    key={v}
+                    size="sm"
+                    variant={state.wellVariant === v ? "primary" : "outline"}
+                    onClick={() => state.setWellVariant(v)}
+                  >
+                    {v}
+                  </Button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+
+    case "inset":
+      return (
+        <div className="flex flex-col items-center gap-4 w-full max-w-md">
+          <div className="w-full bevel-raised bg-surface p-4 space-y-3">
+            <div className="flex items-center justify-between text-[11px] text-muted-foreground uppercase font-mono">
+              <span className="font-bold text-foreground">OSCILLOSCOPE GAUGE INSET</span>
+              <span className="bevel-inset bg-muted/40 px-1.5 py-0.5 text-primary text-[10px]">
+                {state.insetDeep ? "DEEP SHADOW" : "STANDARD INSET"}
+              </span>
+            </div>
+
+            <Inset deep={state.insetDeep} className="p-4 space-y-3">
+              <div className="flex items-center justify-between text-xs">
+                <span className="text-muted-foreground">Audio Sampling Rate:</span>
+                <span className="font-bold text-foreground">44.1 kHz 16-Bit Stereo</span>
+              </div>
+              <div className="space-y-1">
+                <div className="flex items-center justify-between text-[11px] text-muted-foreground">
+                  <span>CHANNEL A (LEFT)</span>
+                  <span className="text-primary font-bold">-3.2 dB</span>
+                </div>
+                <div className="font-mono text-xs tracking-widest text-primary bg-muted/40 p-1 border border-border/40">
+                  {"[████████████░░░░░░]"}
+                </div>
+              </div>
+              <div className="space-y-1">
+                <div className="flex items-center justify-between text-[11px] text-muted-foreground">
+                  <span>CHANNEL B (RIGHT)</span>
+                  <span className="text-primary font-bold">-6.0 dB</span>
+                </div>
+                <div className="font-mono text-xs tracking-widest text-primary bg-muted/40 p-1 border border-border/40">
+                  {"[██████████░░░░░░░░]"}
+                </div>
+              </div>
+              <div className="text-[10px] text-muted-foreground text-center border-t border-border/30 pt-1.5">
+                DSP REVERB FILTER ENGAGED {"//"} ZERO CLIPPING DETECTED
+              </div>
+            </Inset>
+          </div>
+
+          <div className="flex flex-col gap-2 pt-2 border-t border-border w-full text-[11px] font-mono">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <span className="text-muted-foreground uppercase text-[10px]">Depth Profile:</span>
+              <Button
+                size="sm"
+                variant={state.insetDeep ? "primary" : "outline"}
+                onClick={() => state.setInsetDeep(!state.insetDeep)}
+              >
+                {state.insetDeep ? "Deep Inset: ON" : "Deep Inset: OFF"}
+              </Button>
+            </div>
+          </div>
+        </div>
+      );
+
+    case "progress":
+      return (
+        <div className="flex flex-col items-center gap-4 w-full max-w-md">
+          <div className="w-full bevel-raised bg-surface p-4 space-y-4">
+            <div className="flex items-center justify-between text-[11px] text-muted-foreground uppercase font-mono">
+              <span className="font-bold text-foreground">INSTALLATION DISK 2 OF 5</span>
+              <span className="bevel-inset bg-muted/40 px-1.5 py-0.5 text-primary text-[10px]">
+                {state.progressIndeterminate ? "INDETERMINATE" : `${state.progressVal}%`}
+              </span>
+            </div>
+
+            <Progress
+              value={state.progressIndeterminate ? undefined : state.progressVal}
+              max={100}
+              variant={state.progressVariant}
+              className="w-full"
+            />
+
+            <div className="flex items-center justify-between text-xs font-mono border-t border-border/40 pt-2 text-muted-foreground">
+              <span>Extracting: SYSTEM.DLL</span>
+              <span className="text-foreground font-bold">
+                {state.progressIndeterminate
+                  ? "CALCULATING BLOCKS..."
+                  : `${state.progressVal}% COMPLETED`}
+              </span>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-2 pt-2 border-t border-border w-full text-[11px] font-mono">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <span className="text-muted-foreground uppercase text-[10px]">Value Stepper:</span>
+              <div className="flex flex-wrap gap-1">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => state.setProgressVal((v) => Math.max(0, v - 10))}
+                  disabled={state.progressIndeterminate}
+                >
+                  -10%
+                </Button>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => state.setProgressVal((v) => Math.min(100, v + 10))}
+                  disabled={state.progressIndeterminate}
+                >
+                  +10%
+                </Button>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => state.setProgressVal(65)}
+                  disabled={state.progressIndeterminate}
+                >
+                  Reset (65%)
+                </Button>
+              </div>
+            </div>
+
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <span className="text-muted-foreground uppercase text-[10px]">Variant:</span>
+              <div className="flex flex-wrap gap-1">
+                {(["stepped", "default", "success", "warning", "destructive"] as const).map((v) => (
+                  <Button
+                    key={v}
+                    size="sm"
+                    variant={state.progressVariant === v ? "primary" : "outline"}
+                    onClick={() => state.setProgressVariant(v)}
+                  >
+                    {v}
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <span className="text-muted-foreground uppercase text-[10px]">Mode:</span>
+              <Button
+                size="sm"
+                variant={state.progressIndeterminate ? "primary" : "outline"}
+                onClick={() => state.setProgressIndeterminate(!state.progressIndeterminate)}
+              >
+                {state.progressIndeterminate ? "Indeterminate: ON" : "Indeterminate: OFF"}
+              </Button>
+            </div>
+          </div>
+        </div>
+      );
+
+    case "spinner":
+      return (
+        <div className="flex flex-col items-center gap-4 w-full max-w-md">
+          <div className="w-full bevel-raised bg-surface p-6 space-y-4 flex flex-col items-center text-center">
+            <div className="flex items-center justify-center p-4 bevel-inset bg-background w-24 h-24">
+              <Spinner size={state.spinnerSize} label="Processing Floppy Track..." />
+            </div>
+
+            <div className="space-y-1">
+              <div className="font-bold text-foreground text-sm uppercase">
+                READING FLOPPY SECTOR 0x1A...
+              </div>
+              <div className="text-xs text-muted-foreground">
+                High-density 1.44 MB magnetic disk drive activity
+              </div>
+            </div>
+
+            <div className="bevel-inset bg-muted/40 px-2.5 py-1 text-[11px] text-primary">
+              SIZE: {state.spinnerSize.toUpperCase()} {"//"} ACTIVE SPINNER GLYPH
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-2 pt-2 border-t border-border w-full text-[11px] font-mono">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <span className="text-muted-foreground uppercase text-[10px]">Spinner Size:</span>
+              <div className="flex flex-wrap gap-1">
+                {(["sm", "md", "lg"] as const).map((s) => (
+                  <Button
+                    key={s}
+                    size="sm"
+                    variant={state.spinnerSize === s ? "primary" : "outline"}
+                    onClick={() => state.setSpinnerSize(s)}
+                  >
+                    {s}
+                  </Button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+
+    case "skeleton":
+      return (
+        <div className="flex flex-col items-center gap-4 w-full max-w-md">
+          <div className="w-full bevel-raised bg-surface p-4 space-y-4">
+            <div className="flex items-center justify-between text-[11px] text-muted-foreground uppercase font-mono border-b border-border/40 pb-2">
+              <span className="font-bold text-foreground">DIRECTORY RECORD SKELETON</span>
+              <span className="bevel-inset bg-muted/40 px-1.5 py-0.5 text-primary text-[10px]">
+                {state.skeletonAnimate ? "PULSE ANIMATION" : "STATIC DITHER"}
+              </span>
+            </div>
+
+            <div className="flex items-start gap-4">
+              <Skeleton animate={state.skeletonAnimate} className="w-14 h-14 shrink-0" />
+              <div className="space-y-2 flex-1">
+                <Skeleton animate={state.skeletonAnimate} className="h-4 w-3/4" />
+                <Skeleton animate={state.skeletonAnimate} className="h-3 w-full" />
+                <Skeleton animate={state.skeletonAnimate} className="h-3 w-1/2" />
+              </div>
+            </div>
+
+            <div className="pt-2 border-t border-border/40 flex justify-end gap-2">
+              <Skeleton animate={state.skeletonAnimate} className="h-7 w-20" />
+              <Skeleton animate={state.skeletonAnimate} className="h-7 w-24" />
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-2 pt-2 border-t border-border w-full text-[11px] font-mono">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <span className="text-muted-foreground uppercase text-[10px]">Animation:</span>
+              <Button
+                size="sm"
+                variant={state.skeletonAnimate ? "primary" : "outline"}
+                onClick={() => state.setSkeletonAnimate(!state.skeletonAnimate)}
+              >
+                {state.skeletonAnimate ? "Animation: ON" : "Animation: OFF"}
+              </Button>
+            </div>
+          </div>
+        </div>
+      );
+
+    case "empty-state":
+      return (
+        <div className="flex flex-col items-center gap-4 w-full max-w-md">
+          <EmptyState variant={state.emptyStateVariant} className="w-full">
+            <EmptyStateIcon>
+              <div className="text-3xl font-mono select-none">{"[📁 0B]"}</div>
+            </EmptyStateIcon>
+            <EmptyStateTitle>NO DIRECTORY ENTRIES LOCATED</EmptyStateTitle>
+            <EmptyStateDescription>
+              Volume Drive A:\ contains no executable files, batch scripts, or document records.
+            </EmptyStateDescription>
+            <EmptyStateAction>
+              <Button size="sm" variant="primary">
+                Mount Disk
+              </Button>
+              <Button size="sm" variant="outline">
+                Refresh Directory
+              </Button>
+            </EmptyStateAction>
+          </EmptyState>
+
+          <div className="flex flex-col gap-2 pt-2 border-t border-border w-full text-[11px] font-mono">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <span className="text-muted-foreground uppercase text-[10px]">Variant:</span>
+              <div className="flex flex-wrap gap-1">
+                {(["card", "default", "dashed"] as const).map((v) => (
+                  <Button
+                    key={v}
+                    size="sm"
+                    variant={state.emptyStateVariant === v ? "primary" : "outline"}
+                    onClick={() => state.setEmptyStateVariant(v)}
+                  >
+                    {v}
+                  </Button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+
+    case "result": {
+      const descriptions: Record<ResultVariant, string> = {
+        success: "Batch transaction committed 128 virtual memory blocks without bus collision.",
+        error: "Hardware interrupt timeout on Port 0x03F8. Sector write operation aborted.",
+        warning: "Conventional memory low. Only 64 KB free below the 640 KB barrier.",
+        info: "Hardware diagnostic completed. 16 PCI peripheral devices enumerated.",
+      };
+
+      const titles: Record<ResultVariant, string> = {
+        success: "TRANSACTION COMMITTED",
+        error: "WRITE FAULT DETECTED",
+        warning: "CONVENTIONAL RAM LOW",
+        info: "DIAGNOSTICS EXECUTED",
+      };
+
+      return (
+        <div className="flex flex-col items-center gap-4 w-full max-w-md">
+          <Result variant={state.resultVariant} className="w-full">
+            <ResultTitle>{titles[state.resultVariant]}</ResultTitle>
+            <ResultDescription>{descriptions[state.resultVariant]}</ResultDescription>
+            <ResultAction>
+              <Button size="sm" variant="primary">
+                Return to Shell
+              </Button>
+              <Button size="sm" variant="outline">
+                View Dump Log
+              </Button>
+            </ResultAction>
+          </Result>
+
+          <div className="flex flex-col gap-2 pt-2 border-t border-border w-full text-[11px] font-mono">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <span className="text-muted-foreground uppercase text-[10px]">Result Variant:</span>
+              <div className="flex flex-wrap gap-1">
+                {(["success", "error", "warning", "info"] as ResultVariant[]).map((v) => (
+                  <Button
+                    key={v}
+                    size="sm"
+                    variant={state.resultVariant === v ? "primary" : "outline"}
+                    onClick={() => state.setResultVariant(v)}
+                  >
+                    {v}
+                  </Button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    case "loading":
+      return (
+        <div className="flex flex-col items-center gap-4 w-full max-w-md">
+          <div className="w-full bevel-raised bg-surface p-6 space-y-3">
+            <div className="flex items-center justify-between text-[11px] text-muted-foreground uppercase font-mono border-b border-border/40 pb-2">
+              <span className="font-bold text-foreground">NETWORK SYNCHRONIZER</span>
+              <span className="bevel-inset bg-muted/40 px-1.5 py-0.5 text-primary text-[10px]">
+                {state.loadingInline ? "INLINE LAYOUT" : "STACKED LAYOUT"}
+              </span>
+            </div>
+
+            <div className="bevel-inset bg-background p-4 flex items-center justify-center min-h-[90px]">
+              <Loading
+                size={state.loadingSize}
+                inline={state.loadingInline}
+                text="Synchronizing clock with NTP gateway..."
+              />
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-2 pt-2 border-t border-border w-full text-[11px] font-mono">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <span className="text-muted-foreground uppercase text-[10px]">Indicator Size:</span>
+              <div className="flex flex-wrap gap-1">
+                {(["sm", "md", "lg"] as const).map((s) => (
+                  <Button
+                    key={s}
+                    size="sm"
+                    variant={state.loadingSize === s ? "primary" : "outline"}
+                    onClick={() => state.setLoadingSize(s)}
+                  >
+                    {s}
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <span className="text-muted-foreground uppercase text-[10px]">Presentation:</span>
+              <Button
+                size="sm"
+                variant={state.loadingInline ? "primary" : "outline"}
+                onClick={() => state.setLoadingInline(!state.loadingInline)}
+              >
+                {state.loadingInline ? "Layout: INLINE" : "Layout: STACKED"}
               </Button>
             </div>
           </div>
