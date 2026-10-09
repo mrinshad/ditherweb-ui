@@ -70,18 +70,45 @@ try {
   }
   console.log("✓ Confirmed src/ directory is excluded from npm tarball.");
 
-  // Verify inlined source maps (inlineSources: true)
+  // Verify package metadata in packed artifact
+  const tarballPkgJson = JSON.parse(fs.readFileSync(path.join(pkgDir, "package.json"), "utf8"));
+  if (tarballPkgJson.private !== true) {
+    throw new Error("Packed package.json is missing private: true protection!");
+  }
+  if (tarballPkgJson.license !== "MIT") {
+    throw new Error(`Packed package.json has incorrect license: ${tarballPkgJson.license}`);
+  }
+  if (!tarballPkgJson.exports || !tarballPkgJson.exports["."] || !tarballPkgJson.exports["./styles"]) {
+    throw new Error("Packed package.json is missing required exports entries!");
+  }
+  if (!tarballPkgJson.peerDependencies?.react || !tarballPkgJson.peerDependencies?.["react-dom"]) {
+    throw new Error("Packed package.json is missing React peerDependencies!");
+  }
+  console.log("✓ Verified package metadata: private-package protection, MIT license, exports, and peerDependencies confirmed.");
+
+  // Verify inlined source maps in both .js.map and .d.ts.map
   const buttonJsMap = JSON.parse(
     fs.readFileSync(path.join(pkgDir, "dist/components/button.js.map"), "utf8")
   );
   if (!buttonJsMap.sourcesContent || buttonJsMap.sourcesContent.length === 0) {
-    throw new Error("Source map dist/components/button.js.map is missing inlined sourcesContent!");
+    throw new Error("JavaScript map dist/components/button.js.map is missing inlined sourcesContent!");
   }
-  const inlinedSource = buttonJsMap.sourcesContent[0];
-  if (!inlinedSource.includes("const Button = forwardRef") && !inlinedSource.includes("Button")) {
-    throw new Error("Inlined source map content does not match button component source!");
+  const inlinedJsSource = buttonJsMap.sourcesContent[0];
+  if (!inlinedJsSource.includes("const Button = forwardRef") && !inlinedJsSource.includes("Button")) {
+    throw new Error("Inlined JavaScript source map content does not match button component source!");
   }
-  console.log("✓ Verified inlined source maps: full original TypeScript source is embedded.");
+
+  const buttonDtsMap = JSON.parse(
+    fs.readFileSync(path.join(pkgDir, "dist/components/button.d.ts.map"), "utf8")
+  );
+  if (!buttonDtsMap.sourcesContent || buttonDtsMap.sourcesContent.length === 0) {
+    throw new Error("Declaration map dist/components/button.d.ts.map is missing inlined sourcesContent!");
+  }
+  const inlinedDtsSource = buttonDtsMap.sourcesContent[0];
+  if (!inlinedDtsSource.includes("Button")) {
+    throw new Error("Inlined declaration map content does not match button component source!");
+  }
+  console.log("✓ Verified both JavaScript (.js.map) and declaration (.d.ts.map) maps contain valid embedded source content.");
 
   // ---------------------------------------------------------------------------
   // STEP 3: Test Isolated Vite 6 + React 19 Consumer
@@ -205,6 +232,10 @@ ReactDOM.createRoot(document.getElementById('root')!).render(<App />);\n`
   );
 
   execSync("npm install --no-audit --no-fund", { cwd: viteAppDir, stdio: "inherit" });
+  const installedVitePkg = path.join(viteAppDir, "node_modules/@ditherweb/ui");
+  if (fs.lstatSync(installedVitePkg).isSymbolicLink()) {
+    throw new Error("Consumer installed @ditherweb/ui as a workspace symlink rather than from the packed tarball!");
+  }
   execSync("npx tsc --noEmit", { cwd: viteAppDir, stdio: "inherit" });
   execSync("npx vite build", { cwd: viteAppDir, stdio: "inherit" });
 
@@ -339,6 +370,10 @@ export default function Page() {
   );
 
   execSync("npm install --no-audit --no-fund", { cwd: nextAppDir, stdio: "inherit" });
+  const installedNextPkg = path.join(nextAppDir, "node_modules/@ditherweb/ui");
+  if (fs.lstatSync(installedNextPkg).isSymbolicLink()) {
+    throw new Error("Next.js consumer installed @ditherweb/ui as a workspace symlink rather than from the packed tarball!");
+  }
   execSync("npx tsc --noEmit", { cwd: nextAppDir, stdio: "inherit" });
   execSync("npx next build", { cwd: nextAppDir, stdio: "inherit" });
 

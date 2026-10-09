@@ -35,9 +35,10 @@
   "scripts": {
     "clean": "rm -rf dist",
     "build:js": "tsc -p tsconfig.build.json",
+    "build:dts-maps": "node scripts/inline-declaration-sources.mjs",
     "build:styles": "node scripts/copy-styles.mjs",
     "verify:directives": "node scripts/verify-client-directives.mjs",
-    "build": "npm run clean && npm run build:js && npm run build:styles && npm run verify:directives",
+    "build": "npm run clean && npm run build:js && npm run build:dts-maps && npm run build:styles && npm run verify:directives",
     "test:consumer": "node scripts/test-consumer.mjs",
     "typecheck": "tsc --noEmit",
     "lint": "eslint src"
