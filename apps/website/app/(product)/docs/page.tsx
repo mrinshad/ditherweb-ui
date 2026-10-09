@@ -237,7 +237,7 @@ export function SystemMonitor() {
               </div>
             </div>
 
-            <div className="bevel-raised p-4 bg-surface space-y-2">
+            <div id="dithering" className="bevel-raised p-4 bg-surface space-y-2 scroll-mt-20">
               <div className="font-bold text-foreground uppercase">Bayer Dithering</div>
               <p className="text-[11px] text-muted-foreground">
                 Ordered dithering matrices emulate classic limited-color framebuffers (EGA, VGA, 16-color palettes).

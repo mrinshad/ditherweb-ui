@@ -25,6 +25,18 @@ export function DocsSidebar({ className }: DocsSidebarProps) {
   const pathname = usePathname();
   const { state } = useSidebar();
   const [filterQuery, setFilterQuery] = React.useState("");
+  const [currentHash, setCurrentHash] = React.useState("");
+
+  React.useEffect(() => {
+    const updateHash = () => {
+      if (typeof window !== "undefined") {
+        setCurrentHash(window.location.hash);
+      }
+    };
+    updateHash();
+    window.addEventListener("hashchange", updateHash);
+    return () => window.removeEventListener("hashchange", updateHash);
+  }, []);
 
   const query = filterQuery.trim().toLowerCase();
 
@@ -151,20 +163,42 @@ export function DocsSidebar({ className }: DocsSidebarProps) {
         {filteredReference.length > 0 && (
           <SidebarGroup>
             <SidebarGroupLabel>Reference</SidebarGroupLabel>
-            {filteredReference.map((item) => (
-              <SidebarItem
-                key={item.href}
-                active={pathname === item.href}
-                icon={
-                  <span className="text-[10px] font-bold font-mono opacity-70">
-                    {item.icon}
-                  </span>
-                }
-                asChild
-              >
-                <Link href={item.href}>{item.title}</Link>
-              </SidebarItem>
-            ))}
+            {filteredReference.map((item) => {
+              const [itemPath, itemHash] = item.href.split("#");
+              const isRefActive =
+                pathname === itemPath &&
+                (itemHash ? currentHash === `#${itemHash}` : !currentHash);
+
+              return (
+                <SidebarItem
+                  key={item.href}
+                  active={isRefActive}
+                  icon={
+                    <span className="text-[10px] font-bold font-mono opacity-70">
+                      {item.icon}
+                    </span>
+                  }
+                  asChild
+                >
+                  <Link
+                    href={item.href}
+                    onClick={() => {
+                      if (itemHash) {
+                        setCurrentHash(`#${itemHash}`);
+                        if (pathname === itemPath) {
+                          const el = document.getElementById(itemHash);
+                          if (el) {
+                            el.scrollIntoView({ behavior: "smooth" });
+                          }
+                        }
+                      }
+                    }}
+                  >
+                    {item.title}
+                  </Link>
+                </SidebarItem>
+              );
+            })}
           </SidebarGroup>
         )}
       </SidebarContent>
