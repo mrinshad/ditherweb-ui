@@ -8,7 +8,7 @@
 
 ## Features
 
-- 🕹️ **97 Distinct Primitives**: Buttons, dialogs, retro window chrome, taskbars, CRT monitors, halftone filters, marquee scrollers, guestbooks, visitor counters, and more.
+- 🕹️ **96 Distinct Primitives**: Buttons, dialogs, retro window chrome, taskbars, CRT monitors, halftone filters, marquee scrollers, guestbooks, visitor counters, and more.
 - ⚡ **Modern React & RSC Ready**: Fully compatible with React 18 and React 19. Interactive components retain `"use client";` directives while foundational layout and typography primitives run as React Server Components.
 - 🎨 **OKLCH Design Tokens**: Authentic retro color palettes, hard bevels, stepped drop-shadows, and procedural dither patterns distributed via lightweight CSS.
 - 🌲 **Tree-Shakeable**: Clean ESM exports with granular `"sideEffects": ["**/*.css"]` annotations ensure unused components are purged from production bundles.
@@ -44,7 +44,12 @@ import "@ditherweb/ui/styles";
 @import "@ditherweb/ui/styles";
 ```
 
-The distributed stylesheet includes all foundational design tokens, retro bevel variables, procedural dither SVGs, and base utility classes.
+The distributed stylesheet includes all foundational design tokens, retro bevel variables, procedural dither SVGs, and base utility classes. You can also import specific style sheets individually if needed:
+
+```css
+@import "@ditherweb/ui/styles/tokens.css";
+@import "@ditherweb/ui/styles/primitives.css";
+```
 
 ---
 
@@ -55,10 +60,10 @@ The distributed stylesheet includes all foundational design tokens, retro bevel 
 - **Next.js**: 15+, 16+ (App Router with Turbopack or Webpack)
 - **Vite**: 5+, 6+ (React plugin with Rollup / esbuild)
 - **Webpack**: 5+
-- **TypeScript**: `moduleResolution: "bundler"` (or `node10`)
+- **TypeScript**: `moduleResolution: "bundler"` (recommended) or `"node10"`
 
 > [!NOTE]
-> The library distributes standard ESM modules with extensionless relative specifiers designed for bundlers. If you are using TypeScript, ensure your `tsconfig.json` specifies `"moduleResolution": "bundler"`. Direct consumption in unbundled Node.js native ESM (`node16`/`nodenext` without a bundler) requires a module loader that resolves extensionless specifiers.
+> The library distributes standard ESM modules with extensionless relative specifiers designed for bundlers. If you are using TypeScript, ensure your `tsconfig.json` specifies `"moduleResolution": "bundler"` (or enable `"skipLibCheck": true`). Direct consumption in unbundled Node.js native ESM (`node16`/`nodenext` without a bundler) requires a module loader that resolves extensionless specifiers.
 
 ---
 
@@ -83,15 +88,15 @@ export function ActionPanel() {
 ### 2. Desktop Window with Titlebar & Controls
 
 ```tsx
-import { Window, WindowTitlebar, WindowControls, Well } from "@ditherweb/ui";
+import { Window, WindowTitleBar, WindowTitle, WindowControls, Well } from "@ditherweb/ui";
 
 export function SystemMonitor() {
   return (
     <Window className="w-96">
-      <WindowTitlebar
-        title="SYSTEM.EXE"
-        controls={<WindowControls onMinimize={() => {}} onClose={() => {}} />}
-      />
+      <WindowTitleBar>
+        <WindowTitle>SYSTEM.EXE</WindowTitle>
+        <WindowControls onMinimize={() => {}} onClose={() => {}} />
+      </WindowTitleBar>
       <div className="p-4 space-y-3">
         <Well className="p-3 font-mono text-sm">
           MEM: 640K OK<br />
@@ -130,6 +135,14 @@ export function RetroHero() {
 - **Server-Safe Components**: Primitives like `Button`, `Card`, `Badge`, `Heading`, `Text`, and `Container` do not emit `"use client";` and run directly on the server without client bundle overhead.
 - **Client Components**: Interactive primitives requiring browser state (e.g., `Dialog`, `DropdownMenu`, `Tabs`, `Accordion`, `ContextMenu`, `Tooltip`, `Taskbar`) automatically include `"use client";` directives at line 1.
 - You can freely compose server and client components in your Next.js application without manual `"use client"` wrappers.
+
+---
+
+## Accessibility & Keyboard Navigation
+
+- **WAI-ARIA Compliance**: Dialogs, dropdowns, menus, and popovers follow standard WAI-ARIA authoring practices, including proper focus management, keyboard navigation (Tab, Arrow keys, Enter, Space, Escape), and `aria-*` roles.
+- **High-Contrast Indicators**: Focus rings use high-contrast retro borders with custom outline offsets to ensure visual clarity under WCAG 2.1 AA standards.
+- **Semantic Structure**: All components render semantic HTML elements by default with support for polymorphic composition (`asChild` or `as` props).
 
 ---
 

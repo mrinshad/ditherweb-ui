@@ -135,7 +135,7 @@ export function InputDemo() {
 export function LabelDemo() {
   return (
     <div className="space-y-1">
-      <Label htmlFor="callsign" required>Station Callsign</Label>
+      <Label htmlFor="callsign">Station Callsign</Label>
       <Input id="callsign" defaultValue="K-ROB-95" />
     </div>
   );
@@ -493,7 +493,7 @@ export function AlertDialogDemo() {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Abort</AlertDialogCancel>
-          <AlertDialogAction variant="destructive">Proceed</AlertDialogAction>
+          <AlertDialogAction>Proceed</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
@@ -722,7 +722,7 @@ export function BackdropDemo() {
     usageSnippet: `import { Overlay } from "@ditherweb/ui";
 
 export function OverlayDemo() {
-  return <Overlay fixed>Contained Overlay Content</Overlay>;
+  return <Overlay open={true}>Contained Overlay Content</Overlay>;
 }`,
     props: [],
     accessibilityNotes: ["Accessible container for layered UI."],
@@ -837,10 +837,10 @@ export function PaginationDemo() {
   return (
     <Pagination>
       <PaginationContent>
-        <PaginationItem><PaginationPrevious href="#" /></PaginationItem>
-        <PaginationItem><PaginationLink href="#" isActive>1</PaginationLink></PaginationItem>
-        <PaginationItem><PaginationLink href="#">2</PaginationLink></PaginationItem>
-        <PaginationItem><PaginationNext href="#" /></PaginationItem>
+        <PaginationItem><PaginationPrevious onClick={() => {}} /></PaginationItem>
+        <PaginationItem><PaginationLink isActive onClick={() => {}}>1</PaginationLink></PaginationItem>
+        <PaginationItem><PaginationLink onClick={() => {}}>2</PaginationLink></PaginationItem>
+        <PaginationItem><PaginationNext onClick={() => {}} /></PaginationItem>
       </PaginationContent>
     </Pagination>
   );
@@ -1251,7 +1251,7 @@ export function GuestbookDemo() {
     usageSnippet: `import { VisitorCounter } from "@ditherweb/ui";
 
 export function CounterDemo() {
-  return <VisitorCounter value={42013} digits={6} />;
+  return <VisitorCounter value={42013} minDigits={6} />;
 }`,
     props: [
       {
@@ -1304,7 +1304,7 @@ export function UnderConstructionDemo() {
 
 export function MarqueeDemo() {
   return (
-    <Marquee speed={30}>
+    <Marquee speed="normal">
       WELCOME TO DITHERWEB • RETRO APPEARANCE • MODERN ENGINEERING •
     </Marquee>
   );
@@ -1360,8 +1360,8 @@ export function Button88x31Demo() {
   return (
     <Button88x31
       href="https://ditherweb.mrinshad.site"
-      leftText="MADE WITH"
-      rightText="DITHERWEB"
+      label="MADE WITH"
+      value="DITHERWEB"
     />
   );
 }`,
@@ -1376,11 +1376,16 @@ export function Button88x31Demo() {
     description:
       "A horizontal promotional header banner with pixel bevel borders and retro badge callouts.",
     status: "stable",
-    importStatement: `import { RetroBanner } from "@ditherweb/ui";`,
-    usageSnippet: `import { RetroBanner } from "@ditherweb/ui";
+    importStatement: `import { RetroBanner, RetroBannerTitle, RetroBannerSubtitle } from "@ditherweb/ui";`,
+    usageSnippet: `import { RetroBanner, RetroBannerTitle, RetroBannerSubtitle } from "@ditherweb/ui";
 
 export function RetroBannerDemo() {
-  return <RetroBanner title="CYBERSPACE EXPLORER" subtitle="Best viewed with 1024x768" />;
+  return (
+    <RetroBanner format="standard" variant="dither">
+      <RetroBannerTitle>CYBERSPACE EXPLORER</RetroBannerTitle>
+      <RetroBannerSubtitle>Best viewed with 1024x768</RetroBannerSubtitle>
+    </RetroBanner>
+  );
 }`,
     props: [],
     accessibilityNotes: ["Proper heading hierarchy inside banner."],
@@ -2094,7 +2099,7 @@ export function TextDemo() {
   return (
     <div className="space-y-2">
       <Text size="base">Standard monospace text line.</Text>
-      <Text size="sm" tone="muted">Secondary status annotation.</Text>
+      <Text size="sm" variant="muted">Secondary status annotation.</Text>
     </div>
   );
 }`,
@@ -2278,7 +2283,7 @@ export function FlexDemo() {
     usageSnippet: `import { Grid } from "@ditherweb/ui";
 
 export function GridDemo() {
-  return <Grid cols={3} gap="md"><div>1</div><div>2</div><div>3</div></Grid>;
+  return <Grid columns={3} gap="md"><div>1</div><div>2</div><div>3</div></Grid>;
 }`,
     props: [],
     accessibilityNotes: ["Layout container."],
