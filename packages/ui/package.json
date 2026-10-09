@@ -1,8 +1,39 @@
 {
   "name": "@ditherweb/ui",
   "version": "0.1.0",
+  "description": "A modern React UI framework inspired by early-Internet and classic desktop computing visual language.",
   "private": true,
   "license": "MIT",
+  "author": "Ditherweb Contributors",
+  "homepage": "https://github.com/mrinshad/ditherweb-ui#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mrinshad/ditherweb-ui.git",
+    "directory": "packages/ui"
+  },
+  "bugs": {
+    "url": "https://github.com/mrinshad/ditherweb-ui/issues"
+  },
+  "keywords": [
+    "react",
+    "ui",
+    "retro",
+    "dither",
+    "dithering",
+    "components",
+    "tailwind",
+    "tailwindcss",
+    "design-system",
+    "classic-desktop",
+    "y2k",
+    "rsc"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=20.9.0"
+  },
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
