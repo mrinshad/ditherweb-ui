@@ -431,7 +431,7 @@ export default function RetroPanel() {
             <Link href="/components" className="text-primary hover:underline font-bold">
               Explore all 46 Ditherweb components →
             </Link>
-            <Link href="/docs#dithering" className="text-muted-foreground hover:text-foreground hover:underline">
+            <Link href="/docs/theming#dithering" className="text-muted-foreground hover:text-foreground hover:underline">
               Read Ditherweb dithering algorithms guide →
             </Link>
           </div>
