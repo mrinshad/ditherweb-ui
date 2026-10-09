@@ -26,12 +26,28 @@ interface StoryItem {
   tag: string;
 }
 
+const FEATURED_STORY: StoryItem = {
+  id: "featured-web-before-apps",
+  category: "Essay",
+  issue: "Issue 04",
+  date: "October 2026",
+  title: "The Web Before Everything Became an App",
+  deck: "How the quiet protocols of hypertext, client-side rendering, and hand-stitched documents gave way to centralized walled gardens—and why the enduring principles of early computing are quietly returning.",
+  author: "Elena Rostova",
+  readTime: "14 min read",
+  abstract:
+    "To visit a website in 1997 was to inspect a remote document. The browser did not negotiate authorization tokens, telemetry beacons, or dynamic websocket graphs. It requested a file by name, received bytes over port 80, and rendered them using an engine that fit comfortably inside four megabytes of resident memory. We trace how this architectural sovereignty was gradually traded for cloud convenience, and why local-first engineering offers a path back.",
+  accentQuote:
+    "We traded the open document for the cloud application, and in doing so, surrendered our ownership of the tools we think with.",
+  tag: "ESSAY",
+};
+
 const MORE_STORIES: StoryItem[] = [
   {
     id: "story-plain-text",
-    category: "CRITIQUE & PROTOCOLS",
-    issue: "ISSUE 04",
-    date: "SEPTEMBER 2026",
+    category: "Protocols",
+    issue: "Issue 04",
+    date: "September 2026",
     title: "The Architecture of Plain Text: Why Durable Formats Outlive Platforms",
     deck: "From the Gemini protocol to local Markdown vaults, a growing counter-culture of engineers is choosing formats designed to survive fifty years without updates.",
     author: "Marcus Vance",
@@ -44,9 +60,9 @@ const MORE_STORIES: StoryItem[] = [
   },
   {
     id: "story-bayer-matrices",
-    category: "VISUAL CRAFT",
-    issue: "ISSUE 04",
-    date: "AUGUST 2026",
+    category: "Visual Craft",
+    issue: "Issue 04",
+    date: "August 2026",
     title: "Bayer Matrices and the 1-Bit Palette: How Constraints Birthed a Visual Language",
     deck: "Ordered dithering was never conceived as nostalgia. It was a rigorous mathematical compromise to represent continuous photographic tone on sixteen-color framebuffers.",
     author: "Siddharth Nair",
@@ -57,9 +73,9 @@ const MORE_STORIES: StoryItem[] = [
   },
   {
     id: "story-personal-website",
-    category: "DISPATCH & CULTURE",
-    issue: "ISSUE 04",
-    date: "JULY 2026",
+    category: "Hypertext",
+    issue: "Issue 04",
+    date: "July 2026",
     title: "In Defense of the Personal Website: Carving Out a Digital Plot in the Walled Era",
     deck: "Why cultivating your own quiet, independently hosted domain remains the most radical creative act on the modern Internet.",
     author: "Claire Chen",
@@ -71,18 +87,18 @@ const MORE_STORIES: StoryItem[] = [
 ];
 
 const ISSUES_LIST = [
-  { id: "issue-04", label: "ISSUE 04", title: "Autumn 2026: The Durable Web", current: true },
-  { id: "issue-03", label: "ISSUE 03", title: "Summer 2026: Tactile Interfaces", current: false },
-  { id: "issue-02", label: "ISSUE 02", title: "Spring 2026: Local-First Systems", current: false },
-  { id: "issue-01", label: "ISSUE 01", title: "Winter 2025: Genesis of the Pixel", current: false },
+  { id: "issue-04", label: "Issue 04", title: "The Durable Web", season: "Autumn 2026", current: true },
+  { id: "issue-03", label: "Issue 03", title: "Tactile Interfaces", season: "Summer 2026", current: false },
+  { id: "issue-02", label: "Issue 02", title: "Local-First Systems", season: "Spring 2026", current: false },
+  { id: "issue-01", label: "Issue 01", title: "Genesis of the Pixel", season: "Winter 2025", current: false },
 ];
 
 export function EditorialExampleClient() {
   const [selectedIssue, setSelectedIssue] = React.useState("issue-04");
-  const [isReadingExpanded, setIsReadingExpanded] = React.useState(false);
-  const [fontSizeLarge, setFontSizeLarge] = React.useState(false);
   const [showManifesto, setShowManifesto] = React.useState(false);
   const [activeStoryModal, setActiveStoryModal] = React.useState<StoryItem | null>(null);
+
+  const currentIssue = ISSUES_LIST.find((iss) => iss.id === selectedIssue) || ISSUES_LIST[0];
 
   return (
     <div className="min-h-screen bg-background text-foreground font-mono flex flex-col selection:bg-primary selection:text-primary-foreground">
@@ -115,7 +131,7 @@ export function EditorialExampleClient() {
             </span>
             <div className="flex items-center gap-1.5 border border-border/60 px-2 py-0.5 bg-background">
               <span className="h-1.5 w-1.5 rounded-full bg-success inline-block" />
-              <span className="text-[10px] font-bold text-foreground">ISSUE 04 LIVE</span>
+              <span className="text-[10px] font-bold text-foreground">{currentIssue.label.toUpperCase()} LIVE</span>
             </div>
           </div>
         </div>
@@ -127,21 +143,17 @@ export function EditorialExampleClient() {
             MASTHEAD
             ==================================================================== */}
         <header className="space-y-6 pt-2">
-          {/* Top publication rule and frequency metadata */}
-          <div className="border-y border-border py-2 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-[11px] text-muted-foreground uppercase tracking-widest">
-            <div className="flex items-center gap-3">
-              <span className="font-bold text-foreground">VOL. IV • NO. 4</span>
+          {/* Top publication rule and date metadata */}
+          <div className="border-y border-border py-2 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-xs text-muted-foreground uppercase tracking-widest">
+            <div className="flex items-center gap-2">
+              <span className="font-bold text-foreground">{currentIssue.season}</span>
               <span>•</span>
-              <span>AUTUMN 2026</span>
-              <span>•</span>
-              <span className="hidden md:inline">QUARTERLY JOURNAL</span>
+              <span>{currentIssue.label}</span>
             </div>
-            <div className="flex items-center gap-3 text-[10px]">
+            <div className="flex items-center gap-2 text-[11px]">
               <span>ISSN 2841-9021</span>
               <span>•</span>
-              <span>PRINT &amp; HYPERTEXT</span>
-              <span>•</span>
-              <span className="text-foreground font-bold">CIRCULATION: 4,200</span>
+              <span className="text-foreground">DITHERWEB RESEARCH GROUP</span>
             </div>
           </div>
 
@@ -156,7 +168,7 @@ export function EditorialExampleClient() {
             </p>
           </div>
 
-          {/* Minimal Editorial Navigation */}
+          {/* Minimal Editorial Navigation with Secondary Issue Switcher */}
           <div className="border-t-2 border-b border-border py-3 flex flex-wrap items-center justify-between gap-4 text-xs font-bold uppercase tracking-wider">
             <div className="flex flex-wrap items-center gap-4 sm:gap-6">
               <a
@@ -192,25 +204,26 @@ export function EditorialExampleClient() {
               </button>
             </div>
 
-            {/* Issue Selector Filter */}
-            <div className="flex items-center gap-2 text-[11px] font-normal">
-              <span className="text-muted-foreground uppercase text-[10px]">Select Issue:</span>
-              <div className="flex items-center border border-border bg-surface text-foreground">
+            {/* Simplified Issue Switcher: Current Issue Visible, Switching Secondary */}
+            <div className="flex flex-wrap items-center gap-2 text-xs normal-case">
+              <span className="text-muted-foreground text-[11px] uppercase tracking-wider">Issue:</span>
+              <span className="font-bold text-foreground uppercase tracking-wider">{currentIssue.label}</span>
+              <span className="text-muted-foreground text-[11px] hidden sm:inline">— {currentIssue.title}</span>
+
+              {/* Secondary Switcher Control */}
+              <label htmlFor="issue-select" className="sr-only">Switch Publication Issue</label>
+              <select
+                id="issue-select"
+                value={selectedIssue}
+                onChange={(e) => setSelectedIssue(e.target.value)}
+                className="bg-surface border border-border text-[11px] font-mono text-muted-foreground hover:text-foreground px-2 py-0.5 cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring uppercase tracking-wider max-w-[130px] sm:max-w-none truncate"
+              >
                 {ISSUES_LIST.map((iss) => (
-                  <button
-                    key={iss.id}
-                    type="button"
-                    onClick={() => setSelectedIssue(iss.id)}
-                    className={`px-2 py-1 text-[10px] font-bold uppercase transition-colors cursor-pointer ${
-                      selectedIssue === iss.id
-                        ? "bg-foreground text-background"
-                        : "hover:bg-muted/50 text-muted-foreground"
-                    }`}
-                  >
-                    {iss.label}
-                  </button>
+                  <option key={iss.id} value={iss.id}>
+                    {iss.label}: {iss.title}
+                  </option>
                 ))}
-              </div>
+              </select>
             </div>
           </div>
 
@@ -251,22 +264,12 @@ export function EditorialExampleClient() {
           aria-labelledby="featured-story-title"
           className="space-y-8 pt-4"
         >
-          {/* Metadata Bar */}
-          <div className="flex flex-wrap items-center justify-between gap-3 text-xs text-muted-foreground border-b border-border pb-3 uppercase tracking-wider">
-            <div className="flex items-center gap-2">
-              <span className="font-bold text-foreground">ESSAY // RETROSPECTIVE</span>
-              <span>•</span>
-              <span>OCTOBER 2026</span>
-              <span>•</span>
-              <span className="hidden sm:inline">WORDS BY ELENA ROSTOVA</span>
-            </div>
-            <div className="flex items-center gap-3 text-[11px]">
-              <span>14 MIN READ</span>
-              <span>•</span>
-              <Badge variant="flat" className="text-[9px]">
-                COVER FEATURE
-              </Badge>
-            </div>
+          {/* Streamlined Metadata Bar: Category + Title + One Useful Info */}
+          <div className="flex items-center justify-between text-xs border-b border-border pb-2.5 uppercase tracking-wider">
+            <span className="font-bold text-primary">{FEATURED_STORY.category}</span>
+            <span className="text-muted-foreground">
+              By {FEATURED_STORY.author} • {FEATURED_STORY.readTime}
+            </span>
           </div>
 
           {/* Large Expressive Headline & Deck */}
@@ -276,38 +279,36 @@ export function EditorialExampleClient() {
               level={2}
               className="text-3xl sm:text-5xl lg:text-6xl font-bold uppercase tracking-tight leading-[1.08] text-foreground"
             >
-              The Web Before Everything Became an App
+              {FEATURED_STORY.title}
             </Heading>
 
             <Text
               size="lg"
               className="text-base sm:text-xl text-foreground/80 leading-relaxed font-normal"
             >
-              How the quiet protocols of hypertext, client-side rendering, and hand-stitched documents
-              gave way to centralized walled gardens—and why the enduring principles of early computing
-              are quietly returning.
+              {FEATURED_STORY.deck}
             </Text>
 
             <div className="flex items-center gap-4 pt-2">
               <a
                 href="#reading-room"
-                className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-primary border-b-2 border-primary pb-0.5 hover:opacity-80 transition-opacity focus-visible:ring-1 focus-visible:ring-ring"
+                className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-primary border-b-2 border-primary pb-0.5 hover:opacity-80 transition-opacity focus-visible:ring-1 focus-visible:ring-ring"
               >
-                <span>Read Story Excerpt</span>
+                <span>Read excerpt below</span>
                 <span>↓</span>
               </a>
               <span className="text-muted-foreground text-xs">•</span>
               <button
                 type="button"
-                onClick={() => setIsReadingExpanded((prev) => !prev)}
+                onClick={() => setActiveStoryModal(FEATURED_STORY)}
                 className="text-xs text-muted-foreground hover:text-foreground transition-colors underline underline-offset-4 cursor-pointer focus-visible:ring-1 focus-visible:ring-ring"
               >
-                {isReadingExpanded ? "Switch to Summary View" : "Expand Full Text Preview"}
+                Read full essay in archive →
               </button>
             </div>
           </div>
 
-          {/* Featured Editorial Illustration Plate */}
+          {/* Preserved Editorial Illustration Plate */}
           <div className="space-y-3">
             <ImageFrame
               variant="plain"
@@ -352,67 +353,29 @@ export function EditorialExampleClient() {
         <Separator className="border-border/60" />
 
         {/* ====================================================================
-            ARTICLE PREVIEW & LONG-FORM EXCERPT
+            ARTICLE PREVIEW & LONG-FORM EXCERPT (STREAMLINED READING ROOM)
             ==================================================================== */}
         <section
           id="reading-room"
           aria-labelledby="reading-room-heading"
           className="space-y-8 pt-2"
         >
-          {/* Section Header with Reading Options */}
-          <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-3">
-            <div>
-              <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground block">
-                READING ROOM // EXCERPT
-              </span>
-              <Heading
-                id="reading-room-heading"
-                level={3}
-                size="md"
-                className="text-sm sm:text-base font-bold uppercase tracking-wider text-foreground"
-              >
-                I. The Architecture of Permeability
-              </Heading>
-            </div>
-
-            {/* Reading Accessibility Options */}
-            <div className="flex items-center gap-3 text-xs">
-              <span className="text-muted-foreground text-[11px] uppercase">Type Size:</span>
-              <button
-                type="button"
-                onClick={() => setFontSizeLarge(false)}
-                className={`px-2 py-0.5 text-xs font-bold border ${
-                  !fontSizeLarge
-                    ? "bg-foreground text-background border-foreground"
-                    : "bg-surface text-muted-foreground border-border hover:text-foreground"
-                } cursor-pointer`}
-                aria-pressed={!fontSizeLarge}
-              >
-                A
-              </button>
-              <button
-                type="button"
-                onClick={() => setFontSizeLarge(true)}
-                className={`px-2 py-0.5 text-xs font-bold border ${
-                  fontSizeLarge
-                    ? "bg-foreground text-background border-foreground"
-                    : "bg-surface text-muted-foreground border-border hover:text-foreground"
-                } cursor-pointer`}
-                aria-pressed={fontSizeLarge}
-              >
-                A+
-              </button>
-            </div>
+          {/* Section Subheading: Clean, No Fidgety Type-Size Buttons */}
+          <div className="border-b border-border pb-3">
+            <Heading
+              id="reading-room-heading"
+              level={3}
+              size="md"
+              className="text-sm sm:text-base font-bold uppercase tracking-wider text-foreground"
+            >
+              I. The Architecture of Permeability
+            </Heading>
           </div>
 
           {/* Asymmetrical Reading Grid: Left Main Prose, Right Pull Quote & Historical Note */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-            {/* Left Column: Narrow, readable article text (max-w-prose / 65ch) */}
-            <article
-              className={`lg:col-span-8 space-y-6 ${
-                fontSizeLarge ? "text-base sm:text-lg" : "text-sm sm:text-base"
-              } text-foreground/90 leading-relaxed font-mono`}
-            >
+            {/* Left Column: Narrow, uninterrupted reading column (65ch) */}
+            <article className="lg:col-span-8 space-y-6 text-sm sm:text-base text-foreground/90 leading-relaxed font-mono">
               <p>
                 To visit a website in 1997 was not to initialize a multi-tenant session inside a cloud platform;
                 it was to inspect a remote document. The browser did not negotiate authorization tokens,
@@ -438,31 +401,15 @@ export function EditorialExampleClient() {
                 contrast, renders today with bit-for-bit fidelity.
               </p>
 
-              {isReadingExpanded && (
-                <>
-                  <p>
-                    What we surrendered in this transition was not merely efficiency, but the transparency of
-                    the medium itself. In an application, the user is a client whose interactions are mediated,
-                    logged, and metered. In a document, the reader is sovereign. The browser belonged to the reader:
-                    they chose the default typeface, the background color, and the window geometry.
-                  </p>
-
-                  <p>
-                    The modern revival of local-first software and static hypertext represents more than just
-                    nostalgia. It is an engineering correction. By decoupling digital craft from ephemeral cloud
-                    tenancy, we restore software to its highest form: an enduring personal artifact that remains
-                    functional long after the server has powered down.
-                  </p>
-                </>
-              )}
-
-              <div className="pt-2">
+              {/* Straightforward Article Link */}
+              <div className="pt-4 border-t border-border/60">
                 <button
                   type="button"
-                  onClick={() => setIsReadingExpanded((prev) => !prev)}
-                  className="text-xs font-bold uppercase tracking-wider text-primary border border-border bg-surface px-3 py-1.5 hover:bg-muted/40 transition-colors cursor-pointer focus-visible:ring-1 focus-visible:ring-ring"
+                  onClick={() => setActiveStoryModal(FEATURED_STORY)}
+                  className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-primary hover:underline cursor-pointer focus-visible:ring-1 focus-visible:ring-ring"
                 >
-                  {isReadingExpanded ? "Collapse Additional Excerpt [−]" : "Read Next Section: 'The Sovereign Document' [+]"}
+                  <span>Read full essay in archive</span>
+                  <span>→</span>
                 </button>
               </div>
             </article>
@@ -511,48 +458,40 @@ export function EditorialExampleClient() {
           aria-labelledby="dispatches-heading"
           className="space-y-8 pt-2"
         >
-          {/* Section Masthead */}
+          {/* Section Header */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-b border-border pb-3">
-            <div>
-              <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground block">
-                CURATED DISPATCHES
-              </span>
-              <Heading
-                id="dispatches-heading"
-                level={2}
-                size="lg"
-                className="text-xl sm:text-2xl font-bold uppercase tracking-tight text-foreground"
-              >
-                Selected Writing &amp; Investigations
-              </Heading>
-            </div>
+            <Heading
+              id="dispatches-heading"
+              level={2}
+              size="lg"
+              className="text-xl sm:text-2xl font-bold uppercase tracking-tight text-foreground"
+            >
+              Selected Writing &amp; Investigations
+            </Heading>
             <span className="text-xs text-muted-foreground uppercase tracking-wider">
-              Issue 04 Archive • 3 Articles
+              {currentIssue.label} Archive
             </span>
           </div>
 
-          {/* Varied Typography & Asymmetrical Layout (No cookie-cutter card grids!) */}
+          {/* Varied Typography & Asymmetrical Layout */}
           <div className="space-y-10">
             {MORE_STORIES.map((story) => {
-              // Asymmetrical alternation: give each dispatch a distinctive typographical layout
               return (
                 <article
                   key={story.id}
-                  className="border-b border-border/80 pb-8 space-y-4 group"
+                  className="border-b border-border/80 pb-8 space-y-3 group"
                 >
-                  <div className="flex flex-wrap items-center gap-2 text-[10px] uppercase tracking-wider text-muted-foreground">
-                    <span className="font-bold text-foreground">{story.category}</span>
-                    <span>•</span>
-                    <span>{story.issue}</span>
-                    <span>•</span>
-                    <span>{story.date}</span>
-                    <span>•</span>
-                    <span>BY {story.author.toUpperCase()}</span>
+                  {/* Category + One Useful Piece of Information (Author & Read Time) */}
+                  <div className="flex items-center justify-between text-xs uppercase tracking-wider">
+                    <span className="font-bold text-primary">{story.category}</span>
+                    <span className="text-muted-foreground">
+                      By {story.author} • {story.readTime}
+                    </span>
                   </div>
 
                   <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-baseline">
                     {/* Story Title & Deck */}
-                    <div className="lg:col-span-8 space-y-3">
+                    <div className="lg:col-span-8 space-y-2.5">
                       <Heading
                         level={3}
                         className="text-xl sm:text-2xl lg:text-3xl font-bold uppercase tracking-tight leading-snug group-hover:text-primary transition-colors cursor-pointer"
@@ -570,29 +509,21 @@ export function EditorialExampleClient() {
                       </p>
                     </div>
 
-                    {/* Metadata, Accent Quote, and Action Link */}
+                    {/* Accent Quote and Direct Action Link */}
                     <div className="lg:col-span-4 flex flex-col justify-between space-y-4 lg:border-l lg:border-border/60 lg:pl-6">
-                      {story.accentQuote ? (
+                      {story.accentQuote && (
                         <p className="text-xs italic text-muted-foreground border-l-2 border-primary/60 pl-3">
                           &ldquo;{story.accentQuote}&rdquo;
                         </p>
-                      ) : (
-                        <div className="p-3 border border-border/60 bg-surface text-[11px] text-muted-foreground">
-                          <span className="font-bold text-foreground uppercase block text-[10px] mb-1">
-                            DISPATCH HIGHLIGHT
-                          </span>
-                          Archived in the Ditherweb Permanent Hypertext Library.
-                        </div>
                       )}
 
-                      <div className="flex items-center justify-between pt-2">
-                        <span className="text-[11px] text-muted-foreground">{story.readTime}</span>
+                      <div className="flex items-center justify-end pt-2">
                         <button
                           type="button"
                           onClick={() => setActiveStoryModal(story)}
                           className="text-xs font-bold uppercase tracking-wider text-primary hover:underline flex items-center gap-1 cursor-pointer focus-visible:ring-1 focus-visible:ring-ring"
                         >
-                          <span>Read Dispatch</span>
+                          <span>Read dispatch</span>
                           <span>→</span>
                         </button>
                       </div>
@@ -635,7 +566,7 @@ export function EditorialExampleClient() {
                   {activeStoryModal.title}
                 </Heading>
                 <div className="text-xs text-muted-foreground">
-                  By {activeStoryModal.author} • Published in {activeStoryModal.issue} ({activeStoryModal.date})
+                  By {activeStoryModal.author} • {activeStoryModal.readTime}
                 </div>
               </div>
 
