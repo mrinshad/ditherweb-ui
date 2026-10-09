@@ -6,25 +6,31 @@ on:
       - "v*.*.*"
   workflow_dispatch:
     inputs:
+      authorize_publish:
+        description: "Explicit release authorization token (enter 'PUBLISH' to authorize production release)"
+        required: true
+        type: string
+        default: "DRY_RUN_ONLY"
       dry_run:
         description: "Dry run (simulate publish without uploading to npm)"
         required: true
         type: boolean
-        default: false
+        default: true
 
 concurrency:
   group: release-${{ github.ref }}
   cancel-in-progress: false
 
+# Minimal default permissions for the workflow
 permissions:
-  contents: write
-  packages: write
-  id-token: write
+  contents: read
 
 jobs:
-  release:
-    name: Release & Publish @ditherweb/ui
+  validate-and-pack:
+    name: Build, Test & Package Verification
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout repository
@@ -32,12 +38,11 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up Node.js
+      - name: Set up Node.js 22.x
         uses: actions/setup-node@v4
         with:
-          node-version: 20.x
+          node-version: 22.x
           cache: "npm"
-          registry-url: "https://registry.npmjs.org"
 
       - name: Install dependencies
         run: npm ci
@@ -64,23 +69,75 @@ jobs:
           echo "tarball_path=release-artifacts/${TARBALL}" >> $GITHUB_OUTPUT
           echo "Created tarball: ${TARBALL}"
 
+      - name: Dry-run publish validation
+        run: |
+          echo "Validating package publishing in dry-run mode..."
+          npm publish ./packages/ui --access public --dry-run
+
+      - name: Upload release artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: npm-tarball
+          path: release-artifacts/*.tgz
+          retention-days: 7
+
+  publish-release:
+    name: Production Release & Publish
+    needs: validate-and-pack
+    runs-on: ubuntu-latest
+    # Hard gate: Only runs on explicit manual workflow_dispatch with exact authorization inputs.
+    # Push events (including git tag pushes) are NEVER allowed to execute this job.
+    if: >-
+      github.event_name == 'workflow_dispatch' &&
+      inputs.authorize_publish == 'PUBLISH' &&
+      inputs.dry_run == false
+    # Protected GitHub Environment requiring maintainer/owner approval
+    environment:
+      name: npm-release
+      url: https://www.npmjs.com/package/@ditherweb/ui
+    permissions:
+      contents: write # Required to create GitHub Release and upload assets
+      id-token: write # Required for npm provenance cryptographic attestation
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js 22.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          cache: "npm"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Download packed tarball
+        uses: actions/download-artifact@v4
+        with:
+          name: npm-tarball
+          path: release-artifacts
+
       - name: Create GitHub Release
         if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v2
         with:
-          files: ${{ steps.pack.outputs.tarball_path }}
+          files: release-artifacts/*.tgz
           generate_release_notes: true
           draft: false
           prerelease: false
 
-      - name: Publish to npm
+      - name: Publish to npm registry
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          AUTH_CONFIRMATION: ${{ inputs.authorize_publish }}
+          DRY_RUN: ${{ inputs.dry_run }}
         run: |
-          if [ "${{ inputs.dry_run }}" = "true" ] || [ -z "${{ secrets.NPM_TOKEN }}" ]; then
-            echo "Publishing in DRY-RUN mode (dry_run=${{ inputs.dry_run }})..."
-            npm publish ./packages/ui --access public --dry-run
-          else
-            echo "Publishing @ditherweb/ui to npm registry with provenance..."
-            npm publish ./packages/ui --access public --provenance
+          if [ -z "$NODE_AUTH_TOKEN" ]; then
+            echo "Error: NODE_AUTH_TOKEN secret is not set in npm-release environment." >&2
+            exit 1
           fi
+          if [ "$AUTH_CONFIRMATION" != "PUBLISH" ] || [ "$DRY_RUN" != "false" ]; then
+            echo "Error: Safety authorization checks failed. Aborting publish." >&2
+            exit 1
+          fi
+          echo "Publishing @ditherweb/ui to npm registry with provenance..."
+          npm publish ./packages/ui --access public --provenance
