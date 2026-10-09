@@ -240,3 +240,7 @@ The repository includes complete, production-grade application showcases in `app
 ## License
 
 MIT © 2026 Ditherweb Contributors
+
+---
+
+Created by Mohammed Rinshad.
