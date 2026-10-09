@@ -130,7 +130,12 @@ export {
   NumberInput,
   type NumberInputProps,
 } from "./components/number-input";
-export { Select, type SelectProps } from "./components/select";
+export {
+  Select,
+  type SelectProps,
+  type SelectOption,
+  type SelectChangeEvent,
+} from "./components/select";
 export { Slider, type SliderProps } from "./components/slider";
 export { Toggle, type ToggleProps } from "./components/toggle";
 export {
