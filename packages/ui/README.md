@@ -146,6 +146,21 @@ export function RetroHero() {
 
 ---
 
+## Testing & Quality Assurance
+
+`@ditherweb/ui` includes end-to-end automated verification suites to guarantee cross-framework stability, clean tree-shaking, and type definition integrity:
+
+- **Cross-Framework Consumer Suite**: Validates tarball packaging, source maps, client directives, and zero-error builds across React 18, React 19, Vite, and Next.js 16 App Router (RSC).
+  ```bash
+  npm run test:consumer
+  ```
+- **Documentation Snippet Verification**: Automatically extracts and compiles all 96 component documentation usage snippets and README code blocks against the package declarations with `tsc --noEmit`.
+  ```bash
+  npm run verify:snippets
+  ```
+
+---
+
 ## License
 
 MIT © 2026 Ditherweb Contributors

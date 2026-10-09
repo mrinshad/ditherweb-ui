@@ -38,6 +38,7 @@
     "build:dts-maps": "node scripts/inline-declaration-sources.mjs",
     "build:styles": "node scripts/copy-styles.mjs",
     "verify:directives": "node scripts/verify-client-directives.mjs",
+    "verify:snippets": "node scripts/verify-docs-snippets.mjs",
     "build": "npm run clean && npm run build:js && npm run build:dts-maps && npm run build:styles && npm run verify:directives",
     "test:consumer": "node scripts/test-consumer.mjs",
     "typecheck": "tsc --noEmit",

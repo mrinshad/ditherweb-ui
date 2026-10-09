@@ -15,7 +15,9 @@
     "start": "npm run start --workspace=@ditherweb/website",
     "lint": "npm run lint --workspaces",
     "typecheck": "npm run typecheck --workspaces",
-    "test:package": "npm run build:ui && npm run test:consumer --workspace=@ditherweb/ui",
+    "test:consumer": "npm run test:consumer --workspace=@ditherweb/ui",
+    "test:snippets": "npm run verify:snippets --workspace=@ditherweb/ui",
+    "test:package": "npm run build:ui && npm run test:consumer --workspace=@ditherweb/ui && npm run verify:snippets --workspace=@ditherweb/ui",
     "test": "npm run test:package"
   },
   "devDependencies": {
