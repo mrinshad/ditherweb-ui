@@ -65,6 +65,11 @@ export function SiteFooter() {
                 </Link>
               </li>
               <li>
+                <Link href="/examples" className="hover:text-foreground hover:underline">
+                  Ditherweb Examples
+                </Link>
+              </li>
+              <li>
                 <Link href="/playground" className="hover:text-foreground hover:underline">
                   Interactive Playground
                 </Link>

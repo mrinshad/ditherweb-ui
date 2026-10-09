@@ -232,8 +232,8 @@ export const ContextMenuContent = React.forwardRef<HTMLDivElement, ContextMenuCo
             zIndex: 9999,
           }}
           className={cn(
-            "min-w-[170px] select-none font-mono text-xs",
-            "bevel-raised bg-surface text-foreground shadow-hard-md border border-border p-1",
+            "min-w-[180px] select-none font-mono text-xs rounded-none",
+            "bg-surface text-foreground shadow-hard-md border-2 border-border-strong p-1",
             className
           )}
           {...props}
@@ -286,19 +286,19 @@ export const ContextMenuItem = React.forwardRef<HTMLButtonElement, ContextMenuIt
         onClick={handleClick}
         onKeyDown={handleKeyDown}
         className={cn(
-          "flex w-full items-center justify-between gap-3 px-2 py-1 text-left font-mono text-xs leading-none select-none",
-          "focus-visible:outline-none focus:bg-primary focus:text-primary-foreground hover:bg-primary hover:text-primary-foreground",
-          "disabled:opacity-50 disabled:pointer-events-none disabled:hover:bg-transparent disabled:hover:text-foreground",
+          "group flex w-full items-center justify-between gap-2.5 px-2 py-1.5 text-left font-mono text-xs leading-none select-none rounded-none transition-colors",
+          "focus-visible:outline-none hover:bg-foreground hover:text-background focus:bg-foreground focus:text-background",
+          "disabled:opacity-40 disabled:pointer-events-none disabled:hover:bg-transparent disabled:hover:text-foreground",
           className
         )}
         {...props}
       >
         <span className="flex items-center gap-2 truncate">
-          {icon && <span className="h-3.5 w-3.5 flex-shrink-0" aria-hidden="true">{icon}</span>}
+          {icon && <span className="h-3.5 w-3.5 flex-shrink-0 flex items-center justify-center" aria-hidden="true">{icon}</span>}
           <span>{children}</span>
         </span>
         {shortcut && (
-          <span className="text-[10px] text-muted-foreground tracking-wider font-mono uppercase">
+          <span className="text-[10px] text-muted-foreground group-hover:text-background group-focus:text-background tracking-wider font-mono uppercase ml-auto pl-2">
             {shortcut}
           </span>
         )}
@@ -316,7 +316,7 @@ export const ContextMenuSeparator = React.forwardRef<HTMLDivElement, ContextMenu
       <div
         ref={ref}
         role="separator"
-        className={cn("my-1 h-[1px] border-b border-border bg-border/50", className)}
+        className={cn("my-1 h-[1px] border-b border-border bg-border/60", className)}
         {...props}
       />
     );
@@ -331,7 +331,11 @@ export const ContextMenuLabel = React.forwardRef<HTMLDivElement, ContextMenuLabe
     return (
       <div
         ref={ref}
-        className={cn("px-2 py-1 font-mono text-[10px] font-bold uppercase text-muted-foreground tracking-wider select-none", className)}
+        role="presentation"
+        className={cn(
+          "px-2 py-1 font-mono text-[10px] font-bold uppercase tracking-wider text-muted-foreground bg-muted/40 border-b border-border/60 mb-0.5 select-none",
+          className
+        )}
         {...props}
       >
         {children}
