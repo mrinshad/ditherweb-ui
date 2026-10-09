@@ -8,7 +8,9 @@
   ],
   "scripts": {
     "dev": "npm run dev --workspace=@ditherweb/website",
-    "build": "npm run build --workspace=@ditherweb/website",
+    "build:ui": "npm run build --workspace=@ditherweb/ui",
+    "build:website": "npm run build --workspace=@ditherweb/website",
+    "build": "npm run build:ui && npm run build:website",
     "start": "npm run start --workspace=@ditherweb/website",
     "lint": "npm run lint --workspaces",
     "typecheck": "npm run typecheck --workspaces"
