@@ -2,6 +2,7 @@
   "name": "@ditherweb/ui",
   "version": "0.1.0",
   "private": true,
+  "license": "MIT",
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -37,6 +38,7 @@
     "build:styles": "node scripts/copy-styles.mjs",
     "verify:directives": "node scripts/verify-client-directives.mjs",
     "build": "npm run clean && npm run build:js && npm run build:styles && npm run verify:directives",
+    "test:consumer": "node scripts/test-consumer.mjs",
     "typecheck": "tsc --noEmit",
     "lint": "eslint src"
   }

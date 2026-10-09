@@ -2,6 +2,7 @@
   "name": "ditherweb",
   "version": "0.1.0",
   "private": true,
+  "license": "MIT",
   "workspaces": [
     "packages/*",
     "apps/*"
@@ -13,7 +14,9 @@
     "build": "npm run build:ui && npm run build:website",
     "start": "npm run start --workspace=@ditherweb/website",
     "lint": "npm run lint --workspaces",
-    "typecheck": "npm run typecheck --workspaces"
+    "typecheck": "npm run typecheck --workspaces",
+    "test:package": "npm run build:ui && npm run test:consumer --workspace=@ditherweb/ui",
+    "test": "npm run test:package"
   },
   "devDependencies": {
     "typescript": "^5"
