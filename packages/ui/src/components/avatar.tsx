@@ -30,6 +30,15 @@ const sizeMap: Record<AvatarSize, string> = {
   xl: "w-12 h-12 text-base",
 };
 
+export type AvatarVariant = "default" | "bevel" | "pixel" | "dither";
+
+const variantStyles: Record<AvatarVariant, string> = {
+  default: "border-2 border-border bg-muted",
+  bevel: "bevel-raised bg-surface border-none",
+  pixel: "border-2 border-foreground shadow-hard-sm bg-muted",
+  dither: "border border-border bg-dither-medium",
+};
+
 export interface AvatarProps extends React.HTMLAttributes<HTMLSpanElement> {
   /**
    * Avatar size: "sm" (24px), "md" (32px), "lg" (40px), "xl" (48px).
@@ -39,6 +48,10 @@ export interface AvatarProps extends React.HTMLAttributes<HTMLSpanElement> {
    * Shape variant: "square" (retro default) or "circle".
    */
   shape?: AvatarShape;
+  /**
+   * Frame variant: "default", "bevel", "pixel", "dither".
+   */
+  variant?: AvatarVariant;
   /**
    * Optional status indicator: "online", "busy", "away", "offline".
    */
@@ -51,6 +64,7 @@ export const Avatar = React.forwardRef<HTMLSpanElement, AvatarProps>(
       className,
       size = "md",
       shape = "square",
+      variant = "default",
       status,
       children,
       ...props
@@ -75,10 +89,11 @@ export const Avatar = React.forwardRef<HTMLSpanElement, AvatarProps>(
           ref={ref}
           data-size={size}
           data-shape={shape}
+          data-variant={variant}
           className={cn(
-            "relative inline-flex items-center justify-center shrink-0 font-mono font-bold select-none",
-            shape === "circle" ? "rounded-full" : "rounded-none bevel-raised",
-            "bg-muted border-2 border-border text-foreground",
+            "relative inline-flex items-center justify-center shrink-0 font-mono font-bold select-none text-foreground",
+            shape === "circle" ? "rounded-full overflow-hidden" : "rounded-none",
+            variantStyles[variant],
             sizeMap[size],
             className
           )}

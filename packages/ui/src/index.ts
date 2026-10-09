@@ -3,8 +3,18 @@
 // ============================================================================
 
 // --- Phase 2: Foundational Primitives ---
-export { Button, type ButtonProps } from "./components/button";
-export { Input, type InputProps } from "./components/input";
+export {
+  Button,
+  type ButtonProps,
+  type ButtonVariant,
+  type ButtonSize,
+} from "./components/button";
+export {
+  Input,
+  type InputProps,
+  type InputVariant,
+  type InputSize,
+} from "./components/input";
 export { Label, type LabelProps } from "./components/label";
 export { Checkbox, type CheckboxProps } from "./components/checkbox";
 export { Radio, type RadioProps } from "./components/radio";
@@ -17,13 +27,18 @@ export {
   CardContent,
   CardFooter,
   type CardProps,
+  type CardVariant,
   type CardHeaderProps,
   type CardTitleProps,
   type CardDescriptionProps,
   type CardContentProps,
   type CardFooterProps,
 } from "./components/card";
-export { Badge, type BadgeProps } from "./components/badge";
+export {
+  Badge,
+  type BadgeProps,
+  type BadgeVariant,
+} from "./components/badge";
 export {
   Alert,
   AlertTitle,
@@ -188,7 +203,12 @@ export { Well, type WellProps } from "./components/well";
 export { Inset, type InsetProps } from "./components/inset";
 export { Progress, type ProgressProps } from "./components/progress";
 export { Spinner, type SpinnerProps } from "./components/spinner";
-export { Skeleton, type SkeletonProps } from "./components/skeleton";
+export {
+  Skeleton,
+  type SkeletonProps,
+  type SkeletonVariant,
+  type SkeletonPattern,
+} from "./components/skeleton";
 export {
   EmptyState,
   EmptyStateIcon,
@@ -497,6 +517,7 @@ export {
   type AvatarSize,
   type AvatarShape,
   type AvatarStatus,
+  type AvatarVariant,
 } from "./components/avatar";
 
 // --- Phase 4: Classic Web Primitives ---

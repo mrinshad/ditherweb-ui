@@ -1,15 +1,18 @@
 import { forwardRef } from "react";
 import { cn } from "../lib/utils";
 
+export type CardVariant = "default" | "raised" | "inset" | "flat" | "cyber";
+
 export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
-  variant?: "default" | "raised" | "inset" | "flat";
+  variant?: CardVariant;
 }
 
-const variantStyles: Record<NonNullable<CardProps["variant"]>, string> = {
+const variantStyles: Record<CardVariant, string> = {
   default: "border border-border bg-card shadow-hard text-card-foreground",
   raised: "bevel-raised bg-bevel-face shadow-hard text-foreground",
   inset: "bevel-inset bg-background text-foreground",
   flat: "bevel-flat bg-bevel-face text-foreground",
+  cyber: "border-2 border-primary bg-background shadow-hard-lg text-foreground",
 };
 
 const Card = forwardRef<HTMLDivElement, CardProps>(

@@ -1,16 +1,24 @@
 import { forwardRef } from "react";
 import { cn } from "../lib/utils";
 
+export type ButtonVariant =
+  | "default"
+  | "primary"
+  | "secondary"
+  | "destructive"
+  | "ghost"
+  | "outline"
+  | "retro"
+  | "inset"
+  | "cyber"
+  | "link";
+
+export type ButtonSize = "sm" | "md" | "lg" | "icon";
+
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?:
-    | "default"
-    | "primary"
-    | "secondary"
-    | "destructive"
-    | "ghost"
-    | "outline";
-  size?: "sm" | "md" | "lg";
+  variant?: ButtonVariant;
+  size?: ButtonSize;
   loading?: boolean;
 }
 
@@ -27,12 +35,21 @@ const variantStyles: Record<NonNullable<ButtonProps["variant"]>, string> = {
     "bg-transparent hover:bg-muted text-foreground active:bg-surface",
   outline:
     "border-2 border-border-strong bg-transparent text-foreground hover:bg-muted active:bg-surface",
+  retro:
+    "bevel-raised active:bevel-pressed bg-surface text-foreground font-bold shadow-hard select-none",
+  inset:
+    "bevel-inset bg-surface-sunken text-foreground select-none active:bg-muted",
+  cyber:
+    "border-2 border-primary bg-background text-primary shadow-hard hover:bg-primary/10 active:bg-primary/20 select-none",
+  link:
+    "bg-transparent text-primary hover:underline underline-offset-4 p-0 h-auto border-none shadow-none font-normal",
 };
 
 const sizeStyles: Record<NonNullable<ButtonProps["size"]>, string> = {
   sm: "px-2.5 py-1 text-xs",
   md: "px-4 py-2 text-sm",
   lg: "px-6 py-2.5 text-base",
+  icon: "h-8 w-8 p-0 text-sm",
 };
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -61,7 +78,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           "focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2",
           "disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed",
           variantStyles[variant],
-          sizeStyles[size],
+          variant !== "link" && sizeStyles[size],
           className,
         )}
         {...props}
