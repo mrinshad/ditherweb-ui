@@ -93,20 +93,21 @@ export const EXAMPLES_REGISTRY: Record<string, ExampleEntry> = {
   },
   editorial: {
     slug: "editorial",
-    title: "Retro Editorial Magazine",
-    subtitle: "Typography Publication & Portfolio",
-    category: "Publishing & Content",
-    status: "coming-soon",
-    badge: "COMING NEXT",
+    title: "FIELD NOTES Publication",
+    subtitle: "Independent Journal on Computing, Design & Digital Culture",
+    category: "Publishing & Editorial",
+    status: "available",
+    badge: "AVAILABLE NOW",
     description:
-      "A multi-column long-form publication celebrating classic computing history. Features Bayer dither plates, pixel drop caps, callout wells, and footnotes.",
-    tags: ["Dither", "ImageFrame", "Blockquote", "Kbd", "Separator", "List"],
+      "A carefully art-directed digital magazine exploring early web culture, durable computing protocols, and classic typography with generous whitespace and restrained Ditherweb character.",
+    tags: ["Heading", "Text", "Separator", "Blockquote", "ImageFrame", "Badge", "Container", "Stack", "Grid"],
     highlights: [
-      "Editorial grid with bitmap illustrations and halftone plates",
-      "Pixel heading treatments and styled pull quotes",
-      "Technical code annotations and responsive margin notes",
+      "Art-directed editorial masthead with issue metadata and minimal navigation",
+      "Featured long-form essay with theme-reactive dithered workstation artwork",
+      "Narrow reading column with styled pull quotes and historical annotations",
+      "Curated secondary dispatch grid with varied typography and asymmetrical layouts",
     ],
-    targetHref: "/examples",
+    targetHref: "/examples/editorial",
   },
 };
 
